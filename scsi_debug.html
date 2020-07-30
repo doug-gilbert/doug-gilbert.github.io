@@ -5,8 +5,9 @@
 	<title>Scsi_debug adapter driver for Linux</title>
 	<meta name="generator" content="LibreOffice 6.4.4.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2020-07-12T23:01:15.933904927"/>
+	<meta name="changed" content="2020-07-30T13:57:09.535579582"/>
 	<meta name="keywords" content="Linux driver, SCSI, ramdisk"/>
+	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -128,13 +129,13 @@ applications to abnormal situations.</p>
 an iSCSI server, the reader may prefer the Linux target subsystem,
 specifically the tcm_loop driver. In short: if you want create real
 SCSI devices then use the target subsystem; if you want to test or
-break something then read on. Version 1.89 of this driver adds the
-<font color="#006c3b">per_host_store</font> parameter which when set
-will cause each subsequently created host to have its own store.</p>
+break something then read on. At the time of writing, the most recent
+version of this driver is 1.90 which adds the <font color="#006c3b">tur_ms_to_ready</font>
+parameter.</p>
 <p>This page describes the driver as found in the Linux kernel
 version 5.8.0 and/or possibly 5.9.0 . Earlier versions of this driver
-worked with the Linux kernel 2.6 series.&nbsp; For information about
-the scsi_debug driver found in the lk 2.4 production series see this
+worked with the Linux kernel 2.6 series. For information about the
+scsi_debug driver found in the lk 2.4 production series see this
 page. A not so ancient, earlier version is <a href="sdebug26.html"><font color="#21409a">here</font></a>
 .</p>
 <h2 class="western"><a name="__RefHeading___Toc471_3114999558"></a><a name="__RefHeading___Toc295_941978325"></a><a name="__RefHeading___Toc237_974356461"></a><a name="__RefHeading___Toc147_2530062151"></a><a name="mozTocId613134"></a>
@@ -1321,6 +1322,34 @@ directory</p>
 		<td width="747" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			multi-queue setting from 1 (i.e. non-mq) to &lt;= number of
 			processors on the machine</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="139" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<font color="#006c3b">tur_ms_to_ready</font></p>
+		</td>
+		<td width="86" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0</p>
+		</td>
+		<td width="72" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			read-only</p>
+		</td>
+		<td width="128" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="68" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			1.90</p>
+		</td>
+		<td width="747" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			this is the number of milliseconds after a scsi_debug device is
+			created that TUR (and other media access commands) will return a
+			NOT READY sense key with the additional sense of &quot;LU in
+			process of becoming ready&quot;. Further, in the case of TUR, an
+			estimate of the number of milliseconds before a subsequent TUR
+			will first return GOOD status is placed in the sense data INFO
+			field (see: T10 accepted proposal 20-061r2)</p>
 		</td>
 	</tr>
 	<tr valign="top">
@@ -3241,7 +3270,7 @@ with
 additions from<br/>
 Martin K. Petersen &lt;martin dot petersen at
 oracle dot com&gt;</p>
-<p style="margin-left: 8.75cm">Last updated: 12th July 2020 23:00
+<p style="margin-left: 8.75cm">Last updated: 30th July 2020 14:00
 -0400</p>
 </body>
 </html>
