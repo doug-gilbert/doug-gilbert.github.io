@@ -5,7 +5,7 @@
 	<title>Linux SG driver version 4.0</title>
 	<meta name="generator" content="LibreOffice 6.4.4.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2020-07-16T21:14:03.944533003"/>
+	<meta name="changed" content="2020-08-03T22:13:35.903232398"/>
 	<meta name="keywords" content="Linux, SCSI, SG_IO, pass-through"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -321,12 +321,12 @@ Status</h3>
 <p>A recent first stage patchset (containing 40 patches) was sent to
 the linux-scsi list on 20200421. Its cover was titled: &quot;[PATCH
 v9 00/40] sg: add v4 interface&quot;.  Patch 40 bumps the driver
-version number to 4.0.09 . The sgv4_20200711 patchset below is
+version number to 4.0.09 . The sgv4_20200803 patchset below is
 slightly later. Its first stage patchset  contains 40 patches. Its
 second stage patchset adds the new features such as file and request
 sharing, multiple requests (in one invocation) and supports and the
 so-called <i>extended</i> <b>ioctl</b>(2). The second patchset is
-only currently available from this page (as patches 0041 to 0071
+only currently available from this page (as patches 0041 to 0073
 applied on top of the first stage). Its second stage bumps the driver
 version number to 4.0.44 . See <a href="#15 Downloads and testing|outline">Downloads
 and testing section</a> below.</p>
@@ -6437,15 +6437,15 @@ and </span><b>SG_SEIRV_DEV_TS_</b><b>UPPER</b><span style="font-weight: normal">
 ioctl calls.</span></p>
 <h2 class="western"><a name="__RefHeading___Toc1578_4294551682"></a><a name="15 Downloads and testing|outline"></a>
 15 Downloads and testing</h2>
-<p>This tarball: <a href="p/sgv4_20200711.tgz">sgv4_20200</a><a href="p/sgv4_20200711.tgz">711</a>
+<p>This tarball: <a href="p/sgv4_20200803.tgz">sgv4_20200803</a>
 contains a README file that outlines what is included. There are
 earlier versions of this driver for the <u>lk5.</u><u>5</u> and <u>lk5.</u><u>6</u><u>
 series</u>. The most recent versions of this driver around found in
-its <u>lk5.</u><u>7.8</u> and <u>lk5.</u><u>8.0rc1</u> directories. 
-Each of the directories contains a patchset placed in sub-directory.
-The three new or changed files that represent the driver:
-drivers/scsi/sg.c , include/uapi/scsi/sh.h and include/include/sg.h
-are also placed under each lk5.* directory. 
+its <u>lk5.</u><u>7.</u><u>12</u> and <u>lk5.</u><u>8.0</u>
+directories.  Each of the directories contains a patchset placed in
+sub-directory. The three new or changed files that represent the
+driver: drivers/scsi/sg.c , include/uapi/scsi/sh.h and
+include/include/sg.h are also placed under each lk5.* directory. 
 </p>
 <p>The sg3_utils was originally written to test the v3 sg driver
 interface when it was introduced, circa 2000. So where better to put
@@ -6583,7 +6583,7 @@ apps that use sg driver nodes and check their functionality.</p>
 <p>Return to <a href="index.html">main</a> page. 
 </p>
 <p align="center">Douglas Gilbert</p>
-<p align="center">Last updated: <font color="#000000">1</font><font color="#000000">6</font>
-July 2020 20:00</p>
+<p align="center">Last updated: <font color="#000000">3</font> <font color="#000000">August</font>
+2020 22:00</p>
 </body>
 </html>
