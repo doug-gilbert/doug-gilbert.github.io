@@ -3,9 +3,9 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title>Linux SG driver version 4.0</title>
-	<meta name="generator" content="LibreOffice 6.4.4.2 (Linux)"/>
+	<meta name="generator" content="LibreOffice 6.4.5.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2020-08-03T22:13:35.903232398"/>
+	<meta name="changed" content="2020-08-23T17:57:53.862054993"/>
 	<meta name="keywords" content="Linux, SCSI, SG_IO, pass-through"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -198,6 +198,9 @@
 <p style="margin-bottom: 0cm"><br/>
 
 </p>
+<p style="margin-bottom: 0cm"><br/>
+
+</p>
 <div id="Table of Contents1" dir="ltr"><p style="margin-left: 0.5cm; margin-bottom: 0cm">
 	<a href="#__RefHeading___Toc1534_4294551682">1 Introduction</a></p>
 	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc7793_510494588">1.1
@@ -243,6 +246,8 @@
 	Aborting multiple requests</a></p>
 	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1568_4294551682">10.3
 	Single/multiple (non-)blocking requests</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc18199_72860742">10.4
+	SGV4_FLAG_REC_ORDER flag</a></p>
 	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1570_4294551682">11
 	pack_id or tag</a></p>
 	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1572_4294551682">12
@@ -319,16 +324,16 @@ found in block/scsi_ioctl.c kernel source code).</p>
 <h3 class="western"><a name="__RefHeading___Toc7793_510494588"></a>1.1
 Status</h3>
 <p>A recent first stage patchset (containing 40 patches) was sent to
-the linux-scsi list on 20200421. Its cover was titled: &quot;[PATCH
-v9 00/40] sg: add v4 interface&quot;.  Patch 40 bumps the driver
-version number to 4.0.09 . The sgv4_20200803 patchset below is
-slightly later. Its first stage patchset  contains 40 patches. Its
-second stage patchset adds the new features such as file and request
-sharing, multiple requests (in one invocation) and supports and the
-so-called <i>extended</i> <b>ioctl</b>(2). The second patchset is
-only currently available from this page (as patches 0041 to 0073
-applied on top of the first stage). Its second stage bumps the driver
-version number to 4.0.44 . See <a href="#15 Downloads and testing|outline">Downloads
+the linux-scsi list on 20200823. Its cover was titled: &quot;[PATCH
+v10 00/40] sg: add v4 interface&quot;.  Patch 40 bumps the driver
+version number to 4.0.09 . The sgv4_20200803 patchset below <font color="#000000">combines
+the first and second stage patchsets.</font> Its first stage patchset
+ contains 40 patches. Its second stage patchset adds the new features
+such as file and request sharing, multiple requests (in one
+invocation) and supports and the so-called <i>extended</i> <b>ioctl</b>(2).
+The second patchset is only currently available from this page (as
+patches 0041 to 0073 applied on top of the first stage). Its second
+stage bumps the driver version number to 4.0.45 . See <a href="#15 Downloads and testing|outline">Downloads
 and testing section</a> below.</p>
 <p>In keeping with a new Linux kernel coding style directive, the
 terms master and slave have been replaced by <span style="font-style: normal"><u>read-side</u></span><i>
@@ -480,7 +485,7 @@ patchset:</p>
 	multiple requests invocation.</p>
 	<li><p>add logic for tag handling and keep existing pack_id (packet
 	id) logic which plays a similar role</p>
-	<li><p>the &quot;shared variable blocking&quot; (svb) method of the
+	<li><p>the <i>shared variable blocking</i> (svb) method of the
 	multiple requests capability (mrq) targets large copy (and
 	copy-like) operations. While blocking the invoking user thread, it
 	can issue a fixed number of READ commands (currently up to 8)
@@ -499,7 +504,12 @@ patchset:</p>
 	the internal <i>count</i> maintained by the eventfd mechanism when
 	that request reaches its internal completion point. See Figures 2
 	and 4.</p>
-	<li><p>bump the driver version number to 4.0.44</p>
+	<li><p>while the order of responses (i.e. completions) picked up by
+	a <i>mrq</i> <b>ioctl</b>(SG_IORECEIVE) can vary, the user can
+	control <u>where</u> those response are placed in response array.
+	The user can also give a maximum number responses  a <i>mrq</i>
+	<b>ioctl</b>(SG_IORECEIVE) can receive.</p>
+	<li><p>bump the driver version number to 4.0.45</p>
 </ul>
 <p>There are still some things to do:</p>
 <ul>
@@ -916,7 +926,13 @@ field in the version 3 interface structure.</p>
 				</p>
 			</td>
 			<td width="78%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
-				not currently used</p>
+				when the <font color="#006c3b"><b>SGV4_FLAG_</b></font><font color="#006c3b"><b>REC_ORDER</b></font>
+				flag is set then the value in this field on submission is held
+				with the request internally. If after completion <font color="#000000">this
+				request</font> is read using ioctl(SG_IORECEIVE) with the
+				<font color="#006c3b"><b>SGV4_FLAG_MULTIPLE_REQS</b></font> flag
+				set then the value is used as an index into the response array to
+				place its response.</p>
 			</td>
 		</tr>
 		<tr valign="top">
@@ -1488,11 +1504,10 @@ from the version 3 driver) tend to have lower values.</p>
 				<b>SGV4_FLAG_NO_WAITQ</b> <span style="font-weight: normal">[0x40]</span></p>
 			</td>
 			<td width="75%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
-				This is a stronger form of (and therefore implies)
-				<b>SGV4_FLAG_IMMED</b><span style="font-weight: normal">. </span><span style="font-weight: normal">With
-				this flag, t</span><span style="font-weight: normal">he </span><i><span style="font-weight: normal">internal
-				completion point</span></i> <span style="font-weight: normal">of
-				a request does </span><u><span style="font-weight: normal">not</span></u>
+				<span style="font-weight: normal">With this flag, t</span><span style="font-weight: normal">he
+				</span><i><span style="font-weight: normal">internal completion
+				point</span></i> <span style="font-weight: normal">of a request
+				does </span><u><span style="font-weight: normal">not</span></u>
 				<span style="font-weight: normal">invoke wake_up() on the file
 				descriptor's wait_queue (hence this flag's name). This means that
 				it is pointless </span><i><span style="font-weight: normal">waiting</span></i>
@@ -1699,12 +1714,24 @@ from the version 3 driver) tend to have lower values.</p>
 				[0x80000]</p>
 			</td>
 			<td width="75%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
-				Only used by shared variable blocking method. Requires that
-				<font color="#000000"><u>write-side</u></font> commands are
+				Only used by <i>shared variable blocking</i> method. Requires
+				that <font color="#000000"><u>write-side</u></font> commands are
 				issued in the same order as the <font color="#000000"><u>read-side</u></font>
 				commands they are paired with. <font color="#000000"><u>Read-side</u></font>
 				commands are issued in the order they appear in the command array
 				which is supplied by the user.</p>
+			</td>
+		</tr>
+		<tr valign="top">
+			<td width="25%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				<font color="#006c3b"><b>SGV4_FLAG_</b></font><font color="#000000"><b>REC_ORDER</b></font>
+				[0x100000]</p>
+			</td>
+			<td width="75%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
+				This flag can be used either on a <i>control object</i> or a
+				normal sg v4 object (hence the two colours). Allows the order in
+				the response array to be specified. There is a later subsection
+				on the use of this flag.</p>
 			</td>
 		</tr>
 	</tbody>
@@ -2445,7 +2472,7 @@ the user space has been informed on the bottom right. It assumes that
 either the O_NONBLOCK flag is set on the file descriptor (assumed to
 be the same in all the system call boxes shown with the blue band at
 the top), or <b>ioctl</b>(<font color="#a3238e">SG_IORECEIVE</font>)
-has SGV4_FLAG_IMMED or SGV4_FLAG_NO_WAITQ OR-ed into its <font color="#0066b3">fla</font><font color="#a3238e">gs</font>.
+has SGV4_FLAG_IMMED OR-ed into its <font color="#0066b3">fla</font><font color="#a3238e">gs</font>.
 When the first <b>ioctl</b>(<font color="#a3238e">SG_IORECEIVE</font>)
 is called the SCSI command has not completed so it gets rejected with
 EAGAIN. The first <b>poll</b>(2) system call indicates with POLLOUT
@@ -2755,8 +2782,8 @@ command could have failed and thus returned no data, so the
 <font color="#000000"><u>write-</u></font><u>side</u> will be writing
 unknown data (probably using the previous WRITE's data).</p>
 <p>Only the first form can be used with multiple requests (in one
-invocation). Further if the &quot;shared variable blocking&quot; mode
-of mrq is used then all the WRITEs associated with a single READ are
+invocation). Further if the <i>shared variable blocking</i> method of
+mrq is used then all the WRITEs associated with a single READ are
 issued at the same time.</p>
 <p>The <span style="text-decoration: none"><b>sgh_dd</b></span>
 utility in the sg3_utils testing directory (rev 803 or later) has
@@ -2990,8 +3017,8 @@ interface object:</p>
 				must be 0. If non-zero then it is a pointer to an array of cdbs
 				(SCSI command descriptor blocks). The number of elements ('n') in
 				this array is <font color="#006c3b">ctl_obj.dout_xfer_len</font>
-				divided by the size of a request object (sg_io_v4_sz). The actual
-				length of each cdb in this array is given by the <font color="#a3238e">req-&gt;request_len</font>
+				divided by SG_V4_SZ. The actual length of each cdb in this array
+				is given by the <font color="#a3238e">req-&gt;request_len</font>
 				field in the corresponding request array element. All actual cdb
 				lengths must be less than or equal to <font color="#006c3b">ctl_obj.request_len</font>
 				divided by n.</p>
@@ -3060,8 +3087,7 @@ interface object:</p>
 			</td>
 			<td width="73%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 				length in bytes of array pointed to by <font color="#006c3b">ctl_obj.dout_xferp</font>
-				. It must be an integer multiple of the size of a request object
-				(sg_io_v4).</p>
+				. It must be an integer multiple of SG_V4_SZ.</p>
 			</td>
 		</tr>
 	</tbody>
@@ -3077,7 +3103,7 @@ interface object:</p>
 				pointer to space that will have the response array written out to
 				it. May be the same value as <font color="#006c3b">dout_xferp</font>.
 				In the case of <b>ioctl</b>(<font color="#a3238e"><span style="font-weight: normal">SG_IOSUBMIT</span></font>)
-				when MULTIPLE_REQS and IMMED (or NO_WAITQ) <font color="#006c3b">flags</font>
+				when MULTIPLE_REQS and IMMED <font color="#006c3b">flags</font>
 				are given, may be zero. Size cannot exceed 2 MB.</p>
 			</td>
 		</tr>
@@ -3091,8 +3117,23 @@ interface object:</p>
 				length of response array</p>
 			</td>
 			<td width="73%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
-				length in bytes which must be an integer multiple of the size of
-				a response object which is the same size as the request object.</p>
+				length in bytes which must be an integer multiple of SG_V4_SZ.</p>
+			</td>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr valign="top">
+			<td width="13%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				<font color="#006c3b">din_iovec_count</font></p>
+			</td>
+			<td width="14%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				max number to receive, 0 -&gt; all</p>
+			</td>
+			<td width="73%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
+				only effects <i>mrq</i>  ioctl(SG_IORECEIVE). Places and upper
+				limit on the number <font color="#000000">of completed requests
+				to</font> receive. The value 0 is take to mean as many as
+				possible (which is <font color="#006c3b">din_xfer_len</font>/SG_V4_SZ).</p>
 			</td>
 		</tr>
 	</tbody>
@@ -3196,7 +3237,7 @@ interface object:</p>
 				.</span><span style="font-variant: normal"> Otherwise it is the
 				number of submissions performed</span><span style="font-variant: normal">
 				(e.g. </span><span style="font-variant: normal"><b>ioctl</b></span><span style="font-variant: normal">(</span><span style="font-variant: normal"><font color="#a3238e"><span style="font-weight: normal">SG_IOSUBMIT</span></font></span><span style="font-variant: normal">)
-				when IMMED or NO_WAITQ given)</span><span style="font-variant: normal">.</span></p>
+				when IMMED given)</span><span style="font-variant: normal">.</span></p>
 			</td>
 		</tr>
 	</tbody>
@@ -3246,9 +3287,8 @@ interface object:</p>
 				0</p>
 			</td>
 			<td width="73%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
-				for example: the <b>ioctl</b>(2) fails with ERANGE if either
-				<font color="#006c3b">din_iovec_count</font> or <font color="#006c3b">dout_iovec_count</font>
-				is non-zero</p>
+				for example: the <b>ioctl</b>(2) fails with ERANGE if
+				<font color="#006c3b">dout_iovec_count</font> is non-zero</p>
 			</td>
 		</tr>
 	</tbody>
@@ -3282,13 +3322,8 @@ may not have the request array available, so its response array has
 zero-ed 'in' fields. Further, in the <i>non-blocking</i> methods, the
 response array's elements are in completion order which may be
 different from the request array which dictates the submission order.
-<span style="font-variant: normal"><span style="font-style: normal">The
-size, in bytes, of the version 4 interface object (i.e. in C:
-</span></span><code class="western"><span style="font-variant: normal"><font size="2" style="font-size: 10pt"><span style="font-style: normal">sizeof(struct
-sg_io_v4)</span></font></span></code><span style="font-variant: normal">
-</span><span style="font-variant: normal"><span style="font-style: normal">)
-is shown as </span></span><span style="font-variant: normal"><i>sg_io_v4_sz</i></span><span style="font-variant: normal">
-</span><span style="font-variant: normal"><span style="font-style: normal">.</span></span><span style="font-variant: normal">
+SG_V4_SZ is the size in bytes of the sg version 4 interface object
+(in C: sizeof(struct sg_io_v4) ). <span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">Notice
 the control object can optionally provide an array of cdbs; if given
 the elements in that array of cdbs will override the cdbs pointed to
@@ -3415,18 +3450,18 @@ a more in depth explanation after the table:</p>
 		</td>
 		<td width="26%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
 			<u>required</u>: MULTIPLE_REQS</p>
-			<p>optional: STOP_IF, SIGNAL</p>
-			<p><i>excluded</i>: IMMED, NO_WAITQ, SHARE</p>
+			<p>optional: STOP_IF, SIGNAL, NO_WAITQ</p>
+			<p><i>excluded</i>: IMMED, SHARE</p>
 		</td>
 		<td width="29%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
 			<u>required</u>: MULTIPLE_REQS</p>
-			<p>optional: STOP_IF, SIGNAL</p>
-			<p><i>excluded</i>: IMMED, NO_WAITQ, SHARE</p>
+			<p>optional: STOP_IF, SIGNAL,  NO_WAITQ</p>
+			<p><i>excluded</i>: IMMED, SHARE</p>
 		</td>
 		<td width="32%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 			<u>required</u>: MULTIPLE_REQS, SHARE</p>
-			<p>optional: STOP_IF, SIGNAL, ORDERED_WR</p>
-			<p><i>excluded</i>: IMMED, NO_WAITQ</p>
+			<p>optional: STOP_IF, SIGNAL, ORDERED_WR, NO_WAITQ</p>
+			<p><i>excluded</i>: IMMED</p>
 		</td>
 	</tr>
 	<tr valign="top">
@@ -3440,19 +3475,22 @@ a more in depth explanation after the table:</p>
 			optional: SHARE, DO_ON_OTHER, NO_DXFER</p>
 			<p><i>excluded</i>: <strong><span style="font-weight: normal">MULTIPLE_REQS</span></strong></p>
 			<p><strong><i><span style="font-weight: normal">ignored</span></i></strong><strong><span style="font-weight: normal">:
-			IMMED</span></strong></p>
+			IMMED</span></strong><strong><span style="font-weight: normal">, 
+			NO_WAITQ</span></strong></p>
 		</td>
 		<td width="29%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
 			optional: SHARE, DO_ON_OTHER, NO_DXFER,  COMPLETE_B4</p>
 			<p><i>excluded</i>: <strong><span style="font-weight: normal">MULTIPLE_REQS</span></strong></p>
 			<p><strong><i><span style="font-weight: normal">ignored</span></i></strong><strong><span style="font-weight: normal">:
-			IMMED</span></strong></p>
+			IMMED</span></strong><strong><span style="font-weight: normal">, 
+			NO_WAITQ</span></strong></p>
 		</td>
 		<td width="32%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 			optional: SHARE, DO_ON_OTHER, NO_DXFER</p>
 			<p><i>excluded</i>: <strong><span style="font-weight: normal">MULTIPLE_REQS</span></strong></p>
 			<p><strong><i><span style="font-weight: normal">ignored</span></i></strong><strong><span style="font-weight: normal">:
-			IMMED</span></strong></p>
+			IMMED</span></strong><strong><span style="font-weight: normal">, 
+			NO_WAITQ</span></strong></p>
 		</td>
 	</tr>
 	<tr valign="top">
@@ -3472,16 +3510,17 @@ a more in depth explanation after the table:</p>
 			submission by using the COMPLETE_B4 flag. Response array in same
 			order as request array but (internal) completions did necessary
 			happen in that order. The Ck,Cm,Cj attempts to convey: &quot;no
-			particular completion order.</p>
+			particular completion order&quot;.</p>
 		</td>
 		<td width="32%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 			designed for disk to disk copying. The notation: first character,
-			S: submit, C: completion; second character: R: READ like, W: WRITE
-			like command; third digit: RW pair number. The above notation
-			assumes a segment containing 4 RW pairs. Segments are executed
-			sequentially. Each RW pair in a segment are executed
-			asynchronously while maintaining each RW pair's order (i.e. the
-			pair's READ must complete before its WRITE commences).</p>
+			S: submit, C: completion; second character: R: <font color="#000000">read-side</font>,
+			W: <font color="#000000">write-side</font> command; third digit:
+			RW pair number. The above notation assumes a segment containing 4
+			RW pairs. Segments are executed sequentially. Each RW pair in a
+			segment are executed asynchronously while maintaining each RW
+			pair's order (i.e. the pair's READ must complete before its WRITE
+			commences).</p>
 		</td>
 	</tr>
 </table>
@@ -3582,11 +3621,13 @@ while all the </span></span><span style="font-variant: normal"><font color="#000
 commands must use the DO_ON_OTHER </span></span><span style="font-variant: normal"><span style="font-style: normal"><u>and</u></span></span><span style="font-variant: normal"><span style="font-style: normal">
 the NO_DXFER flags. All data carrying SCSI commands must use the</span></span><span style="font-variant: normal"><span style="font-style: normal">
 SHARE flag and appear in read-write pairs, usually </span></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">adjoining</span></font></span><span style="font-variant: normal"><span style="font-style: normal">
-one another with the READ like command first. The only exception is
-non-data carrying SCSI commands such as TEST UNIT READY</span></span><span style="font-variant: normal"><span style="font-style: normal">
+one another with the </span></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">read-side</span></font></span><span style="font-variant: normal"><span style="font-style: normal">
+command first. The only exception is non-data carrying SCSI commands
+such as TEST UNIT READY</span></span><span style="font-variant: normal"><span style="font-style: normal">
 and PRE-FETCH</span></span><span style="font-variant: normal"><span style="font-style: normal">
 that can appear anywhere. The list of commands given to this </span></span><span style="font-variant: normal"><span style="font-style: normal">method</span></span><span style="font-variant: normal"><span style="font-style: normal">
-cannot end with a READ like command. </span></span><span style="font-variant: normal"><span style="font-style: normal">These
+cannot end with a </span></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">read-side</span></font></span><span style="font-variant: normal"><span style="font-style: normal">
+command. </span></span><span style="font-variant: normal"><span style="font-style: normal">These
 sanity checks are done before any commands are executed and </span></span><span style="font-variant: normal"><span style="font-style: normal">mrq
 invocations</span></span><span style="font-variant: normal"><span style="font-style: normal">
 that don't comply are reject</span></span><span style="font-variant: normal"><span style="font-style: normal">ed</span></span><span style="font-variant: normal"><span style="font-style: normal">
@@ -3611,8 +3652,8 @@ is from the driver: no more than </span></span><span style="font-variant: normal
 RW pairs can be processed at the same time.</span></span><span style="font-variant: normal"><span style="font-style: normal">
 </span></span><span style="font-variant: normal"><span style="font-style: normal">If
 the user sets the </span></span><span style="font-variant: normal"><span style="font-style: normal">NO_DXFER</span></span><span style="font-variant: normal"><span style="font-style: normal">
-flag on all the READ like commands, then all data buffer management
-is done by the driver. </span></span><span style="font-variant: normal"><span style="font-style: normal">Four
+flag on all the </span></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">read-side</span></font></span><span style="font-variant: normal"><span style="font-style: normal">
+commands, then all data buffer management is done by the driver. </span></span><span style="font-variant: normal"><span style="font-style: normal">Four
 reserve requests </span></span><span style="font-variant: normal"><span style="font-style: normal">associated
 with the READ side file descriptor are used for this data buffer
 manag</span></span><span style="font-variant: normal"><span style="font-style: normal">e</span></span><span style="font-variant: normal"><span style="font-style: normal">ment.</span></span></p>
@@ -3662,10 +3703,11 @@ cope with these situations the </span></span><span style="font-variant: normal">
 flag </span></span><span style="font-variant: normal"><span style="font-style: normal">in
 the control object </span></span><span style="font-variant: normal"><span style="font-style: normal">has
 been added.</span></span><span style="font-variant: normal"><span style="font-style: normal">
-Master commands (i.e. READs) are always issued in the order specified
-by the user but they may complete &quot;out-of-order&quot; with
-respect to one another. In that case, this flag will delay starting
-the paired </span></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><u>write-side</u></span></font></span><span style="font-variant: normal"><span style="font-style: normal">
+</span></span><span style="font-variant: normal"><span style="font-style: normal">Read-side</span></span><span style="font-variant: normal"><span style="font-style: normal">
+commands are always issued in the order specified by the user but
+they may complete &quot;out-of-order&quot; with respect to one
+another. In that case, this flag will delay starting the paired
+</span></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><u>write-side</u></span></font></span><span style="font-variant: normal"><span style="font-style: normal">
 command until it is &quot;in-order&quot;. Also</span></span><span style="font-variant: normal"><span style="font-style: normal">,</span></span><span style="font-variant: normal"><span style="font-style: normal">
 if ordering of commands is that important, then one of the two
 &quot;Q_AT_TAIL&quot; methods should be used</span></span><span style="font-variant: normal"><span style="font-style: normal">
@@ -3770,13 +3812,13 @@ request.</span></span><span style="font-variant: normal"><span style="font-style
 			</td>
 			<td width="38%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
 				<u>required</u>: MULTIPLE_REQS, IMMED</p>
-				<p>optional: SIGNAL, MMAP_IO</p>
+				<p>optional: SIGNAL, MMAP_IO, REC_ORDER</p>
 				<p><i><span style="font-weight: normal">excluded</span></i>:
 				STOP_IF, NO_WAITQ, SHARE</p>
 			</td>
 			<td width="48%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
-				<u>required</u>: MULTIPLE_REQS, NO_WAITQ</p>
-				<p>optional: SIGNAL, MMAP_IO</p>
+				<u>required</u>: MULTIPLE_REQS, IMMED, NO_WAITQ</p>
+				<p>optional: SIGNAL, MMAP_IO, REC_ORDER</p>
 				<p><i>excluded</i>: STOP_IF, SHARE</p>
 			</td>
 		</tr>
@@ -3793,15 +3835,13 @@ request.</span></span><span style="font-variant: normal"><span style="font-style
 				optional: SIGNAL</p>
 				<p><i>excluded</i>: SHARE, DO_ON_OTHER, COMPLETE_B4,
 				<strong><span style="font-weight: normal">MULTIPLE_REQS</span></strong></p>
+				<p><strong><span style="font-weight: normal">ignored:  NO_WAITQ</span></strong></p>
 			</td>
 			<td width="48%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 				optional: SIGNAL</p>
 				<p><i>excluded</i>: SHARE, DO_ON_OTHER, COMPLETE_B4,
 				<strong><span style="font-weight: normal">MULTIPLE_REQS</span></strong></p>
-				<p><strong><i><u><span style="font-weight: normal">added by
-				driver</span></u></i></strong><strong><u> </u></strong><strong><i><u><span style="font-weight: normal">if
-				***</span></u></i></strong><strong><span style="font-weight: normal">:</span></strong><strong>
-				</strong><strong><span style="font-weight: normal">NO_WAITQ</span></strong></p>
+				<p><strong><span style="font-weight: normal">ignored:  NO_WAITQ</span></strong></p>
 			</td>
 		</tr>
 		<tr valign="top">
@@ -3840,7 +3880,7 @@ request.</span></span><span style="font-variant: normal"><span style="font-style
 			</td>
 			<td width="38%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
 				<u>required</u>: MULTIPLE_REQS</p>
-				<p>optional: IMMED, SIGNAL</p>
+				<p>optional: IMMED, SIGNAL,NO_WAITQ</p>
 				<p><i>excluded</i>: STOP_IF</p>
 			</td>
 			<td width="48%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
@@ -3877,18 +3917,9 @@ request.</span></span><span style="font-variant: normal"><span style="font-style
 				completions which is not necessarily the submission order.</p>
 			</td>
 			<td width="48%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
-				in this case <b>ioctl</b>(<font color="#a3238e"><span style="font-weight: normal">SG_IOSUBMIT</span></font>)
-				has a NO_WAITQ rather than an IMMED flag. 
+				<br/>
+
 				</p>
-				<p>*** The <strong><span style="font-weight: normal">NO_WAITQ
-				flag is added to each element of the request array</span></strong><strong>
-				</strong><strong><span style="font-weight: normal">that does </span></strong><strong><u><span style="font-weight: normal">not</span></u></strong><strong>
-				</strong><strong><span style="font-weight: normal">have IMMED
-				set. The </span></strong><strong><b>poll</b></strong><strong><span style="font-weight: normal">(2)
-				system call will </span></strong><strong><u><span style="font-weight: normal">not</span></u></strong><strong>
-				</strong><strong><span style="font-weight: normal">flag responses
-				that have the NO_WAITQ flag. Signals (both SIG_IO and RT) will
-				continue to work, if armed.</span></strong></p>
 			</td>
 		</tr>
 	</tbody>
@@ -3904,7 +3935,8 @@ Multiple requests invocation methods</b></font></p>
 </span></span><span style="font-variant: normal"><i>submit
 non-blocking</i></span><span style="font-variant: normal"> </span><span style="font-variant: normal"><span style="font-style: normal">method
 uses </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(</span></span><span style="font-variant: normal"><font color="#a3238e"><span style="font-style: normal"><span style="font-weight: normal">SG_IOSUBMIT</span></span></font></span><span style="font-variant: normal"><span style="font-style: normal">,
-&amp;ctl_obj) and sets the MULTIPLE_REQS and IMMED </span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">flags</span></font></span><span style="font-variant: normal">
+&amp;</span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj</span></font></span><span style="font-variant: normal"><span style="font-style: normal">)
+and sets the MULTIPLE_REQS and IMMED </span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">flags</span></font></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">in
 the ctl_obj. The requests in the request array are all submitted in
 order and then the </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(2)
@@ -3919,7 +3951,8 @@ or possibly</span></span><span style="font-variant: normal">
 detect that some or all of the submitted</span></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">requests
 have completed. Then the </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(</span></span><span style="font-variant: normal"><font color="#a3238e"><span style="font-style: normal">SG_IORECEIVE</span></font></span><span style="font-variant: normal"><span style="font-style: normal">,
-&amp;ctl_obj)</span></span><span style="font-variant: normal"> </span><span style="font-variant: normal"><span style="font-style: normal">with
+&amp; </span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj</span></font></span><span style="font-variant: normal">
+</span><span style="font-variant: normal"><span style="font-style: normal">with
 the MULTIPLE_REQS flag set and optionally the IMMED flag</span></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">set</span></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">in
@@ -3930,12 +3963,13 @@ the ctl_obj should be called:</span></span></p>
 	in </span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">flags</span></font></span><span style="font-variant: normal"><span style="font-style: normal">:</span></span><span style="font-variant: normal">
 	</span><span style="font-variant: normal"><span style="font-style: normal">the
 	</span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(</span></span><span style="font-variant: normal"><font color="#a3238e"><span style="font-style: normal">SG_IORECEIVE</span></font></span><span style="font-variant: normal"><span style="font-style: normal">,
-	&amp;ctl_obj)</span></span><span style="font-variant: normal"> </span><span style="font-variant: normal"><span style="font-style: normal">call
+	&amp;</span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj</span></font></span><span style="font-variant: normal"><span style="font-style: normal">)</span></span><span style="font-variant: normal">
+	</span><span style="font-variant: normal"><span style="font-style: normal">call
 	may block, returning when all the responses are ready. The
 	</span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj.din_xfer_len</span></font></span><span style="font-variant: normal">
 	</span><span style="font-variant: normal"><span style="font-style: normal">field
-	divided by sg_io_v4_sz is the number of request completions this
-	</span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(2)
+	divided by </span></span><span style="font-variant: normal"><span style="font-style: normal">SG_V4_SZ</span></span><span style="font-variant: normal"><span style="font-style: normal">
+	is the number of request completions this </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(2)
 	will attempt to yield. As an example: if that division yields 5,</span></span><span style="font-variant: normal">
 	</span><span style="font-variant: normal"><span style="font-style: normal">and
 	3 requests are already completed,</span></span><span style="font-variant: normal">
@@ -3965,7 +3999,8 @@ the ctl_obj should be called:</span></span></p>
 	</span><span style="font-variant: normal"><span style="font-style: normal">IMMED
 	in </span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">flags</span></font></span><span style="font-variant: normal"><span style="font-style: normal">:
 	</span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(</span></span><span style="font-variant: normal"><font color="#a3238e"><span style="font-style: normal">SG_IORECEIVE</span></font></span><span style="font-variant: normal"><span style="font-style: normal">,
-	&amp;ctl_obj)</span></span><span style="font-variant: normal"> </span><span style="font-variant: normal"><span style="font-style: normal">will
+	&amp;</span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj</span></font></span><span style="font-variant: normal"><span style="font-style: normal">)</span></span><span style="font-variant: normal">
+	</span><span style="font-variant: normal"><span style="font-style: normal">will
 	return more or less immediately with all the responses that are
 	available at the time. So it may need to be called more than once.
 	The </span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj.din_xferp</span></font></span><span style="font-variant: normal">
@@ -3974,8 +4009,8 @@ the ctl_obj should be called:</span></span></p>
 	</span><span style="font-variant: normal"><span style="font-style: normal">fields
 	are expected to be non-zero. The </span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj.din_xfer_len</span></font></span><span style="font-variant: normal">
 	</span><span style="font-variant: normal"><span style="font-style: normal">field
-	divided by sg_io_v4_sz is the maximum number of request completions
-	this </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(2)
+	divided by </span></span><span style="font-variant: normal"><span style="font-style: normal">SG_V4_SZ</span></span><span style="font-variant: normal"><span style="font-style: normal">
+	is the maximum number of request completions this </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(2)
 	will yield. As an example: if that number is 5 and 3 requests are
 	already completed then the </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(2)
 	will only yield those 3 completed requests and then return to the
@@ -3988,17 +4023,34 @@ the ctl_obj should be called:</span></span></p>
 	</span><span style="font-variant: normal"><span style="font-style: normal">will
 	be all zeros.</span></span></p>
 </ul>
-<p style="font-variant: normal; font-style: normal">In both cases the
-response array will not necessarily be in the order of the request
-array reflecting that the storage device does not necessarily
-complete commands in the order that they are presented.</p>
+<p><span style="font-variant: normal"><span style="font-style: normal">In
+both cases the response array will not necessarily be in the order of
+the request array reflecting</span></span><span style="font-variant: normal"><span style="font-style: normal">
+</span></span><span style="font-variant: normal"><span style="font-style: normal">that
+the storage device does not necessarily complete commands in the
+order that they are </span></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">submitted</span></font></span><span style="font-variant: normal"><span style="font-style: normal">.</span></span><span style="font-variant: normal"><span style="font-style: normal">
+The order in the response array can be specified using the
+</span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal"><b>SGV4_FLAG_</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>REC_ORDER</b></span></font></span><span style="font-variant: normal"><span style="font-style: normal">
+flag. </span></span><span style="font-variant: normal"><span style="font-style: normal">S</span></span><span style="font-variant: normal"><span style="font-style: normal">ee
+the </span></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">later
+sub</span></font></span><span style="font-variant: normal"><span style="font-style: normal">section</span></span><span style="font-variant: normal"><span style="font-style: normal">
+concerning that flag.</span></span></p>
+<p><span style="font-variant: normal"><span style="font-style: normal">T</span></span><span style="font-variant: normal"><span style="font-style: normal">he
+maximum number of responses received by a </span></span><span style="font-variant: normal"><i>mrq</i></span><span style="font-variant: normal"><span style="font-style: normal">
+</span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(</span></span><span style="font-variant: normal"><font color="#a3238e"><span style="font-style: normal">SG_IORECEIVE</span></font></span><span style="font-variant: normal"><span style="font-style: normal">,
+&amp;</span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj</span></font></span><span style="font-variant: normal"><span style="font-style: normal">)
+invocation can be set by placing a non-zero value in the
+</span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj.din_iovec_count</span></font></span><span style="font-variant: normal"><span style="font-style: normal">
+field.</span></span></p>
 <p><span style="font-variant: normal"><span style="font-style: normal">The
 </span></span><span style="font-variant: normal"><i>waitless</i></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><i>non-blocking</i></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">method
 uses </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(</span></span><span style="font-variant: normal"><font color="#a3238e"><span style="font-style: normal"><span style="font-weight: normal">SG_IOSUBMIT</span></span></font></span><span style="font-variant: normal"><span style="font-style: normal">,
-&amp;ctl_obj) and sets the MULTIPLE_REQS and NO_WAITQ</span></span><span style="font-variant: normal">
-</span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">flags</span></font></span><span style="font-variant: normal">
+&amp;</span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj</span></font></span><span style="font-variant: normal"><span style="font-style: normal">)
+and sets the MULTIPLE_REQS </span></span><span style="font-variant: normal"><span style="font-style: normal">,
+IMMED </span></span><span style="font-variant: normal"><span style="font-style: normal">and
+NO_WAITQ</span></span><span style="font-variant: normal"> </span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">flags</span></font></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">in
 the ctl_obj.</span></span><span style="font-variant: normal"> </span><span style="font-variant: normal"><span style="font-style: normal">The
 submission side is that same as the </span></span><span style="font-variant: normal"><i>submit
@@ -4030,31 +4082,16 @@ or possibly</span></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(SG_GET_PACK_ID)</span></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">and
 </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(</span></span><span style="font-variant: normal"><font color="#a3238e"><span style="font-style: normal">SG_IORECEIVE</span></font></span><span style="font-variant: normal"><span style="font-style: normal">,
-&amp;ctl_obj)</span></span><span style="font-variant: normal"> </span><span style="font-variant: normal"><span style="font-style: normal"><u>with</u></span></span><span style="font-variant: normal">
+&amp;</span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj</span></font></span><span style="font-variant: normal"><span style="font-style: normal">)</span></span><span style="font-variant: normal">
+</span><span style="font-variant: normal"><span style="font-style: normal"><u>with</u></span></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">the
 IMMED flag</span></span><span style="font-variant: normal"> </span><span style="font-variant: normal"><span style="font-style: normal">set.
 The second</span></span><span style="font-variant: normal"> </span><span style="font-variant: normal"><span style="font-style: normal">bullet
 point above for </span></span><span style="font-variant: normal"><i>submit
 non-blocking</i></span><span style="font-variant: normal"> </span><span style="font-variant: normal"><span style="font-style: normal">(i.e.
 with IMMED in </span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">flags</span></font></span><span style="font-variant: normal"><span style="font-style: normal">)
-applies here as well. To allow the user finer grain control over
-which requests call wake_up() and which ones don't, in the mrq
-pre-processing each request in the request array has the NO_WAITQ</span></span><span style="font-variant: normal">
-</span><span style="font-variant: normal"><span style="font-style: normal">flag</span></span><span style="font-variant: normal">
-</span><span style="font-variant: normal"><span style="font-style: normal">added
-to its </span></span><span style="font-variant: normal"><font color="#a3238e"><span style="font-style: normal">flags</span></font></span><span style="font-variant: normal">
-</span><span style="font-variant: normal"><span style="font-style: normal"><u>unless</u></span></span><span style="font-variant: normal">
-</span><span style="font-variant: normal"><span style="font-style: normal">it
-already has its IMMED flag set. So the IMMED flag acts as an
-override, causing wake_up() to be called during that request's
-</span></span><span style="font-variant: normal"><i>internal
-completion point</i></span><span style="font-variant: normal"><span style="font-style: normal">.</span></span><span style="font-variant: normal">
-</span><span style="font-variant: normal"><span style="font-style: normal">This,
-for example, allows a big request array to be broken up into several
-batches with only the last request in each batch calling wake_up().</span></span><span style="font-variant: normal">
-</span><span style="font-variant: normal"><span style="font-style: normal">Irrespective
-of whether wake_up() is used on a request in the request array, a
-signal will be generated, if armed.</span></span></p>
+applies here as well. </span></span>
+</p>
 <p><span style="font-variant: normal"><span style="font-style: normal">Here
 are some further details for </span></span><span style="font-variant: normal"><i>submit
 non-blocking</i></span><span style="font-variant: normal"> </span><span style="font-variant: normal"><span style="font-style: normal">and
@@ -4160,14 +4197,14 @@ multiple requests methods,</span></span><span style="font-variant: normal"><span
 the MMAP_IO flag may be used on the control object. In this case the
 </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>mmap</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(2)
 system call must have already been invoked on this file descriptor.
-The mmap-ed region logically takes the place of ctl_obj.</span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">din_xferp</span></font></span><span style="font-variant: normal"><span style="font-style: normal">
+The mmap-ed region logically takes the place of </span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj</span></font></span><span style="font-variant: normal"><span style="font-style: normal">.</span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">din_xferp</span></font></span><span style="font-variant: normal"><span style="font-style: normal">
 and as each request is completed, its resultant sg_io_v4 object is
 written to the mmap-ed region. </span></span><span style="font-variant: normal"><span style="font-style: normal">Once
 the </span></span><span style="font-variant: normal"><span style="font-style: normal">MMAP_IO
 flag </span></span><span style="font-variant: normal"><span style="font-style: normal">is
 used on the control object, then it can not be used in any request
 placed in the associated request array (i.e. what is given to
-</span></span><span style="font-variant: normal"><span style="font-style: normal">ctl_obj.</span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">d</span></font></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">out</span></font></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">_xferp</span></font></span><span style="font-variant: normal"><span style="font-style: normal">).
+</span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj</span></font></span><span style="font-variant: normal"><span style="font-style: normal">.</span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">d</span></font></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">out</span></font></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">_xferp</span></font></span><span style="font-variant: normal"><span style="font-style: normal">).
 When  the mrq operation with the MMAP flag commences, the mmap-ed
 region is zeroed. It is written to in ascending order, in the order
 of completion.</span></span></p>
@@ -4183,7 +4220,7 @@ the O_NONBLOCK flag is set</span></span><span style="font-variant: normal">
 the sg_fd given as the first argument of </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(</span></span><span style="font-variant: normal"><font color="#a3238e"><span style="font-style: normal"><span style="font-weight: normal">SG_IOSUBMIT</span></span></font></span><span style="font-variant: normal"><span style="font-style: normal">)
 or </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(</span></span><span style="font-variant: normal"><font color="#a3238e"><span style="font-style: normal">SG_IORECEIVE</span></font></span><span style="font-variant: normal"><span style="font-style: normal">)
 then it has a similar effect to giving the IMMED flag to
-ctl_obj.</span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">flags</span></font></span><span style="font-variant: normal">
+</span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj</span></font></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">.</span></font></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">flags</span></font></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">.
 If the O_NONBLOCK flag is set on the sg_fd given as the first
 argument of </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(SG_IO)
@@ -4242,12 +4279,12 @@ the ctl_obj.flag field then at SQ2, SQ3 and SQ4 an additional check
 is made to see if an error or warning has been issued by the storage
 device, the transport to it, or the LLD (and its associated HBA); if
 so <b>ioctl</b>(SG_IO) will exit.</p>
-<p>Note that multiple requests are <u>not</u> available using the v3
-interface object: neither with <b>ioctl</b>(SG_IO) nor
+<p>Note that multiple requests are <u>not</u> available using the <u>v3
+interface</u> object: neither with <b>ioctl</b>(SG_IO) nor
 <b>ioctl</b>(<font color="#0066b3">SG_IOSUBMIT_V3</font>)+<b>ioctl</b>(<font color="#0066b3"><span style="font-weight: normal">SG_IORECEIVE_V3</span></font>)
 . <b>ioctl</b>(SG_IO) using the v4 interface <i>can</i> be used for
-issuing a mrq invocation (i.e. 'ordered blocking' as shown in the
-table above).</p>
+issuing a <i>mrq</i> invocation (i.e. 'ordered blocking' as shown in
+the table above).</p>
 <p>The SGV4_FLAG_MULTIPLE_REQS flag  may be set on an
 <b>i</b><b>octl</b>(SG_IOABORT) invocation and means that the user
 wants to attempt to abort  onsome or all of the commands issued (or
@@ -4277,9 +4314,9 @@ but that is not recommended.]</p>
 <p><font color="#006c3b">ctl_obj.dout_resid</font> is the number of
 elements in request array (i.e. <span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj.dout_xfer_len</span></font></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">/
-sg_io_v4_sz) less the number actually submitted. Like most
-&quot;residuals&quot; a value of zero is good as it implies all given
-elements i</span></span><span style="font-variant: normal"><span style="font-style: normal">n</span></span><span style="font-variant: normal"><span style="font-style: normal">
+</span></span><span style="font-variant: normal"><span style="font-style: normal">SG_V4_SZ</span></span><span style="font-variant: normal"><span style="font-style: normal">)
+less the number actually submitted. Like most &quot;residuals&quot; a
+value of zero is good as it implies all given elements i</span></span><span style="font-variant: normal"><span style="font-style: normal">n</span></span><span style="font-variant: normal"><span style="font-style: normal">
 the request have been </span></span><span style="font-variant: normal"><span style="font-style: normal">submitted</span></span><span style="font-variant: normal"><span style="font-style: normal">.
 Any non-zero (positive) value suggests something abnormal has
 happened and that the array of normal sg_io_v4 objects written back
@@ -4290,10 +4327,11 @@ should be checked.</span></span></p>
 is the number of elements in response array (i.e.
 <span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj.din_xfer_len</span></font></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">/
-sg_io_v4_sz) less the number actually completed. Any non-zero
-(positive) value suggests something abnormal has happened and that
-the array of normal sg_io_v4 objects written back (to the user space)
-using the </span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj.din_xferp</span></font></span><span style="font-variant: normal">
+</span></span><span style="font-variant: normal"><span style="font-style: normal">SG_V4_SZ</span></span><span style="font-variant: normal"><span style="font-style: normal">)
+less the number actually completed. Any non-zero (positive) value
+suggests something abnormal has happened and that the array of normal
+sg_io_v4 objects written back (to the user space) using the
+</span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj.din_xferp</span></font></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">pointer
 should be checked. Note that the full size request array is always
 written back to the user space but normal sg_io_v4 objects beyond</span></span><span style="font-variant: normal">
@@ -4494,6 +4532,113 @@ total number of inactive requests of the given file descriptor </span></span><sp
 all file descriptors that have the same owning sg device, can be
 found with </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(SG_SET_GET_EXTENDED,
 {SG_SEIRV_DEV_</span></span><span style="font-variant: normal"><span style="font-style: normal">INACT</span></span><span style="font-variant: normal"><span style="font-style: normal">_RQS}).</span></span></p>
+<h3 class="western"><a name="__RefHeading___Toc18199_72860742"></a>10.4
+SGV4_FLAG_REC_ORDER flag</h3>
+<p><span style="font-variant: normal"><span style="font-style: normal">Sometimes
+it is useful to dictate the order of the response array when
+</span></span><span style="font-variant: normal"><span style="font-style: normal">non-blocking
+multiple requests are completed. It may also be convenient to send
+the submissions in lumps (or even one a time) but receive them in one
+large </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(SG_IORECEIVE(MRQ))
+and have the responses placed in a predictable positions within the
+response array. </span></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">Without</span></font></span><span style="font-variant: normal"><span style="font-style: normal">
+</span></span><span style="font-variant: normal"><span style="font-style: normal">the
+</span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal"><b>SGV4_FLAG_</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>REC_ORDER</b></span></font></span><span style="font-variant: normal"><span style="font-style: normal">
+flag, the response array (i.e.  the </span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj.din_xferp</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">)
+is populated in completion order. And the completion order may differ
+from the submission order so it is safe to assume the completion
+order </span></font></span><span style="font-variant: normal"><font color="#000000"><i>will</i></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+be different.</span></font></span></p>
+<p><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">Enter
+the  </span></font></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal"><b>SGV4_FLAG_</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>REC_ORDER</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+flag</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">.
+It can be given on either a normal </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>ioctl</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">(SG_IOSUBMIT)
+or non-blocking </span></font></span><span style="font-variant: normal"><font color="#000000"><i>mrq</i></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>ioctl</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">(SG_IOSUBMIT)</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">with
+the </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>SGV4_FLAG_IMMED</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+flag also set.</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+In the latter case it is treated as if the  </span></font></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal"><b>SGV4_FLAG_</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>REC_ORDER</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+flag</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+was OR-ed into each element of the request array. When a request with
+this flag is processed, the contents of the </span></font></span><span style="font-variant: normal"><font color="#a3238e"><span style="font-style: normal">request_priority</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+field is held and </span></font></span><span style="font-variant: normal"><font color="#000000"><i>may</i></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+be treated as an index into the response array at a later time. The
+conditional </span></font></span><span style="font-variant: normal"><font color="#000000"><i>may</i></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+is used because if that request </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">hav</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">ing
+</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">completed</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">,</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+is read by a normal (i.e. non mrq) </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>ioctl</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">(SG_IORECEIVE)
+then that index is ignored. That index is used when a </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">blocking
+or </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">non-blocking
+</span></font></span><span style="font-variant: normal"><font color="#000000"><i>mrq</i></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>ioctl</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">(SG_IO</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">RECEIVE</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">)</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+call fetches </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">one
+</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">or
+more </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">responses.</span></font></span></p>
+<p><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">The
+index is origin zero (so index </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">0</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+is the first element of the response array). If the index exceeds the
+number of elements in the response array (i.e. </span></font></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj.din_xferp</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+/ SG_V4_SZ) then that response is </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">written
+to index (potentially overwriting anything already there which is
+most likely undesirable)</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">.
+No other checks are performed. For example, if the </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+</span></font></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal"><b>SGV4_FLAG_</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>REC_ORDER</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+flag</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+is set on a </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">non-blocking
+</span></font></span><span style="font-variant: normal"><font color="#000000"><i>mrq</i></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>ioctl</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">(SG_IOSUBMIT)</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">with
+five requests and their  </span></font></span><span style="font-variant: normal"><font color="#a3238e"><span style="font-style: normal">request_priority</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+field</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+are left as zero, then</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+a subsequent</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+a </span></font></span><span style="font-variant: normal"><font color="#000000"><i>mrq</i></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>ioctl</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">(SG_IO</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">RECEIVE</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">)</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+call </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">will
+place between zero and five responses all at index 0 of the response
+array. Only the last one written will be visible. The </span></font></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj.info</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+field will indicate how many response have been written (to the same
+index</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+in this case</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">).
+This is not particularly useful but does indicate how the index is
+processed.</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+Another degenerate case is having a </span></font></span><span style="font-variant: normal"><font color="#000000"><i>mrq</i></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>ioctl</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">(SG_IO</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">RECEIVE</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">)</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+call </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">handling
+a mix if requests, some using the  </span></font></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal"><b>SGV4_FLAG_</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>REC_ORDER</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+flag</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">,
+some not; best not go there. Either set that flag on all or none</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+of the requests in an array</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">.</span></font></span></p>
+<p><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">Th</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">e
+motivation for th</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">is
+flag came about while writing a &quot;sgv4&quot; </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">engine
+(</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">back</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">-</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">end</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">)</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+for the fio utility. The implementation uses an array of (maximum)
+iodepth for submissions and is filled from the front (bottom) and is
+committed at or before the iodepth is reached. </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">In
+the version under development the initial (say 8) requests are issued
+</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">as
+they are queued by </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">individual
+</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">,
+</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">non-blocking
+ioctl(SG_IOSUBMIT) calls. Thereafter &quot;prep&quot;-ed and
+&quot;queue&quot;-d requests are held until the array fills or fio
+send a commit. Then those held requests a</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">re</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+sent with a non-blocking mrq ioctl(SG_IOSUBMIT). Finally one or more
+non-blocking </span></font></span><span style="font-variant: normal"><font color="#000000"><i>mrq</i></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>ioctl</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">(SG_IORECEIVE)
+</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">calls
+are used to collect the responses. All the submissions use the 
+</span></font></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal"><b>SGV4_FLAG_</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>REC_ORDER</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+flag</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+and the array of submissions has the array index placed in each
+element's  </span></font></span><span style="font-variant: normal"><font color="#a3238e"><span style="font-style: normal">request_priority</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+field</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+so that the responses &quot;land&quot; in the </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">same
+location as the submissions</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">.
+</span></font></span>
+</p>
 <h2 class="western"><a name="__RefHeading___Toc1570_4294551682"></a>11
 pack_id or tag</h2>
 <p>When doing asynchronous IO with the sg driver there needs to be a
@@ -6583,7 +6728,7 @@ apps that use sg driver nodes and check their functionality.</p>
 <p>Return to <a href="index.html">main</a> page. 
 </p>
 <p align="center">Douglas Gilbert</p>
-<p align="center">Last updated: <font color="#000000">3</font> <font color="#000000">August</font>
-2020 22:00</p>
+<p align="center">Last updated: 23 <font color="#000000">August</font>
+2020 18:00</p>
 </body>
 </html>
