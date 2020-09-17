@@ -5,7 +5,7 @@
 	<title>Linux SG driver version 4.0</title>
 	<meta name="generator" content="LibreOffice 6.4.5.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2020-08-23T17:57:53.862054993"/>
+	<meta name="changed" content="2020-09-17T14:09:39.725413512"/>
 	<meta name="keywords" content="Linux, SCSI, SG_IO, pass-through"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -256,11 +256,13 @@
 	SG interface support changes</a></p>
 	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1576_4294551682">14
 	IOCTLs</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1578_4294551682">15
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc17996_3956569564">15
+	System Calls</a></p>
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1578_4294551682">16
 	Downloads and testing</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1580_4294551682">16
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1580_4294551682">17
 	Other documents</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1582_4294551682">17
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1582_4294551682">18
 	Conclusion</a></p>
 </div>
 <p style="margin-bottom: 0cm"><br/>
@@ -406,7 +408,7 @@ patchset:</p>
 	/sys/kernel/debug/scsi_generic/snapshot'. This is the initial
 	debugfs support. Add snapshot_devs read-write attribute that can be
 	used to limit which sg devices are shown in the snapshot.</p>
-	<li><p>bump the driver version number to 4.0.09</p>
+	<li><p>bump the driver version number to 4.0.11</p>
 </ul>
 <p>Probably the most important aspect of the first patchset, which is
 not a new feature, is modernizing the driver code. Much of that
@@ -443,8 +445,8 @@ patchset:</p>
 	the host computer and the storage device. Examples of potentially
 	useful <i>non</i> data-moving SCSI commands are SYNCHRONIZE CACHE
 	and PRE-FETCH.</p>
-	<li><p>add multiple requests capability in a single <b>ioctl</b>(SG_IO)
-	or <b>ioctl</b>(<font color="#a3238e"><span style="font-weight: normal">SG_IOSUBMIT</span></font>)
+	<li><p>add multiple requests capability (<i>mrq</i>) in a single
+	<b>ioctl</b>(SG_IO) or <b>ioctl</b>(<font color="#a3238e"><span style="font-weight: normal">SG_IOSUBMIT</span></font>)
 	invocation. Can be combined with request sharing. Multiple
 	<i>non-blocking</i> requests can use an <b>ioctl</b>(<font color="#a3238e"><span style="font-weight: normal">SG_IOSUBMIT</span></font>)
 	call for submission while one or more <b>ioctl</b>(<font color="#a3238e">SG_IORECEIVE</font>)
@@ -486,7 +488,7 @@ patchset:</p>
 	<li><p>add logic for tag handling and keep existing pack_id (packet
 	id) logic which plays a similar role</p>
 	<li><p>the <i>shared variable blocking</i> (svb) method of the
-	multiple requests capability (mrq) targets large copy (and
+	multiple requests capability (<i>mrq</i>) targets large copy (and
 	copy-like) operations. While blocking the invoking user thread, it
 	can issue a fixed number of READ commands (currently up to 8)
 	asynchronously and as each read completes, its dependent WRITE
@@ -507,7 +509,7 @@ patchset:</p>
 	<li><p>while the order of responses (i.e. completions) picked up by
 	a <i>mrq</i> <b>ioctl</b>(SG_IORECEIVE) can vary, the user can
 	control <u>where</u> those response are placed in response array.
-	The user can also give a maximum number responses  a <i>mrq</i>
+	The user can also give a maximum number responses  that a <i>mrq</i>
 	<b>ioctl</b>(SG_IORECEIVE) can receive.</p>
 	<li><p>bump the driver version number to 4.0.45</p>
 </ul>
@@ -651,11 +653,11 @@ to distinguish what is being referred to:</p>
 	<li><p><font color="#0066b3">blue</font>: associated with the
 	version 3 interface</p>
 	<li><p><font color="#a3238e">violet</font>: associated with the
-	version 4 interface and, in the case of a multiple requests (mrq)
+	version 4 interface and, in the case of a multiple requests (<i>mrq</i>)
 	invocation, associated with each element in the request (and
 	response ) array</p>
 	<li><p><font color="#006c3b">dark green</font>: associated with the
-	<i>control object </i>of a multiple requests (mrq) invocation</p>
+	<i>control object </i>of a multiple requests (<i>mrq</i>) invocation</p>
 </ul>
 <p>In some cases a field name is in two colours (two tone) to
 indicate it applies to two of the above. Since very little reference
@@ -1377,8 +1379,7 @@ have a different, but related, meaning when they are in a control
 object. A control object is distinguished by having the
 SGV4_FLAG_MULTIPLE_REQS flag set. Multiple requests are described in
 a later <a href="#10 Multiple requests|outline">section</a>.</p>
-<h3 class="western"><a name="__RefHeading___Toc1542_4294551682"></a>3.2
-Flags in v3 and v4 interfaces</h3>
+<h3 class="western">3.2 Flags in v3 and v4 interfaces</h3>
 <p>The following table lists the flag values that can be OR-ed
 together and placed in the <font color="#0066b3">fla</font><font color="#a3238e">gs</font>
 field. The are listed in numerical order of their values (shown in
@@ -1552,8 +1553,8 @@ from the version 3 driver) tend to have lower values.</p>
 			</td>
 			<td width="75%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 				This flag is only permitted within an array of requests given
-				with a multiple request invocation (mrq). It instructs the driver
-				to wait for the completion of the current request <i>before</i>
+				with a multiple request invocation (<i>mrq</i>). It instructs the
+				driver to wait for the completion of the current request <i>before</i>
 				(&quot;B4&quot;) submitting the next request in the array of
 				requests.</p>
 			</td>
@@ -1578,7 +1579,8 @@ from the version 3 driver) tend to have lower values.</p>
 				request and if it is good start whatever and then return as
 				promptly as possible. The significant part here is that it
 				doesn't wait for whatever to complete. It can be used with the
-				version 3 and 4 interfaces, including the mrq <i>control object</i>.</p>
+				version 3 and 4 interfaces, including the <i>mrq</i> <i>control
+				object</i>.</p>
 			</td>
 		</tr>
 		<tr valign="top">
@@ -1615,7 +1617,7 @@ from the version 3 driver) tend to have lower values.</p>
 				descriptors belonging to the <u>same</u> sg device (hence &quot;device
 				scope&quot;) are checked and the first request found matching the
 				given pack_id or tag is aborted. Also has the same action with a
-				mrq abort. Use with care.</p>
+				<i>mrq</i> abort. Use with care.</p>
 			</td>
 		</tr>
 		<tr valign="top">
@@ -1641,7 +1643,7 @@ from the version 3 driver) tend to have lower values.</p>
 			</td>
 			<td width="75%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 				This flag is <i>only</i> permitted within an array of requests
-				given with a mrq invocation.</p>
+				given with a <i>mrq</i> invocation.</p>
 			</td>
 		</tr>
 		<tr valign="top">
@@ -1691,7 +1693,7 @@ from the version 3 driver) tend to have lower values.</p>
 			<td width="75%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 				This flag can only be used on a sg v4 interface object and
 				indicates that this object is a <i>control object</i> for
-				multiple requests (mrq).</p>
+				multiple requests (<i>mrq</i>).</p>
 			</td>
 		</tr>
 		<tr valign="top">
@@ -1740,16 +1742,16 @@ from the version 3 driver) tend to have lower values.</p>
 <font size="3" style="font-size: 12pt"><b>Table 2: The <font color="#0066b3">fla</font><font color="#a3238e">gs</font>
 field in the v3 and v4 interface structures</b></font></p>
 <p>The constants marked with &quot;^^&quot; can only be used within
-the request array given to a multiple requests (mrq) invocation.
-Further, those constants ending with &quot;_ON_OTHER&quot; are only
-valid if a file share has already be set up which contains the file
-descriptor in the first argument of the <b>ioctl</b>(2). The <font color="#0066b3">fla</font><font color="#a3238e">gs</font>
-field is always an input to the driver; the corresponding field used
-by the driver to communicate with the user space when an <b>ioctl</b>(2)
-is finished is the <font color="#0066b3">in</font><font color="#a3238e">fo</font>
+the request array given to a multiple requests (<i>mrq</i>)
+invocation. Further, those constants ending with &quot;_ON_OTHER&quot;
+are only valid if a file share has already be set up which contains
+the file descriptor in the first argument of the <b>ioctl</b>(2). The
+<font color="#0066b3">fla</font><font color="#a3238e">gs</font> field
+is always an input to the driver; the corresponding field used by the
+driver to communicate with the user space when an <b>ioctl</b>(2) is
+finished is the <font color="#0066b3">in</font><font color="#a3238e">fo</font>
 field.</p>
-<h3 class="western"><a name="__RefHeading___Toc1544_4294551682"></a>3.3
-The info field</h3>
+<h3 class="western">3.3 The info field</h3>
 <p>The driver writes the <font color="#0066b3">in</font><font color="#a3238e">fo</font>
 field to the user space as part of the sg version 3 and 4 interface
 objects. This occurs after <b>ioctl</b>(SG_IO), <b>ioctl</b>(<font color="#a3238e">SG_IORECEIVE</font>)
@@ -1787,7 +1789,7 @@ listed in the table below in numerical order.</p>
 			<b>SG_INFO_DIRECT_IO</b> [0x2]</p>
 		</td>
 		<td width="74%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
-			even when the SG_FLAG_DIRECT_IO flag is given, if certain
+			even when the SGV4_FLAG_DIRECT_IO flag is given, if certain
 			condition are not met then the simpler indirect IO may be
 			performed instead. When this info field is received it's a case
 			of: you asked for it, you got it. If this flag is not present then
@@ -1823,9 +1825,9 @@ listed in the table below in numerical order.</p>
 		</td>
 		<td width="74%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 			this command, which is assumed to be one of an array of sg_io_v4
-			objects given in a multiple requests invocation (mrq), has
+			objects given in a multiple requests invocation (<i>mrq</i>), has
 			completed processing. This is important to know when there are
-			errors or mrq abort is called.</p>
+			errors or <i>mrq</i> abort is called.</p>
 		</td>
 	</tr>
 </table>
@@ -1834,8 +1836,7 @@ listed in the table below in numerical order.</p>
 field in the v3 and v4 interface structures</b></font></p>
 <p>The last three <font color="#0066b3">in</font><font color="#a3238e">fo</font>
 values are new in this driver update.</p>
-<h2 class="western"><a name="__RefHeading___Toc1546_4294551682"></a>4
-Architecture of the sg driver</h2>
+<h2 class="western">4 Architecture of the sg driver</h2>
 <p>The Linux SCSI subsystem is made up of three parts: several upper
 level drivers (ULDs), one mid level, and multiple low level drivers
 (LLDs). The upper level drivers are divided up by the type of SCSI
@@ -2008,8 +2009,7 @@ marked as inactive which is a <font color="#bc312e">reserve request</font>.</p>
 <p>The above description is setting the stage for a newly added
 feature called <i>request sharing</i> introduced in the sg v4 driver.
 It also uses the <font color="#bc312e">reserve request</font>.</p>
-<h3 class="western"><a name="__RefHeading___Toc18168_1671399770"></a>4.1
-Command or request</h3>
+<h3 class="western">4.1 Command or request</h3>
 <p>The terms <i>command</i> and <i>request</i> are used
 interchangeably in this driver and its documentation. Strictly
 speaking a <i>command</i> refers to a SCSI command (or more precisely
@@ -2054,8 +2054,7 @@ transferred to this driver. The reduction of system overhead is due
 to minimizing the copying of user data and the removal of complexity
 associated with techniques like using mmap() which needs to pin or
 <i>fault</i> pages in the computer's main memory.</p>
-<h3 class="western"><a name="__RefHeading___Toc8276_3647010070"></a>4.2
-Direct, mmap()-ed IO and bio_s</h3>
+<h3 class="western">4.2 Direct, mmap()-ed IO and bio_s</h3>
 <p>This section is about <i>user</i> data: what starts inside blocks
 within a disk or SSD, and ends up in a user space application,
 typically via the <b>read</b>(2) system call or, vice versa, via the
@@ -2112,8 +2111,8 @@ observations:</p>
 </ol>
 <p>The answer to point 1 is yes it can, and that is called <u><span style="font-weight: normal">direct</span></u>
 IO, indicated generally in Unix with the O_DIRECT flag on an <b>open</b>(2)
-system call, or with the SG_FLAG_DIRECT_IO flag in this driver (on a
-request-by-request basis). Relating this back to the bio discussion
+system call, or with the SGV4_FLAG_DIRECT_IO flag in this driver (on
+a request-by-request basis). Relating this back to the bio discussion
 above, the &quot;backing store&quot; to each bio object is the user
 space allocated buffers (and drivers like sg don't need to allocate
 any backing store for such <u>direct</u> IO operations). The answer
@@ -2149,8 +2148,7 @@ than <i>how</i> to do it, compared to some other storage command
 sets. Specifically this driver can take care of the important detail:
 how the data gets from that READ to its paired WRITE. This is the
 theory behind request sharing outlined in several following sections.</p>
-<h2 class="western"><a name="__RefHeading___Toc1548_4294551682"></a>5
-Synchronous usage</h2>
+<h2 class="western">5 Synchronous usage</h2>
 <p>These two forms: <b>ioctl</b>(sg_fd, SG_IO, ptr_to_v3_obj) and
 <b>ioctl</b>(sg_fd, SG_IO, ptr_to_v4_obj) can be used for submitting
 SCSI commands (requests) <span style="font-variant: normal"><span style="font-style: normal">and</span></span>
@@ -2259,7 +2257,7 @@ case where there are multiple copies of the file descriptor (e.g. a
 forked process or due to <b>dup</b>(2)) then is is the last <b>close</b>(2)
 that frees up all associated <font color="#6b6400">sg_request</font>
 objects.</p>
-<h2 class="western"><a name="__RefHeading___Toc1550_4294551682"></a><a name="6 Sharing file descriptors|outline"></a><a name="6 Sharing file descriptors|outline"></a>
+<h2 class="western"><a name="6 Sharing file descriptors|outline"></a><a name="6 Sharing file descriptors|outline"></a>
 6 Sharing file descriptors</h2>
 <p>First a rationale. Copying data between storage devices is a
 relatively common operation. It can be both time and resource
@@ -2369,8 +2367,7 @@ fashion. Only when the new flag SGV4_FLAG_SHARE is given, or OR-ed in
 with other <font color="#0066b3">fla</font><font color="#a3238e">gs</font>,
 is request sharing performed. See the <a href="#8 Request sharing|outline">Request
 sharing</a> section below.</p>
-<h2 class="western"><a name="__RefHeading___Toc1552_4294551682"></a>7
-Async usage in v4</h2>
+<h2 class="western">7 Async usage in v4</h2>
 <p>The terms <i>asynchronous</i> and <i>non</i>-<i>blocking</i> are
 generally used as synonyms in this description. Those terms are
 related to the Unix file descriptor flags O_ASYNC and O_NONBLOCK
@@ -2516,8 +2513,7 @@ but are yet to have <b>ioctl</b>(<font color="#a3238e">SG_IORECEIVE</font>)
 <p>Also, please take note of where the <i>internal completion point</i>
 (it is marked with &quot;<font color="#bf0041">***</font>&quot;) is,
 as it will be referred to several times in this document.</p>
-<h3 class="western"><a name="__RefHeading___Toc1554_4294551682"></a>7.1
-ioctl(SG_IOABORT)</h3>
+<h3 class="western">7.1 ioctl(SG_IOABORT)</h3>
 <p>After starting an asynchronous request with <b>ioctl</b>(<font color="#a3238e"><span style="font-weight: normal">SG_IOSUBMIT</span></font>)
 the user may decide to abort the SCSI command associated with that
 request. This can be a bit tricky in practice and may not succeed
@@ -2570,7 +2566,7 @@ can also be aborted, but only via its pack_id. In this case, even
 though the submit uses the v3 interface, the <b>ioctl</b>(SG_IOABORT)
 must use the v4 interface, with the pack_id placed in its
 request_extra field.</p>
-<h2 class="western"><a name="__RefHeading___Toc1556_4294551682"></a><a name="8 Request sharing|outline"></a><a name="8 Request sharing|outline"></a><a name="8 Request sharing|outline"></a><a name="8 Request sharing|outline"></a>
+<h2 class="western"><a name="8 Request sharing|outline"></a><a name="8 Request sharing|outline"></a><a name="8 Request sharing|outline"></a><a name="8 Request sharing|outline"></a>
 8 Request sharing</h2>
 <p style="margin-top: 0.3cm; margin-bottom: 0.3cm">Request sharing
 refers to two requests, usually belonging to different storage
@@ -2689,8 +2685,7 @@ copying (or DMA-ing) of that dataset. That leaves three brown
 arrow-ed lines at an angle: the DMA from the device being read, the
 DMA to the device being written, and an optional in-kernel to user
 space copy (annotated with &quot;***&quot;).</p>
-<h3 class="western"><a name="__RefHeading___Toc15431_608653543"></a>8.1
-READ, WRITE, WRITE</h3>
+<h3 class="western">8.1 READ, WRITE, WRITE</h3>
 <p>The data-in, data-out pair in request sharing (usually a READ
 followed by a WRITE) can be extended where one or more extra data-out
 requests is added to the sequence. This is done by using the
@@ -2783,8 +2778,8 @@ command could have failed and thus returned no data, so the
 unknown data (probably using the previous WRITE's data).</p>
 <p>Only the first form can be used with multiple requests (in one
 invocation). Further if the <i>shared variable blocking</i> method of
-mrq is used then all the WRITEs associated with a single READ are
-issued at the same time.</p>
+<i>mrq</i> is used then all the WRITEs associated with a single READ
+are issued at the same time.</p>
 <p>The <span style="text-decoration: none"><b>sgh_dd</b></span>
 utility in the sg3_utils testing directory (rev 803 or later) has
 been expanded to test the single READ, multiple WRITE feature. It has
@@ -2826,8 +2821,7 @@ performance of this sequence:</p>
 field (bit) set to the above sequence. That should speed the final
 VERIFY as the data on B that it wishes to compare against is already
 in disk B's cache, due to the PRE-FETCH command.</p>
-<h2 class="western"><a name="__RefHeading___Toc1560_4294551682"></a>9
-Sharing design considerations</h2>
+<h2 class="western">9 Sharing design considerations</h2>
 <p>The primary application of sharing is likely to be copying from
 one storage device to another storage device where both are SCSI
 devices (or translate the SCSI command set such as SATA disks do in
@@ -2948,7 +2942,7 @@ to another process using a Unix socket. The <a href="https://keithp.com/blogs/fd
 by Keith Packard outlines the technique. Code based on both
 techniques can be found in the sg3_utils package's
 testing/sg_tst_ioctl.c (with the '-f' option).</p>
-<h2 class="western"><a name="__RefHeading___Toc1562_4294551682"></a><a name="10 Multiple requests|outline"></a><a name="10 Multiple requests|outline"></a>
+<h2 class="western"><a name="10 Multiple requests|outline"></a><a name="10 Multiple requests|outline"></a>
 10 Multiple requests</h2>
 <p>The bsg <b>write(2)</b> based asynchronous interface (removed from
 the kernel around lk 4.15) supported multiple sg_io_v4 objects in a
@@ -3047,13 +3041,13 @@ interface object:</p>
 				<font color="#006c3b">request_extra</font></p>
 			</td>
 			<td width="14%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
-				mrq pack_id if non-zero</p>
+				<i>mrq</i> pack_id if non-zero</p>
 			</td>
 			<td width="73%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 				If the user wants the option of being able to use
 				ioctl(SG_IOABORT) on this invocation before it finishes, then
 				they may set this field to a non-zero value. Only one outstanding
-				mrq invocation per file descriptor can have a non-zero mrq
+				<i>mrq</i> invocation per file descriptor can have a non-zero <i>mrq</i>
 				pack_id.</p>
 			</td>
 		</tr>
@@ -3230,7 +3224,8 @@ interface object:</p>
 			</td>
 			<td width="73%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 				<span style="font-variant: normal"><span style="font-style: normal">If
-				the mrq </span></span><span style="font-variant: normal"><span style="font-style: normal">invocation</span></span><span style="font-variant: normal"><span style="font-style: normal">
+				the </span></span><span style="font-variant: normal"><i>mrq</i></span><span style="font-variant: normal"><span style="font-style: normal">
+				</span></span><span style="font-variant: normal"><span style="font-style: normal">invocation</span></span><span style="font-variant: normal"><span style="font-style: normal">
 				does completions (e.g. </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(SG_IO)
 				), then it is number of completions (responses) written to</span></span><span style="font-variant: normal">
 				</span><span style="font-variant: normal"><font color="#006c3b">din_xferp</font></span><span style="font-variant: normal">
@@ -3329,7 +3324,7 @@ the control object can optionally provide an array of cdbs; if given
 the elements in that array of cdbs will override the cdbs pointed to
 in each request array element.</span></span></p>
 <p style="font-variant: normal; font-style: normal">Next is a
-graphical representation of the pointer relationships in a mrq
+graphical representation of the pointer relationships in a <i>mrq</i>
 control object.</p>
 <img src="sg_v40_html_ba67513a10b7bb70.png" name="Image7" align="left" width="794" height="613">
   <br clear="left"/>
@@ -3344,12 +3339,12 @@ object pointers</b></span></font></p>
 <br/>
 
 </p>
-<p>The above figure applies to blocking mrq invocations (<b>Table 5</b>)
-or the first half of non-blocking pairs  (i.e. the submission part of
-<b>Table 6</b>). For the second half of a non-blocking pair (i.e. the
-completion part of <b>Table 6</b>) <font color="#006c3b">din_xferp</font>
+<p>The above figure applies to blocking <i>mrq</i> invocations (<b>Table
+5</b>) or the first half of non-blocking pairs  (i.e. the submission
+part of <b>Table 6</b>). For the second half of a non-blocking pair
+(i.e. the completion part of <b>Table 6</b>) <font color="#006c3b">din_xferp</font>
 (or mmap()) must be given and <font color="#006c3b">dout_xferp</font>
-is ignored. For blocking mrq invocations the <font color="#0066b3">i,
+is ignored. For blocking <i>mrq</i> invocations the <font color="#0066b3">i,
 j</font> and <font color="#0066b3">k</font> values shown in <b>Figure
 7</b>'s response array are the same order as the request array (i.e.
 the response array is built in submission order). For the second half
@@ -3628,7 +3623,7 @@ and PRE-FETCH</span></span><span style="font-variant: normal"><span style="font-
 that can appear anywhere. The list of commands given to this </span></span><span style="font-variant: normal"><span style="font-style: normal">method</span></span><span style="font-variant: normal"><span style="font-style: normal">
 cannot end with a </span></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">read-side</span></font></span><span style="font-variant: normal"><span style="font-style: normal">
 command. </span></span><span style="font-variant: normal"><span style="font-style: normal">These
-sanity checks are done before any commands are executed and </span></span><span style="font-variant: normal"><span style="font-style: normal">mrq
+sanity checks are done before any commands are executed and </span></span><span style="font-variant: normal"><i>mrq</i></span><span style="font-variant: normal"><span style="font-style: normal">
 invocations</span></span><span style="font-variant: normal"><span style="font-style: normal">
 that don't comply are reject</span></span><span style="font-variant: normal"><span style="font-style: normal">ed</span></span><span style="font-variant: normal"><span style="font-style: normal">
 entirely, usually with a </span></span><span style="font-variant: normal"><span style="font-style: normal">ERANGE
@@ -3640,10 +3635,12 @@ READs are all started </span></span><span style="font-variant: normal"><span sty
 Then as each READ completes, its paired WRITE is started, when all
 WRITEs in a segment are completed, the driver moves onto the next
 segment and continues until the</span></span><span style="font-variant: normal"><span style="font-style: normal">
-list of commands given to the mrq invocation is </span></span><span style="font-variant: normal"><span style="font-style: normal">processed</span></span><span style="font-variant: normal"><span style="font-style: normal">.
+list of commands given to the </span></span><span style="font-variant: normal"><i>mrq</i></span><span style="font-variant: normal"><span style="font-style: normal">
+invocation is </span></span><span style="font-variant: normal"><span style="font-style: normal">processed</span></span><span style="font-variant: normal"><span style="font-style: normal">.
 </span></span><span style="font-variant: normal"><span style="font-style: normal">So
-while the mrq invocation is blocking seen from the user's
-perspective, the driver asynchronously processes </span></span><span style="font-variant: normal"><span style="font-style: normal">the
+while the </span></span><span style="font-variant: normal"><i>mrq</i></span><span style="font-variant: normal"><span style="font-style: normal">
+invocation is blocking seen from the user's perspective, the driver
+asynchronously processes </span></span><span style="font-variant: normal"><span style="font-style: normal">the
 given SCSI commands </span></span><span style="font-variant: normal"><span style="font-style: normal">while
 observing two constraints. The first constraint</span></span><span style="font-variant: normal"><span style="font-style: normal">
 is from the nature of a copy: the pair</span></span><span style="font-variant: normal"><span style="font-style: normal">ed</span></span><span style="font-variant: normal"><span style="font-style: normal">
@@ -3730,8 +3727,9 @@ flag</span></span></span><span style="font-variant: normal"><span style="font-st
 is the file descriptor on which it is used. So if, for example,
 multiple threads with separate file descriptors to the </span></span></span><span style="font-variant: normal"><i><span style="font-weight: normal">same
 </span></i></span><span style="font-variant: normal"><span style="font-style: normal"><span style="font-weight: normal">destination
-device (e.g. a ZBC disk) overlap their mrq commands then
-&quot;out-of-order&quot; WRITEs will almost certainly occur. </span></span></span><span style="font-variant: normal"><span style="font-style: normal"><span style="font-weight: normal">If
+device (e.g. a ZBC disk) overlap their </span></span></span><span style="font-variant: normal"><i><span style="font-weight: normal">mrq</span></i></span><span style="font-variant: normal"><span style="font-style: normal"><span style="font-weight: normal">
+commands then &quot;out-of-order&quot; WRITEs will almost certainly
+occur. </span></span></span><span style="font-variant: normal"><span style="font-style: normal"><span style="font-weight: normal">If
 write-ordering is </span></span></span><span style="font-variant: normal"><i><span style="font-weight: normal">not
 required</span></i></span><span style="font-variant: normal"><span style="font-style: normal"><span style="font-weight: normal">
 then cutting a large copy into sub-copies and then spreading them out
@@ -4138,8 +4136,8 @@ commands that are inflight when a secondary error is detected, are
 completed. Secondary errors are (positive) errno values. The
 expectation is that if the same request was input individually with
 <b>ioctl</b>(<font color="#a3238e"><span style="font-weight: normal">SG_IOSUBMIT</span></font>)
-(i.e. a non-mrq invocation) then that <b>ioctl</b>(2) would fail with
-the <u>same</u> errno value.</p>
+(i.e. a non-<i>mrq</i> invocation) then that <b>ioctl</b>(2) would
+fail with the <u>same</u> errno value.</p>
 <p>Only t<span style="font-variant: normal"><span style="font-style: normal">he
 </span></span><i>ordered blocking</i><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">and
@@ -4205,9 +4203,9 @@ flag </span></span><span style="font-variant: normal"><span style="font-style: n
 used on the control object, then it can not be used in any request
 placed in the associated request array (i.e. what is given to
 </span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj</span></font></span><span style="font-variant: normal"><span style="font-style: normal">.</span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">d</span></font></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">out</span></font></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">_xferp</span></font></span><span style="font-variant: normal"><span style="font-style: normal">).
-When  the mrq operation with the MMAP flag commences, the mmap-ed
-region is zeroed. It is written to in ascending order, in the order
-of completion.</span></span></p>
+When  the </span></span><span style="font-variant: normal"><i>mrq</i></span><span style="font-variant: normal"><span style="font-style: normal">
+operation with the MMAP flag commences, the mmap-ed region is zeroed.
+It is written to in ascending order, in the order of completion.</span></span></p>
 <p><span style="font-variant: normal"><span style="font-style: normal">The
 O_NONBLOCK flag can be set on a sg driver file descriptor with the
 </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>open</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(2)
@@ -4288,16 +4286,16 @@ the table above).</p>
 <p>The SGV4_FLAG_MULTIPLE_REQS flag  may be set on an
 <b>i</b><b>octl</b>(SG_IOABORT) invocation and means that the user
 wants to attempt to abort  onsome or all of the commands issued (or
-yet to be issued) by a prior mrq invocation. The prior invocation is
-identified by the pack_id value held in the request_extra field. So
-in relation to <b>i</b><b>octl</b>(SG_IOABORT) the 
-SGV4_FLAG_MULTIPLE_REQS flag does <u>not</u> mean that array of
+yet to be issued) by a prior <i>mrq</i> invocation. The prior
+invocation is identified by the pack_id value held in the
+request_extra field. So in relation to <b>i</b><b>octl</b>(SG_IOABORT)
+the  SGV4_FLAG_MULTIPLE_REQS flag does <u>not</u> mean that array of
 pack_ids is being given. Each  <b>i</b><b>octl</b>(SG_IOABORT)
-invocation can abort at most one normal request/command on one mrq
+invocation can abort at most one normal request/command on one <i>mrq</i>
 array of commands.</p>
-<h3 class="western"><a name="__RefHeading___Toc1564_4294551682"></a><a name="10.1 Processing mrq responses|outline"></a><a name="10.1 Processing mrq responses|outline"></a>
+<h3 class="western"><a name="10.1 Processing mrq responses|outline"></a><a name="10.1 Processing mrq responses|outline"></a>
 10.1 Processing mrq responses</h3>
-<p>When a mrq succeeds, or fails (other than an <b>ioctl</b>(2)
+<p>When a <i>mrq</i> succeeds, or fails (other than an <b>ioctl</b>(2)
 failure that results in errno being set) then the control object is
 written back to the user space to the same location it was read from
 (i.e. where the third argument of the <b>ioctl</b>(2) points). The
@@ -4353,12 +4351,14 @@ failed </span></span><span style="font-variant: normal"><span style="font-style:
 setting errno (e.g. when using </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(SG_IO)
 or </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(</span></span><span style="font-variant: normal"><font color="#a3238e"><span style="font-style: normal">SG_IOSUBMIT</span></font></span><span style="font-variant: normal"><span style="font-style: normal">)
 ). However when invoking multiple requests, that technique is not
-available because a failed mrq </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(2)
+available because a failed </span></span><span style="font-variant: normal"><i>mrq</i></span><span style="font-variant: normal"><span style="font-style: normal">
+</span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(2)
 with an errno value indicates something is wrong with the </span></span><span style="font-variant: normal"><i><u>control</u></i></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">object.</span></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">So
-when a contained normal sg_io_v4 object within a mrq has a syntax
-error, then that errno value is placed in </span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj.spare_out</span></font></span><span style="font-variant: normal"><span style="font-style: normal">.
+when a contained normal sg_io_v4 object within a </span></span><span style="font-variant: normal"><i>mrq</i></span><span style="font-variant: normal"><span style="font-style: normal">
+has a syntax error, then that errno value is placed in
+</span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj.spare_out</span></font></span><span style="font-variant: normal"><span style="font-style: normal">.
 Note that there may have been good requests submitted before the
 problematic normal sg_io_v4 object and their completions should be
 processed as usual.</span></span></p>
@@ -4371,20 +4371,22 @@ is more</span></span><span style="font-variant: normal"> </span><span style="fon
 less what would be expected if that request had been submitted
 individually. There is one notable addition</span></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">with
-mrqs: the SG_INFO_MRQ_FINI mask is OR-ed into each element's info
-field when its completion is processed, so the absence of the mask
-implies that a request has not been completed.</span></span></p>
+</span></span><span style="font-variant: normal"><i>mrq</i></span><span style="font-variant: normal"><span style="font-style: normal">s:
+the SG_INFO_MRQ_FINI mask is OR-ed into each element's info field
+when its completion is processed, so the absence of the mask implies
+that a request has not been completed.</span></span></p>
 <p style="font-weight: normal"><span style="font-variant: normal"><span style="font-style: normal">Note
 that when ioctl(</span></span><span style="font-variant: normal"><font color="#a3238e"><span style="font-style: normal">SG_IORECEIVE</span></font></span><span style="font-variant: normal"><span style="font-style: normal">)
 is used, the written back response array is not necessarily in the
-order of the corresponding mrq submission. This reflects that the
-storage device may process commands out-of-order. A typical example
-is when a disk has queued READs and WRITEs and a TEST UNIT READY is
-sent; that</span></span><span style="font-variant: normal"> </span><span style="font-variant: normal"><span style="font-style: normal">TEST
+order of the corresponding </span></span><span style="font-variant: normal"><i>mrq</i></span><span style="font-variant: normal"><span style="font-style: normal">
+submission. This reflects that the storage device may process
+commands out-of-order. A typical example is when a disk has queued
+READs and WRITEs and a TEST UNIT READY is sent; that</span></span><span style="font-variant: normal">
+</span><span style="font-variant: normal"><span style="font-style: normal">TEST
 UNIT READY will typically be responded to as soon as the storage
 device receives it. It is left up to the user code to match the
-response array(s) with their corresponding mrq submission. The
-</span></span><span style="font-variant: normal"><font color="#a3238e"><span style="font-style: normal">usr_ptr</span></font></span><span style="font-variant: normal"><span style="font-style: normal">,
+response array(s) with their corresponding </span></span><span style="font-variant: normal"><i>mrq</i></span><span style="font-variant: normal"><span style="font-style: normal">
+submission. The </span></span><span style="font-variant: normal"><font color="#a3238e"><span style="font-style: normal">usr_ptr</span></font></span><span style="font-variant: normal"><span style="font-style: normal">,
 pack_id (</span></span><span style="font-variant: normal"><font color="#a3238e"><span style="font-style: normal">request_extra</span></font></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">field
 in the v4 interface) and </span></span><span style="font-variant: normal"><font color="#a3238e"><span style="font-style: normal">request_tag</span></font></span><span style="font-variant: normal">
@@ -4405,37 +4407,38 @@ style of pointer is sometimes called a &quot;closure pointer&quot;.</span></span
 Note that <font color="#006c3b">ctl_obj.driver_status</font>,
 <font color="#006c3b">ctl_obj.transport_status</font> and
 <font color="#006c3b">ctl_obj.device_status</font> are not used and
-are set to zero in a mrq response.</p>
-<h3 class="western"><a name="__RefHeading___Toc1566_4294551682"></a>10.2
-Aborting multiple requests</h3>
+are set to zero in a <i>mrq</i> response.</p>
+<h3 class="western">10.2 Aborting multiple requests</h3>
 <p>The <b>ioctl</b>(SG_IOABORT) can be used to abort all inflight and
-yet-to-be submitted requests associated with a single mrq invocation.
-Any mrq invocation that the user may want to abort later must be
-given a <u>non-zero</u> mrq pack_id (in the <font color="#006c3b">request_extra</font>
-field of the control object). There can only be one of these non-zero
-mrq pack_ids outstanding at a time per file descriptor.</p>
+yet-to-be submitted requests associated with a single <i>mrq</i>
+invocation. Any <i>mrq</i> invocation that the user may want to abort
+later must be given a <u>non-zero</u> <i>mrq</i> pack_id (in the
+<font color="#006c3b">request_extra</font> field of the control
+object). There can only be one of these non-zero <i>mrq</i> pack_ids
+outstanding at a time per file descriptor.</p>
 <p>Usually <b>ioctl</b>(SG_IOABORT) would be issued after a
 <b>ioctl</b>(<font color="#a3238e"><span style="font-weight: normal">SG_IOSUBMIT</span></font>)
 call (i.e. async or non-blocking usage). It is possible, using
-another thread, to abort a <b>ioctl</b>(SG_IO) mrq invocation. In
-this case the first thread would still be waiting inside the
-<b>ioctl</b>(SG_IO) mrq invocation when a second thread used the same
-pack_id (and file descriptor) to call <b>ioctl</b>(SG_IOABORT).</p>
-<p>Any requests in a mrq invocation that have already reached their
-internal completion point when the mrq abort is issued must be
-processed in the normal fashion. Any inflight requests will have
-blk_abort_request() called on them. Those remaining requests that
-have not yet been submitted will be dropped. See the <a href="#10.1 Processing mrq responses|outline">Processing
+another thread, to abort a <b>ioctl</b>(SG_IO) <i>mrq</i> invocation.
+In this case the first thread would still be waiting inside the
+<b>ioctl</b>(SG_IO) <i>mrq</i> invocation when a second thread used
+the same pack_id (and file descriptor) to call <b>ioctl</b>(SG_IOABORT).</p>
+<p>Any requests in a <i>mrq</i> invocation that have already reached
+their internal completion point when the <i>mrq</i> abort is issued
+must be processed in the normal fashion. Any inflight requests will
+have blk_abort_request() called on them. Those remaining requests
+that have not yet been submitted will be dropped. See the <a href="#10.1 Processing mrq responses|outline">Processing
 mrq responses</a> section above for how an abort will be reported.</p>
 <p>In the <b>ioctl</b>(sg_fd, SG_IOABORT, &amp;ctl_obj) invocation
 the SGV4_FLAG_MULTIPLE_REQS flag must be set set and the
 <font color="#006c3b">request_extra</font> field must be set to the
-non-zero mrq pack_id. SG_PACK_ID_WILDCARD can be given for the mrq
-pack_id. Optionally the SGV4_FLAG_DEV_SCOPE flag may be given. In
-that case after the current file descriptor (i.e. the one given as
-the first argument of the <b>ioctl</b>(SG_IOABORT)) is checked for a
-mrq match on the pack_id, if that fails to find a match, then the
-open file descriptors belonging to the current fd's sg device (e.g.
+non-zero <i><span style="text-decoration: none">mrq</span></i>
+pack_id. SG_PACK_ID_WILDCARD can be given for the <i>mrq</i> pack_id.
+Optionally the SGV4_FLAG_DEV_SCOPE flag may be given. In that case
+after the current file descriptor (i.e. the one given as the first
+argument of the <b>ioctl</b>(SG_IOABORT)) is checked for a <i>mrq</i>
+match on the pack_id, if that fails to find a match, then the open
+file descriptors belonging to the current fd's sg device (e.g.
 /dev/sg3) are checked for a match. The abort is sent to the first
 match, if any, on the pack_id and the <b>ioctl</b>(SG_IOABORT)
 finishes (i.e. no further checks for match are done).</p>
@@ -4449,14 +4452,13 @@ in a normal v4 interface object) then after that command is
 completed, the contents of that array of sg_io_v4 objects (complete
 to and including that command) is written out to where
 <font color="#006c3b">ctl_obj.din_xferp</font> points. In the case
-where the mrq is <i>submit </i><i>non-blocking</i> or <i>waitless</i>
+where the <i>mrq</i> is <i>submit </i><i>non-blocking</i> or <i>waitless</i>
 <i>non-blocking</i>, then it is the <font color="#006c3b">ctl_obj.din_xferp</font>
 given to <b>ioctl</b>(<font color="#a3238e"><span style="font-weight: normal">SG_IOSUBMIT</span></font>)
 that is used. This must be the case as the mating <b>ioctl</b>(<font color="#a3238e">SG_IORECEIVE</font>)
 has typically not yet been issued. 
 </p>
-<h3 class="western"><a name="__RefHeading___Toc1568_4294551682"></a>10.3
-Single/multiple (non-)blocking requests</h3>
+<h3 class="western">10.3 Single/multiple (non-)blocking requests</h3>
 <p>Almost all interactions between a user space program and the sg
 driver involve using a sg driver file descriptor. Each sg driver file
 descriptor belongs to a sg device. [And optionally each file
@@ -4532,19 +4534,20 @@ total number of inactive requests of the given file descriptor </span></span><sp
 all file descriptors that have the same owning sg device, can be
 found with </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(SG_SET_GET_EXTENDED,
 {SG_SEIRV_DEV_</span></span><span style="font-variant: normal"><span style="font-style: normal">INACT</span></span><span style="font-variant: normal"><span style="font-style: normal">_RQS}).</span></span></p>
-<h3 class="western"><a name="__RefHeading___Toc18199_72860742"></a>10.4
-SGV4_FLAG_REC_ORDER flag</h3>
+<h3 class="western">10.4 SGV4_FLAG_REC_ORDER flag</h3>
 <p><span style="font-variant: normal"><span style="font-style: normal">Sometimes
 it is useful to dictate the order of the response array when
 </span></span><span style="font-variant: normal"><span style="font-style: normal">non-blocking
 multiple requests are completed. It may also be convenient to send
 the submissions in lumps (or even one a time) but receive them in one
 large </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(SG_IORECEIVE(MRQ))
-and have the responses placed in a predictable positions within the
+and have the responses placed in predictable positions within the
 response array. </span></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">Without</span></font></span><span style="font-variant: normal"><span style="font-style: normal">
 </span></span><span style="font-variant: normal"><span style="font-style: normal">the
 </span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal"><b>SGV4_FLAG_</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>REC_ORDER</b></span></font></span><span style="font-variant: normal"><span style="font-style: normal">
-flag, the response array (i.e.  the </span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj.din_xferp</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">)
+flag, the response array (</span></span><span style="font-variant: normal"><span style="font-style: normal">which
+is pointed to by</span></span><span style="font-variant: normal"><span style="font-style: normal">
+</span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">ctl_obj.din_xferp</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">)
 is populated in completion order. And the completion order may differ
 from the submission order so it is safe to assume the completion
 order </span></font></span><span style="font-variant: normal"><font color="#000000"><i>will</i></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
@@ -4560,14 +4563,18 @@ the </span></font></span><span style="font-variant: normal"><font color="#000000
 flag also set.</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
 In the latter case it is treated as if the  </span></font></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal"><b>SGV4_FLAG_</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>REC_ORDER</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
 flag</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
-was OR-ed into each element of the request array. When a request with
-this flag is processed, the contents of the </span></font></span><span style="font-variant: normal"><font color="#a3238e"><span style="font-style: normal">request_priority</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+was OR-ed into </span></font></span><span style="font-variant: normal"><font color="#000000"><i>each</i></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+</span></font></span><span style="font-variant: normal"><font color="#a3238e"><span style="font-style: normal">flags</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+field</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+of the request array. When a request with this flag is processed, the
+contents of the </span></font></span><span style="font-variant: normal"><font color="#a3238e"><span style="font-style: normal">request_priority</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
 field is held and </span></font></span><span style="font-variant: normal"><font color="#000000"><i>may</i></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
 be treated as an index into the response array at a later time. The
 conditional </span></font></span><span style="font-variant: normal"><font color="#000000"><i>may</i></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
-is used because if that request </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">hav</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">ing
-</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">completed</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">,</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
-is read by a normal (i.e. non mrq) </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>ioctl</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">(SG_IORECEIVE)
+is used because if </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+a completed </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">request</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+is read by a normal (i.e. non </span></font></span><span style="font-variant: normal"><font color="#000000"><i>mrq</i></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">)
+</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>ioctl</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">(SG_IORECEIVE)
 then that index is ignored. That index is used when a </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">blocking
 or </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">non-blocking
 </span></font></span><span style="font-variant: normal"><font color="#000000"><i>mrq</i></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
@@ -4625,8 +4632,8 @@ they are queued by </span></font></span><span style="font-variant: normal"><font
 ioctl(SG_IOSUBMIT) calls. Thereafter &quot;prep&quot;-ed and
 &quot;queue&quot;-d requests are held until the array fills or fio
 send a commit. Then those held requests a</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">re</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
-sent with a non-blocking mrq ioctl(SG_IOSUBMIT). Finally one or more
-non-blocking </span></font></span><span style="font-variant: normal"><font color="#000000"><i>mrq</i></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+sent with a non-blocking </span></font></span><span style="font-variant: normal"><font color="#000000"><i>mrq</i></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+ioctl(SG_IOSUBMIT). Finally one or more non-blocking </span></font></span><span style="font-variant: normal"><font color="#000000"><i>mrq</i></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
 </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>ioctl</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">(SG_IORECEIVE)
 </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">calls
 are used to collect the responses. All the submissions use the 
@@ -4639,8 +4646,7 @@ so that the responses &quot;land&quot; in the </span></font></span><span style="
 location as the submissions</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">.
 </span></font></span>
 </p>
-<h2 class="western"><a name="__RefHeading___Toc1570_4294551682"></a>11
-pack_id or tag</h2>
+<h2 class="western">11 pack_id or tag</h2>
 <p>When doing asynchronous IO with the sg driver there needs to be a
 way to wait for a particular response, not just the response that is
 the <i>oldest</i>. [By <i>oldest</i> is meant the command request in
@@ -4694,8 +4700,7 @@ paragraph). The match <b>ioctl</b>(<font color="#a3238e">SG_IORECEIVE</font>)
 call should make sure the request_tag field is set as appropriate and
 the SGV4_FLAG_FIND_BY_TAG flag should be <u>OR</u>-ed with other
 <font color="#a3238e">flags</font>.</p>
-<h2 class="western"><a name="__RefHeading___Toc1572_4294551682"></a>12
-Bi-directional command support</h2>
+<h2 class="western">12 Bi-directional command support</h2>
 <p><u>N.B. Support for SCSI bidirectional commands has been removed
 from the Linux kernel in version 5.1 . To allow the driver to merge
 post lk 5.1, bidi support has been removed from this driver. That
@@ -4748,8 +4753,7 @@ transfer) has completed. pack_id and/or tags can be used as discussed
 in the previous section. Signal on completion, polling for completion
 and multi-threading should also work on <i>bidi</i> commands without
 issues.</p>
-<h2 class="western"><a name="__RefHeading___Toc1574_4294551682"></a>13
-SG interface support changes</h2>
+<h2 class="western">13 SG interface support changes</h2>
 <p style="margin-bottom: 0cm">In the following table, a comparison is
 made between the supported interfaces of the sg driver found in lk
 4.20 (V3.5.36) and the proposed V4 sg driver. The movement of the
@@ -4929,8 +4933,7 @@ what might be dropped is the ability of the v3 interface to use the
 required should be to change the <b>write</b>(2) to an
 <b>ioctl</b>(<font color="#0066b3">SG_IOSUBMIT_V3</font>) and the
 <b>read</b>(2) to an <b>ioctl</b>(<font color="#0066b3"><span style="font-weight: normal">SG_IORECEIVE_V3</span></font>).</p>
-<h2 class="western"><a name="__RefHeading___Toc1576_4294551682"></a>14
-IOCTLs</h2>
+<h2 class="western">14 IOCTLs</h2>
 <p>Over time there has been a transfer of functionality from the
 <b>write</b>(2) and <b>read</b>(2) system calls to various <b>ioctl</b>(2)s
 which are listed below. Using the <b>write</b>(2) and <b>read</b>(2)
@@ -6151,6 +6154,26 @@ mask values OR-ed together:</p>
 	<tbody>
 		<tr valign="top">
 			<td width="24%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0cm"><p>
+				<b>SG_CTL_FLAGM_NO_WAIT_POLL </b><span style="font-weight: normal">[0x8000]</span></p>
+			</td>
+			<td width="10%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0cm"><p>
+				[rbw]</p>
+			</td>
+			<td width="66%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+				modifies the action of the <b>poll</b>(2) system call on current
+				file descriptor. When set then if no requests are waiting (i.e.
+				passed the internal completion point) and the <b>poll</b>(2) call
+				requests a non-zero timeout, then POLLERR is set for this file
+				descriptor (rather than waiting). Designed to be used with
+				request that <font color="#000000">use the </font><font color="#000000"><b>SGV4_FLAG_NO_WAITQ</b></font><font color="#000000">
+				flag: without a wait queue entry there is no point in </font><font color="#000000"><b>poll</b></font><font color="#000000">(2)
+				waiting hence it generates POLLERR and moves on.</font></p>
+			</td>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr valign="top">
+			<td width="24%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0cm"><p>
 				<b>SG_CTL_FLAGM_ORPHANS</b> [0x8]</p>
 			</td>
 			<td width="10%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0cm"><p>
@@ -6580,8 +6603,264 @@ determining if an sg device changed or not, it is best to use the raw
 fields yielded by <b>SG_SEIRV_DEV_TS_LOWER</b><span style="font-weight: normal">
 and </span><b>SG_SEIRV_DEV_TS_</b><b>UPPER</b><span style="font-weight: normal">
 ioctl calls.</span></p>
-<h2 class="western"><a name="__RefHeading___Toc1578_4294551682"></a><a name="15 Downloads and testing|outline"></a>
-15 Downloads and testing</h2>
+<h2 class="western"><b>15 System Calls</b></h2>
+<p><span style="font-weight: normal">This section lists Linux system
+calls that can be used with a sg file descriptor</span><span style="font-weight: normal">,
+normally as the first argument</span><span style="font-weight: normal">.</span><span style="font-weight: normal">
+</span><span style="font-weight: normal">System calls represent the
+primary method used by user space programs to interact with the Linux
+kernel and the resources that it manages. </span><span style="font-weight: normal">Remember
+'man &lt;system_call&gt;' is your friend; what is shown below is
+</span><i><u><span style="font-weight: normal">additional</span></u></i><span style="font-weight: normal">
+information specific to the sg driver for these system calls.</span></p>
+<table width="100%" cellpadding="4" cellspacing="0" style="page-break-after: avoid">
+	<col width="53*"/>
+
+	<col width="16*"/>
+
+	<col width="187*"/>
+
+	<tbody>
+		<tr valign="top">
+			<th width="21%" bgcolor="#ffe5ca" style="background: #ffe5ca" style="border: none; padding: 0cm"><p>
+				system call name</p>
+				<p>generic <font color="#000000"><b>description</b></font> in
+				'man 2 &lt;system_call&gt;'</p>
+			</th>
+			<th width="6%" bgcolor="#ffe5ca" style="background: #ffe5ca" style="border: none; padding: 0cm"><p>
+				Status</p>
+			</th>
+			<th width="73%" bgcolor="#ffe5ca" style="background: #ffe5ca" style="border: none; padding: 0cm"><p>
+				Notes</p>
+			</th>
+		</tr>
+		<tr valign="top">
+			<td width="21%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				<b>close</b></p>
+			</td>
+			<td width="6%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				active</p>
+			</td>
+			<td width="73%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
+				called '<b>release</b>()' within Linux drivers such as sg. <font color="#000000">F</font><font color="#000000">i</font>le
+				descriptor aliases can be produced with system calls like <b>dup</b>(2)
+				and <b>dup2</b>(2). In that case multiple aliases may be
+				<b>close</b>(2)-d with only the <i><u>last</u></i> <b>close</b>(2)
+				being forwarded to the sg driver as a <b>release</b>(). The sg
+				driver potentially does a lot of work on <b>release</b>(), some
+				of which is done <i><u>after</u></i> the last <b>close</b>(2)
+				returns to the user space! That post-<b>close</b>(2) work
+				includes waiting for any requests that are still <i>inflight</i>
+				to reach their internal completion point at which time their
+				resources are cleaned up. To speed normal operation, request
+				resources (i.e. sg_request objects and their associated buffers)
+				are <i><u>not</u></i> freed until a <b>release</b>() occurs on
+				their owning file descriptor. Those inactive request resources
+				are re-used by later requests on the same file descriptor. The
+				deferring of frees makes &quot;use-after-free&quot; type errors
+				very rare in this driver but can lead to a lot of resources (i.e.
+				memory) being held when large IO depths are used. If this is a
+				problem and the large IO depth is no longer needed, then <b>close</b>()
+				that file descriptor and get a new one with
+				<b>open</b>(&lt;same_file_devcie_name&gt;) .</p>
+			</td>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr valign="top">
+			<td width="21%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				<b>fcntl</b></p>
+			</td>
+			<td width="6%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				active</p>
+			</td>
+			<td width="73%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
+				the F_SETFD command (second argument) can be used to add the
+				O_ASYNC file access mode (third argument)  to the given sg file
+				descriptor (first argument).  Subsequent internal completion
+				points on this file descriptor will generate a SIGIO or real time
+				signal. The F_SETSIG command can be used to generate a real time
+				(RT) signal at the internal completion point instead of SIGIO if
+				the RT signal number (third argument) is greater than 0; if the
+				third argument is 0 then generate a SIGIO at the internal
+				completion point (default action).</p>
+			</td>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr valign="top">
+			<td width="21%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				<b>ioctl</b></p>
+			</td>
+			<td width="6%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				active</p>
+			</td>
+			<td width="73%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
+				see previous section.</p>
+			</td>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr valign="top">
+			<td width="21%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				<b>lseek, llseek</b></p>
+			</td>
+			<td width="6%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				disabled</p>
+			</td>
+			<td width="73%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
+				sg driver calls no_llseek() which causes <b>lseek</b>() and
+				<b>llseek</b>() to fail with errno=ESPIPE .</p>
+			</td>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr valign="top">
+			<td width="21%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				<b>mmap, munmap</b></p>
+			</td>
+			<td width="6%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				active</p>
+			</td>
+			<td width="73%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
+				a subset of the generic <b>mmap</b>() system call is supported by
+				this driver. It is used to make the contents of a driver buffer
+				visible directly to the user space. Only one such <b>mmap</b>()-ed
+				buffer per sg driver file descriptor can be visible at a time.
+				mmap() must be invoked with <i>addr</i> (its first argument) set
+				to NULL, <i>prot</i> should be set to {PROT_READ | PROT_WRITE),
+				<i>flags</i> set to MAP_SHARED, and the final argument <i>offset</i>
+				set to 0. So the driver 'gives back' the mmap-ed area address to
+				the user space. In practice this means that the same mmap-ed area
+				cannot be used for <i><u>both</u></i> a READ request and a WRITE
+				request, which would be useful for copying. That is part of the
+				motivation for shared requests in this driver. Note the sg file
+				descriptor is given as the second last argument.</p>
+			</td>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr valign="top">
+			<td width="21%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				<b>open</b></p>
+			</td>
+			<td width="6%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				active</p>
+			</td>
+			<td width="73%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
+				simplest is to <b>open</b>(&lt;sg_device_name&gt;, flags) with
+				flags set to O_RDWR . Some well known SCSI commands like INQUIRY
+				will succeed with O_RDONLY. On most systems
+				<b>open</b>(&lt;sg_device_name&gt;) will fail unless the user has
+				root permissions. <b>open</b>(&lt;sg_device_name&gt;, flags)
+				implements special semantic when the O_EXCL flag is OR-ed with
+				others; if another user has an active file descriptor already on
+				the <i><u>same</u></i><i> </i>&lt;sg_device_name&gt; then a
+				subsequent <b>open</b>() will wait until the former is released
+				(i.e. <b>close</b>() is called) or will fail with errno=EBUSY.
+				The failure occurs when O_NONBLOCK has <i><u>not </u></i>been
+				given, the (interruptible) wait occurs otherwise. O_DIRECT cannot
+				be used with <b>open</b>(&lt;sg_device_name&gt;, flags) since
+				&lt;sg_device_name&gt; is a character device; an equivalent
+				<font color="#000000">action </font>can be produced with the
+				SG_FLAG_DIRECT_IO on a request. Unlike other system calls listed
+				here, <b>open</b>(2) <i><u>returns</u></i> a sg driver file
+				descriptor which will always be 0 or greater.</p>
+			</td>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr valign="top">
+			<td width="21%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				<b>poll</b></p>
+			</td>
+			<td width="6%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				active</p>
+			</td>
+			<td width="73%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
+				The internal completion point generates a POLLIN event. Any
+				requests that are still waiting and have not yet been processed
+				(e.g. with SG_IORECEIVE) will also generate a POLLIN event. If a
+				sg file descriptor is being shared by two threads and one does a
+				blocking <b>ioctl</b>(SG_IO) and the other does a non-blocking
+				<b>ioctl</b>(SG_IOSUBMIT) then the blocking <b>ioctl</b> reaching
+				its completion point will <i><u>not</u></i> cause a POLLIN event.</p>
+			</td>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr valign="top">
+			<td width="21%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				<b>read</b></p>
+			</td>
+			<td width="6%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				<font color="#000000">deprecated</font></p>
+			</td>
+			<td width="73%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
+				<font color="#000000">a </font><font color="#000000">non-blocking
+				(asynchronous) request containing a SCSI command </font><font color="#000000">is</font><font color="#000000">
+				</font><font color="#000000">complet</font><font color="#000000">ed
+				with this system call. Only version 3 (i.e. struct sg_io_hdr) and
+				version 2 interfaces are supported; so version 4 (i.e. struct
+				sg_io_v4) is </font><font color="#000000"><i><u>not</u></i></font><font color="#000000">
+				supported.</font><font color="#000000"> Note that when
+				ioctl(SG_SET_FORCE_PACK_ID) is active, the </font><font color="#0066b3">pack_id</font><font color="#000000">
+				field is </font><font color="#000000"><i><u>read</u></i></font><font color="#000000">
+				by this driver </font><font color="#000000">via</font><font color="#000000">
+				the </font><font color="#000000"><b>read</b></font><font color="#000000">(2)'s
+				third argument, and if that matches a completed request then its
+				associated data is then written out to the user space via the
+				same third argument. This is somewhat surprising (i.e.
+				bi-directional data flow) give</font><font color="#000000">n</font><font color="#000000">
+				the generic definition </font><font color="#000000">o</font><font color="#000000">f
+				the </font><font color="#000000"><b>read</b></font><font color="#000000">(2)
+				system call.</font></p>
+			</td>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr valign="top">
+			<td width="21%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				<b>write</b></p>
+			</td>
+			<td width="6%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				deprecated</p>
+			</td>
+			<td width="73%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
+				a non-blocking (asynchronous) request containing a SCSI command
+				is submitted with this system call. Only version 3 (i.e. struct
+				sg_io_hdr) and version 2 interfaces are supported; so version 4
+				(i.e. struct sg_io_v4) is <i><u>not</u></i> supported.</p>
+			</td>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr valign="top">
+			<td width="21%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				&lt;&lt; any others&gt;&gt;</p>
+			</td>
+			<td width="6%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				<br/>
+
+				</p>
+			</td>
+			<td width="73%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
+				if that system call requires mandatory support from the sg driver
+				then it will fail. Otherwise the system call will have its
+				generic action.</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<p align="center" style="margin-top: 0.21cm; margin-bottom: 0.21cm"><font size="3" style="font-size: 12pt"><b><span style="font-style: normal">Table
+1</span><span style="font-style: normal">2</span><span style="font-style: normal">:
+</span><font color="#000000"><font size="3" style="font-size: 12pt"><span style="font-style: normal">system
+calls</span></font></font></b></font></p>
+<p style="font-weight: normal">Note that the sg version 4 interface
+(i.e. struct sg_io_v4) uses <b>ioctl</b>(2)s for all its submissions,
+completions and adds new support for aborting a SCSI command that is
+underway.</p>
+<h2 class="western">16 Downloads and testing</h2>
 <p>This tarball: <a href="p/sgv4_20200803.tgz">sgv4_20200803</a>
 contains a README file that outlines what is included. There are
 earlier versions of this driver for the <u>lk5.</u><u>5</u> and <u>lk5.</u><u>6</u><u>
@@ -6651,8 +6930,8 @@ are &quot;v4&quot; driver aware:</p>
 	clone. It is an old (resurrected) utility for testing polling, SIGIO
 	and RT signal usage with the sg driver.</p>
 	<li><p><b>sg_mrq_dd</b>: yes, another dd clone: using share variable
-	blocking (svb) mrq for sg to sg copies. It can take scatter-gather
-	lists with its skip= and seek= operands</p>
+	blocking (svb) <i>mrq</i> for sg to sg copies. It can take
+	scatter-gather lists with its skip= and seek= operands</p>
 </ul>
 <p>These test utilities are <u>not</u> built by default since they
 are not part of the automake setup; instead an <i>old school</i>
@@ -6709,13 +6988,11 @@ new &lt;kernel_src&gt;/include/uapi/scsi/sg.h header needed for the
 sg v4 driver is kept in the testing directory. It has the name
 'uapi_sg.h' so it won't collide with the &quot;real&quot; header if
 it is present.</p>
-<h2 class="western"><a name="__RefHeading___Toc1580_4294551682"></a>16
-Other documents</h2>
+<h2 class="western">17 Other documents</h2>
 <p>The original sg driver documentation is here: <a href="http://www.tldp.org/HOWTO/SCSI-Generic-HOWTO/index.html">SCSI-Generic-HOWTO</a>
 and a more recent discussion of <b>ioctl</b>(SG_IO) is here: <a href="sg_io.html">sg_io</a>
 .</p>
-<h2 class="western"><a name="__RefHeading___Toc1582_4294551682"></a>17
-Conclusion</h2>
+<h2 class="western">18 Conclusion</h2>
 <p>The sg v4 driver is designed to be backwardly compatible with the
 v3 driver. This simplest way for an application to find which driver
 version it has is with the <b>ioctl</b>(SG_GET_VERSION_NUM). Removing
@@ -6728,7 +7005,7 @@ apps that use sg driver nodes and check their functionality.</p>
 <p>Return to <a href="index.html">main</a> page. 
 </p>
 <p align="center">Douglas Gilbert</p>
-<p align="center">Last updated: 23 <font color="#000000">August</font>
-2020 18:00</p>
+<p align="center">Last updated: 17 <font color="#000000">September</font>
+2020 14:00</p>
 </body>
 </html>
