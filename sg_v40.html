@@ -3,9 +3,9 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title>Linux SG driver version 4.0</title>
-	<meta name="generator" content="LibreOffice 6.4.5.2 (Linux)"/>
+	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2020-09-24T22:18:48.889749709"/>
+	<meta name="changed" content="2020-09-28T11:53:39.505320783"/>
 	<meta name="keywords" content="Linux, SCSI, SG_IO, pass-through"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -766,7 +766,7 @@ interface structure was introduced:</p>
         __s32 <font color="#a3238e">din_resid</font>;        /* [o] <font color="#a3238e">din_xfer_len</font> - actual_din_xfer_len */
         __s32 <font color="#a3238e">dout_resid</font>;       /* [o] <font color="#a3238e">dout_xfer_len</font> - actual_dout_xfer_len */
         __u64 <font color="#a3238e">generated_tag</font>;    /* [o] see <b>Table 1</b> entry */
-        __u32 <font color="#a3238e">spare_out</font>;        /* [o] multiple requests: secondary error */
+        __u32 <font color="#a3238e">spare_out</font>;        /* [o] zero placed in this field */
 
         __u32 <font color="#a3238e">padding</font>;
 };</pre><p>
@@ -1388,7 +1388,8 @@ have a different, but related, meaning when they are in a control
 object. A control object is distinguished by having the
 SGV4_FLAG_MULTIPLE_REQS flag set. Multiple requests are described in
 a later <a href="#10 Multiple requests|outline">section</a>.</p>
-<h3 class="western">3.2 Flags in v3 and v4 interfaces</h3>
+<h3 class="western"><a name="__RefHeading___Toc1542_4294551682"></a>3.2
+Flags in v3 and v4 interfaces</h3>
 <p>The following table lists the flag values that can be OR-ed
 together and placed in the <font color="#0066b3">fla</font><font color="#a3238e">gs</font>
 field. The are listed in numerical order of their values (shown in
@@ -1760,7 +1761,8 @@ is always an input to the driver; the corresponding field used by the
 driver to communicate with the user space when an <b>ioctl</b>(2) is
 finished is the <font color="#0066b3">in</font><font color="#a3238e">fo</font>
 field.</p>
-<h3 class="western">3.3 The info field</h3>
+<h3 class="western"><a name="__RefHeading___Toc1544_4294551682"></a>3.3
+The info field</h3>
 <p>The driver writes the <font color="#0066b3">in</font><font color="#a3238e">fo</font>
 field to the user space as part of the sg version 3 and 4 interface
 objects. This occurs after <b>ioctl</b>(SG_IO), <b>ioctl</b>(<font color="#a3238e">SG_IORECEIVE</font>)
@@ -1845,7 +1847,8 @@ listed in the table below in numerical order.</p>
 field in the v3 and v4 interface structures</b></font></p>
 <p>The last three <font color="#0066b3">in</font><font color="#a3238e">fo</font>
 values are new in this driver update.</p>
-<h2 class="western">4 Architecture of the sg driver</h2>
+<h2 class="western"><a name="__RefHeading___Toc1546_4294551682"></a>4
+Architecture of the sg driver</h2>
 <p>The Linux SCSI subsystem is made up of three parts: several upper
 level drivers (ULDs), one mid level, and multiple low level drivers
 (LLDs). The upper level drivers are divided up by the type of SCSI
@@ -2018,7 +2021,8 @@ marked as inactive which is a <font color="#bc312e">reserve request</font>.</p>
 <p>The above description is setting the stage for a newly added
 feature called <i>request sharing</i> introduced in the sg v4 driver.
 It also uses the <font color="#bc312e">reserve request</font>.</p>
-<h3 class="western">4.1 Command or request</h3>
+<h3 class="western"><a name="__RefHeading___Toc18168_1671399770"></a>4.1
+Command or request</h3>
 <p>The terms <i>command</i> and <i>request</i> are used
 interchangeably in this driver and its documentation. Strictly
 speaking a <i>command</i> refers to a SCSI command (or more precisely
@@ -2063,7 +2067,8 @@ transferred to this driver. The reduction of system overhead is due
 to minimizing the copying of user data and the removal of complexity
 associated with techniques like using mmap() which needs to pin or
 <i>fault</i> pages in the computer's main memory.</p>
-<h3 class="western">4.2 Direct, mmap()-ed IO and bio_s</h3>
+<h3 class="western"><a name="__RefHeading___Toc8276_3647010070"></a>4.2
+Direct, mmap()-ed IO and bio_s</h3>
 <p>This section is about <i>user</i> data: what starts inside blocks
 within a disk or SSD, and ends up in a user space application,
 typically via the <b>read</b>(2) system call or, vice versa, via the
@@ -2157,7 +2162,8 @@ than <i>how</i> to do it, compared to some other storage command
 sets. Specifically this driver can take care of the important detail:
 how the data gets from that READ to its paired WRITE. This is the
 theory behind request sharing outlined in several following sections.</p>
-<h2 class="western">5 Synchronous usage</h2>
+<h2 class="western"><a name="__RefHeading___Toc1548_4294551682"></a>5
+Synchronous usage</h2>
 <p>These two forms: <b>ioctl</b>(sg_fd, SG_IO, ptr_to_v3_obj) and
 <b>ioctl</b>(sg_fd, SG_IO, ptr_to_v4_obj) can be used for submitting
 SCSI commands (requests) <span style="font-variant: normal"><span style="font-style: normal">and</span></span>
@@ -2266,7 +2272,7 @@ case where there are multiple copies of the file descriptor (e.g. a
 forked process or due to <b>dup</b>(2)) then is is the last <b>close</b>(2)
 that frees up all associated <font color="#6b6400">sg_request</font>
 objects.</p>
-<h2 class="western"><a name="6 Sharing file descriptors|outline"></a><a name="6 Sharing file descriptors|outline"></a>
+<h2 class="western"><a name="__RefHeading___Toc1550_4294551682"></a><a name="6 Sharing file descriptors|outline"></a><a name="6 Sharing file descriptors|outline"></a>
 6 Sharing file descriptors</h2>
 <p>First a rationale. Copying data between storage devices is a
 relatively common operation. It can be both time and resource
@@ -2376,7 +2382,8 @@ fashion. Only when the new flag SGV4_FLAG_SHARE is given, or OR-ed in
 with other <font color="#0066b3">fla</font><font color="#a3238e">gs</font>,
 is request sharing performed. See the <a href="#8 Request sharing|outline">Request
 sharing</a> section below.</p>
-<h2 class="western">7 Async usage in v4</h2>
+<h2 class="western"><a name="__RefHeading___Toc1552_4294551682"></a>7
+Async usage in v4</h2>
 <p>The terms <i>asynchronous</i> and <i>non</i>-<i>blocking</i> are
 generally used as synonyms in this description. Those terms are
 related to the Unix file descriptor flags O_ASYNC and O_NONBLOCK
@@ -2522,7 +2529,8 @@ but are yet to have <b>ioctl</b>(<font color="#a3238e">SG_IORECEIVE</font>)
 <p>Also, please take note of where the <i>internal completion point</i>
 (it is marked with &quot;<font color="#bf0041">***</font>&quot;) is,
 as it will be referred to several times in this document.</p>
-<h3 class="western">7.1 ioctl(SG_IOABORT)</h3>
+<h3 class="western"><a name="__RefHeading___Toc1554_4294551682"></a>7.1
+ioctl(SG_IOABORT)</h3>
 <p>After starting an asynchronous request with <b>ioctl</b>(<font color="#a3238e"><span style="font-weight: normal">SG_IOSUBMIT</span></font>)
 the user may decide to abort the SCSI command associated with that
 request. This can be a bit tricky in practice and may not succeed
@@ -2576,7 +2584,7 @@ can also be aborted, but only via its pack_id. In this case, even
 though the submit uses the v3 interface, the <b>ioctl</b>(SG_IOABORT)
 must use the v4 interface, with the pack_id placed in its
 <font color="#a3238e">request_extra</font> field.</p>
-<h2 class="western"><a name="8 Request sharing|outline"></a><a name="8 Request sharing|outline"></a><a name="8 Request sharing|outline"></a><a name="8 Request sharing|outline"></a>
+<h2 class="western"><a name="__RefHeading___Toc1556_4294551682"></a><a name="8 Request sharing|outline"></a><a name="8 Request sharing|outline"></a><a name="8 Request sharing|outline"></a><a name="8 Request sharing|outline"></a>
 8 Request sharing</h2>
 <p style="margin-top: 0.3cm; margin-bottom: 0.3cm">Request sharing
 refers to two requests, usually belonging to different storage
@@ -2695,7 +2703,8 @@ copying (or DMA-ing) of that dataset. That leaves three brown
 arrow-ed lines at an angle: the DMA from the device being read, the
 DMA to the device being written, and an optional in-kernel to user
 space copy (annotated with &quot;***&quot;).</p>
-<h3 class="western">8.1 READ, WRITE, WRITE</h3>
+<h3 class="western"><a name="__RefHeading___Toc15431_608653543"></a>8.1
+READ, WRITE, WRITE</h3>
 <p>The data-in, data-out pair in request sharing (usually a READ
 followed by a WRITE) can be extended where one or more extra data-out
 requests is added to the sequence. This is done by using the
@@ -2831,7 +2840,8 @@ performance of this sequence:</p>
 field (bit) set to the above sequence. That should speed the final
 VERIFY as the data on B that it wishes to compare against is already
 in disk B's cache, due to the PRE-FETCH command.</p>
-<h2 class="western">9 Sharing design considerations</h2>
+<h2 class="western"><a name="__RefHeading___Toc1560_4294551682"></a>9
+Sharing design considerations</h2>
 <p>The primary application of sharing is likely to be copying from
 one storage device to another storage device where both are SCSI
 devices (or translate the SCSI command set such as SATA disks do in
@@ -2952,7 +2962,7 @@ to another process using a Unix socket. The <a href="https://keithp.com/blogs/fd
 by Keith Packard outlines the technique. Code based on both
 techniques can be found in the sg3_utils package's
 testing/sg_tst_ioctl.c (with the '-f' option).</p>
-<h2 class="western"><a name="10 Multiple requests|outline"></a><a name="10 Multiple requests|outline"></a>
+<h2 class="western"><a name="__RefHeading___Toc1562_4294551682"></a><a name="10 Multiple requests|outline"></a><a name="10 Multiple requests|outline"></a>
 10 Multiple requests</h2>
 <p>The bsg <b>write(2)</b> based asynchronous interface (removed from
 the kernel around lk 4.15) supported multiple sg_io_v4 objects in a
@@ -3258,9 +3268,7 @@ interface object:</p>
 				secondary error code. Usually this will be caused by an error
 				detected in submission in one of the requests (e.g. using the
 				'ON_OTHER' flag when there is no file share established; this
-				will cause <font color="#006c3b">spare_out</font> to be ERANGE).
-				If multiple submissions have this type of syntax error, spare_out
-				will be set from the last one.</p>
+				will cause <font color="#006c3b">spare_out</font> to be ERANGE).</p>
 			</td>
 		</tr>
 	</tbody>
@@ -4140,12 +4148,10 @@ error</i> is an error that occurs after zero or more commands from a
 multiple requests array have already been submitted. No further
 commands are submitted after a secondary error is detected. The
 secondary error is placed in the <font color="#006c3b">ctl_obj.spare_out</font>
-field and in the <font color="#a3238e">response_arr[n].spare_out</font>
-where n is the index of the request that caused the error. Any
-commands that are inflight when a secondary error is detected, are
-completed. Secondary errors are (positive) errno values. The
-expectation is that if the same request was input individually with
-<b>ioctl</b>(<font color="#a3238e"><span style="font-weight: normal">SG_IOSUBMIT</span></font>)
+field. Any commands that are inflight when a secondary error is
+detected, are completed. Secondary errors are (positive) errno
+values. The expectation is that if the same request was input
+individually with <b>ioctl</b>(<font color="#a3238e"><span style="font-weight: normal">SG_IOSUBMIT</span></font>)
 (i.e. a non-<i>mrq</i> invocation) then that <b>ioctl</b>(2) would
 fail with the <u>same</u> errno value.</p>
 <p>Only t<span style="font-variant: normal"><span style="font-style: normal">he
@@ -4303,7 +4309,7 @@ invocation is identified by the pack_id value held in the
 does <i><u>not</u></i> mean that array of pack_ids is being given.
 Each  <b>i</b><b>octl</b>(SG_IOABORT) invocation can abort at most
 one normal request/command or one <i>mrq</i> array of commands.</p>
-<h3 class="western"><a name="10.1 Processing mrq responses|outline"></a><a name="10.1 Processing mrq responses|outline"></a>
+<h3 class="western"><a name="__RefHeading___Toc1564_4294551682"></a><a name="10.1 Processing mrq responses|outline"></a><a name="10.1 Processing mrq responses|outline"></a>
 10.1 Processing mrq responses</h3>
 <p>When a <i>mrq</i> succeeds, or fails (other than an <b>ioctl</b>(2)
 failure that results in errno being set) then the control object is
@@ -4418,7 +4424,8 @@ Note that <font color="#006c3b">ctl_obj.driver_status</font>,
 <font color="#006c3b">ctl_obj.transport_status</font> and
 <font color="#006c3b">ctl_obj.device_status</font> are not used and
 are set to zero in a <i>mrq</i> response.</p>
-<h3 class="western">10.2 Aborting multiple requests</h3>
+<h3 class="western"><a name="__RefHeading___Toc1566_4294551682"></a>10.2
+Aborting multiple requests</h3>
 <p>The <b>ioctl</b>(SG_IOABORT) can be used to abort all inflight and
 yet-to-be submitted requests associated with a single <i>mrq</i>
 invocation. Any <i>mrq</i> invocation that the user may want to abort
@@ -4468,7 +4475,8 @@ given to <b>ioctl</b>(<font color="#a3238e"><span style="font-weight: normal">SG
 that is used. This must be the case as the mating <b>ioctl</b>(<font color="#a3238e">SG_IORECEIVE</font>)
 has typically not yet been issued. 
 </p>
-<h3 class="western">10.3 Single/multiple (non-)blocking requests</h3>
+<h3 class="western"><a name="__RefHeading___Toc1568_4294551682"></a>10.3
+Single/multiple (non-)blocking requests</h3>
 <p>Almost all interactions between a user space program and the sg
 driver involve using a sg driver file descriptor. Each sg driver file
 descriptor belongs to a sg device. [And optionally each file
@@ -4544,7 +4552,8 @@ total number of inactive requests of the given file descriptor </span></span><sp
 all file descriptors that have the same owning sg device, can be
 found with </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(SG_SET_GET_EXTENDED,
 {SG_SEIRV_DEV_</span></span><span style="font-variant: normal"><span style="font-style: normal">INACT</span></span><span style="font-variant: normal"><span style="font-style: normal">_RQS}).</span></span></p>
-<h3 class="western">10.4 SGV4_FLAG_REC_ORDER flag</h3>
+<h3 class="western"><a name="__RefHeading___Toc18199_72860742"></a>10.4
+SGV4_FLAG_REC_ORDER flag</h3>
 <p><span style="font-variant: normal"><span style="font-style: normal">Sometimes
 it is useful to dictate the order of the response array when
 </span></span><span style="font-variant: normal"><span style="font-style: normal">non-blocking
@@ -4656,7 +4665,8 @@ so that the responses &quot;land&quot; in the </span></font></span><span style="
 location as the submissions</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">.
 </span></font></span>
 </p>
-<h2 class="western">11 pack_id or tag</h2>
+<h2 class="western"><a name="__RefHeading___Toc1570_4294551682"></a>11
+pack_id or tag</h2>
 <p>When doing asynchronous IO with the sg driver there needs to be a
 way to wait for a particular response, not just the response that is
 the <i>oldest</i>. [By <i>oldest</i> is meant the command request in
@@ -4711,7 +4721,8 @@ discussed in the previous paragraph). The match <b>ioctl</b>(<font color="#a3238
 call should make sure the <font color="#a3238e">request_tag</font>
 field is set as appropriate and the SGV4_FLAG_FIND_BY_TAG flag should
 be <u>OR</u>-ed with other <font color="#a3238e">flags</font>.</p>
-<h2 class="western">12 Bi-directional command support</h2>
+<h2 class="western"><a name="__RefHeading___Toc1572_4294551682"></a>12
+Bi-directional command support</h2>
 <p><u>N.B. Support for SCSI bidirectional commands has been removed
 from the Linux kernel in version 5.1 . To allow the driver to merge
 post lk 5.1, bidi support has been removed from this driver. That
@@ -4764,7 +4775,8 @@ transfer) has completed. pack_id and/or tags can be used as discussed
 in the previous section. Signal on completion, polling for completion
 and multi-threading should also work on <i>bidi</i> commands without
 issues.</p>
-<h2 class="western">13 SG interface support changes</h2>
+<h2 class="western"><a name="__RefHeading___Toc1574_4294551682"></a>13
+SG interface support changes</h2>
 <p style="margin-bottom: 0cm">In the following table, a comparison is
 made between the supported interfaces of the sg driver found in lk
 4.20 (V3.5.36) and the proposed V4 sg driver. The movement of the
@@ -4944,7 +4956,8 @@ what might be dropped is the ability of the v3 interface to use the
 required should be to change the <b>write</b>(2) to an
 <b>ioctl</b>(<font color="#0066b3">SG_IOSUBMIT_V3</font>) and the
 <b>read</b>(2) to an <b>ioctl</b>(<font color="#0066b3"><span style="font-weight: normal">SG_IORECEIVE_V3</span></font>).</p>
-<h2 class="western">14 IOCTLs</h2>
+<h2 class="western"><a name="__RefHeading___Toc1576_4294551682"></a>14
+IOCTLs</h2>
 <p>Over time there has been a transfer of functionality from the
 <b>write</b>(2) and <b>read</b>(2) system calls to various <b>ioctl</b>(2)s
 which are listed below. Using the <b>write</b>(2) and <b>read</b>(2)
@@ -6615,7 +6628,8 @@ determining if an sg device changed or not, it is best to use the raw
 fields yielded by <b>SG_SEIRV_DEV_TS_LOWER</b><span style="font-weight: normal">
 and </span><b>SG_SEIRV_DEV_TS_</b><b>UPPER</b><span style="font-weight: normal">
 ioctl calls.</span></p>
-<h2 class="western"><b>15 System Calls</b></h2>
+<h2 class="western"><a name="__RefHeading___Toc17996_3956569564"></a><b>15
+System Calls</b></h2>
 <p><span style="font-weight: normal">This section lists Linux system
 calls that can be used with a sg file descriptor</span><span style="font-weight: normal">,
 normally as the first argument</span><span style="font-weight: normal">.</span><span style="font-weight: normal">
@@ -6877,16 +6891,17 @@ calls</span></font></font></b></font></p>
 (i.e. struct sg_io_v4) uses <b>ioctl</b>(2)s for all its submissions,
 completions and adds new support for aborting a SCSI command that is
 underway.</p>
-<h2 class="western">16 Downloads and testing</h2>
-<p>This tarball: <a href="p/sgv4_20200803.tgz">sgv4_20200803</a>
+<h2 class="western"><a name="__RefHeading___Toc1578_4294551682"></a>16
+Downloads and testing</h2>
+<p>This tarball: <a href="p/sgv4_20200927.tgz">sgv4_20200927</a>
 contains a README file that outlines what is included. There are
-earlier versions of this driver for the <u>lk5.</u><u>5</u> and <u>lk5.</u><u>6</u><u>
+earlier versions of this driver for the <u>lk5.</u><u>7</u> and <u>lk5.</u><u>8</u><u>
 series</u>. The most recent versions of this driver around found in
-its <u>lk5.</u><u>7.</u><u>12</u> and <u>lk5.</u><u>8.0</u>
-directories.  Each of the directories contains a patchset placed in
-sub-directory. The three new or changed files that represent the
-driver: drivers/scsi/sg.c , include/uapi/scsi/sh.h and
-include/include/sg.h are also placed under each lk5.* directory. 
+its <u>lk5.</u><u>9</u><u>.0</u> directoriy  Each of the directories
+contains a patchset placed in sub-directory. The three new or changed
+files that represent the driver: drivers/scsi/sg.c ,
+include/uapi/scsi/sh.h and include/include/sg.h are also placed under
+each lk5.* directory. 
 </p>
 <p>The sg3_utils was originally written to test the v3 sg driver
 interface when it was introduced, circa 2000. So where better to put
@@ -6948,7 +6963,8 @@ are &quot;v4&quot; driver aware:</p>
 	and RT signal usage with the sg driver.</p>
 	<li><p><b>sg_mrq_dd</b>: yes, another dd clone: using share variable
 	blocking (svb) <i>mrq</i> for sg to sg copies. It can take
-	scatter-gather lists with its skip= and seek= operands</p>
+	scatter-gather lists with its skip= and seek= operands (like the
+	<b>ddpt</b> utility in a package of the same name)</p>
 </ul>
 <p>These test utilities are <u>not</u> built by default since they
 are not part of the automake setup; instead an <i>old school</i>
@@ -7005,11 +7021,13 @@ new &lt;kernel_src&gt;/include/uapi/scsi/sg.h header needed for the
 sg v4 driver is kept in the testing directory. It has the name
 'uapi_sg.h' so it won't collide with the &quot;real&quot; header if
 it is present.</p>
-<h2 class="western">17 Other documents</h2>
+<h2 class="western"><a name="__RefHeading___Toc1580_4294551682"></a>17
+Other documents</h2>
 <p>The original sg driver documentation is here: <a href="http://www.tldp.org/HOWTO/SCSI-Generic-HOWTO/index.html">SCSI-Generic-HOWTO</a>
 and a more recent discussion of <b>ioctl</b>(SG_IO) is here: <a href="sg_io.html">sg_io</a>
 .</p>
-<h2 class="western">18 Conclusion</h2>
+<h2 class="western"><a name="__RefHeading___Toc1582_4294551682"></a>18
+Conclusion</h2>
 <p>The sg v4 driver is designed to be backwardly compatible with the
 v3 driver. This simplest way for an application to find which driver
 version it has is with the <b>ioctl</b>(SG_GET_VERSION_NUM). Removing
@@ -7022,7 +7040,7 @@ apps that use sg driver nodes and check their functionality.</p>
 <p>Return to <a href="index.html">main</a> page. 
 </p>
 <p align="center">Douglas Gilbert</p>
-<p align="center">Last updated: 24 <font color="#000000">September</font>
-2020 22:00</p>
+<p align="center">Last updated: 28 <font color="#000000">September</font>
+2020 12:00</p>
 </body>
 </html>
