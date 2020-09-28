@@ -5,7 +5,7 @@
 	<title>Linux SG driver version 4.0</title>
 	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2020-09-28T11:53:39.505320783"/>
+	<meta name="changed" content="2020-09-28T12:45:11.370361518"/>
 	<meta name="keywords" content="Linux, SCSI, SG_IO, pass-through"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -5393,12 +5393,14 @@ depending on the LLD.</p>
 			<td width="11%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
 				active, deprecated; timeout 
 				</p>
-				<p>in seconds is return value</p>
+				<p>in seconds is <u>return</u> <u>value</u></p>
 			</td>
 			<td width="63%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 				the v1 and v2 interfaces did not contain a command timeout field
 				so this was a substitute. Both the v3 and v4 interface have a
-				command timeout field which is better than using this <b>ioctl</b></p>
+				command timeout field which is better than using this <b>ioctl</b><span style="font-weight: normal">().
+				N.B. The third argument of this ioctl() is </span><u><span style="font-weight: normal">not</span></u><span style="font-weight: normal">
+				used.</span></p>
 			</td>
 		</tr>
 	</tbody>
@@ -5581,6 +5583,25 @@ depending on the LLD.</p>
 				what the cdb length. While that works for standard cdbs (from
 				T10) it may not work for vendor specific commands, hence this
 				<b>ioctl(</b>2).</p>
+			</td>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr valign="top">
+			<td width="26%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				<b>SG_SCSI_RESET</b> [0x2284]</p>
+			</td>
+			<td width="11%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				active</p>
+			</td>
+			<td width="63%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
+				third argument should point to an int which should contain one of
+				these values: SG_SCSI_RESET_NOTHING[0], SG_SCSI_RESET_DEVICE[1]
+				(i.e. LU reset), SG_SCSI_RESET_BUS[2], SG_SCSI_RESET_HOST[3], or
+				SG_SCSI_RESET_TARGET[4]. Any one of those values can be OR-ed
+				with this mask SG_SCSI_RESET_NO_ESCALATE[0x100]; without that
+				mask, the escalation order on failure is 1 -&gt; 4 -&gt; 2 - &gt;
+				3 . This <b>ioctl</b> is implemented by the SCSI middle layer.</p>
 			</td>
 		</tr>
 	</tbody>
@@ -6893,7 +6914,7 @@ completions and adds new support for aborting a SCSI command that is
 underway.</p>
 <h2 class="western"><a name="__RefHeading___Toc1578_4294551682"></a>16
 Downloads and testing</h2>
-<p>This tarball: <a href="p/sgv4_20200927.tgz">sgv4_20200927</a>
+<p>This tarball: <a href="p/sgv4_20200927.tgz">sgv4_20200</a><a href="p/sgv4_20200927.tgz">927</a>
 contains a README file that outlines what is included. There are
 earlier versions of this driver for the <u>lk5.</u><u>7</u> and <u>lk5.</u><u>8</u><u>
 series</u>. The most recent versions of this driver around found in
@@ -7041,6 +7062,6 @@ apps that use sg driver nodes and check their functionality.</p>
 </p>
 <p align="center">Douglas Gilbert</p>
 <p align="center">Last updated: 28 <font color="#000000">September</font>
-2020 12:00</p>
+2020 13:00</p>
 </body>
 </html>
