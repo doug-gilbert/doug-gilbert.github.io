@@ -5,7 +5,7 @@
 	<title>Linux SG driver version 4.0</title>
 	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2020-10-13T21:56:00.442667906"/>
+	<meta name="changed" content="2020-11-22T00:09:24.771310765"/>
 	<meta name="keywords" content="Linux, SCSI, SG_IO, pass-through"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -276,19 +276,20 @@ and receives back from that device: SCSI status, sense data (if the
 status is &quot;bad&quot;) and optionally data (known as <i>data-in</i>).
 It is the <i>pass-through</i> driver of the Linux SCSI subsystem. The
 <b>sg</b> driver does not <i><u>own</u></i> SCSI devices in the
-normal fashion that many OS drivers have exclusive control over a
-class of devices. In most cases the <b>sg</b> driver <i><u>shares</u></i>
-control of SCSI devices with other SCSI sub-system upper level
-drivers such as <b>sd</b> (for disks), <b>st</b> (for tape drives),
-<b>sr</b> (for DVD/CDs) and <b>ses</b> (for SCSI Enclosure Services
-devices). Some disk array drivers choose to make their (physical)
-disks visible to the <b>sg</b> driver and <i><u>not</u></i> visible
-to the <b>sd</b> driver; the reason is to disallow <i>direct</i> data
-access to those disks while allowing tools like smartmontools to
-monitor the <i>metadata </i>of those disks (e.g. their temperature
-and endurance/lifetime metrics (for SSDs)).</p>
+normal fashion <font color="#000000">in which</font> many OS drivers
+have <i>exclusive</i> control over a class of devices. In most cases
+the <b>sg</b> driver <i><u>shares</u></i> control of SCSI devices
+with other SCSI sub-system upper level drivers such as <b>sd</b> (for
+disks), <b>st</b> (for tape drives), <b>sr</b> (for DVD/CDs) and <b>ses</b>
+(for SCSI Enclosure Services devices). Some disk array drivers choose
+to make their (physical) disks visible to the <b>sg</b> driver and
+<i><u>not</u></i> visible to the <b>sd</b> driver; the reason is to
+disallow <i>direct</i> data access to those disks while allowing
+tools like smartmontools to monitor the <i>metadata </i>of those
+disks (e.g. their temperature and endurance/lifetime metrics (for
+SSDs)).</p>
 <p>The <b>sg</b> driver has been present since version 1.0 of the
-kernel in 1992. In the 28 years since then the driver has had 3
+Linux kernel in 1992. In the 28 years since then the driver has had 3
 interfaces to the user space and now a fourth is being added. The
 first and second interfaces (v1 and v2) use the same header: 'struct
 sg_header' with only v2 now fully supported. The &quot;v3&quot;
@@ -296,10 +297,10 @@ interface is based on 'struct sg_io_hdr'. Both these structures are
 defined in include/scsi/sg.h the bulk of whose contents will move to
 include/uapi/scsi/sg.h as part of this upgrade. Prior to the changes
 now proposed, the &quot;v4&quot; interface is only implemented in the
-block layer's <b>bsg</b> driver. The Block SCSI Generic (bsg) driver
-has been present in Linux for around 15 years . The bsg driver's user
-interface is found in include/uapi/linux/bsg.h . These changes
-propose adding support for the &quot;v4&quot; interface via
+block layer's <b>bsg</b> driver. The Block SCSI Generic (<b>bsg</b>)
+driver has been present in Linux for around 15 years . The <b>bsg</b>
+driver's user interface is found in include/uapi/linux/bsg.h . These
+changes propose adding support for the &quot;v4&quot; interface via
 <b>ioctl</b><span style="font-weight: normal">(SG_IO)</span> for
 synchronous use, and the new <b>ioctl</b>(<font color="#a3238e"><span style="font-weight: normal">SG_IOSUBMIT</span></font><span style="font-weight: normal">)</span>
 and <b>ioctl</b>(<font color="#a3238e">SG_IORECEIVE</font><span style="font-weight: normal">)</span>
@@ -314,13 +315,13 @@ and <font color="#0066b3"><span style="font-weight: normal">SG_IORECEIVE_V3</spa
 If
 the driver changes are accepted, the driver version, which is visible
 via an <b>ioctl</b><span style="font-weight: normal">(SG_GET_VERSION_NUM),</span>
-will be bumped from 3.5.36 (in lk 5.0) to 4.0.x . The opportunity is
+will be bumped from 3.5.36 (in lk 5.9) to 4.0.x . The opportunity is
 being taken to clean up the driver after 20 years of piecemeal
 patches. Those patches have left the driver with misleading variable
 names and comments that don't match the adjacent code. Plus there are
 new kernel facilities that the driver can take advantage of. Also of
 note is that much or the low level code once in the sg driver (and
-remnants remain) have been moved to the block layer and SCSI
+remnants remain) have been moved to the block layer and the SCSI
 mid-level. This upgrade has been done as a two stage process: first
 clean the driver up, remove some restrictions and re-instate some
 features that have been accidentally lost. The first stage also adds
@@ -331,23 +332,23 @@ async/non-blocking usage.
 </p>
 <p>Note that the Linux block layer implements the synchronous sg v3
 interface via <b>ioctl</b>(<span style="font-weight: normal">SG_IO</span>)
-on all block devices that use the SCSI subsystem, directly or via
-translation (e.g. SATA disks use libata which implements the SAT T10
-standard). In pseudocode an example like this '
-<b>ioctl</b>(<b>open</b>(&quot;/dev/sdc&quot;), <span style="font-weight: normal">SG_IO</span>,
-ptr_to_sg_io_hdr)' works as expected. This is <i>not</i> implemented
-by the sg driver so it is important that the sg driver's
-implementation of <b>ioctl</b>(<span style="font-weight: normal">SG_IO</span>)
+on <i>all</i> block devices that use the SCSI subsystem, directly or
+via translation (e.g. SATA disks use libata which implements the T10
+SAT standard; see <a href="https://www.t10.org/">https://www.t10.org/
+</a>). In pseudocode an example like this: ' <b>ioctl</b>(<b>open</b>(&quot;/dev/sdc&quot;),
+<span style="font-weight: normal">SG_IO</span>, ptr_to_sg_io_hdr)'
+works as expected. This is <i>not</i> implemented by the sg driver so
+it is important that the sg driver's implementation of <b>ioctl</b>(<span style="font-weight: normal">SG_IO</span>)
 remains consistent with other driver implementations (mainly the one
 found in block/scsi_ioctl.c kernel source code).</p>
 <h3 class="western"><a name="__RefHeading___Toc7793_510494588"></a>1.1
 Status</h3>
-<p>A recent first stage patchset (containing 40 patches) was sent to
-the linux-scsi list on 20200823. Its cover was titled: &quot;[PATCH
-v10 00/40] sg: add v4 interface&quot;.  Patch 40 bumps the driver
+<p>A recent first stage patchset (containing 44 patches) was sent to
+the linux-scsi list on 20201014. Its cover was titled: &quot;[PATCH
+v11 00/44] sg: add v4 interface&quot;.  Patch 44 bumps the driver
 version number to 4.0.09 . The sgv4_20200803 patchset below <font color="#000000">combines
 the first and second stage patchsets.</font> Its first stage patchset
- contains 40 patches. Its second stage patchset adds the new features
+ contains 44 patches. Its second stage patchset adds the new features
 such as file and request sharing, multiple requests (in one
 invocation) and supports and the so-called <i>extended</i> <b>ioctl</b>(2).
 The second patchset is only currently available from this page (as
@@ -1023,8 +1024,8 @@ field in the version 3 interface structure.</p>
 				be written from the host to the storage device. If this field is
 				non-zero, then its the the number of elements in the scatter
 				gather list pointed to by <font color="#a3238e">dout_xferp</font>
-				(or <font color="#0066b3">dxferp</font>). 
-				</p>
+				(or <font color="#0066b3">dxferp</font>). Kernels around lk 5.10
+				limit this value to UIO_MAXIOV which is 1024.</p>
 			</td>
 		</tr>
 		<tr valign="top">
@@ -1054,8 +1055,8 @@ field in the version 3 interface structure.</p>
 				be written from the host to the storage device. If this field is
 				<i>non-zero</i>, then its the the number of elements in the
 				scatter gather list pointed to by <font color="#a3238e">din_xferp</font>
-				(or <font color="#0066b3">dxferp</font>). 
-				</p>
+				(or <font color="#0066b3">dxferp</font>). Kernels around lk 5.10
+				limit this value to UIO_MAXIOV which is 1024.</p>
 			</td>
 		</tr>
 		<tr valign="top">
@@ -2869,11 +2870,10 @@ Linux). Lets assume the copy is large enough so that it needs to be
 cut up into segments, implemented by READ (from source), WRITE (to
 destination) commands, each pair of which share the same data. Even
 with modern SSDs, maximum performance is usually obtained by queuing
-commands to storage devices. However the design of sharing in the sg
-driver requires sequential READ then WRITE commands on a pair of
-shared file descriptors in a way that precludes queuing using those
-two file descriptors. Worse still, the storage device that does the
-READ (i.e. the <font color="#000000"><u><span style="font-weight: normal">read-side</span></u></font>
+commands to storage devices. However the design of request sharing in
+the sg driver precludes queuing using those two file descriptors.
+Worse still, the storage device that does the READ (i.e. the
+<font color="#000000"><u><span style="font-weight: normal">read-side</span></u></font>
 of the share) must wait, effectively doing nothing while its paired
 WRITE command is being done; it could be doing the <i>next</i> READ
 while it's waiting.</p>
@@ -2882,25 +2882,26 @@ which is well supported by the Linux kernel. Multi-threaded programs
 are typically multiple threads of execution running in a single
 process. All threads within a process share the same memory and other
 resources such as file descriptors. In the case of a copy using
-request sharing in the sg driver, a good approach would be to have
-one management thread and multiple worker threads. Each worker thread
-would go to a <i>distribution centre</i> where information about the
-next segment offsets to be copied would be fetched; then the worker
-thread could go and do that copy segment using those offsets and
-return to the <i>distribution centre</i> for information on the next
-segment offsets to be copied, or be told there is nothing more to do
-in which case the thread could exit. The <i>distribution centre</i>
-needs to be stateful which in this context means that it needs to
-remember when it has given out copy segment offsets and not give them
-out again (unless the original thread reports an error). One way to
-protect this <i>distribution centre</i> from two worker threads
-accessing it at the same time is with a mutex shared between all
-worker threads. Finer grained threading mechanisms such as atomic
-integers may be able provide this protection in the place of a mutex.</p>
+request sharing in the sg driver, <font color="#000000">one </font>approach
+would be to have one management thread and multiple worker threads.
+Each worker thread would go to a <i>distribution centre</i> in the
+management thread where information about the next segment offsets to
+be copied would be fetched; then the worker thread could go and do
+that copy segment using those offsets and return to the <i>distribution
+centre</i> for information on the next segment offsets to be copied,
+or be told there is nothing more to do in which case the thread could
+exit. The <i>distribution centre</i> needs to be <i>stateful</i>
+which in this context means that it needs to remember when it has
+given out copy segment offsets and not give them out again (unless
+the original thread reports an error). One way to protect this
+<i>distribution centre</i> from two worker threads accessing it at
+the same time is with a mutex shared between all worker threads.
+Finer grained threading mechanisms such as atomic integers may be
+able provide this protection in the place of a mutex.</p>
 <p>With the sg driver there is no limit (in the driver, modulo memory
 availability) to the number of file descriptors that there can be
 referring to a single storage device. So for this segmented copy
-using sg driver sharing, a good approach would be to do a separate
+using sg driver sharing, another approach would be to do a separate
 <b>open(2)</b> system call on the source and another on the
 destination in <i>each</i> worker thread. Then each worker thread
 could set up a file descriptor share with the <font color="#000000"><u>read-side</u></font>
@@ -2928,17 +2929,18 @@ R1 and before it completes another thread issues a read called R2,
 then there is no guarantee that R1 will complete <i>before</i> R2.
 And if R2 does complete before R1 and the <b>write(2)</b> system call
 is called for W2 (i.e. the pair of R2) <i>before</i> W1 then those
-writes will be out of order. Detecting out-of-order writes when
-gigabytes are being copied can be painful. If the source and shuffled
-destination are available as files then a utility like <b>sha1sum</b>
-will show them as different (because they are) but an old school
-<b>sum</b>(1) (like from '<b>sum -s</b>') will give the same value
-for both. There is a related issue associated with the atomicity of
-the Linux <b>write</b>(2) command. There is no corresponding
-atomicity issue with the SCSI WRITE command if the target holding the
-storage device has one active port. If the target has multiple active
-ports (potentially allowing writes from other machines) then the
-WRITE ATOMIC command may be needed to guarantee atomicity.</p>
+writes will be <i>out of order.</i> Detecting out-of-order writes
+when gigabytes are being copied can be painful. If the source and
+shuffled destination are available as files then a utility like
+<b>sha1sum</b> will show them as different (because they are) but an
+old school utility like <b>sum</b>(1) (like from '<b>sum -s</b>')
+will give the same value for both. There is a related issue
+associated with the atomicity of the Linux <b>write</b>(2) command.
+There is no corresponding atomicity issue with the SCSI WRITE command
+if the target holding the storage device has one active port. If the
+target has multiple active ports (potentially allowing writes from
+other machines) then the WRITE ATOMIC command may be needed to
+guarantee atomicity.</p>
 <p>To save time and resources the <font color="#000000"><span style="font-style: normal"><u>read-</u></span></font><span style="font-style: normal"><u>side</u></span>
 shared READ request should be issued with SG_FLAG_NO_DXFER flag OR-ed
 with its other <font color="#0066b3">fla</font><font color="#a3238e">gs</font>.
@@ -7083,7 +7085,7 @@ apps that use sg driver nodes and check their functionality.</p>
 <p>Return to <a href="index.html">main</a> page. 
 </p>
 <p align="center">Douglas Gilbert</p>
-<p align="center">Last updated: 13 <font color="#000000">Octo</font><font color="#000000">ber</font>
-2020 21:00</p>
+<p align="center">Last updated: 22 <font color="#000000">Novem</font><font color="#000000">ber</font>
+2020 01:00</p>
 </body>
 </html>
