@@ -5,8 +5,10 @@
 	<title>Scsi_debug adapter driver for Linux</title>
 	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2020-11-24T15:45:46.327714375"/>
+	<meta name="changed" content="2020-12-01T11:54:56.870504945"/>
 	<meta name="keywords" content="Linux driver, SCSI, ramdisk"/>
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -186,7 +188,7 @@ Parameters appearing on the kernel boot line or given when the driver
 is loaded as a module may be either in decimal or hexadecimal (hex).
 Hex values are indicated by a '0x' prefix. Parameters changed via
 sysfs can only be done via decimal values unless otherwise noted.</p>
-<p>In the <tt class="western">/sys/module/scsi_debug/parameters</tt> 
+<p>In the <tt class="western">/sys/module/scsi_debug/parameters</tt>
 directory the parameters used when the scsi_debug module was started
 (or their default values) are listed. Even though some of those
 parameters are have writable permissions, writing to them has no
@@ -194,8 +196,8 @@ effect on the driver. Note that some parameters appear in this
 directory but not in the <tt class="western">/sys/bus/pseudo/drivers/scsi_debug</tt>
 directory. If the <b>sysfs access</b> cell for a parameter in the
 following table is blank then it doesn't appear in the
-<tt class="western">/sys/bus/pseudo/drivers/scsi_debug</tt> 
-directory but does appear in the <tt class="western">/sys/module/scsi_debug/parameters</tt>
+<tt class="western">/sys/bus/pseudo/drivers/scsi_debug</tt> directory
+but does appear in the <tt class="western">/sys/module/scsi_debug/parameters</tt>
 directory.</p>
 <p>Here is a list of scsi_debug driver parameters:</p>
 <table width="1266" cellpadding="2" cellspacing="0">
@@ -299,10 +301,10 @@ directory.</p>
 		<td width="747" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			takes a h:c:t:l tuple where &quot;h&quot; is the host number, &quot;c&quot;
 			is the channel number, &quot;t&quot; is the target number and &quot;l&quot;
-			is the LUN. Can be used together <font color="#006c3b">unb</font><font color="#006c3b">ind</font>
+			is the LUN. Can be used together <font color="#006c3b">unbind</font>
 			option. Is <i><u>not</u></i> a driver parameter and is only found
 			in the <tt class="western">/sys/bus/pseudo/drivers/scsi_debug</tt>
-			 directory.</p>
+			directory.</p>
 		</td>
 	</tr>
 	<tr valign="top">
@@ -793,7 +795,7 @@ directory.</p>
 			next positive <font color="#006c3b">add_host</font> or scan</p>
 		</td>
 		<td width="68" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-			1.89</p>
+			1.90</p>
 		</td>
 		<td width="747" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			when <font color="#006c3b">max_luns</font> is 256 or less, by
@@ -1205,11 +1207,12 @@ directory.</p>
 		</td>
 		<td width="747" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			this is the number of io_uring iopoll queues. Should be less than
-			<font color="#006c3b">submit_</font><font color="#006c3b">queues</font>.
-			If it is <i>not</i> less than <font color="#006c3b">submit_queues</font>
-			then change to 1 (unless <font color="#006c3b">submit_queues</font>
-			is 1 in which case <font color="#006c3b">p</font><font color="#006c3b">oll</font><font color="#006c3b">_</font><font color="#006c3b">queues</font>
-			is changed to 0).</p>
+			<font color="#006c3b">submit_queues</font>. If it is <i>not</i>
+			less than <font color="#006c3b">submit_queues</font> then change
+			to 1 (unless <font color="#006c3b">submit_queues</font> is 1 in
+			which case <font color="#006c3b">poll_queues</font> is changed to
+			0). The reason why it must be less is that there needs to be at
+			least one submit_queue available for <i>non</i>-iopoll requests.</p>
 		</td>
 	</tr>
 	<tr>
@@ -3407,7 +3410,7 @@ with
 additions from<br/>
 Martin K. Petersen &lt;martin dot petersen at
 oracle dot com&gt;</p>
-<p style="margin-left: 8.75cm">Last updated: 24th November 2020 16:00
+<p style="margin-left: 8.75cm">Last updated: 1st December 2020 11:00
 -0500</p>
 </body>
 </html>
