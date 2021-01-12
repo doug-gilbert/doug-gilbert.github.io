@@ -5,7 +5,7 @@
 	<title>Linux SG driver version 4.0</title>
 	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2020-11-22T00:09:24.771310765"/>
+	<meta name="changed" content="2021-01-12T01:06:26.002128334"/>
 	<meta name="keywords" content="Linux, SCSI, SG_IO, pass-through"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -414,6 +414,8 @@ patchset:</p>
 	between SCSI devices and kernel buffers controlled by this driver;
 	they still take place. This level of control is needed for the
 	&quot;sharing&quot; request feature discussed below.</p>
+	<li><p>add support for blk_poll() and REQ_HIPRI with the
+	SGV4_FLAG_HIPRI</p>
 	<li><p>'re-purpose' previously unused 8 bytes at end of <i>struct
 	sg_scsi_id</i> for the full SCSI LUN as an array of 8 bytes. Use
 	anonymous union within the structure to avoid breaking existing
@@ -422,7 +424,7 @@ patchset:</p>
 	/sys/kernel/debug/scsi_generic/snapshot'. This is the initial
 	debugfs support. Add snapshot_devs read-write attribute that can be
 	used to limit which sg devices are shown in the snapshot.</p>
-	<li><p>bump the driver version number to 4.0.11</p>
+	<li><p>bump the driver version number to 4.0.12</p>
 </ul>
 <p>Probably the most important aspect of the first patchset not shown
 in the above list, is <i>modernizing </i>the driver code. Much of
@@ -532,7 +534,7 @@ patchset:</p>
 	control <u>where</u> those responses are placed in response array.
 	The user can also give a maximum number of responses that a <i>mrq</i>
 	<b>ioctl</b>(SG_IORECEIVE) can receive.</p>
-	<li><p>bump the driver version number to 4.0.45</p>
+	<li><p>bump the driver version number to 4.0.46</p>
 </ul>
 <p>There are still some things to do:</p>
 <ul>
@@ -809,7 +811,7 @@ name from the version 3 interface structure. A field name in brackets
 implies a close, but not exact match, see the notes in the third
 column. No entry in the second column implies there is not matching
 field in the version 3 interface structure.</p>
-<table width="100%" cellpadding="4" cellspacing="0" style="page-break-after: avoid">
+<table width="100%" cellpadding="4" cellspacing="0" style="background: transparent; page-break-after: avoid">
 	<col width="30*"/>
 
 	<col width="27*"/>
@@ -817,7 +819,7 @@ field in the version 3 interface structure.</p>
 	<col width="199*"/>
 
 	<thead>
-		<tr valign="top">
+		<tr bgcolor="#b3cac7" style="background: #b3cac7" valign="top">
 			<th width="12%" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0.1cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
 				v4 interface field</p>
 			</th>
@@ -1417,18 +1419,18 @@ field. The are listed in numerical order of their values (shown in
 hex within square brackets). Where two names map to the same value,
 the preferred name is in boldface. The older flags (i.e. inherited
 from the version 3 driver) tend to have lower values.</p>
-<table width="100%" cellpadding="4" cellspacing="0" style="page-break-after: avoid">
+<table width="100%" cellpadding="4" cellspacing="0" style="background: transparent; page-break-after: avoid">
 	<col width="63*"/>
 
 	<col width="193*"/>
 
 	<thead>
-		<tr valign="top">
-			<th width="25%" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0.1cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
-				Flag name [hex_value]</p>
+		<tr bgcolor="#81aca6" style="background: #81aca6" valign="top">
+			<th width="25%" style="background: transparent" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0.1cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				<span style="background: transparent">Flag name [hex_value]</span></p>
 			</th>
-			<th width="75%" style="border: 1px solid #000000; padding: 0.1cm"><p>
-				Description</p>
+			<th width="75%" style="background: transparent" style="border: 1px solid #000000; padding: 0.1cm"><p>
+				<span style="background: transparent">Description</span></p>
 			</th>
 		</tr>
 	</thead>
@@ -1616,7 +1618,19 @@ from the version 3 driver) tend to have lower values.</p>
 		</tr>
 		<tr valign="top">
 			<td width="25%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
-				<font color="#006c3b"><b>SGV4_FLAG_STOP_IF</b></font> [0x800]</p>
+				<b>SGV4_FLAG_</b><font color="#000000"><b>HIPRI</b></font> 
+				[0x800]</p>
+			</td>
+			<td width="75%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
+				The associated request will have REQ_HIPRI set when issued to the
+				block layer. The completion handling will use blk_poll() instead
+				of waiting for an event or classic polling (i.e. via the Unix
+				<b>poll</b>(2) or Linux <b>epoll</b>(2) system calls).</p>
+			</td>
+		</tr>
+		<tr valign="top">
+			<td width="25%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				<font color="#006c3b"><b>SGV4_FLAG_STOP_IF</b></font> [0x1000]</p>
 			</td>
 			<td width="75%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 				This flag is only permitted in the <i>control object</i> with
@@ -1632,7 +1646,7 @@ from the version 3 driver) tend to have lower values.</p>
 		</tr>
 		<tr valign="top">
 			<td width="25%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
-				<b>SGV4_FLAG_DEV_SCOPE</b> [0x1000]</p>
+				<b>SGV4_FLAG_DEV_SCOPE</b> [0x2000]</p>
 			</td>
 			<td width="75%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 				this flag is currently only used by <b>ioctl</b>(SG_IOABORT).
@@ -1653,7 +1667,7 @@ from the version 3 driver) tend to have lower values.</p>
 		</tr>
 		<tr valign="top">
 			<td width="25%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
-				<b>SGV4_FLAG_SHARE</b> [0x2000]</p>
+				<b>SGV4_FLAG_SHARE</b> [0x4000]</p>
 			</td>
 			<td width="75%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 				This flag indicates <i>request sharing</i>. Such requests usually
@@ -1670,7 +1684,7 @@ from the version 3 driver) tend to have lower values.</p>
 		</tr>
 		<tr valign="top">
 			<td width="25%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
-				<b>SGV4_FLAG_DO_ON_OTHER</b> 0x4000 ^^</p>
+				<b>SGV4_FLAG_DO_ON_OTHER</b> 0x8000 ^^</p>
 			</td>
 			<td width="75%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 				This flag is <i>only</i> permitted within an array of requests
@@ -1679,20 +1693,14 @@ from the version 3 driver) tend to have lower values.</p>
 		</tr>
 		<tr valign="top">
 			<td width="25%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
-				<b>SGV4_FLAG_KEEP_SHARE</b> [0x8000]</p>
+				<br/>
+
+				</p>
 			</td>
 			<td width="75%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
-				the default action of this driver is to &quot;free up&quot; a
-				reserve request buffer after the <font color="#000000"><u>write-side</u></font>
-				request (typically a WRITE command) in a <font color="#000000">read-write</font>
-				request share. When this flag is applied to a <font color="#000000"><u>write-side</u></font>
-				request, than it can be followed by another <font color="#000000"><u>write-side</u></font><u>
-				</u>request which will use the same in-kernel buffer from the
-				preceding <font color="#000000">read-side</font> request. The
-				last <font color="#000000">write-side</font> request (e.g. in a
-				READ-WRITE-WRITE-WRITE sequence) should not have this flag set.
-				The last request in a multiple request array must not have this
-				flag set (or an -ERANGE error will result).</p>
+				<br/>
+
+				</p>
 			</td>
 		</tr>
 		<tr valign="top">
@@ -1718,8 +1726,26 @@ from the version 3 driver) tend to have lower values.</p>
 		</tr>
 		<tr valign="top">
 			<td width="25%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+				<b>SGV4_FLAG_KEEP_SHARE</b> [0x20000]</p>
+			</td>
+			<td width="75%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
+				the default action of this driver is to &quot;free up&quot; a
+				reserve request buffer after the <font color="#000000"><u>write-side</u></font>
+				request (typically a WRITE command) in a <font color="#000000">read-write</font>
+				request share. When this flag is applied to a <font color="#000000"><u>write-side</u></font>
+				request, than it can be followed by another <font color="#000000"><u>write-side</u></font><u>
+				</u>request which will use the same in-kernel buffer from the
+				preceding <font color="#000000">read-side</font> request. The
+				last <font color="#000000">write-side</font> request (e.g. in a
+				READ-WRITE-WRITE-WRITE sequence) should not have this flag set.
+				The last request in a multiple request array must not have this
+				flag set (or an -ERANGE error will result).</p>
+			</td>
+		</tr>
+		<tr valign="top">
+			<td width="25%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
 				<font color="#006c3b"><b>SGV4_FLAG_MULTIPLE_REQS</b></font>
-				[0x20000]</p>
+				[0x40000]</p>
 			</td>
 			<td width="75%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 				This flag can only be used on a sg v4 interface object and
@@ -1729,7 +1755,7 @@ from the version 3 driver) tend to have lower values.</p>
 		</tr>
 		<tr valign="top">
 			<td width="25%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
-				<b>SGV4_FLAG_EVENTFD</b>  [0x40000]</p>
+				<b>SGV4_FLAG_EVENTFD</b>  [0x80000]</p>
 			</td>
 			<td width="75%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 				Assuming the eventfd has been set up on this file descriptor,
@@ -1744,7 +1770,7 @@ from the version 3 driver) tend to have lower values.</p>
 		<tr valign="top">
 			<td width="25%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
 				<font color="#006c3b"><b>SGV4_FLAG_</b></font><font color="#006c3b"><b>ORDERED_</b></font><font color="#006c3b"><b>WR</b></font>
-				[0x80000]</p>
+				[0x100000]</p>
 			</td>
 			<td width="75%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 				Only used by <i>shared variable blocking</i> method. Requires
@@ -1758,7 +1784,7 @@ from the version 3 driver) tend to have lower values.</p>
 		<tr valign="top">
 			<td width="25%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
 				<font color="#006c3b"><b>SGV4_FLAG_</b></font><font color="#000000"><b>REC_ORDER</b></font>
-				[0x100000]</p>
+				[0x200000]</p>
 			</td>
 			<td width="75%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 				This flag can be used either on a <i>control object</i> or a
@@ -1794,12 +1820,12 @@ necessarily associated with error conditions . Like the <font color="#0066b3">fl
 field, the <font color="#0066b3">in</font><font color="#a3238e">fo</font>
 field contains flag values that may be OR-ed together. They are
 listed in the table below in numerical order.</p>
-<table width="100%" cellpadding="4" cellspacing="0" style="page-break-after: avoid">
+<table width="100%" cellpadding="4" cellspacing="0" style="background: transparent; page-break-after: avoid">
 	<col width="67*"/>
 
 	<col width="189*"/>
 
-	<tr valign="top">
+	<tr bgcolor="#81aca6" style="background: #81aca6" valign="top">
 		<th width="26%" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0.1cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
 			info field [hex value]</p>
 		</th>
@@ -5812,7 +5838,7 @@ by sg driver</b></font></p>
 <p>The third argument to <b>ioctl</b>(SG_SET_GET_EXTENDED) is a
 pointer to an object of type struct sg_extended_info . That structure
 is found in the &lt;scsi/sg.h&gt; header and is shown here:</p>
-<pre class="western"><font size="2" style="font-size: 11pt">struct sg_extended_info {</font>
+<pre class="western">struct sg_extended_info {
         <font size="2" style="font-size: 11pt">uint32_t </font><font color="#6b6400"><font size="2" style="font-size: 11pt">sei_wr_mask</font></font><font size="2" style="font-size: 11pt">;       /* OR-ed SG_SEIM_* user-&gt;driver values */</font>
         <font size="2" style="font-size: 11pt">uint32_t </font><font color="#6b6400"><font size="2" style="font-size: 11pt">sei_rd_mask</font></font><font size="2" style="font-size: 11pt">;       /* OR-ed SG_SEIM_* driver-&gt;user values */</font>
         <font size="2" style="font-size: 11pt">uint32_t </font><font color="#6b6400"><font size="2" style="font-size: 11pt">ctl_flags_wr_mask</font></font><font size="2" style="font-size: 11pt">; /* OR-ed SG_CTL_FLAGM_* values */</font>
@@ -5824,8 +5850,9 @@ is found in the &lt;scsi/sg.h&gt; header and is shown here:</p>
         <font size="2" style="font-size: 11pt">uint32_t </font><font color="#6b6400"><font size="2" style="font-size: 11pt">minor_index</font></font><font size="2" style="font-size: 11pt">;       /* rd: kernel's sg device minor number */</font>
         <font size="2" style="font-size: 11pt">uint32_t </font><font color="#6b6400"><font size="2" style="font-size: 11pt">share_fd</font></font><font size="2" style="font-size: 11pt">;          /* SHARE_FD and CHG_SHARE_FD use this */</font>
         <font size="2" style="font-size: 11pt">uint32_t </font><font color="#6b6400"><font size="2" style="font-size: 11pt">sgat_elem_sz</font></font><font size="2" style="font-size: 11pt">;      /* sgat element size (must be power of 2) */</font>
-        <font size="2" style="font-size: 11pt">uint32_t </font><font color="#6b6400"><font size="2" style="font-size: 11pt">pad_to_96</font></font><font size="2" style="font-size: 11pt">[52];     /* pad so struct is 96 bytes long */</font>
-<font size="2" style="font-size: 11pt">};</font></pre><p style="margin-bottom: 0cm">
+       <font size="2" style="font-size: 11pt">int32_t </font><font color="#6b6400"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt">num</font></font></font><font size="2" style="font-size: 11pt">;      </font><font size="2" style="font-size: 11pt">		    </font><font size="2" style="font-size: 11pt">/* </font><font color="#000000"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt">blk_poll: loop_count (-1 -&gt; spin)</font></font></font><font size="2" style="font-size: 11pt"> */</font>
+        <font size="2" style="font-size: 11pt">uint32_t </font><font color="#6b6400"><font size="2" style="font-size: 11pt">pad_to_96</font></font><font size="2" style="font-size: 11pt">[</font><font size="2" style="font-size: 11pt">48</font><font size="2" style="font-size: 11pt">];     /* pad so struct is 96 bytes long */</font>
+};</pre><p style="margin-bottom: 0cm">
 If both the <code class="western"><font color="#6b6400"><font size="2" style="font-size: 11pt"><span style="font-style: normal">sei_wr_mask</span></font></font></code><code class="western">
 </code>and <code class="western"><font color="#6b6400"><font size="2" style="font-size: 11pt"><span style="font-style: normal">sei_rd_mask</span></font></font></code>
 fields are zero then <b>ioctl</b>(SG_SET_GET_EXTENDED) does nothing.
@@ -5865,6 +5892,27 @@ sei_extended_info are shown in <i>italics</i>:</p>
 		</tr>
 		<tr valign="top">
 			<td width="20%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0cm"><p>
+				<b>SG_SEIM_</b><font color="#000000"><b>BLK_POLL</b></font>
+				[0x100]</p>
+			</td>
+			<td width="19%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0cm"><pre class="western"><font color="#6b6400"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt">num</font></font></font><font color="#6b6400"><span style="text-decoration: none"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt"> </font></font></span></font><font color="#000000"><span style="text-decoration: none"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt">[raw</font></font></span></font><font color="#000000"><span style="text-decoration: none"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt">: read after write</font></font></span></font><font color="#000000"><span style="text-decoration: none"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt">]</font></font></span></font></pre>
+			</td>
+			<td width="61%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+				calls blk_poll() <font color="#6b6400"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt">num</font></font></font>
+				times for each request associated with the current file
+				descriptor that has <b>SGV4_FLAG_</b><font color="#000000"><b>HIPRI</b></font>
+				set. If <font color="#6b6400"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt">num</font></font></font>
+				is 0 then call blk_poll() once for each qualifying request; if it
+				is negative call blk_poll(spin&lt;-true) for each qualifying
+				request. Places the number of requests found/started back in the
+				<font color="#6b6400"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt">num</font></font></font>
+				field.</p>
+			</td>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr valign="top">
+			<td width="20%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0cm"><p>
 				<b>SG_SEIM_CHG_SHARE_FD</b> [0x40]</p>
 			</td>
 			<td width="19%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0cm"><pre class="western"><code class="western"><font color="#6b6400"><span style="text-decoration: none"><font size="2" style="font-size: 11pt"><span style="font-style: normal">share_fd</span></font></span></font></code><span style="text-decoration: none"><span style="font-style: normal">  </span></span>'read before write' [rbw]</pre>
@@ -5898,7 +5946,7 @@ sei_extended_info are shown in <i>italics</i>:</p>
 	<tbody>
 		<tr valign="top">
 			<td width="20%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0cm"><p>
-				<b>SG_SEIM_</b><b>EVENTFD </b><span style="font-weight: normal">[0x100]</span></p>
+				<b>SG_SEIM_</b><b>EVENTFD </b><span style="font-weight: normal">[0x</span><span style="font-weight: normal">2</span><span style="font-weight: normal">00]</span></p>
 			</td>
 			<td width="19%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0cm"><pre class="western"><code class="western"><font color="#6b6400"><font size="2" style="font-size: 11pt"><span style="font-style: normal">share_fd</span></font></font></code> [rbw]</pre>
 			</td>
@@ -7085,7 +7133,6 @@ apps that use sg driver nodes and check their functionality.</p>
 <p>Return to <a href="index.html">main</a> page. 
 </p>
 <p align="center">Douglas Gilbert</p>
-<p align="center">Last updated: 22 <font color="#000000">Novem</font><font color="#000000">ber</font>
-2020 01:00</p>
+<p align="center">Last updated: 11 January 2021 23:00</p>
 </body>
 </html>
