@@ -5,7 +5,7 @@
 	<title>Linux SG driver version 4.0</title>
 	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2021-01-12T01:06:26.002128334"/>
+	<meta name="changed" content="2021-01-20T14:49:45.171292947"/>
 	<meta name="keywords" content="Linux, SCSI, SG_IO, pass-through"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -166,28 +166,24 @@
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<style type="text/css">
-		@page { size: 21.59cm 27.94cm; margin-left: 2cm; margin-right: 1cm; margin-top: 1cm; margin-bottom: 1cm }
-		p { color: #000000; background: transparent }
-		td p { margin-bottom: 0.1cm; color: #000000; background: transparent }
-		h2 { margin-top: 0.35cm; margin-bottom: 0.21cm; color: #000000; background: transparent; page-break-after: avoid }
-		h2.western { font-family: "Liberation Serif", serif; font-size: 18pt; font-weight: bold }
-		h2.cjk { font-family: "Noto Sans CJK SC Regular"; font-size: 18pt; font-weight: bold }
-		h2.ctl { font-family: "Lohit Devanagari"; font-size: 18pt; font-weight: bold }
-		pre { color: #000000; background: transparent }
-		pre.western { font-family: "Liberation Mono", monospace; font-size: 10pt }
-		pre.cjk { font-family: "Courier New", monospace; font-size: 10pt }
-		pre.ctl { font-family: "Liberation Mono", monospace; font-size: 10pt }
-		h3 { margin-top: 0.25cm; margin-bottom: 0.21cm; color: #000000; background: transparent; page-break-after: avoid }
-		h3.western { font-family: "Albany", sans-serif; font-size: 14pt; font-weight: bold }
-		h3.cjk { font-family: "Noto Sans CJK SC Regular"; font-size: 14pt; font-weight: bold }
-		h3.ctl { font-family: "Lohit Devanagari"; font-size: 14pt; font-weight: bold }
-		th p { margin-bottom: 0.1cm; color: #000000; font-weight: bold; text-align: center; background: transparent }
-		a:link { color: #0000ff; text-decoration: underline }
-		code.western { font-family: "Liberation Mono", monospace }
+		p { color: #000000; line-height: 100% }
+		td p { margin-bottom: 0.1cm; color: #000000 }
+		h2 { color: #000000 }
+		h2.cjk { font-family: "Noto Sans CJK SC Regular" }
+		h2.ctl { font-family: "Lohit Devanagari" }
+		pre { color: #000000 }
+		pre.cjk { font-family: "Courier New", monospace }
+		h3 { color: #000000 }
+		h3.western { font-family: "Albany", sans-serif }
+		h3.cjk { font-family: "Noto Sans CJK SC Regular" }
+		h3.ctl { font-family: "Lohit Devanagari" }
+		th p { margin-bottom: 0.1cm; color: #000000 }
+		a:link { color: #0000ff }
+		a.western:link { so-language: en-CA }
+		a.cjk:link { so-language: zh-CN }
+		a.ctl:link { so-language: hi-IN }
 		code.cjk { font-family: "Courier New", monospace }
-		code.ctl { font-family: "Liberation Mono", monospace }
-		a:visited { color: #000080; so-language: zxx; text-decoration: underline }
-		strong { font-weight: bold }
+		a:visited { color: #000080 }
 	</style>
 </head>
 <body lang="en-CA" text="#000000" link="#0000ff" vlink="#000080" bgcolor="#eeeeee" dir="ltr">
@@ -195,76 +191,76 @@
 	<font face="Albany, sans-serif"><font size="6" style="font-size: 28pt"><b>The
 	Linux SG driver version 4.0</b></font></font></p>
 </ol>
-<p style="margin-bottom: 0cm"><br/>
-
-</p>
-<p style="margin-bottom: 0cm"><br/>
-
-</p>
 <div id="Table of Contents1" dir="ltr"><p style="margin-left: 0.5cm; margin-bottom: 0cm">
-	<a href="#__RefHeading___Toc1534_4294551682">1 Introduction</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc7793_510494588">1.1
+	<a class="western" href="#__RefHeading___Toc1534_4294551682">1
+	Introduction</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc7793_510494588">1.1
 	Status</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1536_4294551682">2
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1536_4294551682">2
 	Changes to sg driver between version 3.5.36 and 4.0</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc8274_3647010070">2.1
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc8274_3647010070">2.1
 	Deprecated or removed features in version 4.0 compared to earlier
 	version</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1538_4294551682">3
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1538_4294551682">3
 	SCSI Generic versions 1, 2, 3 and 4 interfaces</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1540_4294551682">3.1
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1540_4294551682">3.1
 	Comparison of fields in the v4 and v3 interfaces</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1542_4294551682">3.2
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1542_4294551682">3.2
 	Flags in v3 and v4 interfaces</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1544_4294551682">3.3
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1544_4294551682">3.3
 	The info field</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1546_4294551682">4
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1546_4294551682">4
 	Architecture of the sg driver</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc18168_1671399770">4.1
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc18168_1671399770">4.1
 	Command or request</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc8276_3647010070">4.2
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc8276_3647010070">4.2
 	Direct, mmap()-ed IO and bio_s</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1548_4294551682">5
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1548_4294551682">5
 	Synchronous usage</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1550_4294551682">6
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1550_4294551682">6
 	Sharing file descriptors</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1552_4294551682">7
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1552_4294551682">7
 	Async usage in v4</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1554_4294551682">7.1
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1554_4294551682">7.1
 	ioctl(SG_IOABORT)</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1556_4294551682">8
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1556_4294551682">8
 	Request sharing</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc15431_608653543">8.1
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc15431_608653543">8.1
 	READ, WRITE, WRITE</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1560_4294551682">9
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1560_4294551682">9
 	Sharing design considerations</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1562_4294551682">10
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1562_4294551682">10
 	Multiple requests</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1564_4294551682">10.1
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1564_4294551682">10.1
 	Processing mrq responses</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1566_4294551682">10.2
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1566_4294551682">10.2
 	Aborting multiple requests</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1568_4294551682">10.3
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1568_4294551682">10.3
 	Single/multiple (non-)blocking requests</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc18199_72860742">10.4
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc18199_72860742">10.4
 	SGV4_FLAG_REC_ORDER flag</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1570_4294551682">11
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1570_4294551682">11
 	pack_id or tag</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1572_4294551682">12
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc36099_3879977686">12
+	iopoll/blk_poll() support</a></p>
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1572_4294551682">13
 	Bi-directional command support</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1574_4294551682">13
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1574_4294551682">14
 	SG interface support changes</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1576_4294551682">14
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1576_4294551682">15
 	IOCTLs</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc17996_3956569564">15
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc17996_3956569564">16
 	System Calls</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1578_4294551682">16
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1578_4294551682">17
 	Downloads and testing</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1580_4294551682">17
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1580_4294551682">18
 	Other documents</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1582_4294551682">18
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1582_4294551682">19
 	Conclusion</a></p>
 </div>
+<p style="margin-bottom: 0cm"><br/>
+
+</p>
 <p style="margin-bottom: 0cm"><br/>
 
 </p>
@@ -334,7 +330,7 @@ async/non-blocking usage.
 interface via <b>ioctl</b>(<span style="font-weight: normal">SG_IO</span>)
 on <i>all</i> block devices that use the SCSI subsystem, directly or
 via translation (e.g. SATA disks use libata which implements the T10
-SAT standard; see <a href="https://www.t10.org/">https://www.t10.org/
+SAT standard; see <a class="western" href="https://www.t10.org/">https://www.t10.org/
 </a>). In pseudocode an example like this: ' <b>ioctl</b>(<b>open</b>(&quot;/dev/sdc&quot;),
 <span style="font-weight: normal">SG_IO</span>, ptr_to_sg_io_hdr)'
 works as expected. This is <i>not</i> implemented by the sg driver so
@@ -343,24 +339,24 @@ remains consistent with other driver implementations (mainly the one
 found in block/scsi_ioctl.c kernel source code).</p>
 <h3 class="western"><a name="__RefHeading___Toc7793_510494588"></a>1.1
 Status</h3>
-<p>A recent first stage patchset (containing 44 patches) was sent to
-the linux-scsi list on 20201014. Its cover was titled: &quot;[PATCH
-v11 00/44] sg: add v4 interface&quot;.  Patch 44 bumps the driver
-version number to 4.0.09 . The sgv4_20200803 patchset below <font color="#000000">combines
+<p>A recent first stage patchset (containing 45 patches) was sent to
+the linux-scsi list on 20210117. Its cover was titled: &quot;[PATCH
+v13 00/45] sg: add v4 interface&quot;.  Patch 45 bumps the driver
+version number to 4.0.12 . The sgv4_20210117 patchset below <font color="#000000">combines
 the first and second stage patchsets.</font> Its first stage patchset
- contains 44 patches. Its second stage patchset adds the new features
+ contains 45 patches. Its second stage patchset adds the new features
 such as file and request sharing, multiple requests (in one
 invocation) and supports and the so-called <i>extended</i> <b>ioctl</b>(2).
 The second patchset is only currently available from this page (as
-patches 0041 to 0073 applied on top of the first stage). Its second
-stage bumps the driver version number to 4.0.45 . See <a href="#15 Downloads and testing|outline">Downloads
+patches 0046 to 0083 applied on top of the first stage). Its second
+stage bumps the driver version number to 4.0.46 . See <a class="western" href="#15 Downloads and testing|outline">Downloads
 and testing section</a> below.</p>
 <p>In keeping with a new Linux kernel coding style directive, the
 terms master and slave have been replaced by <span style="font-style: normal"><u>read-side</u></span><i>
 </i>and <u>write side</u> respectively. These terms refer to the two
-sides of a <a href="#8 Request sharing|outline">Request share</a>
-which is explained in a later section. One aspect lost with this
-changed terminology is that the <u>read-side</u> is the <i>leader</i>
+sides of a <a class="western" href="#8 Request sharing|outline">Request
+share</a> which is explained in a later section. One aspect lost with
+this changed terminology is that the <u>read-side</u> is the <i>leader</i>
 (i.e. comes first) and the <u>write-side</u> is a <i>follower</i>.
 And usually the <u>write-side</u> is dependent on the <u>read-side</u>
 succeeding.</p>
@@ -424,6 +420,10 @@ patchset:</p>
 	/sys/kernel/debug/scsi_generic/snapshot'. This is the initial
 	debugfs support. Add snapshot_devs read-write attribute that can be
 	used to limit which sg devices are shown in the snapshot.</p>
+	<li><p>add support for iopoll, also known as hipri and blk_poll.
+	Currently both sync and async usage is supported but restrictions
+	may meed to be added for async usage. This feature is &quot;new
+	ground&quot; for the SCSI subsystem.</p>
 	<li><p>bump the driver version number to 4.0.12</p>
 </ul>
 <p>Probably the most important aspect of the first patchset not shown
@@ -737,7 +737,7 @@ system calls to various <b>ioctl</b>(2)s. Using the <b>write</b>(2)
 and <b>read</b>(2) system calls in the way that this driver does is
 frowned upon by the Linux kernel architects. Even though adding new
 <b>ioctl</b>(2)s is also discouraged, two new <b>ioctl</b>(2)s were
-proposed in this <a href="https://www.spinics.net/lists/linux-scsi/msg123031.html">post</a>
+proposed in this <a class="western" href="https://www.spinics.net/lists/linux-scsi/msg123031.html">post</a>
 by Linux architect (L. Torvalds). Those two <b>ioctl</b>(2)s plus two
 closely related <b>ioctl</b>(2)s have been implemented in this
 upgrade.</p>
@@ -1410,7 +1410,7 @@ the same sg_io_v4 structure as its <i>control object</i>. Most fields
 have a different, but related, meaning when they are in a control
 object. A control object is distinguished by having the
 SGV4_FLAG_MULTIPLE_REQS flag set. Multiple requests are described in
-a later <a href="#10 Multiple requests|outline">section</a>.</p>
+a later <a class="western" href="#10 Multiple requests|outline">section</a>.</p>
 <h3 class="western"><a name="__RefHeading___Toc1542_4294551682"></a>3.2
 Flags in v3 and v4 interfaces</h3>
 <p>The following table lists the flag values that can be OR-ed
@@ -1461,10 +1461,10 @@ from the version 3 driver) tend to have lower values.</p>
 				SG_FLAG_UNUSED_LUN_INHIBIT [0x2]</p>
 			</td>
 			<td width="75%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
-				<b>Ignored</b>. This is a remnant of SCSI-2 in which bits 7, 6
-				and 5 of byte 1 of many cdb_s carried the LUN value. If SCSI 2
-				equipment is being used, the cdb can be altered explicitly to
-				carry the LUN address.</p>
+				<b>Ignored</b>. This is a remnant from SCSI-2 in which bits 7, 6
+				and 5 of byte 1 of many cdb_s carried the 3 bit LUN value. If
+				SCSI 2 equipment is being used, the cdb can be altered explicitly
+				to carry the LUN address.</p>
 			</td>
 		</tr>
 		<tr valign="top">
@@ -1485,7 +1485,9 @@ from the version 3 driver) tend to have lower values.</p>
 				compared to using this flag for several reasons, one being that
 				with this flag two &quot;mmap-ed&quot; buffers must be used (for
 				the source and destination of the copy) and the user code must
-				copy the data between those two buffers.</span></p>
+				copy the data between those two buffers.</span><span style="font-weight: normal">
+				See section on <a class="western" href="#4.2 Direct, mmap()-ed IO and bio_s|outline">mmap</a>
+				below.</span></p>
 			</td>
 		</tr>
 		<tr valign="top">
@@ -1561,7 +1563,12 @@ from the version 3 driver) tend to have lower values.</p>
 				</span><b>ioctl</b><span style="font-weight: normal">(SG_GET_PACK_ID)
 				and </span><b>ioctl</b><span style="font-weight: normal">(</span><font color="#a3238e"><span style="font-weight: normal">SG_IORECEIVE</span></font><span style="font-weight: normal">)</span>
 				<span style="font-weight: normal">with the </span><b>SGV4_FLAG_</b><b>IMMED</b><span style="font-weight: normal">
-				flag set.</span></p>
+				flag set.</span><span style="font-weight: normal"> When
+				</span><b>SGV4_FLAG_</b><font color="#000000"><b>HIPRI</b></font><span style="font-weight: normal">
+				is used there is no need to use this flag as it is implied. For
+				async usage this flag should cause the application to &quot;poll&quot;
+				with </span><b>ioctl</b><span style="font-weight: normal">(SG_GET_NUM_WAITING)
+				for completion.</span></p>
 			</td>
 		</tr>
 		<tr valign="top">
@@ -1597,7 +1604,7 @@ from the version 3 driver) tend to have lower values.</p>
 				<b>SGV4_FLAG_SIG</b><b>NAL</b> [0x200] ^^</p>
 			</td>
 			<td width="75%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
-				For v3 headers, this flag is ignored. For version 4 This flag is
+				For v3 headers, this flag is ignored. For version 4 this flag is
 				only permitted within an array of requests given with a multiple
 				request invocation.</p>
 			</td>
@@ -1607,13 +1614,13 @@ from the version 3 driver) tend to have lower values.</p>
 				<b>SGV4_FLAG_IMMED</b> [0x400]</p>
 			</td>
 			<td width="75%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
-				This flag uses &quot;IMMED&quot; in the same sense as various
-				SCSI commands (e.g. FORMAT UNIT) do, where it means: check the
-				request and if it is good start whatever and then return as
-				promptly as possible. The significant part here is that it
-				doesn't wait for whatever to complete. It can be used with the
-				version 3 and 4 interfaces, including the <i>mrq</i> <i>control
-				object</i>.</p>
+				This flag uses &quot;IMMED&quot; in the same <font color="#000000">fashion</font>
+				as various SCSI commands (e.g. FORMAT UNIT) do, where it means:
+				check the request and if it is good, start whatever and then
+				return as promptly as possible. The significant part here is that
+				it doesn't wait for whatever to c<i>omplete</i>. It can be used
+				with the version 3 and 4 interfaces, including the <i>mrq</i>
+				<i>control object</i>.</p>
 			</td>
 		</tr>
 		<tr valign="top">
@@ -1625,7 +1632,9 @@ from the version 3 driver) tend to have lower values.</p>
 				The associated request will have REQ_HIPRI set when issued to the
 				block layer. The completion handling will use blk_poll() instead
 				of waiting for an event or classic polling (i.e. via the Unix
-				<b>poll</b>(2) or Linux <b>epoll</b>(2) system calls).</p>
+				<b>poll</b>(2) or Linux <b>epoll</b>(2) system calls). See the
+				section on <a class="western" href="#12 iopoll/blk_poll() support|outline">iopoll/blkpoll</a>
+				below.</p>
 			</td>
 		</tr>
 		<tr valign="top">
@@ -1689,18 +1698,6 @@ from the version 3 driver) tend to have lower values.</p>
 			<td width="75%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 				This flag is <i>only</i> permitted within an array of requests
 				given with a <i>mrq</i> invocation.</p>
-			</td>
-		</tr>
-		<tr valign="top">
-			<td width="25%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
-				<br/>
-
-				</p>
-			</td>
-			<td width="75%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
-				<br/>
-
-				</p>
 			</td>
 		</tr>
 		<tr valign="top">
@@ -2074,7 +2071,7 @@ Command or request</h3>
 interchangeably in this driver and its documentation. Strictly
 speaking a <i>command</i> refers to a SCSI command (or more precisely
 a SCSI Command Descriptor Block (cdb)) as documented in the various
-SCSI command set standards available from <a href="http://www.t10.org/">T10</a>
+SCSI command set standards available from <a class="western" href="http://www.t10.org/">T10</a>
 . An example of an important one of these is the &quot;SCSI Primary
 Commands - 4&quot; (usually known as: SPC-4). Quite often when a
 document refers to a SCSI command it implicitly also means the
@@ -2095,7 +2092,7 @@ a READ command will be placed in the computer's memory). The <i>details</i>
 are left to lower layers which in the case of SCSI may be SAS, SPI,
 iSCSI, SRP, USB (UAS(P) or block) and SATA (via SAT). This lack of
 near-end data management information in the command sets is
-especially useful when considering disk to disk copies. With <a href="#8 Request sharing|outline"><i>request
+especially useful when considering disk to disk copies. With <a class="western" href="#8 Request sharing|outline"><i>request
 sharing</i></a>, the user can still have maximum control over the
 copy while leaving the management of the associated data buffers
 returned from each READ and required for each paired WRITE, to be
@@ -2104,7 +2101,7 @@ control&quot; is the ability of the user to change the WRITE commands
 to WRITE AND VERIFY or WRITE ATOMIC commands. The driver can also
 maintain the timing relationship between each READ-WRITE pair while
 running many such pairs asynchronously (i.e. several pairs started at
-the same time). With <a href="#10 Multiple requests|outline">multiple
+the same time). With <a class="western" href="#10 Multiple requests|outline">multiple
 requests</a> using the <i>shared variable blocking</i> method this
 can all seem like a single blocking synchronous call to the user. So
 the user is getting something approaching maximum performance with
@@ -2114,8 +2111,8 @@ transferred to this driver. The reduction of system overhead is due
 to minimizing the copying of user data and the removal of complexity
 associated with techniques like using mmap() which needs to pin or
 <i>fault</i> pages in the computer's main memory.</p>
-<h3 class="western"><a name="__RefHeading___Toc8276_3647010070"></a>4.2
-Direct, mmap()-ed IO and bio_s</h3>
+<h3 class="western"><a name="__RefHeading___Toc8276_3647010070"></a><a name="4.2 Direct, mmap()-ed IO and bio_s|outline"></a>
+4.2 Direct, mmap()-ed IO and bio_s</h3>
 <p>This section is about <i>user</i> data: what starts inside blocks
 within a disk or SSD, and ends up in a user space application,
 typically via the <b>read</b>(2) system call or, vice versa, via the
@@ -2209,8 +2206,8 @@ than <i>how</i> to do it, compared to some other storage command
 sets. Specifically this driver can take care of the important detail:
 how the data gets from that READ to its paired WRITE. This is the
 theory behind request sharing outlined in several following sections.</p>
-<h2 class="western"><a name="__RefHeading___Toc1548_4294551682"></a>5
-Synchronous usage</h2>
+<h2 class="western"><a name="__RefHeading___Toc1548_4294551682"></a><a name="5 Synchronous usage|outline"></a>
+5 Synchronous usage</h2>
 <p>These two forms: <b>ioctl</b>(sg_fd, SG_IO, ptr_to_v3_obj) and
 <b>ioctl</b>(sg_fd, SG_IO, ptr_to_v4_obj) can be used for submitting
 SCSI commands (requests) <span style="font-variant: normal"><span style="font-style: normal">and</span></span>
@@ -2319,6 +2316,37 @@ case where there are multiple copies of the file descriptor (e.g. a
 forked process or due to <b>dup</b>(2)) then is is the last <b>close</b>(2)
 that frees up all associated <font color="#6b6400">sg_request</font>
 objects.</p>
+<p>A sg_request object is long-lived and may handle multiple commands
+between when it is first created and <font color="#000000">its
+destruction</font> when its owning file descriptor is <b>close</b>(2)-d.
+To manage this ,each sg_request object has a state machine with these
+states:</p>
+<ul>
+	<li><p>SG_RQ_INACTIVE: doing nothing, awaiting its next assignment</p>
+	<li><p>SG_RQ_INFLIGHT: command/request has been sent to the block
+	layer, expecting to indication from lower layers that the command is
+	complete.</p>
+	<li><p>SG_AWAIT_RCV: that indication of completion has arrived but
+	it is in the context of an interrupt or other event, unlikely to be
+	the context of the issuing thread (in the user space)</p>
+	<li><p>SG_RQ_BUSY: transitory state, used to <i>protect</i>
+	transitions between the first three states being usurped by other
+	pesky threads and kernel mechanisms such as an interrupt.</p>
+</ul>
+<p align="left">Comparatively speaking, there is a lot of work
+involved in going from the INACTIVE to the INFLIGHT state, only some
+of which is locked (or similarly sequentially processed). This means
+another thread could try and pick up the same INACTIVE thread and
+that would be bad. So we want to move out of INACTIVE state. But
+there are bad things that can happen if we say that the request is in
+INFLIGHT state before it has been handed off to the block layer. The
+solution to this dilemma is to use BUSY state:
+INACTIVE-&gt;BUSY-&gt;INFLIGHT . The BUSY state is also used in
+INFLIGHT-&gt;BUSY-&gt;AWAIT_RCV . So if another thread looking for a
+sg_request object to own or process, then BUSY state means: &quot;go
+away, I'm BUSY&quot;. The &quot;internal completion point&quot; first
+shown in Figure 2 above represents the  INFLIGHT-&gt;BUSY-&gt;AWAIT_RCV
+transition.</p>
 <h2 class="western"><a name="__RefHeading___Toc1550_4294551682"></a><a name="6 Sharing file descriptors|outline"></a><a name="6 Sharing file descriptors|outline"></a>
 6 Sharing file descriptors</h2>
 <p>First a rationale. Copying data between storage devices is a
@@ -2427,7 +2455,7 @@ fd7. This is what the <b>sgh_dd</b> test utility does (see below).</p>
 requests can still be sent to both file descriptors in the normal
 fashion. Only when the new flag SGV4_FLAG_SHARE is given, or OR-ed in
 with other <font color="#0066b3">fla</font><font color="#a3238e">gs</font>,
-is request sharing performed. See the <a href="#8 Request sharing|outline">Request
+is request sharing performed. See the <a class="western" href="#8 Request sharing|outline">Request
 sharing</a> section below.</p>
 <h2 class="western"><a name="__RefHeading___Toc1552_4294551682"></a>7
 Async usage in v4</h2>
@@ -2638,7 +2666,7 @@ refers to two requests, usually belonging to different storage
 devices (e.g. two disks), sharing the same in-kernel data buffer.
 Before request sharing can take place a share of two file descriptors
 belonging to those two storage devices needs to be set up. This is
-discussed in the previous <a href="#6 Sharing file descriptors|outline">Sharing
+discussed in the previous <a class="western" href="#6 Sharing file descriptors|outline">Sharing
 file descriptors</a> section. 
 </p>
 <p style="margin-top: 0.3cm; margin-bottom: 0.3cm">The diagram below
@@ -2750,6 +2778,50 @@ copying (or DMA-ing) of that dataset. That leaves three brown
 arrow-ed lines at an angle: the DMA from the device being read, the
 DMA to the device being written, and an optional in-kernel to user
 space copy (annotated with &quot;***&quot;).</p>
+<p>Returning to the discussion of the sg_request object state
+machine. Request sharing adds two more states:</p>
+<ul>
+	<li><p>SG_RQ_SHR_SWAP:  the <font color="#000000"><u><span style="font-weight: normal">read-s</span></u></font><font color="#000000"><u><span style="font-weight: normal">i</span></u></font><font color="#000000"><u><span style="font-weight: normal">de</span></u></font>
+	request only: completed request, <i>awaiting</i> hand-off (swap)
+	starting the <u>write-side</u><span style="text-decoration: none">
+	requ</span><span style="text-decoration: none">est</span></p>
+	<li><p><span style="text-decoration: none">SG_RQ_SHR_IN_WS:  the
+	</span><font color="#000000"><u><span style="font-weight: normal">read-s</span></u></font><font color="#000000"><u><span style="font-weight: normal">i</span></u></font><font color="#000000"><u><span style="font-weight: normal">de</span></u></font><span style="text-decoration: none">
+	request only: completed request, the </span><u>write-side</u><span style="text-decoration: none">
+	requ</span><span style="text-decoration: none">est has started,
+	</span><i><span style="text-decoration: none">awaiting</span></i><span style="font-style: normal"><span style="text-decoration: none">
+	its completion</span></span></p>
+</ul>
+<p><span style="font-style: normal"><span style="text-decoration: none">Note
+that the </span></span><span style="font-style: normal"><u>write-side</u></span><span style="font-style: normal"><span style="text-decoration: none">
+requ</span></span><span style="font-style: normal"><span style="text-decoration: none">est
+still only uses the original four states document</span></span><span style="font-style: normal"><span style="text-decoration: none">ed</span></span><span style="font-style: normal"><span style="text-decoration: none">
+in</span></span><span style="font-style: normal"><span style="text-decoration: none">
+an</span></span><span style="font-style: normal"><span style="text-decoration: none">
+</span></span><a class="western" href="#5 Synchronous usage|outline">above</a><span style="font-style: normal"><span style="text-decoration: none">
+section. </span></span><span style="font-style: normal"><span style="text-decoration: none">Now
+the </span></span><font color="#000000"><span style="font-style: normal"><u><span style="font-weight: normal">read-s</span></u></span></font><font color="#000000"><span style="font-style: normal"><u><span style="font-weight: normal">i</span></u></span></font><font color="#000000"><span style="font-style: normal"><u><span style="font-weight: normal">de</span></u></span></font><span style="font-style: normal"><span style="text-decoration: none">
+request </span></span><span style="font-style: normal"><span style="text-decoration: none">has
+six possible states: it is important that it does </span></span><i><u>not</u></i><span style="font-style: normal"><span style="text-decoration: none">
+return to INACTIVE state before its associated </span></span><span style="font-style: normal"><u>write-side</u></span><span style="font-style: normal"><span style="text-decoration: none">
+requ</span></span><span style="font-style: normal"><span style="text-decoration: none">est</span></span><span style="font-style: normal"><span style="text-decoration: none">
+has completed. </span></span><span style="font-style: normal"><span style="text-decoration: none">T</span></span><span style="font-style: normal"><span style="text-decoration: none">he
+reason is that the read data (in a bio) must persist until the
+</span></span><span style="font-style: normal"><u>write-side</u></span><span style="font-style: normal"><span style="text-decoration: none">
+requ</span></span><span style="font-style: normal"><span style="text-decoration: none">est</span></span><span style="font-style: normal"><span style="text-decoration: none">
+has completed. The user space and especially the sg driver can make
+</span></span><i><span style="text-decoration: none">no assumptions</span></i><span style="font-style: normal"><span style="text-decoration: none">
+about </span></span><span style="font-style: normal"><span style="text-decoration: none">when
+</span></span><span style="font-style: normal"><span style="text-decoration: none">data
+to be written is fetched from </span></span><span style="font-style: normal"><span style="text-decoration: none">the
+given buffer (bio). More often than not it is the device (e.g. a hard
+disk or SSD) that determines exactly when data (i.e. &quot;data-out&quot;)
+ is moved to the storage device. Atomicity of write operations can be
+involved here because for large write operations the storage devices
+will move the data in &quot;bites&quot; and the question arises: what
+if the transport (or disk) fails after the first &quot;bite&quot; and
+before the last &quot;bite&quot;. Happily this is not the sg driver's
+problem.</span></span></p>
 <h3 class="western"><a name="__RefHeading___Toc15431_608653543"></a>8.1
 READ, WRITE, WRITE</h3>
 <p>The data-in, data-out pair in request sharing (usually a READ
@@ -3006,7 +3078,7 @@ storage device then it has the two file descriptors it needs to set
 up the share. While that solution may look good on paper, it may
 require a radical rewrite of existing code to implement. Perhaps a
 better solution is to pass an open file descriptor from one process
-to another process using a Unix socket. The <a href="https://keithp.com/blogs/fd-passing/">blog</a>
+to another process using a Unix socket. The <a class="western" href="https://keithp.com/blogs/fd-passing/">blog</a>
 by Keith Packard outlines the technique. Code based on both
 techniques can be found in the sg3_utils package's
 testing/sg_tst_ioctl.c (with the '-f' option).</p>
@@ -4057,7 +4129,7 @@ the ctl_obj should be called:</span></span></p>
 	</span><span style="font-variant: normal"><span style="font-style: normal">is
 	zero filled with only output fields (including the </span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">usr_ptr</span></font></span><span style="font-variant: normal">
 	</span><span style="font-variant: normal"><span style="font-style: normal">field)
-	filled for those requests that have completed. See the <a href="#10.1 Processing mrq responses|outline">Processing
+	filled for those requests that have completed. See the <a class="western" href="#10.1 Processing mrq responses|outline">Processing
 	mrq responses</a> section below for more details.</span></span></p>
 	<li><p><span style="font-variant: normal"><span style="font-style: normal"><u>with</u></span></span><span style="font-variant: normal">
 	</span><span style="font-variant: normal"><span style="font-style: normal">IMMED
@@ -4212,7 +4284,7 @@ requests</span></span><span style="font-variant: normal"> </span><span style="fo
 </span><span style="font-variant: normal"><span style="font-style: normal">the
 two </span></span><span style="font-variant: normal"><i>non-blocking</i></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">methods)
-can additionally use <a href="#8 Request sharing|outline">request
+can additionally use <a class="western" href="#8 Request sharing|outline">request
 sharing</a></span></span><span style="font-variant: normal"> </span><span style="font-variant: normal"><span style="font-style: normal">with
 the following modification. Since all multiple requests</span></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">smethods
@@ -4223,7 +4295,7 @@ be another way of indicating a particular request should use the
 </span></span><span style="font-variant: normal"><i>other</i></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">(i.e.
 shared) file descriptor. This is done with the DO_ON_OTHER flag.</span></span><span style="font-variant: normal">
-</span><span style="font-variant: normal"><span style="font-style: normal"><a href="#6 Sharing file descriptors|outline">File
+</span><span style="font-variant: normal"><span style="font-style: normal"><a class="western" href="#6 Sharing file descriptors|outline">File
 descriptor sharing</a> can be used with all f</span></span><span style="font-variant: normal"><span style="font-style: normal">ive</span></span><span style="font-variant: normal"><span style="font-style: normal">
 multiple requests methods</span></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">either
@@ -4492,7 +4564,7 @@ the same pack_id (and file descriptor) to call <b>ioctl</b>(SG_IOABORT).</p>
 their internal completion point when the <i>mrq</i> abort is issued
 must be processed in the normal fashion. Any inflight requests will
 have blk_abort_request() called on them. Those remaining requests
-that have not yet been submitted will be dropped. See the <a href="#10.1 Processing mrq responses|outline">Processing
+that have not yet been submitted will be dropped. See the <a class="western" href="#10.1 Processing mrq responses|outline">Processing
 mrq responses</a> section above for how an abort will be reported.</p>
 <p>In the <b>ioctl</b>(sg_fd, SG_IOABORT, &amp;ctl_obj) invocation
 the SGV4_FLAG_MULTIPLE_REQS flag must be set set and the
@@ -4769,7 +4841,66 @@ discussed in the previous paragraph). The match <b>ioctl</b>(<font color="#a3238
 call should make sure the <font color="#a3238e">request_tag</font>
 field is set as appropriate and the SGV4_FLAG_FIND_BY_TAG flag should
 be <u>OR</u>-ed with other <font color="#a3238e">flags</font>.</p>
-<h2 class="western"><a name="__RefHeading___Toc1572_4294551682"></a>12
+<h2 class="western"><a name="__RefHeading___Toc36099_3879977686"></a><a name="12 iopoll/blk_poll() support|outline"></a>
+12 iopoll/blk_poll() support</h2>
+<p>This feature goes by various names with <i><u><span style="font-weight: normal">iopoll</span></u></i>
+probably being the original name. <i><u>blk_poll </u></i>is the name
+of a function in the block layer available to higher layers that
+results in a polling operation in the associated storage device's low
+level driver (LLD). Yet another name is <i><u>hipri</u></i> and
+probably originates from the REQ_HIPRI flag placed on a request as it
+is issued by the block layer to invoke this behaviour. The fio
+utility uses the keyword <i><u>hipri</u></i> to <font color="#000000">indicate
+that request/commands that it issues (dictated by other fio commands,
+typically in a script file) will use REQ_HIPRI and blk_poll().</font>
+The assumption by the block layer interface is that any user (higher
+layer) that issues a request with the REQ_HIPRI flag <font color="#000000">will
+complete that request by one or more calls to blk_poll() and </font><font color="#000000"><i><u>not</u></i></font><font color="#000000">
+with other mechanisms the usually involve the LLD firing an interrupt
+to indicate a completion. blk_poll()'s third argument is a boolean
+called spin that if true will cause the LLD to continue polling and
+only return when a completion or an error occurs. In the case of the
+SCSI subsystem, each command/request has a timeout value and if the
+request/command doesn't complete in the given time, or the user fails
+to call blk_poll()</font><font color="#000000"> before that timeout,
+then the request command will be aborted.</font></p>
+<p><font color="#000000">The sg driver has a new command/request
+flag: SGV4_FLAG_HIPRI that causes the associated command to be issued
+with </font><font color="#000000">the REQ_HIPRI flag </font><font color="#000000">set.
+Strictly speaking nothing needs to be done differently on the
+completion side as the driver knows which commands are &quot;hipri&quot;
+and arranges for completion with blk_poll(spin&lt;-false)
+accordingly. For example a call to </font><font color="#000000"><b>ioctl</b></font><font color="#000000">(SG_GET_NUM_WAITING)</font><font color="#000000">
+usually count the number of this file descriptor's requests that are
+in SG_RQ_AWAIT_RCV state (actually a running count is kept to speed
+this ioctl). If any of those requests where issued with
+SGV4_FLAG_HIPRI and are in SG_RQ_INFLIGHT state then
+blk_poll(spin&lt;-false) is called once before the running count is
+returned. If th</font><font color="#000000">at</font><font color="#000000">
+blk_poll() flushes out a completion then </font><font color="#000000">that
+request will transition from INFLIGHT--&gt;AWAIT_RCV and that running
+count will be incremented. So no change is required in the user
+interface to the sg driver, </font><font color="#000000"><b>ioctl</b></font><font color="#000000">(SG_GET_NUM_WAITING)</font><font color="#000000">
+knows what to do. Other parts of the driver such as read(2) with the
+version 3 interface of </font><font color="#000000"><b>ioctl</b></font><font color="#000000">(SG_IORECEIVE)
+with the version 4 interface will also call blk_poll() when the need
+arises.</font></p>
+<p><font color="#000000">In the version 4 sg driver, there is a
+</font><font color="#000000"><b>ioctl</b></font><font color="#000000">(SG_</font><font color="#000000">S</font><font color="#000000">ET_</font><font color="#000000">GET_EXTENDED</font><font color="#000000">)</font><font color="#000000">
+sub-command: </font><font color="#000000"><span style="font-weight: normal">SG_SEIM_</span></font><font color="#000000"><span style="font-weight: normal">BLK_POLL</span></font><font color="#000000"><b>
+</b></font><font color="#000000"><span style="font-weight: normal">that
+calls blk_poll() directly. It uses the </span></font><font color="#6b6400"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt"><span style="font-weight: normal">sg_extended_info::numo</span></font></font></font><font color="#000000"><span style="font-weight: normal">
+field as a loop count, that is the number of times it will call
+blk_poll(spin&lt;</span></font><font color="#000000"><span style="font-weight: normal">--</span></font><font color="#000000"><span style="font-weight: normal">false)
+on each request with </span></font><font color="#000000"><span style="font-weight: normal">SGV4_FLAG_HIPRI
+</span></font><font color="#000000"><span style="font-weight: normal">set
+and belonging to the given file descriptor. </span></font><font color="#000000"><span style="font-weight: normal">If
+</span></font><font color="#6b6400"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt"><span style="font-weight: normal">sg_extended_info::numo</span></font></font></font><font color="#000000"><span style="font-weight: normal">
+is 0 then blk_poll(s</span></font><font color="#000000"><span style="font-weight: normal">pin&lt;</span></font><font color="#000000"><span style="font-weight: normal">--f</span></font><font color="#000000"><span style="font-weight: normal">alse</span></font><font color="#000000"><span style="font-weight: normal">)
+is called once on each candidate request. If </span></font><font color="#6b6400"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt"><span style="font-weight: normal">sg_extended_info::num</span></font></font></font><font color="#000000"><span style="font-weight: normal">
+is negative then blk_poll(s</span></font><font color="#000000"><span style="font-weight: normal">pin&lt;</span></font><font color="#000000"><span style="font-weight: normal">--true)
+is called once on each candidate request.</span></font></p>
+<h2 class="western"><a name="__RefHeading___Toc1572_4294551682"></a>13
 Bi-directional command support</h2>
 <p><u>N.B. Support for SCSI bidirectional commands has been removed
 from the Linux kernel in version 5.1 . To allow the driver to merge
@@ -4823,7 +4954,7 @@ transfer) has completed. pack_id and/or tags can be used as discussed
 in the previous section. Signal on completion, polling for completion
 and multi-threading should also work on <i>bidi</i> commands without
 issues.</p>
-<h2 class="western"><a name="__RefHeading___Toc1574_4294551682"></a>13
+<h2 class="western"><a name="__RefHeading___Toc1574_4294551682"></a>14
 SG interface support changes</h2>
 <p style="margin-bottom: 0cm">In the following table, a comparison is
 made between the supported interfaces of the sg driver found in lk
@@ -5004,7 +5135,7 @@ what might be dropped is the ability of the v3 interface to use the
 required should be to change the <b>write</b>(2) to an
 <b>ioctl</b>(<font color="#0066b3">SG_IOSUBMIT_V3</font>) and the
 <b>read</b>(2) to an <b>ioctl</b>(<font color="#0066b3"><span style="font-weight: normal">SG_IORECEIVE_V3</span></font>).</p>
-<h2 class="western"><a name="__RefHeading___Toc1576_4294551682"></a>14
+<h2 class="western"><a name="__RefHeading___Toc1576_4294551682"></a>15
 IOCTLs</h2>
 <p>Over time there has been a transfer of functionality from the
 <b>write</b>(2) and <b>read</b>(2) system calls to various <b>ioctl</b>(2)s
@@ -5013,7 +5144,7 @@ system calls in the way that this driver does is frowned upon by the
 Linux kernel architects, as is adding new <b>ioctl</b>(2)s! Only 6
 new <b>ioctl</b>(2)s have been added in the sg v4 driver as noted in
 the status column of the table below. Two of those <b>ioctl</b>(2)s
-were proposed in this <a href="https://www.spinics.net/lists/linux-scsi/msg123031.html">post</a>
+were proposed in this <a class="western" href="https://www.spinics.net/lists/linux-scsi/msg123031.html">post</a>
 by a Linux architect (L. Torvalds). And two more (i.e.
 SG_IO_SUBMIT_V3 and <font color="#0066b3"><span style="font-weight: normal">SG_IORECEIVE_V3</span></font>)
 are very closely related to those proposed. Still, there is a lot of
@@ -5742,10 +5873,11 @@ depending on the LLD.</p>
 				<font color="#a3238e"><u>new in v4 driver</u></font></p>
 			</td>
 			<td width="63%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
-				takes pointer to 96 byte sg_extended_info structure; it can set
-				and get 32 bit values and it can set and get boolean values. Each
-				<b>ioctl</b>(2) can perform more than one action. Explained in
-				the following tables and associated descriptions.</p>
+				takes pointer to 96 byte <font color="#6b6400"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt">sg_extended_info</font></font></font>
+				structure; it can set and get 32 bit values and it can set and
+				get boolean values. Each <b>ioctl</b>(2) can perform more than
+				one action. Explained in the following tables and associated
+				descriptions.</p>
 			</td>
 		</tr>
 	</tbody>
@@ -5836,8 +5968,9 @@ by sg driver</b></font></p>
 
 </p>
 <p>The third argument to <b>ioctl</b>(SG_SET_GET_EXTENDED) is a
-pointer to an object of type struct sg_extended_info . That structure
-is found in the &lt;scsi/sg.h&gt; header and is shown here:</p>
+pointer to an object of type struct <font color="#6b6400"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt">sg_extended_info</font></font></font>
+. That structure is found in the &lt;scsi/sg.h&gt; header and is
+shown here:</p>
 <pre class="western">struct sg_extended_info {
         <font size="2" style="font-size: 11pt">uint32_t </font><font color="#6b6400"><font size="2" style="font-size: 11pt">sei_wr_mask</font></font><font size="2" style="font-size: 11pt">;       /* OR-ed SG_SEIM_* user-&gt;driver values */</font>
         <font size="2" style="font-size: 11pt">uint32_t </font><font color="#6b6400"><font size="2" style="font-size: 11pt">sei_rd_mask</font></font><font size="2" style="font-size: 11pt">;       /* OR-ed SG_SEIM_* driver-&gt;user values */</font>
@@ -5936,10 +6069,10 @@ sei_extended_info are shown in <i>italics</i>:</p>
 <font color="#6b6400"><font size="2" style="font-size: 11pt">ctl_flags_rd_mask</font></font></pre>
 			</td>
 			<td width="61%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-				three fields in a sg_extended_info object are associated with
-				this variant of the <b>ioctl</b>(2), a value mask, a write mask
-				and a read mask. The mask value are the SG_CTL_FLAGM_* values
-				shown in the following table.</p>
+				three fields in a <font color="#6b6400"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt">sg_extended_info</font></font></font>
+				object are associated with this variant of the <b>ioctl</b>(2), a
+				value mask, a write mask and a read mask. The mask value are the
+				SG_CTL_FLAGM_* values shown in the following table.</p>
 			</td>
 		</tr>
 	</tbody>
@@ -6137,6 +6270,13 @@ mask values OR-ed together:</p>
 			</th>
 			<th width="66%" bgcolor="#fcd4d1" style="background: #fcd4d1" style="border: none; padding: 0cm"><p>
 				Notes</p>
+				<p><font color="#6b6400"><span style="font-weight: normal">ctl_flags_wr_mask</span></font><font color="#000000"><span style="font-weight: normal">
+				</span></font><font color="#000000"><span style="font-weight: normal">is
+				shortened to </span></font><font color="#6b6400"><span style="font-weight: normal">wr_mask</span></font><font color="#000000"><span style="font-weight: normal">
+				below,   </span></font><font color="#6b6400"><span style="font-weight: normal">ctl_flags_rd_mask
+				</span></font><font color="#000000"><span style="font-weight: normal">is
+				shortened to</span></font><font color="#000000"><span style="font-weight: normal">
+				 </span></font><font color="#6b6400"><span style="font-weight: normal">rd_mask</span></font></p>
 			</th>
 		</tr>
 		<tr valign="top">
@@ -6160,7 +6300,14 @@ mask values OR-ed together:</p>
 				applications waiting on <i>other</i> file descriptors (even if
 				they are the same sg device) do <u>not</u> effect the waits on
 				the current file descriptor (i.e. the file descriptor on which
-				this <b>ioctl</b>(2) is called).</p>
+				this <b>ioctl</b>(2) is called). When this bit is set in <font color="#6b6400"><span style="font-weight: normal">wr_mask</span></font>,
+				then if prior to the ioctl the corresponding bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is set then the _exclusive variant is selected thereafter. If
+				that latter bit is clear then the wait_event_interruptible() call
+				 is selected thereafter. When this bit is set in <font color="#6b6400"><span style="font-weight: normal">rd_mask</span></font>,
+				then after the ioctl this bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				indicates the selection state <i><u>before</u></i> the change, if
+				any.</p>
 			</td>
 		</tr>
 	</tbody>
@@ -6174,8 +6321,10 @@ mask values OR-ed together:</p>
 				read-only [ro]</p>
 			</td>
 			<td width="66%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-				when read, if set implies this fd is part of a file share and
-				this is the <font color="#000000"><u>read-</u></font><u>side</u></p>
+				when this bit is set in <font color="#6b6400"><span style="font-weight: normal">rd_mask</span></font>,
+				then after the ioctl if this bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is set implies this fd is part of a file share <i>and</i> this is
+				the <font color="#000000"><u>read-</u></font><u>side</u></p>
 			</td>
 		</tr>
 	</tbody>
@@ -6188,7 +6337,10 @@ mask values OR-ed together:</p>
 				read-only [ro]</p>
 			</td>
 			<td width="66%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-				when read, if set implies this fd is part of a file share.</p>
+				when this bit is set in <font color="#6b6400"><span style="font-weight: normal">rd_mask</span></font>,
+				then after the ioctl if this bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is set implies this fd is part of a file share 
+				</p>
 			</td>
 		</tr>
 	</tbody>
@@ -6202,11 +6354,13 @@ mask values OR-ed together:</p>
 				[ro]</p>
 			</td>
 			<td width="66%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-				when read, if set implies the <font color="#000000"><u>read-side</u></font><u>'s</u>
+				when this bit is set in <font color="#6b6400"><span style="font-weight: normal">rd_mask</span></font>,
+				then after the ioctl this bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				i<font color="#000000">ndicates</font> if the <font color="#000000"><u>read-side</u></font><u>'s</u>
 				request has completed with a non-zero SCSI status or other driver
-				error. In this case the shared request state is terminated (i.e.
-				the <font color="#000000"><u>write-side</u></font> will not be
-				able to issue an associated <font color="#000000"><u>write-side</u></font>
+				error. <font color="#000000">If set</font> the shared request
+				state is terminated (i.e. the <font color="#000000"><u>write-side</u></font>
+				will not be able to issue an associated <font color="#000000"><u>write-side</u></font>
 				request). This may be used either on the <font color="#000000"><u>read-side</u></font><u>'s</u>
 				or <font color="#000000"><u>write-side</u></font><u>'s</u> fd</p>
 			</td>
@@ -6222,15 +6376,32 @@ mask values OR-ed together:</p>
 				[rbw]</p>
 			</td>
 			<td width="66%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-				when read, if set implies the <font color="#000000"><u>read-side</u></font>'s
+				when this bit is set in <font color="#6b6400"><span style="font-weight: normal">rd_mask</span></font>,
+				then after the ioctl this bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				i<font color="#000000">ndicates</font><font color="#000000"> </font>when
+				set that the <font color="#000000"><u>read-side</u></font>'s
 				request has completed and is waiting for the <font color="#000000"><u>write-side</u></font>
 				request to start. This may be used either on the <font color="#000000"><u>read-side</u></font><u>'s</u>
 				or <font color="#000000"><u>write-side</u></font><u>'s</u> fd.
-				When written to 1 and called on either side of a file share, if
-				the <font color="#000000"><u>write-side</u></font> of a request
-				share is pending, then the shared buffer is released. IOWs the
-				request share is finished at this point. When written to 0 there
-				is no action.</p>
+				When this bit is set in <font color="#6b6400"><span style="font-weight: normal">wr_mask</span></font>,
+				then if prior to the ioctl the corresponding bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is set , on either side of a file share, if the <font color="#000000"><u>write-side</u></font>
+				of a request share is pending, then the shared buffer is
+				released. IOWs the request share is finished at this point. If
+				the bit in in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is clear, no action is taken. When written to 0 there is no
+				action.</p>
+				<p>When this bit is set in <font color="#6b6400"><span style="font-weight: normal">rd_mask</span></font>,
+				then after the ioctl if this bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is set that implies the <font color="#000000"><u>read-side</u></font><font color="#000000"><span style="text-decoration: none">
+				</span></font><font color="#000000"><span style="text-decoration: none">request
+				has completed; </span></font><font color="#000000"><span style="text-decoration: none">if
+				this bit in </span></font><font color="#6b6400"><span style="text-decoration: none"><span style="font-weight: normal">ctl_flags</span></span></font><font color="#000000"><span style="text-decoration: none">
+				is </span></font><font color="#000000"><span style="text-decoration: none">clear
+				then the  </span></font><font color="#000000"><u>read-side</u></font><font color="#000000"><span style="text-decoration: none">
+				</span></font><font color="#000000"><span style="text-decoration: none">request
+				has not completed. The state reported is before any change (i.e.
+				read before write [rbw]).</span></font></p>
 			</td>
 		</tr>
 	</tbody>
@@ -6243,11 +6414,20 @@ mask values OR-ed together:</p>
 				[rbw]</p>
 			</td>
 			<td width="66%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-				The blk_get_request() can still block in standard async mode.
-				When this is written to 1 (true) that call is made non-blocking
-				and <font color="#a3238e"><span style="font-weight: normal">SG_IOSUBMIT</span></font>
-				will yield EBUSY in the case when it would block. This is <i>not</i>
-				the default for backward compatibility.</p>
+				The blk_get_request() call can still block in standard async
+				mode. When this bit is set in <font color="#6b6400"><span style="font-weight: normal">wr_mask</span></font>,
+				then if prior to the ioctl the corresponding bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is set , then subsequent  non-blocking calls to
+				<b>ioctl</b>(<font color="#a3238e"><span style="font-weight: normal">SG_IOSUBMIT</span></font>)
+				will yield EBUSY in the case when the blk_get_request() call
+				would block. When the bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is clear then the blk_get_request() call <font color="#000000">may</font>
+				block. This latter state (i.e. &quot;cleared&quot;) is the
+				default for backward compatibility.</p>
+				<p>When this bit is set in <font color="#6b6400"><span style="font-weight: normal">rd_mask</span></font>,
+				then after the ioctl this bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				<font color="#000000">reflect the state of this flag </font><font color="#000000"><i>prior</i></font><font color="#000000">
+				to any change.</font></p>
 			</td>
 		</tr>
 	</tbody>
@@ -6260,10 +6440,17 @@ mask values OR-ed together:</p>
 				[rbw]</p>
 			</td>
 			<td width="66%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-				when written to 1 (true) instructs driver not to calculate
-				command duration. This saves two ktime_get_bootime() calls per
-				command. The default (and when 0 is written) is to always
-				calculate command/request duration.</p>
+				When this bit is set in <font color="#6b6400"><span style="font-weight: normal">wr_mask</span></font>,
+				then if prior to the ioctl the corresponding bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is set , then subsequent requests on this file descriptor <i>will
+				not</i> calculate command duration. This state bypasses two
+				ktime_get_bootime() calls per command. When the bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is clear then subsequent requests on this file descriptor <i>will</i>
+				calculate command duration; this is the default action.</p>
+				<p>When this bit is set in <font color="#6b6400"><span style="font-weight: normal">rd_mask</span></font>,
+				then after the ioctl this bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				<font color="#000000">reflect the state of this flag </font><font color="#000000"><i>prior</i></font><font color="#000000">
+				to any change.</font></p>
 			</td>
 		</tr>
 	</tbody>
@@ -6277,13 +6464,27 @@ mask values OR-ed together:</p>
 			</td>
 			<td width="66%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 				modifies the action of the <b>poll</b>(2) system call on current
-				file descriptor. When set then if no requests are waiting (i.e.
-				passed the internal completion point) and the <b>poll</b>(2) call
-				requests a non-zero timeout, then POLLERR is set for this file
-				descriptor (rather than waiting). Designed to be used with
-				request that <font color="#000000">use the </font><font color="#000000"><b>SGV4_FLAG_NO_WAITQ</b></font><font color="#000000">
+				file descriptor. When this bit is set in <font color="#6b6400"><span style="font-weight: normal">wr_mask</span></font>,
+				then if prior to the ioctl the corresponding bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is set , then if no requests are waiting (i.e. passed the
+				internal completion point) and the <b>poll</b>(2) call requests a
+				non-zero timeout, then POLLERR is set for this file descriptor
+				(rather than waiting). Designed to be used with request that <font color="#000000">use
+				the </font><font color="#000000"><b>SGV4_FLAG_NO_WAITQ</b></font><font color="#000000">
 				flag: without a wait queue entry there is no point in </font><font color="#000000"><b>poll</b></font><font color="#000000">(2)
-				waiting hence it generates POLLERR and moves on.</font></p>
+				waiting hence it generates POLLERR and moves on.</font><font color="#000000">
+				If </font><font color="#000000">the corresponding bit</font><font color="#000000">
+				in </font><font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font><font color="#000000">
+				is </font><font color="#000000">clear, then </font><font color="#000000"><b>poll</b></font><font color="#000000">(2)
+				</font><font color="#000000">will act as per its generic
+				definition and wait, even though no event will come; this is the
+				default action.</font></p>
+				<p><font color="#000000">W</font><font color="#000000">hen </font><font color="#000000">this
+				bit is set in </font><font color="#6b6400"><span style="font-weight: normal">rd_mask</span></font><font color="#000000">,
+				</font><font color="#000000">then after the ioctl this bit in
+				</font><font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font><font color="#000000">
+				</font><font color="#000000">reflect the state of this flag </font><font color="#000000"><i>prior</i></font><font color="#000000">
+				to any change.</font></p>
 			</td>
 		</tr>
 	</tbody>
@@ -6296,8 +6497,12 @@ mask values OR-ed together:</p>
 				[ro]</p>
 			</td>
 			<td width="66%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-				when read, if set implies there is one or more orphaned
-				commands/request associated with this fd.</p>
+				when this bit is set in <font color="#6b6400"><span style="font-weight: normal">rd_mask</span></font>,
+				then after the ioctl if this bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is set implies there is one or more orphaned commands/request
+				associated with this fd. When the bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is clear then there are no orphaned commands/request associated
+				with this fd.</p>
 			</td>
 		</tr>
 	</tbody>
@@ -6310,8 +6515,12 @@ mask values OR-ed together:</p>
 				[ro]</p>
 			</td>
 			<td width="66%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-				when read, if set implies there are other sg driver <b>open</b>(2)s
-				active of this sg device.</p>
+				when this bit is set in <font color="#6b6400"><span style="font-weight: normal">rd_mask</span></font>,
+				then after the ioctl if this bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is set implies there are other sg driver <b>open</b>(2)s active
+				on this sg device. When the bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is clear then there this is the only file descriptor active on
+				this sg device.</p>
 			</td>
 		</tr>
 	</tbody>
@@ -6324,13 +6533,23 @@ mask values OR-ed together:</p>
 				read-after-write [raw]</p>
 			</td>
 			<td width="66%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-				when written, set causes the following commands/requests on this
-				fd to be queued to the block layer at the tail of its queue;
-				clear causes them to be queued at head (the default). Each v3 and
-				v4 command can use the SG_FLAG_Q_AT_TAIL or SG_FLAG_Q_AT_HEAD
-				OR-ed into the <font color="#0066b3">fla</font><font color="#a3238e">gs</font>
-				field to override this setting.  
-				</p>
+				When this bit is set in <font color="#6b6400"><span style="font-weight: normal">wr_mask</span></font>,
+				then if prior to the ioctl the corresponding bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is set then <font color="#000000">this</font> causes the
+				following commands/requests on this fd to be queued to the block
+				layer at the tail of its queue. <font color="#000000">If </font><font color="#000000">the
+				corresponding bit</font><font color="#000000"> in </font><font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font><font color="#000000">
+				is </font><font color="#000000">clear, then </font><font color="#000000">this</font>
+				causes <font color="#000000">requests</font> to be queued at head
+				(the default). Each v3 and v4 command can use the
+				SG_FLAG_Q_AT_TAIL or SG_FLAG_Q_AT_HEAD OR-ed into the <font color="#0066b3">fla</font><font color="#a3238e">gs</font>
+				field to override this setting.</p>
+				<p> <font color="#000000">W</font><font color="#000000">hen </font><font color="#000000">this
+				bit is set in </font><font color="#6b6400"><span style="font-weight: normal">rd_mask</span></font><font color="#000000">,
+				</font><font color="#000000">then after the ioctl this bit in
+				</font><font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font><font color="#000000">
+				</font><font color="#000000">reflect the state of this flag </font><font color="#000000"><i>after</i></font><font color="#000000">
+				any change.</font></p>
 			</td>
 		</tr>
 	</tbody>
@@ -6343,14 +6562,28 @@ mask values OR-ed together:</p>
 				[rbw]</p>
 			</td>
 			<td width="66%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-				when written, reverses the effect of the previous <b>ioctl</b>(<span style="font-weight: normal">sg_fd,
+				When this bit is set in <font color="#6b6400"><span style="font-weight: normal">wr_mask</span></font>,
+				then if prior to the ioctl the corresponding bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is set then <font color="#000000">this</font> undoes the effect
+				of the previous <b>ioctl</b>(<span style="font-weight: normal">sg_fd,
 				SG_SET_GET_EXTENDED(SG_SEIM_</span><span style="font-weight: normal">EVENTFD</span><span style="font-weight: normal">)).
 				It has no effect if there is no current even</span><span style="font-weight: normal">t</span><span style="font-weight: normal">fd
 				associated with this sg file descriptor.</span><span style="font-weight: normal">
-				When read, yields true if the</span><span style="font-weight: normal">re</span><span style="font-weight: normal">
-				is a</span><span style="font-weight: normal"> valid</span><span style="font-weight: normal">
-				eventfd file descriptor associated </span><span style="font-weight: normal">with
-				this sg file descriptor.</span></p>
+				</span><font color="#000000"><span style="font-weight: normal">If
+				</span></font><font color="#000000"><span style="font-weight: normal">the
+				corresponding bit</span></font><font color="#000000"><span style="font-weight: normal">
+				in </span></font><font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font><font color="#000000"><span style="font-weight: normal">
+				is </span></font><font color="#000000"><span style="font-weight: normal">clear</span></font><font color="#000000"><span style="font-weight: normal">,
+				nothing is changed.</span></font></p>
+				<p><font color="#000000"><span style="font-weight: normal">W</span></font><font color="#000000"><span style="font-weight: normal">hen
+				</span></font><font color="#000000"><span style="font-weight: normal">this
+				bit is set in </span></font><font color="#6b6400"><span style="font-weight: normal">rd_mask</span></font><font color="#000000"><span style="font-weight: normal">,
+				</span></font><font color="#000000"><span style="font-weight: normal">then
+				after the ioctl this bit in </span></font><font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font><font color="#000000"><span style="font-weight: normal">
+				</span></font><font color="#000000"><span style="font-weight: normal">reflect
+				the state of this flag </span></font><font color="#000000"><span style="font-weight: normal">(i.e.
+				true if evenfd associated, false otherwise) </span></font><font color="#000000"><i><span style="font-weight: normal">prior</span></i></font><font color="#000000"><span style="font-weight: normal">
+				to any change.</span></font></p>
 			</td>
 		</tr>
 	</tbody>
@@ -6363,16 +6596,23 @@ mask values OR-ed together:</p>
 				[rbw]</p>
 			</td>
 			<td width="66%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-				when written to 1 (true) it overwrites the single internal buffer
-				with the data structures associated with the current device (i.e.
-				that the first argument was opened with). The output format is
-				similar to that seen from 'cat
-				/sys/kernel/debug/scsi_generic/snapshot'. If 0 (false) is written
-				then the &quot;snap_dev&quot; is appended to any &quot;snap_dev&quot;
-				already present in the internal buffer. If the internal buffer is
-				already over half full then the previous contents are
-				overwritten. When read it returns true if the internal buffer is
-				non-empty, else it returns false.</p>
+				When this bit is set in <font color="#6b6400"><span style="font-weight: normal">wr_mask</span></font>,
+				then if prior to the ioctl the corresponding bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is set then the state of the owning device (e.g. /dev/sg3)
+				<i>overwrites</i> the single internal buffer. That internal
+				buffer can be viewed with 'cat
+				/sys/kernel/debug/scsi_generic/snapped' and its format is similar
+				to that seen from 'cat /sys/kernel/debug/scsi_generic/snapshot'.
+				If the bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is clear the action is similar but the state information is
+				<i>appended</i> to that internal buffer. If the internal buffer
+				is already over half full then the previous contents are
+				overwritten.</p>
+				<p>When this bit is set in <font color="#6b6400"><span style="font-weight: normal">rd_mask</span></font>,
+				then after the ioctl this bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				i<font color="#000000">ndicates</font> when clear that the
+				internal buffer was empty <i>before</i> any change; and when set
+				it was non-empty.</p>
 			</td>
 		</tr>
 	</tbody>
@@ -6385,9 +6625,19 @@ mask values OR-ed together:</p>
 				[raw]</p>
 			</td>
 			<td width="66%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-				when written, set causes the following commands/requests on this
-				fd to use the tag field rather than pack_id (or
-				sg_io_v4::<font color="#5c2d91">request_extra</font>)</p>
+				When this bit is set in <font color="#6b6400"><span style="font-weight: normal">wr_mask</span></font>,
+				then if prior to the ioctl the corresponding bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is set then that causes the following commands/requests on this
+				fd to use the tag field rather than pack_id (in
+				sg_io_v4::<font color="#5c2d91">request_extra</font>).  If the
+				bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is clear then that causes the following commands/requests on this
+				fd to use the pack_id (in sg_io_v4::<font color="#5c2d91">request_extra</font>)
+				rather than the tag field; this is the default.</p>
+				<p>When this bit is set in <font color="#6b6400"><span style="font-weight: normal">rd_mask</span></font>,
+				then after the ioctl this bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				<font color="#000000">reflect the state of this flag </font><font color="#000000"><i>after
+				</i></font><font color="#000000">any change.</font></p>
 			</td>
 		</tr>
 	</tbody>
@@ -6400,10 +6650,17 @@ mask values OR-ed together:</p>
 				[raw]</p>
 			</td>
 			<td width="66%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-				when written, set causes the following commands/requests to this
+				When this bit is set in <font color="#6b6400"><span style="font-weight: normal">wr_mask</span></font>,
+				then if prior to the ioctl the corresponding bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is set then that causes the following commands/requests to this
 				fd to use command/request duration calculations to be done in
-				nanoseconds; clear causes duration calculations to be done in
+				nanoseconds. If the bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is clear then that causes duration calculations to be done in
 				milliseconds which is the default.</p>
+				<p>When this bit is set in <font color="#6b6400"><span style="font-weight: normal">rd_mask</span></font>,
+				then after the ioctl this bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				<font color="#000000">reflect the state of this flag </font><font color="#000000"><i>after
+				</i></font><font color="#000000">any change.</font></p>
 			</td>
 		</tr>
 	</tbody>
@@ -6416,12 +6673,22 @@ mask values OR-ed together:</p>
 				[w, rd--&gt;0]</p>
 			</td>
 			<td width="66%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-				this will undo the share relationship between a <font color="#000000"><u>read-side</u></font>
-				fd and a <font color="#000000"><u>write-side</u></font> fd. It
-				can be sent to either fd. If a shared command/request is active
-				using either fd then this <b>ioctl</b>(2) will fail with an errno
-				of EBUSY. If no share relationship exists for the given fd this
-				<b>ioctl</b>(2) will return 0 and do nothing.</p>
+				When this bit is set in <font color="#6b6400"><span style="font-weight: normal">wr_mask</span></font>,
+				then if prior to the ioctl the corresponding bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				is set then this will undo the share relationship between a
+				<font color="#000000"><u>read-side</u></font> fd and a <font color="#000000"><u>write-side</u></font>
+				fd. It can be sent to either fd. If a shared command/request is
+				active using either fd then this <b>ioctl</b>(2) will fail with
+				an errno of EBUSY. If no share relationship exists for the given
+				fd this <b>ioctl</b>(2) will return 0 and do nothing. <font color="#000000"><span style="font-weight: normal">If
+				</span></font><font color="#000000"><span style="font-weight: normal">the
+				corresponding bit</span></font><font color="#000000"><span style="font-weight: normal">
+				in </span></font><font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font><font color="#000000"><span style="font-weight: normal">
+				is </span></font><font color="#000000"><span style="font-weight: normal">clear</span></font><font color="#000000"><span style="font-weight: normal">,
+				nothing is changed.</span></font></p>
+				<p>When this bit is set in <font color="#6b6400"><span style="font-weight: normal">rd_mask</span></font>,
+				then after the ioctl this bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				<font color="#000000">is cleared.</font></p>
 			</td>
 		</tr>
 	</tbody>
@@ -6440,15 +6707,31 @@ ioctl(SG_SET_GET_EXTENDED) </span></b><code class="western"><font color="#6b6400
 <p><font size="3" style="font-size: 12pt">For example to set command
 duration time to nanoseconds, the following snippet of code could be
 used. It is assumed that sei is an object of type struct
-sg_extended_info and that it has been zeroed out:</font></p>
-<pre class="western">        <font size="3" style="font-size: 12pt">sei.</font><font color="#6b6400"><font size="3" style="font-size: 12pt">sei_wr_mask</font></font><font size="3" style="font-size: 12pt"> |= SG_SEIM_CTL_FLAGS;</font>
-        <font size="3" style="font-size: 12pt">sei.</font><font color="#6b6400"><font size="3" style="font-size: 12pt">ctl_flags_wr_mask</font></font><font size="3" style="font-size: 12pt"> |= SG_CTL_FLAGM_TIME_IN_NS;</font>
-        <font size="3" style="font-size: 12pt">sei.</font><font color="#6b6400"><font size="3" style="font-size: 12pt">ctl_flags</font></font><font size="3" style="font-size: 12pt"> |= SG_CTL_FLAGM_TIME_IN_NS;</font>
+<font color="#6b6400"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt">sg_extended_info</font></font></font>
+and that it has been zeroed out:</font></p>
+<pre class="western">        <font size="3" style="font-size: 12pt">/* Change a setting on this file descriptor */</font>
+        <font size="3" style="font-size: 12pt">sei.<font color="#6b6400">sei_wr_mask</font> |= SG_SEIM_CTL_FLAGS;</font>
+        <font size="3" style="font-size: 12pt">sei.<font color="#6b6400">ctl_flags_wr_mask</font> |= SG_CTL_FLAGM_TIME_IN_NS;</font>
+        <font size="3" style="font-size: 12pt">sei.<font color="#6b6400">ctl_flags</font> |= SG_CTL_FLAGM_TIME_IN_NS;</font>
         <font size="3" style="font-size: 12pt">if (ioctl(sg_fd, SG_SET_GET_EXTENDED, &amp;sei) &lt; 0) {</font>
                 <font size="3" style="font-size: 12pt">err = errno;</font>
                 <font size="3" style="font-size: 12pt">goto error_processing;</font>
         <font size="3" style="font-size: 12pt">}</font>
-        <font size="3" style="font-size: 12pt">/* success */</font></pre><p>
+        <font size="3" style="font-size: 12pt">/* success, request duration time henceforth in nanoseconds */</font>
+        <font size="3" style="font-size: 12pt">/* */</font>
+        <font size="3" style="font-size: 12pt">/* </font><font color="#000000"><font face="Liberation Mono, monospace"><font size="3" style="font-size: 12pt">Fetch</font></font></font><font size="3" style="font-size: 12pt"> a setting on this file descriptor */</font>
+        <font size="3" style="font-size: 12pt">sei.<font color="#6b6400">sei_</font><font color="#6b6400">rd</font><font color="#6b6400">_mask</font> |= SG_SEIM_CTL_FLAGS;</font>
+        <font size="3" style="font-size: 12pt">sei.</font><font color="#6b6400"><font size="3" style="font-size: 12pt">ctl_flags_</font></font><font color="#6b6400"><font size="3" style="font-size: 12pt">rd</font></font><font color="#6b6400"><font size="3" style="font-size: 12pt">_mask</font></font><font size="3" style="font-size: 12pt"> |= SG_CTL_</font><font size="3" style="font-size: 12pt"><span style="font-weight: normal">READ_S</span></font><font size="3" style="font-size: 12pt"><span style="font-weight: normal">I</span></font><font size="3" style="font-size: 12pt"><span style="font-weight: normal">D</span></font><font size="3" style="font-size: 12pt"><span style="font-weight: normal">E</span></font><font size="3" style="font-size: 12pt"><span style="font-weight: normal">_FINI</span></font><font size="3" style="font-size: 12pt">;</font>
+        <font size="3" style="font-size: 12pt">if (ioctl(sg_fd, SG_SET_GET_EXTENDED, &amp;sei) &lt; 0) {</font>
+                <font size="3" style="font-size: 12pt">err = errno;</font>
+                <font size="3" style="font-size: 12pt">goto error_processing;</font>
+        <font size="3" style="font-size: 12pt">}</font>
+        <font size="3" style="font-size: 12pt">if (sei.<font color="#6b6400">ctl_flags</font> &amp; SG_CTL_<span style="font-weight: normal">READ_S</span><span style="font-weight: normal">I</span><span style="font-weight: normal">D</span><span style="font-weight: normal">E</span><span style="font-weight: normal">_FINI) {</span></font>
+                <font size="3" style="font-size: 12pt">/* </font><font color="#000000"><font face="Liberation Mono, monospace"><font size="3" style="font-size: 12pt">read-side request has completed</font></font></font><font size="3" style="font-size: 12pt"> */</font>
+        <font size="3" style="font-size: 12pt">} else {</font>
+                <font size="3" style="font-size: 12pt">/* <font color="#000000"><font face="Liberation Mono, monospace">read-side request has not completed</font></font> */</font>
+        <font size="3" style="font-size: 12pt">}</font>
+</pre><p>
 <font size="3" style="font-size: 12pt">If the user wants maximum
 speed (i.e. smallest overhead and </font><font size="3" style="font-size: 12pt">latency)
 they may want to experiment with setting </font><font size="3" style="font-size: 12pt"><b>SG_CTL_FLAGM_EXCL_WAITQ,
@@ -6468,14 +6751,19 @@ Also consider setting </span></font><font size="3" style="font-size: 12pt"><b>SG
 </b></font><font size="3" style="font-size: 12pt"><span style="font-weight: normal">to
 zero</span></font><font size="3" style="font-size: 12pt"><b>.</b></font></p>
 <p><font size="3" style="font-size: 12pt">Finally it was noticed that
-there are many more &quot;interesting&quot; values to read from the
-driver (e.g. about its state) than values to write to the driver. So
-rather than potentially fill struct sg_extended_info with 32 bit
-values that are only read, the </font><code class="western"><font color="#6b6400"><font size="3" style="font-size: 12pt"><span style="font-style: normal">read_value</span></font></font></code>
+there are many more &quot;interesting&quot; values to </font><font size="3" style="font-size: 12pt"><i>read</i></font><font size="3" style="font-size: 12pt">
+from the driver (e.g. about its state) than values to </font><font size="3" style="font-size: 12pt"><i>write</i></font><font size="3" style="font-size: 12pt">
+to the driver. So rather than potentially fill struct
+</font><font color="#6b6400"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt">sg_extended_info</font></font></font><font size="3" style="font-size: 12pt">
+with 32 bit values that are only read, the </font><code class="western"><font color="#6b6400"><font size="3" style="font-size: 12pt"><span style="font-style: normal">read_value</span></font></font></code>
 <font size="3" style="font-size: 12pt">field was introduced. One of
-the following constants is written to the </font><code class="western"><font color="#6b6400"><font size="3" style="font-size: 12pt"><span style="font-style: normal">read_value</span></font></font></code>
-<font size="3" style="font-size: 12pt">field, then the associated
-value can be read from the same field when the</font> <font size="3" style="font-size: 12pt"><b>ioctl</b></font><font size="3" style="font-size: 12pt">(2)
+the following constants is </font><font size="3" style="font-size: 12pt"><i>written</i></font><font size="3" style="font-size: 12pt">
+to the </font><code class="western"><font color="#6b6400"><font size="3" style="font-size: 12pt"><span style="font-style: normal">read_value</span></font></font></code>
+<font size="3" style="font-size: 12pt">field</font><font size="3" style="font-size: 12pt">
+prior to the </font><font size="3" style="font-size: 12pt"><b>ioctl(2)</b></font><font size="3" style="font-size: 12pt">
+call</font><font size="3" style="font-size: 12pt">, then the
+associated value can be read from the same field when the</font>
+<font size="3" style="font-size: 12pt"><b>ioctl</b></font><font size="3" style="font-size: 12pt">(2)
 finishes successfully.</font></p>
 <table width="100%" cellpadding="2" cellspacing="0" style="page-break-after: avoid; page-break-inside: avoid">
 	<col width="40*"/>
@@ -6496,8 +6784,7 @@ finishes successfully.</font></p>
 				</p>
 			</th>
 			<th width="77%" bgcolor="#fcd4d1" style="background: #fcd4d1" style="border: none; padding: 0cm"><p>
-				Notes 
-				</p>
+				Notes</p>
 			</th>
 		</tr>
 		<tr valign="top">
@@ -6512,9 +6799,10 @@ finishes successfully.</font></p>
 				set to SG_SEIRV_BOOL_MASK, after
 				<b>ioctl</b>(SG_SET_GET_EXTENDED{SG_SEIM_READ_VAL) <code class="western"><font color="#6b6400"><span style="font-style: normal">read_value</span></font></code>
 				has a 32 bit mask of bit positions that are used in <code class="western"><font color="#6b6400"><span style="font-style: normal">ctl_flags</span></font></code>
-				(and <code class="western"><font color="#6b6400"><span style="font-style: normal">ctl_flags_wr_mask</span></font></code>
-				and <code class="western"><font color="#6b6400"><span style="font-style: normal">ctl_flags_rd_mask</span></font></code>).
-				That value is currently 0xffff .</p>
+				(and <code class="western"><font color="#6b6400"><span style="font-style: normal"><span style="font-weight: normal">ctl_flags_wr_mask</span></span></font></code>
+				and <code class="western"><font color="#6b6400"><span style="font-style: normal"><span style="font-weight: normal">ctl_flags_rd_mask</span></span></font></code>).
+				It is reading the SG_CTL_FLAGM_ALL_BITS define whose value is
+				currently 0xffff .</p>
 			</td>
 		</tr>
 	</tbody>
@@ -6558,10 +6846,10 @@ finishes successfully.</font></p>
 			</td>
 			<td width="77%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 				after this call the <code class="western"><font color="#6b6400"><span style="font-style: normal">read_value</span></font></code>
-				field is set to the lower 32 bits of a 64 bit timestamp. That
-				timestamp is set when the sg device owning this file descriptor
-				is created, its unit is nanoseconds, and it is typically the
-				number of nanoseconds since the machine was booted.</p>
+				field is set to the <i>lower</i> 32 bits of a 64 bit timestamp.
+				That timestamp is set when the sg device owning this file
+				descriptor is created, its unit is nanoseconds, and it is
+				typically the number of nanoseconds since the machine was booted.</p>
 			</td>
 		</tr>
 	</tbody>
@@ -6575,10 +6863,10 @@ finishes successfully.</font></p>
 			</td>
 			<td width="77%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 				after this call the <code class="western"><font color="#6b6400"><span style="font-style: normal">read_value</span></font></code>
-				field is set to the upper 32 bits of a 64 bit timestamp. That
-				timestamp is set when the sg device owning this file descriptor
-				is created, its unit is nanoseconds, and it is typically the
-				number of nanoseconds since the machine was booted.</p>
+				field is set to the <i>upper</i> 32 bits of a 64 bit timestamp.
+				That timestamp is set when the sg device owning this file
+				descriptor is created, its unit is nanoseconds, and it is
+				typically the number of nanoseconds since the machine was booted.</p>
 			</td>
 		</tr>
 	</tbody>
@@ -6610,7 +6898,8 @@ finishes successfully.</font></p>
 				after <b>ioctl</b>(2) <code class="western"><font color="#6b6400"><span style="font-style: normal">read_value</span></font></code>
 				has a 32 bit mask of bit positions that are used in <code class="western"><font color="#6b6400"><font size="2" style="font-size: 11pt"><span style="font-style: normal">sei_wr_mask</span></font></font></code>
 				and <code class="western"><font color="#6b6400"><span style="font-style: normal">sei_rd_mask</span></font></code>
-				. That value is currently 0x1ff .</p>
+				. It is reading the SG_SEIM_ALL_BITS define whose value is
+				currently 0x3ff .</p>
 			</td>
 		</tr>
 	</tbody>
@@ -6719,7 +7008,7 @@ determining if an sg device changed or not, it is best to use the raw
 fields yielded by <b>SG_SEIRV_DEV_TS_LOWER</b><span style="font-weight: normal">
 and </span><b>SG_SEIRV_DEV_TS_</b><b>UPPER</b><span style="font-weight: normal">
 ioctl calls.</span></p>
-<h2 class="western"><a name="__RefHeading___Toc17996_3956569564"></a><b>15
+<h2 class="western"><a name="__RefHeading___Toc17996_3956569564"></a><b>16
 System Calls</b></h2>
 <p><span style="font-weight: normal">This section lists Linux system
 calls that can be used with a sg file descriptor</span><span style="font-weight: normal">,
@@ -6828,8 +7117,8 @@ information specific to the sg driver for these system calls.</span></p>
 				disabled</p>
 			</td>
 			<td width="73%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
-				sg driver calls no_llseek() which causes <b>lseek</b>() and
-				<b>llseek</b>() to fail with errno=ESPIPE .</p>
+				sg driver calls no_llseek() which causes <b>lseek</b>(2) and
+				<b>llseek</b>(2) to fail with errno=ESPIPE .</p>
 			</td>
 		</tr>
 	</tbody>
@@ -6915,7 +7204,7 @@ information specific to the sg driver for these system calls.</span></p>
 				<b>read</b></p>
 			</td>
 			<td width="6%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
-				deprecated</p>
+				<font color="#ff0000">deprecated</font></p>
 			</td>
 			<td width="73%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 				<font color="#000000">a </font><font color="#000000">non-blocking
@@ -6948,7 +7237,7 @@ information specific to the sg driver for these system calls.</span></p>
 				<b>write</b></p>
 			</td>
 			<td width="6%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
-				deprecated</p>
+				<font color="#ff0000">deprecated</font></p>
 			</td>
 			<td width="73%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 				a non-blocking (asynchronous) request containing a SCSI command
@@ -6985,9 +7274,9 @@ calls</span></font></font></b></font></p>
 (i.e. struct sg_io_v4) uses <b>ioctl</b>(2)s for all its submissions,
 completions and adds new support for aborting a SCSI command that is
 underway.</p>
-<h2 class="western"><a name="__RefHeading___Toc1578_4294551682"></a>16
+<h2 class="western"><a name="__RefHeading___Toc1578_4294551682"></a>17
 Downloads and testing</h2>
-<p>This tarball: <a href="p/sgv4_20200927.tgz">sgv4_20200</a><a href="p/sgv4_20200927.tgz">927</a>
+<p>This tarball: <a class="western" href="p/sgv4_20210117.tgz">sgv4_20210117</a>
 contains a README file that outlines what is included. There are
 earlier versions of this driver for the <u>lk5.</u><u>7</u> and <u>lk5.</u><u>8</u><u>
 series</u>. The most recent versions of this driver around found in
@@ -7003,18 +7292,19 @@ sg v4 test code? Since the sg3_utils is well established, the author
 sees no benefit in introducing a sg4_utils package in which less than
 an estimated 5% of the code would change, much easier to incorporate
 that code change/addition in the existing package. The latest
-sg3_utils release is on the <a href="index.html">main</a> page (<font color="#000000">beta
-</font>version 1.46  revision 854 as this is written) and contains
-utilities for testing the sg v4 interface. The underlying support
-library has been using the sg v4 header for many years as a common
-(i.e. intermediate) format (API) across the supported Operating
-Systems. If the given device was a bsg device node then the sg v4
-interface was used; otherwise (e.g. for sg and block devices) the sg
-v4 header was translated down to a v3 header and forwarded on. In the
-current version, the sg3_utils will use <b>ioctl</b>(SG_GET_VERSION_NUM)
-on sg devices and if it is a v4 driver then it will send a v4 header,
-otherwise it will do as it does now. [That v4 interface usage can be
-defeated by './<b>configure</b> --disable-linux-sgv4' .] 
+sg3_utils release is on the <a class="western" href="index.html">main</a>
+page (<font color="#000000">beta </font>version 1.46  revision 854 as
+this is written) and contains utilities for testing the sg v4
+interface. The underlying support library has been using the sg v4
+header for many years as a common (i.e. intermediate) format (API)
+across the supported Operating Systems. If the given device was a bsg
+device node then the sg v4 interface was used; otherwise (e.g. for sg
+and block devices) the sg v4 header was translated down to a v3
+header and forwarded on. In the current version, the sg3_utils will
+use <b>ioctl</b>(SG_GET_VERSION_NUM) on sg devices and if it is a v4
+driver then it will send a v4 header, otherwise it will do as it does
+now. [That v4 interface usage can be defeated by './<b>configure</b>
+--disable-linux-sgv4' .] 
 </p>
 <p>The presence of the environment variable SG3_UTILS_LINUX_NANO
 (typically with 1 assigned into it) in the shell executing sg3_utils
@@ -7114,12 +7404,12 @@ in, a local copy of the new &lt;kernel_src&gt;/include/uapi/scsi/sg.h
 header needed for the sg v4 driver is kept in the testing directory.
 It has the name 'uapi_sg.h' so it won't collide with the &quot;real&quot;
 header if it is present.</p>
-<h2 class="western"><a name="__RefHeading___Toc1580_4294551682"></a>17
+<h2 class="western"><a name="__RefHeading___Toc1580_4294551682"></a>18
 Other documents</h2>
-<p>The original sg driver documentation is here: <a href="http://www.tldp.org/HOWTO/SCSI-Generic-HOWTO/index.html">SCSI-Generic-HOWTO</a>
-and a more recent discussion of <b>ioctl</b>(SG_IO) is here: <a href="sg_io.html">sg_io</a>
+<p>The original sg driver documentation is here: <a class="western" href="http://www.tldp.org/HOWTO/SCSI-Generic-HOWTO/index.html">SCSI-Generic-HOWTO</a>
+and a more recent discussion of <b>ioctl</b>(SG_IO) is here: <a class="western" href="sg_io.html">sg_io</a>
 .</p>
-<h2 class="western"><a name="__RefHeading___Toc1582_4294551682"></a>18
+<h2 class="western"><a name="__RefHeading___Toc1582_4294551682"></a>19
 Conclusion</h2>
 <p>The sg v4 driver is designed to be backwardly compatible with the
 v3 driver. This simplest way for an application to find which driver
@@ -7130,9 +7420,10 @@ arises, driver parameters to re-impose that limit and any other
 differing behaviour can be added. The best way to test backward
 compatibility is to place this new driver &quot;under&quot; existing
 apps that use sg driver nodes and check their functionality.</p>
-<p>Return to <a href="index.html">main</a> page. 
+<p>Return to <a class="western" href="index.html">main</a> page. 
 </p>
-<p align="center">Douglas Gilbert</p>
-<p align="center">Last updated: 11 January 2021 23:00</p>
+<p align="center" style="margin-bottom: 0.1cm">Douglas Gilbert</p>
+<p align="center" style="margin-bottom: 0.1cm">Last updated: 20
+January 2021 15:00</p>
 </body>
 </html>
