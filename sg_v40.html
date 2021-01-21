@@ -5,7 +5,7 @@
 	<title>Linux SG driver version 4.0</title>
 	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2021-01-20T14:49:45.171292947"/>
+	<meta name="changed" content="2021-01-20T21:44:11.493973275"/>
 	<meta name="keywords" content="Linux, SCSI, SG_IO, pass-through"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -166,24 +166,28 @@
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<style type="text/css">
-		p { color: #000000; line-height: 100% }
-		td p { margin-bottom: 0.1cm; color: #000000 }
-		h2 { color: #000000 }
-		h2.cjk { font-family: "Noto Sans CJK SC Regular" }
-		h2.ctl { font-family: "Lohit Devanagari" }
-		pre { color: #000000 }
-		pre.cjk { font-family: "Courier New", monospace }
-		h3 { color: #000000 }
-		h3.western { font-family: "Albany", sans-serif }
-		h3.cjk { font-family: "Noto Sans CJK SC Regular" }
-		h3.ctl { font-family: "Lohit Devanagari" }
-		th p { margin-bottom: 0.1cm; color: #000000 }
-		a:link { color: #0000ff }
-		a.western:link { so-language: en-CA }
-		a.cjk:link { so-language: zh-CN }
-		a.ctl:link { so-language: hi-IN }
+		@page { size: 21.59cm 27.94cm; margin-left: 2cm; margin-right: 1cm; margin-top: 1cm; margin-bottom: 1cm }
+		p { color: #000000; background: transparent }
+		td p { margin-bottom: 0.1cm; color: #000000; background: transparent }
+		h2 { margin-top: 0.35cm; margin-bottom: 0.21cm; color: #000000; background: transparent; page-break-after: avoid }
+		h2.western { font-family: "Liberation Serif", serif; font-size: 18pt; font-weight: bold }
+		h2.cjk { font-family: "Noto Sans CJK SC Regular"; font-size: 18pt; font-weight: bold }
+		h2.ctl { font-family: "Lohit Devanagari"; font-size: 18pt; font-weight: bold }
+		pre { color: #000000; background: transparent }
+		pre.western { font-family: "Liberation Mono", monospace; font-size: 10pt }
+		pre.cjk { font-family: "Courier New", monospace; font-size: 10pt }
+		pre.ctl { font-family: "Liberation Mono", monospace; font-size: 10pt }
+		h3 { margin-top: 0.25cm; margin-bottom: 0.21cm; color: #000000; background: transparent; page-break-after: avoid }
+		h3.western { font-family: "Albany", sans-serif; font-size: 14pt; font-weight: bold }
+		h3.cjk { font-family: "Noto Sans CJK SC Regular"; font-size: 14pt; font-weight: bold }
+		h3.ctl { font-family: "Lohit Devanagari"; font-size: 14pt; font-weight: bold }
+		th p { margin-bottom: 0.1cm; color: #000000; font-weight: bold; text-align: center; background: transparent }
+		a:link { color: #0000ff; text-decoration: underline }
+		code.western { font-family: "Liberation Mono", monospace }
 		code.cjk { font-family: "Courier New", monospace }
-		a:visited { color: #000080 }
+		code.ctl { font-family: "Liberation Mono", monospace }
+		a:visited { color: #000080; so-language: zxx; text-decoration: underline }
+		strong { font-weight: bold }
 	</style>
 </head>
 <body lang="en-CA" text="#000000" link="#0000ff" vlink="#000080" bgcolor="#eeeeee" dir="ltr">
@@ -192,70 +196,69 @@
 	Linux SG driver version 4.0</b></font></font></p>
 </ol>
 <div id="Table of Contents1" dir="ltr"><p style="margin-left: 0.5cm; margin-bottom: 0cm">
-	<a class="western" href="#__RefHeading___Toc1534_4294551682">1
-	Introduction</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc7793_510494588">1.1
+	<a href="#__RefHeading___Toc1534_4294551682">1 Introduction</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc7793_510494588">1.1
 	Status</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1536_4294551682">2
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1536_4294551682">2
 	Changes to sg driver between version 3.5.36 and 4.0</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc8274_3647010070">2.1
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc8274_3647010070">2.1
 	Deprecated or removed features in version 4.0 compared to earlier
 	version</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1538_4294551682">3
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1538_4294551682">3
 	SCSI Generic versions 1, 2, 3 and 4 interfaces</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1540_4294551682">3.1
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1540_4294551682">3.1
 	Comparison of fields in the v4 and v3 interfaces</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1542_4294551682">3.2
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1542_4294551682">3.2
 	Flags in v3 and v4 interfaces</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1544_4294551682">3.3
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1544_4294551682">3.3
 	The info field</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1546_4294551682">4
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1546_4294551682">4
 	Architecture of the sg driver</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc18168_1671399770">4.1
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc18168_1671399770">4.1
 	Command or request</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc8276_3647010070">4.2
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc8276_3647010070">4.2
 	Direct, mmap()-ed IO and bio_s</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1548_4294551682">5
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1548_4294551682">5
 	Synchronous usage</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1550_4294551682">6
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1550_4294551682">6
 	Sharing file descriptors</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1552_4294551682">7
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1552_4294551682">7
 	Async usage in v4</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1554_4294551682">7.1
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1554_4294551682">7.1
 	ioctl(SG_IOABORT)</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1556_4294551682">8
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1556_4294551682">8
 	Request sharing</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc15431_608653543">8.1
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc15431_608653543">8.1
 	READ, WRITE, WRITE</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1560_4294551682">9
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1560_4294551682">9
 	Sharing design considerations</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1562_4294551682">10
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1562_4294551682">10
 	Multiple requests</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1564_4294551682">10.1
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1564_4294551682">10.1
 	Processing mrq responses</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1566_4294551682">10.2
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1566_4294551682">10.2
 	Aborting multiple requests</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1568_4294551682">10.3
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1568_4294551682">10.3
 	Single/multiple (non-)blocking requests</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc18199_72860742">10.4
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc18199_72860742">10.4
 	SGV4_FLAG_REC_ORDER flag</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1570_4294551682">11
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1570_4294551682">11
 	pack_id or tag</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc36099_3879977686">12
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc36099_3879977686">12
 	iopoll/blk_poll() support</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1572_4294551682">13
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1572_4294551682">13
 	Bi-directional command support</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1574_4294551682">14
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1574_4294551682">14
 	SG interface support changes</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1576_4294551682">15
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1576_4294551682">15
 	IOCTLs</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc17996_3956569564">16
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc17996_3956569564">16
 	System Calls</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1578_4294551682">17
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1578_4294551682">17
 	Downloads and testing</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1580_4294551682">18
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1580_4294551682">18
 	Other documents</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a class="western" href="#__RefHeading___Toc1582_4294551682">19
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc1582_4294551682">19
 	Conclusion</a></p>
 </div>
 <p style="margin-bottom: 0cm"><br/>
@@ -319,7 +322,7 @@ new kernel facilities that the driver can take advantage of. Also of
 note is that much or the low level code once in the sg driver (and
 remnants remain) have been moved to the block layer and the SCSI
 mid-level. This upgrade has been done as a two stage process: first
-clean the driver up, remove some restrictions and re-instate some
+clean the driver up, remove some restrictions and reinstate some
 features that have been accidentally lost. The first stage also adds
 basic v4 interface support using the <b>ioctl</b>(SG_IO) for
 sync/blocking usage; and <b>ioctl</b>(<font color="#a3238e"><span style="font-weight: normal">SG_IOSUBMIT</span></font>)
@@ -330,7 +333,7 @@ async/non-blocking usage.
 interface via <b>ioctl</b>(<span style="font-weight: normal">SG_IO</span>)
 on <i>all</i> block devices that use the SCSI subsystem, directly or
 via translation (e.g. SATA disks use libata which implements the T10
-SAT standard; see <a class="western" href="https://www.t10.org/">https://www.t10.org/
+SAT standard; see <a href="https://www.t10.org/">https://www.t10.org/
 </a>). In pseudocode an example like this: ' <b>ioctl</b>(<b>open</b>(&quot;/dev/sdc&quot;),
 <span style="font-weight: normal">SG_IO</span>, ptr_to_sg_io_hdr)'
 works as expected. This is <i>not</i> implemented by the sg driver so
@@ -349,14 +352,14 @@ such as file and request sharing, multiple requests (in one
 invocation) and supports and the so-called <i>extended</i> <b>ioctl</b>(2).
 The second patchset is only currently available from this page (as
 patches 0046 to 0083 applied on top of the first stage). Its second
-stage bumps the driver version number to 4.0.46 . See <a class="western" href="#15 Downloads and testing|outline">Downloads
+stage bumps the driver version number to 4.0.46 . See <a href="#15 Downloads and testing|outline">Downloads
 and testing section</a> below.</p>
 <p>In keeping with a new Linux kernel coding style directive, the
 terms master and slave have been replaced by <span style="font-style: normal"><u>read-side</u></span><i>
 </i>and <u>write side</u> respectively. These terms refer to the two
-sides of a <a class="western" href="#8 Request sharing|outline">Request
-share</a> which is explained in a later section. One aspect lost with
-this changed terminology is that the <u>read-side</u> is the <i>leader</i>
+sides of a <a href="#8 Request sharing|outline">Request share</a>
+which is explained in a later section. One aspect lost with this
+changed terminology is that the <u>read-side</u> is the <i>leader</i>
 (i.e. comes first) and the <u>write-side</u> is a <i>follower</i>.
 And usually the <u>write-side</u> is dependent on the <u>read-side</u>
 succeeding.</p>
@@ -422,7 +425,7 @@ patchset:</p>
 	used to limit which sg devices are shown in the snapshot.</p>
 	<li><p>add support for iopoll, also known as hipri and blk_poll.
 	Currently both sync and async usage is supported but restrictions
-	may meed to be added for async usage. This feature is &quot;new
+	may need to be added for async usage. This feature is &quot;new
 	ground&quot; for the SCSI subsystem.</p>
 	<li><p>bump the driver version number to 4.0.12</p>
 </ul>
@@ -737,7 +740,7 @@ system calls to various <b>ioctl</b>(2)s. Using the <b>write</b>(2)
 and <b>read</b>(2) system calls in the way that this driver does is
 frowned upon by the Linux kernel architects. Even though adding new
 <b>ioctl</b>(2)s is also discouraged, two new <b>ioctl</b>(2)s were
-proposed in this <a class="western" href="https://www.spinics.net/lists/linux-scsi/msg123031.html">post</a>
+proposed in this <a href="https://www.spinics.net/lists/linux-scsi/msg123031.html">post</a>
 by Linux architect (L. Torvalds). Those two <b>ioctl</b>(2)s plus two
 closely related <b>ioctl</b>(2)s have been implemented in this
 upgrade.</p>
@@ -1024,9 +1027,9 @@ field in the version 3 interface structure.</p>
 				If this field is zero then <font color="#a3238e">dout_xferp</font>
 				(or <font color="#0066b3">dxferp</font>) points to user data to
 				be written from the host to the storage device. If this field is
-				non-zero, then its the the number of elements in the scatter
-				gather list pointed to by <font color="#a3238e">dout_xferp</font>
-				(or <font color="#0066b3">dxferp</font>). Kernels around lk 5.10
+				non-zero, then it's the number of elements in the scatter gather
+				list pointed to by <font color="#a3238e">dout_xferp</font> (or
+				<font color="#0066b3">dxferp</font>). Kernels around lk 5.10
 				limit this value to UIO_MAXIOV which is 1024.</p>
 			</td>
 		</tr>
@@ -1055,8 +1058,8 @@ field in the version 3 interface structure.</p>
 				If this field is <i>zero</i> then <font color="#a3238e">din_xferp</font>
 				(or <font color="#0066b3">dxferp</font>) points to user data to
 				be written from the host to the storage device. If this field is
-				<i>non-zero</i>, then its the the number of elements in the
-				scatter gather list pointed to by <font color="#a3238e">din_xferp</font>
+				<i>non-zero</i>, then it's the number of elements in the scatter
+				gather list pointed to by <font color="#a3238e">din_xferp</font>
 				(or <font color="#0066b3">dxferp</font>). Kernels around lk 5.10
 				limit this value to UIO_MAXIOV which is 1024.</p>
 			</td>
@@ -1182,9 +1185,9 @@ field in the version 3 interface structure.</p>
 				used on the </span><font color="#000000"><u><span style="font-weight: normal">write-</span></u></font><u><span style="font-weight: normal">side</span></u><span style="font-weight: normal">
 				(typically a WRITE command) of a share request.</span><span style="font-weight: normal">
 				This byte offset is applied to the in-kernel buffer from the
-				preceding </span><font color="#000000"><span style="font-weight: normal">read-side</span></font><span style="font-weight: normal">
+				preceding </span><font color="#000000"><u><span style="font-weight: normal">read-side</span></u></font><span style="font-weight: normal">
 				command</span><span style="font-weight: normal"> </span><span style="font-weight: normal">and
-				the copy (DMA) out to the </span><font color="#000000"><span style="font-weight: normal">write-side</span></font><span style="font-weight: normal">
+				the copy (DMA) out to the </span><font color="#000000"><u><span style="font-weight: normal">write-side</span></u></font><span style="font-weight: normal">
 				device will be </span><font color="#a3238e"><span style="font-weight: normal">dout_xfer_len</span></font><span style="font-weight: normal">
 				bytes long. </span><span style="font-weight: normal">If this
 				offset plus  </span><font color="#a3238e"><span style="font-weight: normal">dout_xfer_len</span></font><font color="#a3238e"><span style="font-weight: normal">
@@ -1410,7 +1413,7 @@ the same sg_io_v4 structure as its <i>control object</i>. Most fields
 have a different, but related, meaning when they are in a control
 object. A control object is distinguished by having the
 SGV4_FLAG_MULTIPLE_REQS flag set. Multiple requests are described in
-a later <a class="western" href="#10 Multiple requests|outline">section</a>.</p>
+a later <a href="#10 Multiple requests|outline">section</a>.</p>
 <h3 class="western"><a name="__RefHeading___Toc1542_4294551682"></a>3.2
 Flags in v3 and v4 interfaces</h3>
 <p>The following table lists the flag values that can be OR-ed
@@ -1486,7 +1489,7 @@ from the version 3 driver) tend to have lower values.</p>
 				with this flag two &quot;mmap-ed&quot; buffers must be used (for
 				the source and destination of the copy) and the user code must
 				copy the data between those two buffers.</span><span style="font-weight: normal">
-				See section on <a class="western" href="#4.2 Direct, mmap()-ed IO and bio_s|outline">mmap</a>
+				See section on <a href="#4.2 Direct, mmap()-ed IO and bio_s|outline">mmap</a>
 				below.</span></p>
 			</td>
 		</tr>
@@ -1580,7 +1583,7 @@ from the version 3 driver) tend to have lower values.</p>
 				&quot;dout&quot; (typically a WRITE command) byte offset from
 				sg_io_v4::<font color="#a3238e">spare_in</font> . The request
 				with this flag is assumed to be the <font color="#000000"><u>write-side</u></font>
-				request (e.g. a WRITE command) following a <font color="#000000">read-side</font>
+				request (e.g. a WRITE command) following a <font color="#000000"><u>read-side</u></font>
 				request that has populated an in-kernel buffer maintained by the
 				driver. That byte offset will become the starting address within
 				that in-kernel buffer for the DMA out to the <font color="#000000"><u>write-side</u></font>
@@ -1633,7 +1636,7 @@ from the version 3 driver) tend to have lower values.</p>
 				block layer. The completion handling will use blk_poll() instead
 				of waiting for an event or classic polling (i.e. via the Unix
 				<b>poll</b>(2) or Linux <b>epoll</b>(2) system calls). See the
-				section on <a class="western" href="#12 iopoll/blk_poll() support|outline">iopoll/blkpoll</a>
+				section on <a href="#12 iopoll/blk_poll() support|outline">iopoll/blkpoll</a>
 				below.</p>
 			</td>
 		</tr>
@@ -1684,9 +1687,9 @@ from the version 3 driver) tend to have lower values.</p>
 				is either the <font color="#000000"><u>read-side</u></font>, or
 				the <font color="#000000"><u>write-</u></font><u>side</u> of a
 				<i>file share</i> which has already been set up. If it is the
-				<font color="#000000">read-</font>side then the command must be a
-				READ or READ-like SCSI command (i.e. gets data-in from the
-				storage device). If it is the <font color="#000000">write-</font>side
+				<font color="#000000"><u>read-</u></font><u>side</u> then the
+				command must be a READ or READ-like SCSI command (i.e. gets
+				data-in from the storage device). If it is the <font color="#000000"><u>write-</u></font><u>side</u>
 				then the command must be a WRITE or WRITE-like SCSI command (i.e.
 				sends data-out to the storage device).</p>
 			</td>
@@ -1732,11 +1735,11 @@ from the version 3 driver) tend to have lower values.</p>
 				request share. When this flag is applied to a <font color="#000000"><u>write-side</u></font>
 				request, than it can be followed by another <font color="#000000"><u>write-side</u></font><u>
 				</u>request which will use the same in-kernel buffer from the
-				preceding <font color="#000000">read-side</font> request. The
-				last <font color="#000000">write-side</font> request (e.g. in a
-				READ-WRITE-WRITE-WRITE sequence) should not have this flag set.
-				The last request in a multiple request array must not have this
-				flag set (or an -ERANGE error will result).</p>
+				preceding <font color="#000000"><u>read-side</u></font> request.
+				The last <font color="#000000"><u>write-side</u></font> request
+				(e.g. in a READ-WRITE-WRITE-WRITE sequence) should not have this
+				flag set. The last request in a multiple request array must not
+				have this flag set (or an -ERANGE error will result).</p>
 			</td>
 		</tr>
 		<tr valign="top">
@@ -1912,7 +1915,8 @@ interfaces for both ULDs and LLDs and provides services such as
 device discovery, device teardown (e.g. at shutdown or suspend) and
 error processing. LLDs typically manage SCSI hardware (often call
 Host Bus Adapters (HBAs)) or bridge to another protocol stack (e.g.
-USB attached SCSI (uas, also known as uasp)).</p>
+USB attached SCSI (<font color="#000000">UAS</font>, also known as
+UASP in USB standards)).</p>
 <p>One difficulty faced when using this driver is knowing what is the
 mapping between the type-specific ULD (e.g. /dev/sdc) on the
 corresponding sg driver device name (e.g. /dev/sg2). The information
@@ -2071,7 +2075,7 @@ Command or request</h3>
 interchangeably in this driver and its documentation. Strictly
 speaking a <i>command</i> refers to a SCSI command (or more precisely
 a SCSI Command Descriptor Block (cdb)) as documented in the various
-SCSI command set standards available from <a class="western" href="http://www.t10.org/">T10</a>
+SCSI command set standards available from <a href="http://www.t10.org/">T10</a>
 . An example of an important one of these is the &quot;SCSI Primary
 Commands - 4&quot; (usually known as: SPC-4). Quite often when a
 document refers to a SCSI command it implicitly also means the
@@ -2092,7 +2096,7 @@ a READ command will be placed in the computer's memory). The <i>details</i>
 are left to lower layers which in the case of SCSI may be SAS, SPI,
 iSCSI, SRP, USB (UAS(P) or block) and SATA (via SAT). This lack of
 near-end data management information in the command sets is
-especially useful when considering disk to disk copies. With <a class="western" href="#8 Request sharing|outline"><i>request
+especially useful when considering disk to disk copies. With <a href="#8 Request sharing|outline"><i>request
 sharing</i></a>, the user can still have maximum control over the
 copy while leaving the management of the associated data buffers
 returned from each READ and required for each paired WRITE, to be
@@ -2101,7 +2105,7 @@ control&quot; is the ability of the user to change the WRITE commands
 to WRITE AND VERIFY or WRITE ATOMIC commands. The driver can also
 maintain the timing relationship between each READ-WRITE pair while
 running many such pairs asynchronously (i.e. several pairs started at
-the same time). With <a class="western" href="#10 Multiple requests|outline">multiple
+the same time). With <a href="#10 Multiple requests|outline">multiple
 requests</a> using the <i>shared variable blocking</i> method this
 can all seem like a single blocking synchronous call to the user. So
 the user is getting something approaching maximum performance with
@@ -2148,7 +2152,7 @@ objects that carry the user data associated with a 'struct request'
 object, if that request carries user data. An important aspect of
 these two objects, is that they can have <i>different</i> lifetimes.
 A struct request object can be freed up (more likely: re-used) as
-soon as a driver is tnformed about the response of the associated
+soon as a driver is unformed about the response of the associated
 request. And especially in the case of a <b>read</b>(2) like
 operation the associated bio object needs to stay &quot;alive&quot;
 until the data it is carrying is conveyed (copied) back to the user
@@ -2313,7 +2317,7 @@ object is marked as inactive. So no <font color="#6b6400">sg_request</font>
 objects are actually deleted (i.e. the memory they use being freed
 up) until the owning file descriptor is <b>close</b>(2)-d. In the
 case where there are multiple copies of the file descriptor (e.g. a
-forked process or due to <b>dup</b>(2)) then is is the last <b>close</b>(2)
+forked process or due to <b>dup</b>(2)) then is the last <b>close</b>(2)
 that frees up all associated <font color="#6b6400">sg_request</font>
 objects.</p>
 <p>A sg_request object is long-lived and may handle multiple commands
@@ -2455,7 +2459,7 @@ fd7. This is what the <b>sgh_dd</b> test utility does (see below).</p>
 requests can still be sent to both file descriptors in the normal
 fashion. Only when the new flag SGV4_FLAG_SHARE is given, or OR-ed in
 with other <font color="#0066b3">fla</font><font color="#a3238e">gs</font>,
-is request sharing performed. See the <a class="western" href="#8 Request sharing|outline">Request
+is request sharing performed. See the <a href="#8 Request sharing|outline">Request
 sharing</a> section below.</p>
 <h2 class="western"><a name="__RefHeading___Toc1552_4294551682"></a>7
 Async usage in v4</h2>
@@ -2630,7 +2634,7 @@ pack_id in the <font color="#a3238e">request_extra</font> field. A
 pointer to that object can then be given as the third argument of the
 ioctl(SG_IOABORT).</p>
 <p>Alternatively a tag may be used to identify a request to be
-aborted. This is a little more involved. The the
+aborted. This is a little more involved. The
 SG_CTL_FLAGM_TAG_FOR_PACK_ID flag needs to be set in the extended
 <b>ioctl</b>(2) on current file descriptor. Then the
 SGV4_FLAG_YIELD_TAG flag needs to be set in the <font color="#a3238e">flags</font>
@@ -2640,7 +2644,7 @@ the generated_tag field. Then that tag value needs to be placed in
 the <font color="#a3238e">request_tag</font> field of v4 object
 pointed to in the third argument of <b>ioctl</b>(SG_IOABORT).</p>
 <p>By default the scope of the search to find the request is
-restricted the the file descriptor given as the first argument of
+restricted the file descriptor given as the first argument of
 <b>ioctl</b>(SG_IOABORT). The SGV4_FLAG_DEV_SCOPE flag may be set in
 the <font color="#a3238e">flags</font> field of the v4 interface
 object and in this case, if no match is found using the current file
@@ -2652,7 +2656,7 @@ descriptors are searched (but &quot;oldest first&quot; would be a
 good guess). The importance of having unique (failing that, random)
 pack_id or tag values should be apparent. Setting them always to zero
 (for example) could lead to unpleasant surprises when the DEV_SCOPE
-flag is used. If all searches (or a single one) sfind no match then
+flag is used. If all searches (or a single one) find no match then
 <b>ioctl</b>(SG_IOABORT) fails with errno set to ENODATA.</p>
 <p>An asynchronous request started with <b>ioctl</b>(<font color="#0066b3">SG_IOSUBMIT_V3</font>)
 can also be aborted, but only via its pack_id. In this case, even
@@ -2666,7 +2670,7 @@ refers to two requests, usually belonging to different storage
 devices (e.g. two disks), sharing the same in-kernel data buffer.
 Before request sharing can take place a share of two file descriptors
 belonging to those two storage devices needs to be set up. This is
-discussed in the previous <a class="western" href="#6 Sharing file descriptors|outline">Sharing
+discussed in the previous <a href="#6 Sharing file descriptors|outline">Sharing
 file descriptors</a> section. 
 </p>
 <p style="margin-top: 0.3cm; margin-bottom: 0.3cm">The diagram below
@@ -2708,8 +2712,8 @@ the <i>same</i> sg device (e.g. /dev/sg3). The command associated
 with the <u>read-side</u> will almost always be a READ command, but
 it only needs to be a command that uses the data-in part of a SCSI
 command to populate a kernel buffer. So for example the READ BUFFER
-command could be used on the read-side.  The command associated with
-the <u>write</u><u>-side</u><span style="text-decoration: none">
+command could be used on the <u>read-side</u>.  The command
+associated with the <u>write</u><u>-side</u><span style="text-decoration: none">
 </span><span style="text-decoration: none">needs to be a command that
 uses the data-</span><span style="text-decoration: none">out</span><span style="text-decoration: none">
 part of a SCSI command </span><font color="#000000"><span style="text-decoration: none">the
@@ -2735,7 +2739,8 @@ subsystem both the <font color="#000000"><u><span style="font-weight: normal">re
 and <font color="#000000"><u><span style="font-weight: normal">write-side</span></u></font>
 share requests have their own <i>request</i> object, each with their
 own <i>bio</i> object. However the sg driver provides the data
-storage for those <i>bio</i>s and arranges for the <font color="#000000"><u><span style="font-weight: normal">write-side</span></u></font>
+storage for those <i>bio</i><i>_</i><i>s</i> and arranges for the
+<font color="#000000"><u><span style="font-weight: normal">write-side</span></u></font>
 share request to use the same data buffer as the preceding <font color="#000000"><u><span style="font-weight: normal">read-side</span></u></font>
 request's bio. And this is the reason that the <font color="#000000"><u><span style="font-weight: normal">write-side</span></u></font>
 request must use the SG_FLAG_NO_DXFER flag, otherwise a transfer from
@@ -2766,7 +2771,7 @@ EXTENDED{</span><span style="font-weight: normal">READ_SIDE</span><span style="f
 manipulates a boolean which can be used to finish a share request
 after the <font color="#000000"><u>read-side</u></font> request has
 completed. What is needed here is setting this boolean to 1 (true)
-which changes changes the &quot;rq_swap&quot; to &quot;rq_inactive&quot;
+which changes the &quot;rq_swap&quot; to &quot;rq_inactive&quot;
 state. The inverse operation: setting that boolean to 0 (false)
 changes &quot;rq_inactive&quot; to &quot;rq_swap&quot; state which is
 used in the single read, multi write case below.</p>
@@ -2798,7 +2803,7 @@ requ</span></span><span style="font-style: normal"><span style="text-decoration:
 still only uses the original four states document</span></span><span style="font-style: normal"><span style="text-decoration: none">ed</span></span><span style="font-style: normal"><span style="text-decoration: none">
 in</span></span><span style="font-style: normal"><span style="text-decoration: none">
 an</span></span><span style="font-style: normal"><span style="text-decoration: none">
-</span></span><a class="western" href="#5 Synchronous usage|outline">above</a><span style="font-style: normal"><span style="text-decoration: none">
+</span></span><a href="#5 Synchronous usage|outline">above</a><span style="font-style: normal"><span style="text-decoration: none">
 section. </span></span><span style="font-style: normal"><span style="text-decoration: none">Now
 the </span></span><font color="#000000"><span style="font-style: normal"><u><span style="font-weight: normal">read-s</span></u></span></font><font color="#000000"><span style="font-style: normal"><u><span style="font-weight: normal">i</span></u></span></font><font color="#000000"><span style="font-style: normal"><u><span style="font-weight: normal">de</span></u></span></font><span style="font-style: normal"><span style="text-decoration: none">
 request </span></span><span style="font-style: normal"><span style="text-decoration: none">has
@@ -2837,14 +2842,15 @@ written out. Those subsets that don't start at offset 0 need use the
 There is no restriction on those subsets overlapping. Another use
 case is writing the same dataset into two or more zones on the same
 ZBC disk.</p>
-<p>The first form below shows a READ on the <font color="#000000">read-side</font>
+<p>The first form below shows a READ on the <font color="#000000"><u>read-side</u></font>
 file descriptor followed by two WRITEs on the <font color="#000000"><u>write-side</u></font>
 file descriptor (associated with /dev/sg2). The size of the two
 WRITEs is not shown but they can differ, as long as the size from the
-<font color="#000000">read-side</font> is not exceeded. Further,
-either or both of the WRITEs may use the SGV4_FLAG_DOUT_OFFSET flag
-to start their WRITEs at a byte offset (given in sg_io_v4::<font color="#a3238e">spare_in</font>)
-to the start of the buffer returned by the <font color="#000000">read-side</font>.</p>
+<font color="#000000"><u>read-side</u></font> is not exceeded.
+Further, either or both of the WRITEs may use the
+SGV4_FLAG_DOUT_OFFSET flag to start their WRITEs at a byte offset
+(given in sg_io_v4::<font color="#a3238e">spare_in</font>) to the
+start of the buffer returned by the <font color="#000000"><u>read-side</u></font>.</p>
 <img src="sg_v40_html_7447e88d37941a0e.png" name="Image14" align="left" width="794" height="559">
   <br clear="left"/>
 </img>
@@ -2904,13 +2910,13 @@ to EADDRINUSE.  To make this sequence slightly faster (and hide the
 data from the user space) the flag in the second <b>ioctl</b> (the
 READ) can be expanded to FLAG_SHARE|NO_DXFER .</p>
 <p>If the <font color="#000000"><u>write-side</u></font> command is
-issued <i>before</i> the <font color="#000000">read-</font>side has
-reached its internal completion point, then the <font color="#000000"><u>write-side</u></font>
+issued <i>before</i> the <font color="#000000"><u>read-</u></font><u>side</u>
+has reached its internal completion point, then the <font color="#000000"><u>write-side</u></font>
 gets an EBUSY errno. Even though the <font color="#000000"><u>write-</u></font><u>side</u>
 <i>should</i> wait until its associated <font color="#000000"><u>read-side</u></font>
 is finished, <font color="#000000"><u>write-side</u></font> commands
 will be accepted after their associated <font color="#000000"><u>read-side</u></font>'s
-internal completion point. The risk is that the <font color="#000000">read-</font>side
+internal completion point. The risk is that the <font color="#000000"><u>read-</u></font><u>side</u>
 command could have failed and thus returned no data, so the
 <font color="#000000"><u>write-</u></font><u>side</u> will be writing
 unknown data (probably using the previous WRITE's data).</p>
@@ -3078,7 +3084,7 @@ storage device then it has the two file descriptors it needs to set
 up the share. While that solution may look good on paper, it may
 require a radical rewrite of existing code to implement. Perhaps a
 better solution is to pass an open file descriptor from one process
-to another process using a Unix socket. The <a class="western" href="https://keithp.com/blogs/fd-passing/">blog</a>
+to another process using a Unix socket. The <a href="https://keithp.com/blogs/fd-passing/">blog</a>
 by Keith Packard outlines the technique. Code based on both
 techniques can be found in the sg3_utils package's
 testing/sg_tst_ioctl.c (with the '-f' option).</p>
@@ -3647,13 +3653,13 @@ a more in depth explanation after the table:</p>
 		</td>
 		<td width="32%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 			designed for disk to disk copying. The notation: first character,
-			S: submit, C: completion; second character: R: <font color="#000000">read-side</font>,
-			W: <font color="#000000">write-side</font> command; third digit:
-			RW pair number. The above notation assumes a segment containing 4
-			RW pairs. Segments are executed sequentially. Each RW pair in a
-			segment are executed asynchronously while maintaining each RW
-			pair's order (i.e. the pair's READ must complete before its WRITE
-			commences).</p>
+			S: submit, C: completion; second character: R: <font color="#000000"><u>read-side</u></font>,
+			W: <font color="#000000"><u>write-side</u></font> command; third
+			digit: RW pair number. The above notation assumes a segment
+			containing 4 RW pairs. Segments are executed sequentially. Each RW
+			pair in a segment are executed asynchronously while maintaining
+			each RW pair's order (i.e. the pair's READ must complete before
+			its WRITE commences).</p>
 		</td>
 	</tr>
 </table>
@@ -3754,12 +3760,12 @@ while all the </span></span><span style="font-variant: normal"><font color="#000
 commands must use the DO_ON_OTHER </span></span><span style="font-variant: normal"><span style="font-style: normal"><u>and</u></span></span><span style="font-variant: normal"><span style="font-style: normal">
 the NO_DXFER flags. All data carrying SCSI commands must use the</span></span><span style="font-variant: normal"><span style="font-style: normal">
 SHARE flag and appear in read-write pairs, usually </span></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">adjoining</span></font></span><span style="font-variant: normal"><span style="font-style: normal">
-one another with the </span></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">read-side</span></font></span><span style="font-variant: normal"><span style="font-style: normal">
+one another with the </span></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><u>read-side</u></span></font></span><span style="font-variant: normal"><span style="font-style: normal">
 command first. The only exception is non-data carrying SCSI commands
 such as TEST UNIT READY</span></span><span style="font-variant: normal"><span style="font-style: normal">
 and PRE-FETCH</span></span><span style="font-variant: normal"><span style="font-style: normal">
 that can appear anywhere. The list of commands given to this </span></span><span style="font-variant: normal"><span style="font-style: normal">method</span></span><span style="font-variant: normal"><span style="font-style: normal">
-cannot end with a </span></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">read-side</span></font></span><span style="font-variant: normal"><span style="font-style: normal">
+cannot end with a </span></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><u>read-side</u></span></font></span><span style="font-variant: normal"><span style="font-style: normal">
 command. </span></span><span style="font-variant: normal"><span style="font-style: normal">These
 sanity checks are done before any commands are executed and </span></span><span style="font-variant: normal"><i>mrq</i></span><span style="font-variant: normal"><span style="font-style: normal">
 invocations</span></span><span style="font-variant: normal"><span style="font-style: normal">
@@ -3787,7 +3793,7 @@ is from the driver: no more than </span></span><span style="font-variant: normal
 RW pairs can be processed at the same time.</span></span><span style="font-variant: normal"><span style="font-style: normal">
 </span></span><span style="font-variant: normal"><span style="font-style: normal">If
 the user sets the </span></span><span style="font-variant: normal"><span style="font-style: normal">NO_DXFER</span></span><span style="font-variant: normal"><span style="font-style: normal">
-flag on all the </span></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">read-side</span></font></span><span style="font-variant: normal"><span style="font-style: normal">
+flag on all the </span></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><u>read-side</u></span></font></span><span style="font-variant: normal"><span style="font-style: normal">
 commands, then all data buffer management is done by the driver. </span></span><span style="font-variant: normal"><span style="font-style: normal">Four
 reserve requests </span></span><span style="font-variant: normal"><span style="font-style: normal">associated
 with the READ side file descriptor are used for this data buffer
@@ -3803,7 +3809,7 @@ multiple requests method</span></span><span style="font-variant: normal"><span s
 </span></span><span style="font-variant: normal"><span style="font-style: normal">is</span></span><span style="font-variant: normal"><span style="font-style: normal">
 issued as soon as </span></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">its
 </span></font></span><span style="font-variant: normal"><span style="font-style: normal">paired
-</span></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">read-side</span></font></span><span style="font-variant: normal"><span style="font-style: normal">
+</span></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><u>read-side</u></span></font></span><span style="font-variant: normal"><span style="font-style: normal">
 command</span></span><span style="font-variant: normal"><span style="font-style: normal">
 has completed. This can lead to WRITE commands being issued
 &quot;out-of-order&quot;</span></span><span style="font-variant: normal"><span style="font-style: normal">
@@ -3838,7 +3844,7 @@ cope with these situations the </span></span><span style="font-variant: normal">
 flag </span></span><span style="font-variant: normal"><span style="font-style: normal">in
 the control object </span></span><span style="font-variant: normal"><span style="font-style: normal">has
 been added.</span></span><span style="font-variant: normal"><span style="font-style: normal">
-</span></span><span style="font-variant: normal"><span style="font-style: normal">Read-side</span></span><span style="font-variant: normal"><span style="font-style: normal">
+</span></span><span style="font-variant: normal"><span style="font-style: normal"><u>Read-side</u></span></span><span style="font-variant: normal"><span style="font-style: normal">
 commands are always issued in the order specified by the user but
 they may complete &quot;out-of-order&quot; with respect to one
 another. In that case, this flag will delay starting the paired
@@ -3854,8 +3860,8 @@ can either be set at the file descriptor level with extended
 </b></span></span><span style="font-variant: normal"><span style="font-style: normal"><span style="font-weight: normal">or
 on the individual command level with the </span></span></span><span style="font-variant: normal"><span style="font-style: normal"><b>SGV4_FLAG_Q_AT_TAIL</b></span></span><span style="font-variant: normal"><span style="font-style: normal"><span style="font-weight: normal">
 flag.</span></span></span><span style="font-variant: normal"><span style="font-style: normal"><span style="font-weight: normal">
-Both the </span></span></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><span style="font-weight: normal">read-side
-and write-side</span></span></font></span><span style="font-variant: normal"><span style="font-style: normal"><span style="font-weight: normal">
+Both the </span></span></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><u><span style="font-weight: normal">read-side</span></u></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><span style="font-weight: normal">
+and </span></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><u><span style="font-weight: normal">write-side</span></u></span></font></span><span style="font-variant: normal"><span style="font-style: normal"><span style="font-weight: normal">
 should use </span></span></span><span style="font-variant: normal"><span style="font-style: normal"><span style="font-weight: normal">&quot;Q_AT_TAIL&quot;</span></span></span><span style="font-variant: normal"><span style="font-style: normal"><span style="font-weight: normal">
 </span></span></span><span style="font-variant: normal"><span style="font-style: normal"><span style="font-weight: normal">semantics
 if precise command ordering is required.</span></span></span><span style="font-variant: normal"><span style="font-style: normal"><span style="font-weight: normal">
@@ -4129,7 +4135,7 @@ the ctl_obj should be called:</span></span></p>
 	</span><span style="font-variant: normal"><span style="font-style: normal">is
 	zero filled with only output fields (including the </span></span><span style="font-variant: normal"><font color="#006c3b"><span style="font-style: normal">usr_ptr</span></font></span><span style="font-variant: normal">
 	</span><span style="font-variant: normal"><span style="font-style: normal">field)
-	filled for those requests that have completed. See the <a class="western" href="#10.1 Processing mrq responses|outline">Processing
+	filled for those requests that have completed. See the <a href="#10.1 Processing mrq responses|outline">Processing
 	mrq responses</a> section below for more details.</span></span></p>
 	<li><p><span style="font-variant: normal"><span style="font-style: normal"><u>with</u></span></span><span style="font-variant: normal">
 	</span><span style="font-variant: normal"><span style="font-style: normal">IMMED
@@ -4284,10 +4290,10 @@ requests</span></span><span style="font-variant: normal"> </span><span style="fo
 </span><span style="font-variant: normal"><span style="font-style: normal">the
 two </span></span><span style="font-variant: normal"><i>non-blocking</i></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">methods)
-can additionally use <a class="western" href="#8 Request sharing|outline">request
+can additionally use <a href="#8 Request sharing|outline">request
 sharing</a></span></span><span style="font-variant: normal"> </span><span style="font-variant: normal"><span style="font-style: normal">with
 the following modification. Since all multiple requests</span></span><span style="font-variant: normal">
-</span><span style="font-variant: normal"><span style="font-style: normal">smethods
+</span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">invocation</span></font></span><span style="font-variant: normal"><span style="font-style: normal">s
 use a single file descriptor (i.e. the first argument of the </span></span><span style="font-variant: normal"><span style="font-style: normal"><b>ioctl</b></span></span><span style="font-variant: normal"><span style="font-style: normal">(2)
 ), then there needs</span></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">to
@@ -4295,7 +4301,7 @@ be another way of indicating a particular request should use the
 </span></span><span style="font-variant: normal"><i>other</i></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">(i.e.
 shared) file descriptor. This is done with the DO_ON_OTHER flag.</span></span><span style="font-variant: normal">
-</span><span style="font-variant: normal"><span style="font-style: normal"><a class="western" href="#6 Sharing file descriptors|outline">File
+</span><span style="font-variant: normal"><span style="font-style: normal"><a href="#6 Sharing file descriptors|outline">File
 descriptor sharing</a> can be used with all f</span></span><span style="font-variant: normal"><span style="font-style: normal">ive</span></span><span style="font-variant: normal"><span style="font-style: normal">
 multiple requests methods</span></span><span style="font-variant: normal">
 </span><span style="font-variant: normal"><span style="font-style: normal">either
@@ -4564,12 +4570,11 @@ the same pack_id (and file descriptor) to call <b>ioctl</b>(SG_IOABORT).</p>
 their internal completion point when the <i>mrq</i> abort is issued
 must be processed in the normal fashion. Any inflight requests will
 have blk_abort_request() called on them. Those remaining requests
-that have not yet been submitted will be dropped. See the <a class="western" href="#10.1 Processing mrq responses|outline">Processing
+that have not yet been submitted will be dropped. See the <a href="#10.1 Processing mrq responses|outline">Processing
 mrq responses</a> section above for how an abort will be reported.</p>
 <p>In the <b>ioctl</b>(sg_fd, SG_IOABORT, &amp;ctl_obj) invocation
-the SGV4_FLAG_MULTIPLE_REQS flag must be set set and the
-<font color="#006c3b">request_extra</font> field must be set to the
-non-zero <i><span style="text-decoration: none">mrq</span></i>
+the SGV4_FLAG_MULTIPLE_REQS flag must be set and the <font color="#006c3b">request_extra</font>
+field must be set to the non-zero <i><span style="text-decoration: none">mrq</span></i>
 pack_id. SG_PACK_ID_WILDCARD can be given for the <i>mrq</i> pack_id.
 Optionally the SGV4_FLAG_DEV_SCOPE flag may be given. In that case
 after the current file descriptor (i.e. the one given as the first
@@ -4709,8 +4714,9 @@ of the request array. When a request with this flag is processed, the
 contents of the </span></font></span><span style="font-variant: normal"><font color="#a3238e"><span style="font-style: normal">request_priority</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
 field is held and </span></font></span><span style="font-variant: normal"><font color="#000000"><i>may</i></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
 be treated as an index into the response array at a later time. The
-conditional </span></font></span><span style="font-variant: normal"><font color="#000000"><i>may</i></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
-is used because if </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+conditional</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">is
+used because if </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
 a completed </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">request</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
 is read by a normal (i.e. non </span></font></span><span style="font-variant: normal"><font color="#000000"><i>mrq</i></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">)
 </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>ioctl</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">(SG_IORECEIVE)
@@ -5144,7 +5150,7 @@ system calls in the way that this driver does is frowned upon by the
 Linux kernel architects, as is adding new <b>ioctl</b>(2)s! Only 6
 new <b>ioctl</b>(2)s have been added in the sg v4 driver as noted in
 the status column of the table below. Two of those <b>ioctl</b>(2)s
-were proposed in this <a class="western" href="https://www.spinics.net/lists/linux-scsi/msg123031.html">post</a>
+were proposed in this <a href="https://www.spinics.net/lists/linux-scsi/msg123031.html">post</a>
 by a Linux architect (L. Torvalds). And two more (i.e.
 SG_IO_SUBMIT_V3 and <font color="#0066b3"><span style="font-weight: normal">SG_IORECEIVE_V3</span></font>)
 are very closely related to those proposed. Still, there is a lot of
@@ -6388,7 +6394,7 @@ mask values OR-ed together:</p>
 				is set , on either side of a file share, if the <font color="#000000"><u>write-side</u></font>
 				of a request share is pending, then the shared buffer is
 				released. IOWs the request share is finished at this point. If
-				the bit in in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
+				the bit in <font color="#6b6400"><span style="font-weight: normal">ctl_flags</span></font>
 				is clear, no action is taken. When written to 0 there is no
 				action.</p>
 				<p>When this bit is set in <font color="#6b6400"><span style="font-weight: normal">rd_mask</span></font>,
@@ -6917,8 +6923,9 @@ finishes successfully.</font></p>
 				file descriptor has one reserve request associated with it. Extra
 				reserve requests are generated when, for example,
 				<b>ioctl</b>(<font color="#a3238e"><span style="font-weight: normal">SG_IOSUBMIT</span></font>)
-				is invoked on the <font color="#000000">read-side</font> of a
-				share and there are one or more shared requests already active.</p>
+				is invoked on the <font color="#000000"><u>read-side</u></font>
+				of a share and there are one or more shared requests already
+				active.</p>
 			</td>
 		</tr>
 	</tbody>
@@ -7276,15 +7283,15 @@ completions and adds new support for aborting a SCSI command that is
 underway.</p>
 <h2 class="western"><a name="__RefHeading___Toc1578_4294551682"></a>17
 Downloads and testing</h2>
-<p>This tarball: <a class="western" href="p/sgv4_20210117.tgz">sgv4_20210117</a>
+<p>This tarball: <a href="p/sgv4_20210117.tgz">sgv4_20210117</a>
 contains a README file that outlines what is included. There are
-earlier versions of this driver for the <u>lk5.</u><u>7</u> and <u>lk5.</u><u>8</u><u>
-series</u>. The most recent versions of this driver around found in
-its <u>lk5.</u><u>9</u><u>.0</u> directoriy  Each of the directories
-contains a patchset placed in sub-directory. The three new or changed
-files that represent the driver: drivers/scsi/sg.c ,
-include/uapi/scsi/sh.h and include/include/sg.h are also placed under
-each lk5.* directory. 
+earlier versions of this driver for the <u>lk5.</u><u>7</u><u>, lk5.8</u>
+and <u>lk5.</u><u>9</u><u> series</u>. The most recent versions of
+this driver around found in its <u>lk5.</u><u>11rc</u> directory 
+Each of the directories contains a patchset placed in sub-directory.
+The three new or changed files that represent the driver:
+drivers/scsi/sg.c , include/uapi/scsi/sh.h and include/include/sg.h
+are also placed under each lk5.* directory. 
 </p>
 <p>The sg3_utils was originally written to test the v3 sg driver
 interface when it was introduced, circa 2000. So where better to put
@@ -7292,19 +7299,18 @@ sg v4 test code? Since the sg3_utils is well established, the author
 sees no benefit in introducing a sg4_utils package in which less than
 an estimated 5% of the code would change, much easier to incorporate
 that code change/addition in the existing package. The latest
-sg3_utils release is on the <a class="western" href="index.html">main</a>
-page (<font color="#000000">beta </font>version 1.46  revision 854 as
-this is written) and contains utilities for testing the sg v4
-interface. The underlying support library has been using the sg v4
-header for many years as a common (i.e. intermediate) format (API)
-across the supported Operating Systems. If the given device was a bsg
-device node then the sg v4 interface was used; otherwise (e.g. for sg
-and block devices) the sg v4 header was translated down to a v3
-header and forwarded on. In the current version, the sg3_utils will
-use <b>ioctl</b>(SG_GET_VERSION_NUM) on sg devices and if it is a v4
-driver then it will send a v4 header, otherwise it will do as it does
-now. [That v4 interface usage can be defeated by './<b>configure</b>
---disable-linux-sgv4' .] 
+sg3_utils release is on the <a href="index.html">main</a> page (<font color="#000000">beta
+</font>version 1.46  revision 854 as this is written) and contains
+utilities for testing the sg v4 interface. The underlying support
+library has been using the sg v4 header for many years as a common
+(i.e. intermediate) format (API) across the supported Operating
+Systems. If the given device was a bsg device node then the sg v4
+interface was used; otherwise (e.g. for sg and block devices) the sg
+v4 header was translated down to a v3 header and forwarded on. In the
+current version, the sg3_utils will use <b>ioctl</b>(SG_GET_VERSION_NUM)
+on sg devices and if it is a v4 driver then it will send a v4 header,
+otherwise it will do as it does now. [That v4 interface usage can be
+defeated by './<b>configure</b> --disable-linux-sgv4' .] 
 </p>
 <p>The presence of the environment variable SG3_UTILS_LINUX_NANO
 (typically with 1 assigned into it) in the shell executing sg3_utils
@@ -7406,8 +7412,8 @@ It has the name 'uapi_sg.h' so it won't collide with the &quot;real&quot;
 header if it is present.</p>
 <h2 class="western"><a name="__RefHeading___Toc1580_4294551682"></a>18
 Other documents</h2>
-<p>The original sg driver documentation is here: <a class="western" href="http://www.tldp.org/HOWTO/SCSI-Generic-HOWTO/index.html">SCSI-Generic-HOWTO</a>
-and a more recent discussion of <b>ioctl</b>(SG_IO) is here: <a class="western" href="sg_io.html">sg_io</a>
+<p>The original sg driver documentation is here: <a href="http://www.tldp.org/HOWTO/SCSI-Generic-HOWTO/index.html">SCSI-Generic-HOWTO</a>
+and a more recent discussion of <b>ioctl</b>(SG_IO) is here: <a href="sg_io.html">sg_io</a>
 .</p>
 <h2 class="western"><a name="__RefHeading___Toc1582_4294551682"></a>19
 Conclusion</h2>
@@ -7420,10 +7426,10 @@ arises, driver parameters to re-impose that limit and any other
 differing behaviour can be added. The best way to test backward
 compatibility is to place this new driver &quot;under&quot; existing
 apps that use sg driver nodes and check their functionality.</p>
-<p>Return to <a class="western" href="index.html">main</a> page. 
+<p>Return to <a href="index.html">main</a> page. 
 </p>
 <p align="center" style="margin-bottom: 0.1cm">Douglas Gilbert</p>
 <p align="center" style="margin-bottom: 0.1cm">Last updated: 20
-January 2021 15:00</p>
+January 2021 21:00</p>
 </body>
 </html>
