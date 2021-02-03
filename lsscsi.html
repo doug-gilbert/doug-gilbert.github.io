@@ -1,0 +1,2104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title>lsscsi utility for Linux</title>
+	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
+	<meta name="created" content="00:00:00"/>
+	<meta name="changed" content="2021-02-03T11:23:16.757671443"/>
+	<meta name="keywords" content="lsscsi, Linux storage scan, SCSI, sysfs"/>
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<style type="text/css">
+		p { margin-bottom: 0.25cm; background: transparent }
+		h2 { margin-top: 0.35cm; margin-bottom: 0.21cm; background: transparent }
+		h2.western { font-family: "Liberation Serif", serif }
+		h2.cjk { font-family: "Noto Sans CJK SC Regular" }
+		h2.ctl { font-family: "Lohit Devanagari" }
+		h3 { margin-top: 0.25cm; margin-bottom: 0.21cm; background: transparent }
+		h3.western { font-family: "Liberation Serif", serif }
+		h3.cjk { font-family: "Noto Sans CJK SC Regular" }
+		h3.ctl { font-family: "Lohit Devanagari" }
+		pre { background: transparent }
+		pre.western { font-family: "Liberation Mono", monospace; font-size: 12pt }
+		pre.cjk { font-family: "Courier New", monospace }
+		pre.ctl { font-family: "Liberation Mono", monospace }
+		td p { background: transparent }
+		tt.western { font-family: "Liberation Mono", monospace }
+		tt.cjk { font-family: "Courier New", monospace }
+		tt.ctl { font-family: "Liberation Mono", monospace }
+	</style>
+</head>
+<body lang="en-CA" background="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/wgALCADYANgBAREA/8QAGAABAQEBAQAAAAAAAAAAAAAAAQIAAwb/2gAIAQEAAAAB9z1ybbnhz03OVvQIiULolVueZTsSzTtsIai86M7VEjkoqSsZszzmq0pDquWd0eZTl5Z2mgNVXA5NUnWJi8bVA69UFXIbUxO6EzWikvMnWDN7QRVGKJy6rmWgUink5BZek041QUkumVwtTWmzThaIbl5O6xqmVUYcNkVUTLXQZl2agcGuKamdrqYzUNMbGmrm9iHW8XoSNEYrNzfMLKnpopmJVNqU2nVRtjM1zK2qOkyz0mysbDtow1pL56imtsPPUm5jumh0ubQ1aJti+cOV0hVW40dCKxXOGWnYd0zjSXBeTntNO01VbO257ax0CCFnTZHaZ1u2iUwi27bbadW2xGxts1W222xppxy2zrYpcOCue2uaiUd0edTYx0iemiXpJgmtd85Tr//EAB0QAAEFAQEBAQAAAAAAAAAAAAEQESAwQABQMWD/2gAIAQEAAQUC2PF5CB1nE1ryEmmFOk7mQ2AUlRzwEGudDE5jFkE3sPGtrQpwmDoFPFRaYAI29qjd9QDK/inUZHwBYYNe1bROo/ixMbQEMf/EABQQAQAAAAAAAAAAAAAAAAAAAJD/2gAIAQEABj8CNn//xAAhEAEBAQADAQEBAQEBAQEAAAABABEQITFBUWEgcTChgf/aAAgBAQABPyF76s67vbbN4ZmMvu22NnVky7MYHHRbZ33LABLvnAd8NhAl/I64JPAbfb+o7eGUCxHduR33NtuFusR3LkEvH9bZeru8twg+7H5bhbO8CDgD1t5e48thvZflis4E3bak+EmWQME9Wd9y8at3ZnrPBno429dwOwBZ3JGwmwmTNu9g+y/27dwO8mCb5PtssnURF/ywyZ7uvljL8Js67vf+Swa8J+XhHbt3bM8ZhrL3PdnVnyDq3u7C2YOuFC3uZ8sYMJbuVXg6X3OAdx3LLBLArbhZB+zdl8v3jOoLNui2Xyz9lhgT8F5PGOEODgG9wd8JwDBOFn7brbez2wgz/vDLbfyz7wD7ElkFlkeRMm/bo64X4Wfre8fZ76LMnq/jjD7xi36b2Em2XyT+3/I6OSf287tXgPsdX/ZjqyBeJcj9jtvk2SYYT+F9u7X1gwh35B3N39g820j+29QS5bfqe52TyOXt5EvdkGd3zYs/Ytydg6l5LvPi3vhmS9dQ6vBZBDhchYFb+S3bxvJ37I8svk/y/SXqFeHG3se6z5B/8jhGCDOFMt40t22d4zSfyDqCO+FtXu3XLx3ZJ1LHltmsHDLgstyyyMju63IttlvVmuQHD3PG3bbE7s8Z3GWbZnVtjZhbkdd38R23yzWM+QTZPkEt7wZLL+ey8rBeS50WKz5L3wH7B3Zhef5CZdQwS4Xf/wCz0f23uXW295Le+TPbb/5BwuS29xwrt7gzgFe5Qlb+XkdcH5b8ISHttu4FgvvGy8HsSyxLHd5PU6vCwchC2Log1sw/wlkvyB4W7TZbnDB94yCLe49sgwyIGf62e56sctQZBw4cAmZb5MQdQdwXbZx9/wAPAWf4ZT3w+22bJ1wRB/4M7B/pQ9t2wly3eH+WcH/npbKvkcrhOxdwKz1H9gvLNeA595WHZ8v+x+tsLoLdbcn9ZdvIfWI9g4XW8ti2XCFXhWBuiZbVg17t+E/k+WsrKzt8lXyw94XfG9XcdF//2gAIAQEAAAAQgPzz/wCfn/f/APPt/wD7X4/P3/N/bf3u/ft/vW/vmZv/AEDH/wBY+a//AN82x+/++dn9jmd/X0j/AIOAX16AF5vgMfP5DK/2CSp/A2HfwHh/4Awf+AAD/gAQ/IAevyizvu9//8QAGxAAAgIDAQAAAAAAAAAAAAAAARFQYBAhMXD/2gAIAQEAAT8QylS7AIIRpAyMMMHHCVLZIArEcgF5BmYCAoJU2EUFBoOAs6HBAEAKDjYGFQpCKQwMUoANg+gIF0oJEAQT4WFggSw0B0WBmKTmIBDI1xKggpMDCBCAhxFAhp2leECmEDDULihRABEIYRCZCAmEFMyA6gwYkVCqdgEIj1IAJDyC4oGEmkABSIQxQA4SEEaYREyADwAWZJSEMCkgwlJAAEKAA5RDAaFkICZAcEGTGAgmAgBE1T//2Q==" dir="ltr"><p align="center" style="margin-top: 0.42cm; page-break-after: avoid">
+<font face="Albany, sans-serif"><font size="6" style="font-size: 28pt"><b>lsscsi</b></font></font></p>
+<div id="Table of Contents1" dir="ltr"><p><br/>
+<br/>
+
+	</p>
+	<div id="Table of Contents1_Head" dir="ltr"><p style="margin-top: 0.42cm; page-break-after: avoid">
+		<font face="Albany, sans-serif"><font size="4" style="font-size: 16pt"><b>Table
+		of Contents</b></font></font></p>
+	</div>
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc130_4141254284">1
+	) Introduction</a></p>
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc132_4141254284">2
+	) Overview</a></p>
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc134_4141254284">3
+	) Command line interface</a></p>
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc136_4141254284">4
+	) Transports</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc138_4141254284">4.1
+	) ATA</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc140_4141254284">4.2
+	) FC</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc142_4141254284">4.3
+	) 1394</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc144_4141254284">4.4
+	) iSCSI</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc146_4141254284">4.5
+	) PCIe</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc148_4141254284">4.6
+	) SAS</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc150_4141254284">4.7
+	) SATA</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc152_4141254284">4.8
+	) SPI</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc154_4141254284">4.9
+	) SRP</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc156_4141254284">4.10
+	) USB</a></p>
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc158_4141254284">5
+	) Examples</a></p>
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc160_4141254284">6
+	) Download and Build information</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc162_4141254284">6.1
+	) Git mirror</a></p>
+</div>
+<p><br/>
+<br/>
+
+</p>
+<h2 class="western"><a name="__RefHeading___Toc130_4141254284"></a>1
+) Introduction</h2>
+<p>The <b>lsscsi</b> command lists information about SCSI devices in
+Linux. Using SCSI terminology, <b>lsscsi</b> lists SCSI <i>logical
+units</i> (or SCSI <i>targets</i> when the '--transport' option is
+given). The default action is to produce one line of output for each
+SCSI device currently attached to the system. In version 0.30 of this
+utility, support was added to list NVMe namespaces (under SCSI
+devices(LUs)) and NVMe controllers (under SCSI hosts).<br/>
+<br/>
+When
+the '--hosts' option is given the <b>lsscsi</b> command lists
+information about SCSI hosts attached to the system. A host can be
+actual hardware (sometimes referred to as Host Bus Adapters (HBAs))
+or virtual. An example of a virtual host is USB mass storage that
+bridges between USB and the SCSI subsystem. In SCSI parlance, a host
+is referred to as an SCSI <i>initiator</i>.<br/>
+<br/>
+The <b>lsscsi</b>
+command scans the <b>sysfs</b> pseudo file system that was introduced
+in the 2.6 Linux kernel series. Since most users have permissions to
+read sysfs (usually mounted at <font face="monospace">/sys</font> )
+then meta information can be found on some or all SCSI devices
+without a user needing elevated permissions to access special files
+(e.g. <font face="monospace">/dev/sda</font> ). The <b>lsscsi</b>
+command can also show the relationship between a device's primary
+node name, its SCSI generic (sg) node name and its kernel name.<br/>
+<br/>
+The
+<b>lsscsi</b> command works in the 2.6, 3, 4 and 5 Linux kernel
+series.</p>
+<h2 class="western"><a name="__RefHeading___Toc132_4141254284"></a><a name="mozTocId305911"></a>
+2 ) Overview</h2>
+<p>When executed without any options <b>lsscsi</b> outputs one line
+for each SCSI device attached to the system:</p>
+<pre class="western"><tt class="western"><font size="3" style="font-size: 12pt">$lsscsi</font></tt>
+
+<tt class="western"><font size="3" style="font-size: 12pt">[0:0:8:0] disk FUJITSU MAM3184MP 0105 /dev/sda</font></tt>
+<tt class="western"><font size="3" style="font-size: 12pt">[2:0:0:0] cd   CREATIVE CD5233E 1.00 /dev/scd0</font></tt>
+<tt class="western"><font size="3" style="font-size: 12pt">[3:0:5:0]  tape  HP    C5713A      H910 /dev/st0</font></tt>
+<tt class="western"><font size="3" style="font-size: 12pt">[3:0:5:1]  mediumx HP    C5713A      H910 -</font></tt>
+<tt class="western"><font size="3" style="font-size: 12pt">[4:0:0:0] disk Linux scsi_debug 0004 /dev/sdb</font></tt></pre><p>
+The first entry on each line is the
+scsi_host,channel,target_number,LUN tuple. It is placed in brackets
+and each element is colon separated. When there are multiple SCSI
+devices their entries are sorted in ascending tuple order. The next
+column is the SCSI peripheral type; rather than using the formal name
+(e.g. &quot;direct access device&quot;) a shorter name is used. Then
+follows the vendor name, the model name and the revision string. The
+last entry is the primary device node name. The &quot;primary&quot;
+device node name is associated with the upper level SCSI driver that
+&quot;owns&quot; the device. Examples of upper level SCSI drivers are
+sd (for disks), sr (for optical drives whose devices are often named
+<font face="monospace">/dev/scd&lt;n&gt;</font> ) and st (for tapes).
+Some SCSI devices have peripheral types that either don't have upper
+level drivers to control them, or the associated driver module is not
+loaded. Such devices have '-' given for their device node name. All
+SCSI devices can be accessed via their corresponding scsi generic
+(sg) device node name (e.g. <font face="monospace">/dev/sg&lt;n&gt;</font>
+) which can be seen by adding a '--generic' option to the above
+lsscsi invocation.<br/>
+<br/>
+By adding the '--size' option ('-s' in
+its short form) the size of disks is shown to the right of each line:</p>
+<pre class="western"><font size="3" style="font-size: 12pt"># lsscsi -s </font>
+<font size="3" style="font-size: 12pt">[0:0:0:0] cd/dvd PIONEER DVD-RW DVR-212D 1.22 /dev/sr0 - </font>
+<font size="3" style="font-size: 12pt">[1:0:0:0] disk ATA ST3320620AS 3.AA /dev/sda 320GB </font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[6:0:0:0] disk SEAGATE ST32000444SS 0006 /dev/sdb 2.00TB</font></font></pre><p>
+If the device is not a disk or its size is not available than '-' is
+output instead of a size.</p>
+<p>Here is a &quot;long&quot; variant of this command. The '-l' (or
+'--long') option can be used multiple time for more output.</p>
+<p><br/>
+<font face="monospace"><font size="3" style="font-size: 12pt">$
+lscssi -l</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><tt class="western"><font size="3" style="font-size: 12pt">[0:0:1:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; FUJITSU&nbsp; MAM3184MP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0105&nbsp; /dev/sda<br/>
+&nbsp; state=running queue_depth=16
+scsi_level=4 type=0 device_blocked=0 timeout=30</font></tt><br/>
+<br/>
+The
+device node major and minor numbers can also be output with the '-d'
+option:</p>
+<pre class="western"><tt class="western"><font size="3" style="font-size: 12pt">$ lsscsi -d</font></tt>
+<tt class="western"><font size="3" style="font-size: 12pt">[0:0:1:0] disk FUJITSU MAM3184MP 0105 /dev/sda[8:0]</font></tt></pre><p>
+The '-g' (or '--generic') option can be used to show the
+corresponding scsi generic device name:</p>
+<p><br/>
+<tt class="western"><font size="3" style="font-size: 12pt">$
+lsscsi -g<br/>
+[0:0:1:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp;
+FUJITSU&nbsp; MAM3184MP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0105&nbsp; /dev/sda&nbsp; /dev/sg0</font></tt><br/>
+<br/>
+Most modern
+storage devices have world wide unique identifiers. For an ATA or
+SATA disk this is known as a WWN. For a SCSI device the formal term
+is an Logical Unit (LU) name which comes in several forms including
+NAA and EUI-64 numbers and SCSI name strings as used by iSCSI. The
+'-u (or '--unit') option will show the LU_name/WWN in place of the
+manufacturer, product and revision strings:</p>
+<pre class="western"><tt class="western"><font size="3" style="font-size: 12pt">$ lsscsi</font></tt>
+<tt class="western"><font size="3" style="font-size: 12pt">[5:0:0:0] disk FreeBSD iSCSI Disk 0123 /dev/sdb</font></tt>
+
+<tt class="western"><font size="3" style="font-size: 12pt">$ lsscsi -u </font></tt>
+<tt class="western"><font size="3" style="font-size: 12pt">[5:0:0:0] disk iqn.2011-03.org.example.istgt:12_ /dev/sdb</font></tt>
+
+
+The url type name used by iSCSI (called an IQN) is too large to fit where the manufacturer, product and revision strings were so it is truncated to the right with the underscore as an indication of that truncation. To see the whole IQN (and the device name to the right is dropped) use:
+
+<tt class="western"><font size="3" style="font-size: 12pt">$ lsscsi -uuu</font></tt>
+<tt class="western"><font size="3" style="font-size: 12pt">[5:0:0:0] disk iqn.2011-03.org.example.istgt:1200ssd-tgt,lun,0</font></tt></pre><p>
+In &quot;classic&quot; mode <b>lsscsi</b> outputs a listing very
+similar to 'cat /proc/scsi/scsi' as often used in the Linux 2.4
+series. This form of output should be familiar to long term users of
+Linux:</p>
+<pre class="western"><tt class="western"><font size="3" style="font-size: 12pt">$ lsscsi -c</font></tt>
+<tt class="western"><font size="3" style="font-size: 12pt">Attached devices:</font></tt>
+<tt class="western"><font size="3" style="font-size: 12pt">Host: scsi0 Channel: 00 Id: 08 Lun: 00</font></tt>
+<tt class="western"> </tt><tt class="western"><font size="3" style="font-size: 12pt">Vendor: FUJITSU Model: MAM3184MP Rev: 0105</font></tt>
+<tt class="western"> </tt><tt class="western"><font size="3" style="font-size: 12pt">Type: Direct-Access ANSI SCSI revision: 03</font></tt>
+<tt class="western"><font size="3" style="font-size: 12pt">Host: scsi2 Channel: 00 Id: 00 Lun: 00</font></tt>
+<tt class="western"> </tt><tt class="western"><font size="3" style="font-size: 12pt">Vendor: CREATIVE Model: CD5233E Rev: 1.00</font></tt>
+<tt class="western"> </tt><tt class="western"><font size="3" style="font-size: 12pt">Type: CD-ROM ANSI SCSI revision: 02</font></tt>
+<tt class="western"><font size="3" style="font-size: 12pt">Host: scsi3 Channel: 00 Id: 06 Lun: 00</font></tt>
+<tt class="western"> </tt><tt class="western"><font size="3" style="font-size: 12pt">Vendor: SONY Model: SDT-7000 Rev: 0192</font></tt>
+<tt class="western"> </tt><tt class="western"><font size="3" style="font-size: 12pt">Type: Sequential-Access ANSI SCSI revision: 02</font></tt>
+<tt class="western"><font size="3" style="font-size: 12pt">Host: scsi4 Channel: 00 Id: 00 Lun: 00</font></tt>
+<tt class="western"> </tt><tt class="western"><font size="3" style="font-size: 12pt">Vendor: Linux Model: scsi_debug Rev: 0004</font></tt>
+<tt class="western"> </tt><tt class="western"><font size="3" style="font-size: 12pt">Type: Direct-Access ANSI SCSI revision: 03</font></tt></pre><p>
+SCSI host information can be listed with the '-H' option:</p>
+<pre class="western"><font size="3" style="font-size: 12pt">$ lsscsi -H</font>
+<font size="3" style="font-size: 12pt">[0] scsi_debug</font>
+<font size="3" style="font-size: 12pt">[1] aha152x</font>
+
+
+<font size="3" style="font-size: 12pt">$ lsscsi -Hl</font>
+<font size="3" style="font-size: 12pt">[0] scsi_debug</font>
+ <font size="3" style="font-size: 12pt">cmd_per_lun=3 host_busy=0 sg_tablesize=64 unchecked_isa_dma=0</font>
+
+<font size="3" style="font-size: 12pt">[1] aha152x</font>
+ <font size="3" style="font-size: 12pt">cmd_per_lun=1 host_busy=0 sg_tablesize=255 unchecked_isa_dma=0</font>
+
+
+<font size="3" style="font-size: 12pt">$ lsscsi -Hlv</font>
+<font size="3" style="font-size: 12pt">[0] scsi_debug</font>
+ <font size="3" style="font-size: 12pt">cmd_per_lun=3 host_busy=0 sg_tablesize=64 unchecked_isa_dma=0</font>
+ <font size="3" style="font-size: 12pt">dir: /sys/class/scsi_host/host0</font>
+ <font size="3" style="font-size: 12pt">device dir: /sys/devices/pseudo_0/adapter0/host0</font>
+
+<font size="3" style="font-size: 12pt">[1] aha152x</font>
+ <font size="3" style="font-size: 12pt">cmd_per_lun=1 host_busy=0 sg_tablesize=255 unchecked_isa_dma=0</font>
+ <font size="3" style="font-size: 12pt">dir: /sys/class/scsi_host/host1</font>
+ <font size="3" style="font-size: 12pt">device dir: /sys/devices/platform/host1</font></pre><p>
+For transport information see the section of that name below. Online
+there is a &quot;man&quot;&nbsp; page (invoked by 'man lsscsi') which
+contains information specific to the version of lsscsi installed on a
+machine. The command also contains usage information that can be
+output by using &quot;lsscsi -h&quot; or &quot;lsscsi
+--help&quot;.<br/>
+<br/>
+Currently bsg device node names are not
+shown by <b>lsscsi</b> but are quite simple to construct from the
+information provided. bsg node names start with '/dev/bsg/' followed
+by a scsi_host,channel,target_number,LUN tuple. For example for this
+device:</p>
+<pre class="western" style="margin-bottom: 0.5cm"><tt class="western"><font size="3" style="font-size: 12pt">[4:0:0:0] disk Linux scsi_debug 0004 /dev/sdb</font></tt></pre><p>
+the bsg node name is '/dev/bsg/4:0:0:0'. Note that the shell may
+interpret &quot;:&quot; as a special character in certain contexts so
+it may need to be escaped or placed between quotes.</p>
+<h2 class="western"><a name="__RefHeading___Toc134_4141254284"></a><a name="mozTocId473619"></a>
+3 ) Command line interface</h2>
+<p>The lsscsi command has this command line interface:</p>
+<pre class="western" style="margin-bottom: 0.5cm"> <font face="monospace"><font size="3" style="font-size: 12pt">lsscsi [options] [filter]</font></font></pre><p>
+The command line options are shown in table 1.<br/>
+<br/>
+The filter
+argument is designed to select a subset of available devices (or
+hosts when the '--hosts' option is given [added version in 0.19]).
+The filter can comprise of up to four numbers, separated by &quot;:&quot;
+or spaces; alternatively it can be of the form &quot;host&lt;n&gt;&quot;
+where &lt;n&gt; is a host number. The four numbers represent host
+number, channel (or bus) number, target number and logical unit
+number (i.e. LUN) respectively. The &quot;-&quot;, &quot;*&quot; or
+&quot;?&quot; symbols is used to represent a wildcard. If &quot;-&quot;
+is used as a wild card then the filter argument should be prefixed by
+&quot;-- &quot; in order to distinguish it from an option lead-in
+character. When &quot;*&quot; or &quot;?&quot; are used as wildcard
+the filter should be surrounded by single or double quotes to stop
+shell filename expansions. For device listings, no filter argument is
+equivalent to &quot;-:-:-:-&quot;. Numbers missing from the filter
+are treated as wildcards: hence &quot;5:0:1&quot; and &quot;5:0:1:-&quot;
+are the same.<br/>
+<br/>
+Version 0.30 of lsscsi added support for
+listing NVMe devices (namespaces) and controllers. For NVMe, the four
+tuple shown in lsscsi output (and used by the filter argument) is the
+letter 'N' in the first position, followed by the NVMe controller's
+Linux char device's minor number as seen typically in NVMe controller
+device names (e.g. <tt class="western">/dev/nvme2</tt>&nbsp; (i.e.
+the '2')). The third position is the value associated with the CNTLID
+field in the NVMe's Admin command's Identify (controller) response.
+The last item in NVMe's four tuple is the namespace identifier (nsid)
+which is a value between 1 and 2**32 - 2 (inclusive).<br/>
+<br/>
+<tt class="western"><font size="3" style="font-size: 12pt">$
+lsscsi <br/>
+[0:0:0:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp;
+Linux&nbsp;&nbsp;&nbsp; scsi_debug&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0187&nbsp; /dev/sda <br/>
+[0:0:0:3]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp;
+Linux&nbsp;&nbsp;&nbsp; scsi_debug&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0187&nbsp; /dev/sdd <br/>
+[1:0:0:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp;
+INTEL SS DSA2M080G2GC&nbsp;&nbsp;&nbsp;&nbsp; 2CV1&nbsp; /dev/sde
+<br/>
+[N:0:1:1]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp; INTEL
+SSDPEKKF256G7L__1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/nvme0n1</font></tt><br/>
+<br/>
+The last two devices listed above
+are SSDs. The first one is a SATA SSD (attached via USB using the UAS
+protocol), the next one (last) is a NVMe SSD. The model 'number'
+field (MN) of the NVMe controller containing the NVMe device (a NVMe
+namespace) is output (e.g. above it's &quot;<tt class="western">INTEL
+SSDPEKKF256G7L</tt>&quot;) followed by a double underscore and the
+nsid. To see SCSI hosts and NVMe controllers use the '<tt class="western">--hosts</tt>'
+option:<br/>
+<br/>
+<tt class="western"><font size="3" style="font-size: 12pt">$
+lsscsi -H<br/>
+[0]&nbsp;&nbsp;&nbsp; scsi_debug&nbsp;&nbsp;&nbsp;
+<br/>
+[1]&nbsp;&nbsp;&nbsp; uas&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>
+[N:0]&nbsp; /dev/nvme0&nbsp; INTEL SSDPEKKF256G7L&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+BTPY72320AU0000D&nbsp;&nbsp;&nbsp; 123P</font></tt><br/>
+<br/>
+<font size="3" style="font-size: 12pt">In
+the case of the SCSI hosts, the name of the driver controlling the
+HBA is given. For NVMe controllers the Linux &quot;char&quot; device
+name (e.g. </font><tt class="western"><font size="3" style="font-size: 12pt">/dev/nvme0</font></tt>
+<font size="3" style="font-size: 12pt">) is shown. This device name
+is used for NVMe command injection (Admin, IO (NVM) and MI
+(management interface) commands). To exclude NVMe devices
+(namespaces) and controllers from the above listings, the '-N' option
+can be used. Conversely to exclude SCSI devices (LUs) and hosts the
+'N' filter can be given. For example:</font><br/>
+<br/>
+<tt class="western"><font size="3" style="font-size: 12pt">$
+lsscsi --hosts N<br/>
+[N:0]&nbsp; /dev/nvme0&nbsp; INTEL
+SSDPEKKF256G7L&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+BTPY72320AU0000D&nbsp;&nbsp;&nbsp; 123P</font></tt><br/>
+<br/>
+The
+trailing 'N' in the command is a filter that expands to 'N:*' which
+matches all NVMe controllers. For NVMe controllers after the Linux
+device name the Model Number (MN), Serial Number (SN) and Firmware
+Revision (FR) fields are shown. These are obtained from the NVMe
+Admin Identify (controller) command response (actually these were
+obtained from sysfs which holds copies from the earlier device
+discovery, thus avoiding lsscsi needing root permission). The 'N'
+indicating NVMe is converted internally to 32,767 which shouldn't
+interfere with any SCSI controller number. Further it means that all
+NVMe devices and controllers will sort after SCSI devices and hosts
+in the output.<br/>
+<br/>
+<br/>
+
+</p>
+<p align="center" style="margin-bottom: 0cm"><b>Table 1. lsscsi
+command line options</b></p>
+<table width="1501" cellpadding="2" cellspacing="0">
+	<col width="129"/>
+
+	<col width="74"/>
+
+	<col width="52"/>
+
+	<col width="1228"/>
+
+	<tr>
+		<td width="129" style="border: 1px double #808080; padding: 0.05cm"><p>
+			<b>long option format</b></p>
+		</td>
+		<td width="74" style="border: 1px double #808080; padding: 0.05cm"><p>
+			<b>short option format</b></p>
+		</td>
+		<td width="52" style="border: 1px double #808080; padding: 0.05cm"><p>
+			<b>version</b><br/>
+<b>added</b></p>
+		</td>
+		<td width="1228" style="border: 1px double #808080; padding: 0.05cm"><p>
+			<b>description</b></p>
+		</td>
+	</tr>
+	<tr>
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="font-weight: normal">
+			--brief</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="font-weight: normal">
+			-b</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.30</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="font-weight: normal">
+			reduces single line output to tuple plus primary device name. With
+			--pdt option inserts the PDT (device type) in hex between tuple
+			and primary device name.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--classic</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-c</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			generate output similar to 'cat /proc/scsi/scsi'</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--controllers</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-C</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.30</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			lists NVMe controllers and SCSI hosts. This is a synonym for
+			--hosts</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--device</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-d</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			show device node's major and minor numbers</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--generic</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-g</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			show scsi generic device node name</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--help</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-h</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			print usage message then exit</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--hosts</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-H</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			rather than list SCSI devices (logical units), list SCSI hosts
+			instead</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--kname</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-k</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.15</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			show kernel name (as found in sysfs) instead of device node name
+			(as found in the /dev directory)</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--list</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-L</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.19</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			show &lt;attribute&gt;=&lt;value&gt; pairs, one per line, indented
+			by two or more spaces. Equivalent to -lll option.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--long</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-l</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			show &lt;attribute&gt;=&lt;value&gt; pairs, several to a line. can
+			be used multiple times for more output and different format. Use
+			--list option to output one &lt;attribute&gt;=&lt;value&gt; pair
+			per line.</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--long-unit</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-U</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.29</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			show the un-truncated logical unit name. This may cause the
+			&quot;single device per line&quot; form of output to exceed 80
+			columns with UUID and EUI-128 logical unit names</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--lunhex</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-x</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.27</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			show the LUN part of the tuple as hex following T10 (SAM-5)
+			conventions.</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--no-nvme</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-N</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.30</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			don't list NVMe devices (or controllers if --hosts is given)</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--pdt</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-D</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.30</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			displays Peripheral Device Type (PDT) is hexadecimal, prefixed by
+			&quot;0x&quot;</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--protection</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-p</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.22</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			show protection information (T10-DIF).</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--protmode</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-P</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.25</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			show negotiated protection information mode</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--scsi_id</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-i</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.27</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			show udev derived information in /dev/disk/by-id/ directory</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--size</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-s</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.25</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			show disk size in human readable form. Used once, normal SI
+			prefixes to 'B' (bytes or octets) are used, rounded by up to 3
+			decimal places. When used twice IEC 80000-3 prefixes for 'B' are
+			used, for example MiB, GiB and TiB stand for 2^20, 2^30 and 2^40
+			bytes respectively. When used three times the size as a logical
+			block count is given, this is an exact figure, in decimal.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--sysfsroot=PATH</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-y PATH</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.23</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			Uses PATH as sysfs mount point (default sysfs mount point is
+			'/sys')</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--sz-lbs</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-S</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.30</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			show disk size as number of logical blocks; when given twice adds
+			a comma followed the logical block size in bytes (typically either
+			512 or 4096)</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--transport</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-t</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.19</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			show transport information. If '--hosts' not given then this will
+			be for targets. If '--hosts' is given then this will be for
+			initiators (i.e. hosts). More information shown when used with
+			'--list'.</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--unit</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-u</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.28</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			show the LU name in the place of the manufacturer, model and
+			revision. Needs lk &gt;= 3.15</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--verbose</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-v</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			increase verbosity of output. May be used multiple times to
+			further increase verbosity.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--version</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-V</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			print out the version and the date of last code change then exits</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="129" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			--wwn</p>
+		</td>
+		<td width="74" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-w</p>
+		</td>
+		<td width="52" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.26</p>
+		</td>
+		<td width="1228" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			show the WWN for disks in the place of the manufacturer, model and
+			revision</p>
+		</td>
+	</tr>
+</table>
+<p><br/>
+The <b>lsscsi</b>&nbsp; man page and the usage message in
+the executable also show the command line syntax.</p>
+<h2 class="western">4 ) Transports</h2>
+<p>When the '--transport' (or '-t') option is given <b>lsscsi</b>
+attempts to determine the transport being used and outputs
+information specific to that transport. In the case of modern
+transports that may include a world wide unique name or identifier.
+The transports for which extra information is provided are:</p>
+<ul>
+	<li><p style="margin-bottom: 0cm">ATA 
+	</p>
+	<li><p style="margin-bottom: 0cm">Fibre channel (FC): substantial
+	amount both for target and host</p>
+	<li><p style="margin-bottom: 0cm">IEEE 1394 (SBP): target and host</p>
+	<li><p style="margin-bottom: 0cm">iSCSI: target only 
+	</p>
+	<li><p style="margin-bottom: 0cm">PCIe, as used by NVMe</p>
+	<li><p style="margin-bottom: 0cm">Serial Attached SCSI (SAS):
+	substantial amount for both target and host 
+	</p>
+	<li><p style="margin-bottom: 0cm">SATA 
+	</p>
+	<li><p style="margin-bottom: 0cm">SCSI Parallel Interface (SPI):
+	trivial</p>
+	<li><p style="margin-bottom: 0cm">SCSI RDMA (Remote Direct Memory
+	Access) Protocol (SRP)</p>
+	<li><p>USB 
+	</p>
+</ul>
+<p>Even though <b>lsscsi</b>, in the absence of the '--hosts' option,
+shows logical unit information, once the '--transport' option is
+specified the output relates to the&nbsp; <u>target</u> which
+contains the logical unit. This occurs since the computer (and thus
+sysfs) see a &quot;transport&quot; (or interconnect) whose near end
+is a host (i.e. a SCSI initiator) and whose far end is a <u>target</u>.
+A target may contain one or more logical units (and in special cases
+a target may contain no logical units). SCSI initiators and targets
+can also have one or more ports. Linux tends to show each port of a
+target (that contains one logical unit) as two devices; to be more
+precise, Linux shows a different device for each distinct path to a
+logical unit.<br/>
+<br/>
+When the '--transport' option is given the
+SCSI INQUIRY strings (vendor, product and revision) usually output by
+<b>lsscsi</b> are replaced by a target name or identifier. Annex A in
+the <a href="http://www.t10.org/ftp/t10/drafts/sam4/sam4r08.pdf">SAM-4</a>
+document has been used as a guide for the appropriate initiator (i.e.
+host) and target names and identifiers to display.<br/>
+<br/>
+From
+lsscsi version 0.28 the '--unit' option will show Logical Unit (LU)
+name derived from device identification VPD page which first became
+available in sysfs in lk 3.15 . For most modern SCSI devices the LU
+name should be a world wide unique number (or string in the case of
+iSCSI).<br/>
+<br/>
+In version 0.30 of lsscsi support for NVMe was
+added. 
+</p>
+<h3 class="western">4.1 ) ATA</h3>
+<p>The detection of&nbsp; parallel ATA devices is somewhat crude and
+is performed after checks are made for more traditional SCSI
+transports. The identification of an ATA transport is made on the
+basis of the low level driver name that the device or host uses. A
+similar mechanism is used to detect SATA devices and there is some
+overlap since some drivers support both SATA and PATA devices. No
+other attributes are provided. For example:</p>
+<p><font face="monospace"><font size="3" style="font-size: 12pt">$
+lsscsi</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[0:0:0:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; ATA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; FUJITSU
+MHY2160B 0000&nbsp; /dev/sda</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[3:0:0:0]&nbsp;&nbsp;&nbsp;
+cd/dvd&nbsp; MATSHITA DVD/CDRW UJDA775 CB03&nbsp;
+/dev/scd0</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[5:0:0:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; USB 2.0&nbsp; SD/MMC Reader&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sdb</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[6:0:0:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; JetFlash TS2GJFVxx &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+8.01&nbsp; /dev/sdc</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">$
+lsscsi -t</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[0:0:0:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; sata:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sda</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[3:0:0:0]&nbsp;&nbsp;&nbsp;
+cd/dvd&nbsp; ata:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/scd0</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[5:0:0:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; usb: 7-1:1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sdb</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[6:0:0:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; usb: 7-2.4:1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sdc<br/>
+$ lsscsi -Ht<br/>
+[0]&nbsp;&nbsp;&nbsp; ahci&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+sata:<br/>
+[1]&nbsp;&nbsp;&nbsp; ahci&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+sata:<br/>
+[2]&nbsp;&nbsp;&nbsp; ahci&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+sata:<br/>
+[3]&nbsp;&nbsp;&nbsp; ata_piix&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ata:<br/>
+[4]&nbsp;&nbsp;&nbsp; ata_piix&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ata:<br/>
+[5]&nbsp;&nbsp;&nbsp; usb-storage&nbsp;&nbsp; usb:
+7-1:1.0<br/>
+[6]&nbsp;&nbsp;&nbsp; usb-storage&nbsp;&nbsp; usb:
+7-2.4:1.0</font></font><font face="monospace"><br/>
+</font><br/>
+In
+this case the device at 3:0:0:0 (and device node /dev/scd0) is a
+DVD/CD drive whose transport is (parallel) ATA. That device is
+attached to host3 which is associated with the ata_piix driver.</p>
+<h3 class="western">4.2 ) FC</h3>
+<p>For FC devices (logical units), the '--transport' option will show
+the port name and the port identifier instead of the SCSI INQUIRY
+&quot;strings&quot;. For example:</p>
+<p><font face="monospace"><font size="3" style="font-size: 12pt">$
+lsscsi -g</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[3:0:0:0]&nbsp;&nbsp;&nbsp;
+enclosu HP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; A6255A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HP04&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sg3</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[3:0:1:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; HP 36.4G ST336753FC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HP00&nbsp; /dev/sdd&nbsp; /dev/sg4</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[3:0:2:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; HP 36.4G ST336753FC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HP00&nbsp; /dev/sde&nbsp; /dev/sg5</font></font><font size="3" style="font-size: 12pt"><br/>
+<br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">$
+lsscsi -g --transport</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[3:0:0:0]&nbsp;&nbsp;&nbsp;
+enclosu fc:0x50060b00002e48a3,0x0b109b&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sg3</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[3:0:1:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; fc:0x21000004cf97de68,0x0b109f&nbsp; /dev/sdd&nbsp;
+/dev/sg4</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[3:0:2:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; fc:0x21000004cf97e385,0x0b10a3&nbsp; /dev/sde&nbsp;
+/dev/sg5</font></font><br/>
+<br/>
+Notice that the port name for the
+enclosure is NAA-5 while the port names for the disks are NAA-2.
+Since SAS also uses NAA-5 the leading &quot;fc:&quot; indicates that
+the transport has been identified as FC. When '--list' is added, more
+transport information is provided in &quot;name=value&quot; pairs,
+indented by two or more spaces. The output is restricted to one disk
+by added the 3:0:2:0 filter:</p>
+<pre class="western"><font face="monospace"><font size="3" style="font-size: 12pt">$ lsscsi -t --list [3:0:2:0]</font></font>
+
+<font face="monospace"><font size="3" style="font-size: 12pt">[3:0:2:0] disk fc:0x21000004cf97e385,0x0b10a3 /dev/sde</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">transport=fc</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">node_name=0x20000004cf97e385</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">port_name=0x21000004cf97e385</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">port_id=0x0b10a3</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">port_state=Online</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">roles=FCP Target</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">scsi_target_id=2</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">supported_classes=Class 3</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">dev_loss_tmo=35</font></font>
+
+
+When the '--hosts' option is used with '--transport' then transport information for the initiator (port) is output:</pre><p>
+<br/>
+<font face="monospace"><font size="3" style="font-size: 12pt">$
+lsscsi --hosts --transport 3</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[3]&nbsp;&nbsp;&nbsp;
+qla2xxx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+fc:0x50060b00741cc28e,0x0b1900</font></font><br/>
+<br/>
+This shows
+for host 3 the driver is called qla2xxx, the transport is FC, the
+initiator's port name is in NAA-5 format with the final (hex) number
+being the initiator's port identifier. Adding '--list' will again add
+&quot;name=value&quot; pairs:</p>
+<pre class="western"><font face="monospace"><font size="3" style="font-size: 12pt">$ lsscsi -H -t --list 3</font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[3] qla2xxx fc:0x50060b00741cc28e,0x0b1900</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">transport=fc</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">node_name=0x50060b00741cc28f</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">port_name=0x50060b00741cc28e</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">port_id=0x0b1900</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">port_type=NPort (fabric via point-to-point)</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">speed=2 Gbit</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">supported_classes=Class 3</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">tgtid_bind_type=wwpn (World Wide Port Name)</font></font></pre><p>
+The &quot;name=value&quot; pairs are fetched from a sysfs directory
+(apart from &quot;transport=fc&quot;) so the meaning should be what
+is defined by the transport. Too see which directory (or directories)
+provide this information add '-vvv'.</p>
+<h3 class="western">4.3 ) 1394</h3>
+<p>There are two versions of the SBP SCSI standard known as SBP-2 and
+SBP-3 for conveying SCSI command sets over a IEEE 1394 transport. The
+SCSI commands sets are typically for accessing storage devices. Hence
+the acronym &quot;SBP&quot; is often associated with the IEEE 1394
+transport in the storage context.<br/>
+<br/>
+SBP defines world wide
+unique names for a target and initiator (host) using EUI-64 format.
+These names are what the lsscsi command fetches when the '-t' option
+is given:</p>
+<p><font face="monospace"><font size="3" style="font-size: 12pt">$
+lsscsi</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[6:0:1:0]&nbsp;&nbsp;&nbsp;
+sim dsk QUANTUM&nbsp; FIREBALL SE3.2A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sdk</font></font><font size="3" style="font-size: 12pt"><br/>
+<br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">$
+lsscsi -t</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[6:0:1:0]&nbsp;&nbsp;&nbsp;
+sim dsk sbp:00043b000000071d:1:0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sdk</font></font><font size="3" style="font-size: 12pt"><br/>
+<br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">$
+lsscsi -t -L</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[6:0:1:0]&nbsp;&nbsp;&nbsp;
+sim dsk sbp:00043b000000071d:1:0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sdk</font></font><font size="3" style="font-size: 12pt"><br/>
+&nbsp;
+</font><font face="monospace"><font size="3" style="font-size: 12pt">transport=sbp</font></font><font size="3" style="font-size: 12pt"><br/>
+&nbsp;
+</font><font face="monospace"><font size="3" style="font-size: 12pt">ieee1394_id=00043b000000071d:1:0</font></font><font size="3" style="font-size: 12pt"><br/>
+<br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">$
+lsscsi -t -H</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[6]&nbsp;&nbsp;&nbsp;
+sbp2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+sbp:005042b500004a48</font></font><font size="3" style="font-size: 12pt"><br/>
+<br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">$
+lsscsi -t -H -L</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[6]&nbsp;&nbsp;&nbsp;
+sbp2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+sbp:005042b500004a48</font></font><font size="3" style="font-size: 12pt"><br/>
+&nbsp;
+</font><font face="monospace"><font size="3" style="font-size: 12pt">transport=sbp</font></font><br/>
+<br/>
+The
+SBP standard requires that disks (typically ATA disks in an external
+enclosure) use the SCSI peripheral device type: &quot;simplified
+direct access device&quot;. The is abbreviated by the lsscsi command
+to &quot;sim dsk&quot;.</p>
+<h3 class="western">4.4 ) iSCSI</h3>
+<p>The <b>lsscsi</b> command won't show anything iSCSI related on a
+machine with a iSCSI target running (either as a kernel driver or as
+a user space daemon). The following output is from a machine running
+a iSCSI initiator with a session established:</p>
+<pre class="western"><font size="3" style="font-size: 12pt">$ lsscsi</font>
+<font size="3" style="font-size: 12pt">[2:0:0:0] disk IET VIRTUAL-DISK 0 /dev/sda</font>
+
+
+<font size="3" style="font-size: 12pt">$ lsscsi -t</font>
+<font size="3" style="font-size: 12pt">[2:0:0:0] disk iqn.2001-04.com.example:sda.sdb.sdc,t,0x1 /dev/sda</font>
+
+
+<font size="3" style="font-size: 12pt">$ lsscsi -t -L</font>
+<font size="3" style="font-size: 12pt">[2:0:0:0] disk iqn.2001-04.com.example:sda.sdb.sdc,t,0x1 /dev/sda</font>
+ <font size="3" style="font-size: 12pt">transport=iSCSI</font>
+ <font size="3" style="font-size: 12pt">targetname=iqn.2001-04.com.example:sda.sdb.sdc</font>
+ <font size="3" style="font-size: 12pt">tpgt=1</font>
+ <font size="3" style="font-size: 12pt">data_pdu_in_order=1</font>
+ <font size="3" style="font-size: 12pt">data_seq_in_order=1</font>
+ <font size="3" style="font-size: 12pt">erl=0</font>
+ <font size="3" style="font-size: 12pt">first_burst_len=65536</font>
+ <font size="3" style="font-size: 12pt">initial_r2t=1</font>
+ <font size="3" style="font-size: 12pt">max_burst_len=262144</font>
+ <font size="3" style="font-size: 12pt">max_outstanding_r2t=1</font>
+ <font size="3" style="font-size: 12pt">recovery_tmo=120</font>
+
+
+<font size="3" style="font-size: 12pt">$ lsscsi -t -H</font>
+<font size="3" style="font-size: 12pt">[2] iscsi_tcp iscsi:</font>
+
+
+<font size="3" style="font-size: 12pt">$ lsscsi -t -H -L</font>
+<font size="3" style="font-size: 12pt">[2] iscsi_tcp iscsi:</font>
+ <font face="Liberation Mono, monospace"><font size="3" style="font-size: 12pt">transport=iSCSI</font></font>
+
+
+As can be seen, there is no useful host information (e.g. the iSCSI initiator name) when the '-H' option (or the '--hosts' option) is given. The information given for the target is session related. An iSCSI session is made up of 1 or more connections which have available information in sysfs but the <b>lsscsi</b> command doesn't output them currently.</pre><h3 class="western">
+4.5 ) PCIe</h3>
+<p>It is possible that SCSI SOP/PQI devices are present but more
+likely the presence of a PCIe storage transport indicates one or more
+NVMe devices are available. In version 0.30 of lsscsi support for
+NVMe was added. Here is an example of the requesting transport
+information on a machine's SCSI hosts and NVMe controllers:</p>
+<pre class="western"><tt class="western"><font size="3" style="font-size: 12pt">$ lsscsi -H --transport</font></tt>
+<tt class="western"><font size="3" style="font-size: 12pt">[0]    ahci          sata:</font></tt>
+<tt class="western"><font size="3" style="font-size: 12pt">[1]    ahci          sata:</font></tt>
+<tt class="western"><font size="3" style="font-size: 12pt">[2]    ahci          sata:</font></tt>
+<tt class="western"><font size="3" style="font-size: 12pt">[3]    ahci          sata:</font></tt>
+<tt class="western"><font size="3" style="font-size: 12pt">[4]    ahci          sata:</font></tt>
+<tt class="western"><font size="3" style="font-size: 12pt">[5]    ahci          sata:</font></tt>
+<tt class="western"><font size="3" style="font-size: 12pt">[6]    mpt3sas       sas:0x500605b006d3b510</font></tt>
+<tt class="western"><font size="3" style="font-size: 12pt">[7]    scsi_debug    </font></tt>
+<tt class="western"><font size="3" style="font-size: 12pt">[N:0]  /dev/nvme0    pcie 0x1b4b:0x1093</font></tt></pre><p>
+<br/>
+<br/>
+In the above, SCSI hosts 0 to 5 are actually SATA hosts,
+host 6 is a LSI SAS HBA, host 7 is scsi_debug which has no transport
+(actually it has a &quot;bus&quot; as seen from sysfs called
+'pseudo'). The last item is a NVMe controller attached via a PCIe
+bus. Following the &quot;pcie&quot; string is the Subsystem Vendor ID
+(SSVID) before the colon, with the subsystem device identifier after
+the colon. Now looking are the corresponding devices (SATA devices,
+SCSI LUs (logical units (LUs) and NVMe namespaces):</p>
+<pre class="western"><font size="3" style="font-size: 12pt">$ lsscsi</font>
+<font size="3" style="font-size: 12pt">[3:0:0:0]    disk    ATA      ST9500420AS      SDM1  /dev/sda </font>
+<font size="3" style="font-size: 12pt">[6:0:0:0]    disk    SEAGATE  ST10000NM0096    E002  /dev/sdb </font>
+<font size="3" style="font-size: 12pt">[6:0:1:0]    disk    SmrtStor SDLKOCDR800G5CA1 F820  /dev/sdc </font>
+<font size="3" style="font-size: 12pt">[6:0:2:0]    disk    SEAGATE  ST200FM0073      0007  /dev/sdd </font>
+<font size="3" style="font-size: 12pt">[6:0:3:0]    enclosu Areca    ARC-802801.33.63 0133  -        </font>
+<font size="3" style="font-size: 12pt">[6:0:4:0]    enclosu Intel    RES2SV240        0d00  -        </font>
+<font size="3" style="font-size: 12pt">[7:0:0:0]    disk    Linux    scsi_debug       0186  /dev/sde </font>
+<font size="3" style="font-size: 12pt">[N:0:0:1]    disk    WDC WDS256G1X0C-00ENX0__1                  /dev/nvme0n1</font></pre><p>
+A SATA disk can be seen at [3:0:0:0]; a SAS disk and to SAS SSDs
+follow, then two SES enclosures (associated with SAS expanders), then
+a scsi_debug device (LU) and finally a NVMe SSD at [N:0:0:1]. The
+namespace id is 1 and is shown two ways: the final element in the
+tuple and the &quot;__1&quot; suffix on the name. Now that list again
+with the --generic and --size options:</p>
+<pre class="western"><font size="3" style="font-size: 12pt">$ lsscsi -gs</font>
+<font size="3" style="font-size: 12pt">[3:0:0:0]    disk    ATA      ST9500420AS      SDM1  /dev/sda   /dev/sg0    500GB</font>
+<font size="3" style="font-size: 12pt">[6:0:0:0]    disk    SEAGATE  ST10000NM0096    E002  /dev/sdb   /dev/sg1   10.0TB</font>
+<font size="3" style="font-size: 12pt">[6:0:1:0]    disk    SmrtStor SDLKOCDR800G5CA1 F820  /dev/sdc   /dev/sg2    800GB</font>
+<font size="3" style="font-size: 12pt">[6:0:2:0]    disk    SEAGATE  ST200FM0073      0007  /dev/sdd   /dev/sg3    200GB</font>
+<font size="3" style="font-size: 12pt">[6:0:3:0]    enclosu Areca    ARC-802801.33.63 0133  -          /dev/sg4        -</font>
+<font size="3" style="font-size: 12pt">[6:0:4:0]    enclosu Intel    RES2SV240        0d00  -          /dev/sg5        -</font>
+<font size="3" style="font-size: 12pt">[7:0:0:0]    disk    Linux    scsi_debug       0186  /dev/sde   /dev/sg6   8.38MB</font>
+<font size="3" style="font-size: 12pt">[N:0:0:1]    disk    WDC WDS256G1X0C-00ENX0__1                  /dev/nvme0n1   256GB</font></pre><p>
+Notice there is no generic device name for the NVMe namespace. The
+pass-through for NVMe Admin and NVM (I/O) commands is actually
+through the associated controller's device (i.e. /dev/nvme0). To only
+see NVMe namespaces (or controllers) use the 'N' filter:</p>
+<pre class="western"><font size="3" style="font-size: 12pt">$ lsscsi -s N</font>
+<font size="3" style="font-size: 12pt">[N:0:0:1]    disk    WDC WDS256G1X0C-00ENX0__1                  /dev/nvme0n1   256GB</font></pre><p>
+To suppress the NVMe namespace (or controller) output use the '-N'
+option.</p>
+<h3 class="western">4.6 ) SAS</h3>
+<p>For SAS devices (logical units), the '--transport' option will
+show the target's SAS (port) address instead of the SCSI INQUIRY
+&quot;strings&quot;. For example:</p>
+<pre class="western"><font face="monospace"><font size="3" style="font-size: 12pt">$ lsscsi -t</font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[4:0:3:0] disk sas:0x5000d50001b02139 /dev/sdd</font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[4:0:4:0] disk sas:0x5000d500005208ed /dev/sde</font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[5:0:0:0] disk sas:5000d50001b02139 /dev/sdf</font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[5:0:1:0] disk sas:5000d500005208ed /dev/sdg</font></font></pre><p>
+The SAS address is prefixed by &quot;sas:&quot; to identify the
+transport. The are currently two different representations and lsscsi
+prints out whatever is in the relevant sysfs attribute. When a
+'--list' (or '-L) option is added more information is output:</p>
+<p><font face="monospace"><font size="3" style="font-size: 12pt">$
+lsscsi -t -L [4:0:4:0]</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[4:0:4:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; sas:0x5000d500005208ed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sde</font></font><font size="3" style="font-size: 12pt"><br/>
+&nbsp;
+</font><font face="monospace"><font size="3" style="font-size: 12pt">transport=sas</font></font><font size="3" style="font-size: 12pt"><br/>
+&nbsp;
+</font><font face="monospace"><font size="3" style="font-size: 12pt">initiator_port_protocols=none</font></font><font size="3" style="font-size: 12pt"><br/>
+&nbsp;
+</font><font face="monospace"><font size="3" style="font-size: 12pt">initiator_response_timeout=10000</font></font><font size="3" style="font-size: 12pt"><br/>
+&nbsp;
+</font><font face="monospace"><font size="3" style="font-size: 12pt">I_T_nexus_loss_timeout=1744</font></font><font size="3" style="font-size: 12pt"><br/>
+&nbsp;
+</font><font face="monospace"><font size="3" style="font-size: 12pt">phy_identifier=11</font></font><font size="3" style="font-size: 12pt"><br/>
+&nbsp;
+</font><font face="monospace"><font size="3" style="font-size: 12pt">ready_led_meaning=1</font></font><font size="3" style="font-size: 12pt"><br/>
+&nbsp;
+</font><font face="monospace"><font size="3" style="font-size: 12pt">sas_address=0x5000d500005208ed</font></font><font size="3" style="font-size: 12pt"><br/>
+&nbsp;
+</font><font face="monospace"><font size="3" style="font-size: 12pt">target_port_protocols=ssp<br/>
+<br/>
+#
+lsscsi -t -L [5:0:1:0]<br/>
+[5:0:1:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp;
+sas:5000d500005208ed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sdg<br/>
+&nbsp; transport=sas<br/>
+&nbsp;
+sub_transport=sas_class<br/>
+&nbsp; device_name=0000000000000000<br/>
+&nbsp;
+dev_type=end device<br/>
+&nbsp; iproto=<br/>
+&nbsp;
+iresp_timeout=0x2710<br/>
+&nbsp; itnl_timeout=0x07d0<br/>
+&nbsp;
+linkrate=3,0 Gbps<br/>
+&nbsp; max_linkrate=3,0 Gbps<br/>
+&nbsp;
+max_pathways=1<br/>
+&nbsp; min_linkrate=3,0 Gbps<br/>
+&nbsp;
+pathways=1<br/>
+&nbsp; ready_led_meaning=1<br/>
+&nbsp; rl_wlun=0<br/>
+&nbsp;
+sas_addr=5000d500005208ed<br/>
+&nbsp; tproto=SSP<br/>
+&nbsp;
+transport_layer_retries=0</font></font><font face="monospace"><br/>
+<br/>
+</font>Both
+4:0:4:0 and 5:0:1:0 are the same logical unit accessed via the same
+target port but from different hosts. The two drivers (one for each
+host) choose to represent the same (target port) information in
+different ways.<br/>
+<br/>
+When the '--hosts' option is added, then
+the SAS address of the initiator is output. In the case of SAS a
+Linux host corresponds to a initiator device (not one of its ports):</p>
+<pre class="western"><font face="monospace"><font size="3" style="font-size: 12pt">$ ./lsscsi -t -H</font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[0] sata_nv</font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[1] sata_nv</font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[2] sata_nv</font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[3] sata_nv</font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[4] mptsas sas:0x500605b000f6f260</font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[5] aic94xx sas:50000d100f2dc000</font></font></pre><p>
+Adding a '--list' option will print multiple 'name=value' pair lines,
+each indented with two or more spaces.</p>
+<h3 class="western">4.7 ) SATA</h3>
+<p>The detection of serial ATA (SATA) devices is somewhat crude and
+is performed after checks are made for more traditional SCSI
+transports. The identification of an SATA transport is made on the
+basis of the low level driver name that the device or host uses. A
+similar mechanism is used to detect&nbsp; parallel ATA devices and
+there is some overlap since some drivers support both SATA and PATA
+devices. No other attributes are provided. See the example in the <a href="#mozTocId961094">ATA</a>
+section, specifically device 0:0:0:0 and the associated host0.</p>
+<h3 class="western">4.8 ) SPI</h3>
+<p>The SCSI parallel interface (SPI) can be detected and is indicated
+by the &quot;spi:&quot; prefix. Sysfs provides no world wide unique
+names (until lk 3.15 when it provides the device identification VPD
+page). The only thing that is available is the target identifier
+which is usually a number between 0 and 15 inclusive. The initiator
+(host) identifier is not provided by by convention it is usually 7.
+Following are some examples of target and host transport information
+for SPI:</p>
+<pre class="western"><font face="monospace"><font size="3" style="font-size: 12pt">$ lsscsi [0:0:1:0]</font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[0:0:1:0] disk HP 36.4G ST336753LC HPC7 /dev/sdb</font></font>
+
+
+<font face="monospace"><font size="3" style="font-size: 12pt">$ lsscsi -t [0:0:1:0]</font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[0:0:1:0] disk spi:1 /dev/sdb</font></font>
+
+
+<font face="monospace"><font size="3" style="font-size: 12pt">$ lsscsi -t -L [0:0:1:0]</font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[0:0:1:0] disk spi:1 /dev/sdb</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">transport=spi</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">target_id=1</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">dt=1</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">max_offset=127</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">max_width=1</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">min_period=6.25</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">offset=63</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">period=6.25</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">width=1</font></font>
+
+
+<font face="monospace"><font size="3" style="font-size: 12pt">$ lsscsi -t -H [0:0:1:0]</font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[0] mptspi spi:</font></font>
+
+
+<font face="monospace"><font size="3" style="font-size: 12pt">$ lsscsi -t -H -L [0:0:1:0]</font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[0] mptspi spi:</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">transport=spi</font></font>
+ <font face="monospace"><font size="3" style="font-size: 12pt">signalling=unknown</font></font></pre><h3 class="western">
+4.9 ) SRP</h3>
+<p>The SCSI RDMA Protocol (SRP) transport can be detected and is
+indicated by the &quot;srp:&quot; prefix. Support was added in lsscsi
+version 0.28 . Here are some examples from its contributor, Bart Van
+Assche:</p>
+<pre class="western"><font size="3" style="font-size: 12pt">$ ibstat | grep 'Port GUID'</font>
+                <font size="3" style="font-size: 12pt">Port GUID: 0x0002c90300a05281</font>
+                <font size="3" style="font-size: 12pt">Port GUID: 0x0002c90300a05282</font>
+                <font size="3" style="font-size: 12pt">Port GUID: 0x0002c90300a02d71</font>
+                <font size="3" style="font-size: 12pt">Port GUID: 0x0002c90300a02d72</font>
+<font size="3" style="font-size: 12pt">$ lsscsi -t</font>
+<font size="3" style="font-size: 12pt">[0:0:0:0]    disk                                    /dev/sda</font>
+<font size="3" style="font-size: 12pt">[0:3:0:0]    storage                                 -</font>
+<font size="3" style="font-size: 12pt">[1:0:0:0]    disk    srp:0002:c903:00a0:5281         /dev/sdb</font>
+<font size="3" style="font-size: 12pt">[1:0:0:1]    disk    srp:0002:c903:00a0:5281         /dev/sdc</font>
+<font size="3" style="font-size: 12pt">[1:0:0:2]    disk    srp:0002:c903:00a0:5281         /dev/sdd</font>
+<font size="3" style="font-size: 12pt">[1:0:0:3]    disk    srp:0002:c903:00a0:5281         /dev/sde</font>
+<font size="3" style="font-size: 12pt">[1:0:0:4]    disk    srp:0002:c903:00a0:5281         /dev/sdf</font>
+<font size="3" style="font-size: 12pt">[1:0:0:5]    disk    srp:0002:c903:00a0:5281         /dev/sdg</font>
+<font size="3" style="font-size: 12pt">[1:0:0:6]    disk    srp:0002:c903:00a0:5281         /dev/sdh</font>
+<font size="3" style="font-size: 12pt">[1:0:0:7]    disk    srp:0002:c903:00a0:5281         /dev/sdi</font>
+<font size="3" style="font-size: 12pt">$ lsscsi --list -t | head</font>
+<font size="3" style="font-size: 12pt">[0:0:0:0]    disk                                    /dev/sda</font>
+<font size="3" style="font-size: 12pt">[0:3:0:0]    storage                                 -</font>
+<font size="3" style="font-size: 12pt">[1:0:0:0]    disk    srp:0002:c903:00a0:5281         /dev/sdb</font>
+  <font size="3" style="font-size: 12pt">transport=srp</font>
+  <font size="3" style="font-size: 12pt">orig_dgid=f452:1403:0015:6021</font>
+  <font size="3" style="font-size: 12pt">dgid=f452:1403:0015:6021</font>
+<font size="3" style="font-size: 12pt">[1:0:0:1]    disk    srp:0002:c903:00a0:5281         /dev/sdc</font>
+  <font size="3" style="font-size: 12pt">transport=srp</font>
+  <font size="3" style="font-size: 12pt">orig_dgid=f452:1403:0015:6021</font>
+  <font size="3" style="font-size: 12pt">dgid=f452:1403:0015:6021</font></pre><h3 class="western">
+4.10 ) USB</h3>
+<p>When a USB transport is detected the device or host summary line
+will contain &quot;usb:&quot; followed by a USB device name. The USB
+device name has the form &quot;&lt;b&gt;-&lt;p1&gt;[.&lt;p2&gt;]+:&lt;c&gt;.&lt;i&gt;&quot;
+where &lt;b&gt; is the USB bus number, &lt;p1&gt; is the port on the
+host. &lt;p2&gt; is a port on a host connected hub, if&nbsp; present.
+If needed &lt;p3&gt; is another USB hub port closer to the USB
+storage device. &lt;c&gt; refers to the configuration number while
+&lt;i&gt; is the interface number. There is a separate USB SCSI host
+for each USB (SCSI) target. A USB SCSI target may contain multiple
+logical units. Thus the same &quot;usb: &lt;device_name&gt;&quot;
+string appears for a USB SCSI host and all logical units that belong
+to the USB SCSI target associated with that USB SCSI host. See the
+example in the <a href="#mozTocId961094">ATA</a> section,
+specifically devices 5:0:0:0 and 6:0:0:0 . 5:0:0:0 is connected
+directly to a laptop while 6:0:0:0 is connected via an external hub.</p>
+<h2 class="western">5 ) Examples</h2>
+<pre class="western" style="margin-bottom: 0.5cm"><font face="Liberation Serif, serif">Here is the output from a not so typical machine. It has a directly attached SATA DVD drive and one SATA disk (/dev/sda). The remaining devices are attached via an external SAS expander which has its own SES management device [6:0:2:0] :</font></pre><p>
+<br/>
+<br/>
+<font face="monospace"><font size="3" style="font-size: 12pt">#
+lsscsi</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[0:0:0:0]&nbsp;&nbsp;&nbsp;
+cd/dvd&nbsp; PIONEER&nbsp; DVD-RW&nbsp; DVR-212D 1.22&nbsp; /dev/sr0
+</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[1:0:0:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; ATA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ST3320620AS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.AA&nbsp; /dev/sda
+</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[6:0:0:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; SEAGATE&nbsp; ST32000444SS&nbsp;&nbsp;&nbsp;&nbsp;
+0006&nbsp; /dev/sdb </font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[6:0:1:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; ATA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ST3500418AS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CC34&nbsp; /dev/sdc
+</font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[6:0:2:0]&nbsp;&nbsp;&nbsp;
+enclosu Intel&nbsp;&nbsp;&nbsp; RES2SV240&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0600&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></font><font size="3" style="font-size: 12pt"><br/>
+</font><font face="monospace"><font size="3" style="font-size: 12pt">[6:0:3:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; SEAGATE&nbsp; ST373455SS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+2189&nbsp; /dev/sdd</font></font><br/>
+<br/>
+<font face="Liberation Mono, monospace">B</font><font face="Liberation Serif, serif">elow
+are some examples of filters:</font><br/>
+<br/>
+<tt class="western"><font size="3" style="font-size: 12pt">#
+lsscsi -- 1:-:-:-<br/>
+[1:0:0:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp;
+ATA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ST3320620AS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+3.AA&nbsp; /dev/sda<br/>
+<br/>
+# lsscsi &quot;*:*:2&quot;<br/>
+[6:0:2:0]&nbsp;&nbsp;&nbsp;
+enclosu Intel&nbsp;&nbsp;&nbsp; RES2SV240&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0600&nbsp; -<br/>
+<br/>
+# lsscsi 0<br/>
+</font></tt><font face="monospace"><font size="3" style="font-size: 12pt">[0:0:0:0]&nbsp;&nbsp;&nbsp;
+cd/dvd&nbsp; PIONEER&nbsp; DVD-RW&nbsp; DVR-212D 1.22&nbsp;
+/dev/sr0<br/>
+<br/>
+# lsscsi 2<br/>
+#<br/>
+<br/>
+# lsscsi
+6<br/>
+[6:0:0:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp; SEAGATE&nbsp;
+ST32000444SS&nbsp;&nbsp;&nbsp;&nbsp; 0006&nbsp; /dev/sdb
+<br/>
+[6:0:1:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp; ATA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ST3500418AS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CC34&nbsp; /dev/sdc
+<br/>
+[6:0:2:0]&nbsp;&nbsp;&nbsp; enclosu Intel&nbsp;&nbsp;&nbsp;
+RES2SV240&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0600&nbsp;
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br/>
+[6:0:3:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; SEAGATE&nbsp; ST373455SS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+2189&nbsp; /dev/sd</font></font><font face="monospace">d<br/>
+<br/>
+</font><font face="Liberation Serif, serif">NVMe
+namespaces have 'N' in place of the first item in the h:c:t:l tuple.
+For NVMe controllers [N, &lt;controller_device_minor_number&gt;] is
+output.</font></p>
+<pre class="western"># lsscsi
+[3:0:0:0] disk SEAGATE ST10000NM0096 E002 /dev/sdb 
+[3:0:1:0] disk SmrtStor SDLKOCDR800G5CA1 F820 /dev/sdc 
+[3:0:2:0] disk SEAGATE ST200FM0073 0007 /dev/sdd 
+[3:0:3:0] enclosu Areca ARC-802801.33.63 0133 - 
+[3:0:4:0] enclosu Intel RES2SV240 0d00 - 
+[4:0:0:0] disk ATA ST9500420AS SDM1 /dev/sda 
+[N:0:0:1] disk WDC WDS256G1X0C-00ENX0__1 /dev/nvme0n1
+
+
+# lsscsi -H
+[0] ahci 
+[1] ahci 
+[2] ahci 
+[3] mpt3sas 
+[4] ahci 
+[5] ahci 
+[6] ahci 
+[N:0] /dev/nvme0 WDC WDS256G1X0C-00ENX0 172322800697 B35500WD
+
+
+# lsscsi -Ht
+[0] ahci sata:
+[1] ahci sata:
+[2] ahci sata:
+[3] mpt3sas sas:0x500605b006d3b510
+[4] ahci sata:
+[5] ahci sata:
+[6] ahci sata:
+[N:0] /dev/nvme0 pcie 0x1b4b:0x1093</pre><p>
+Here is another sequence of host/controller output show the --long
+option and the triple long (-L) option.</p>
+<pre class="western"># lsscsi -H
+[0]    scsi_debug    
+[N:0]  /dev/nvme0  INTEL SSDPEKKF256G7L              BTPY72320AU6256D    131P    
+
+# lsscsi -Hl
+[0]    scsi_debug    
+  cmd_per_lun=255  host_busy=0    sg_tablesize=2048 unchecked_isa_dma=0  
+[N:0]  /dev/nvme0
+  cntlid=1  state=live  current_link_width=2  firmware_rev=131P    
+
+# lsscsi -HL
+[0]    scsi_debug    
+  can_queue=32
+  cmd_per_lun=255
+  host_busy=0
+  nr_hw_queues=4
+  sg_tablesize=2048
+  state=running
+  unchecked_isa_dma=0
+  unique_id=0
+[N:0]  /dev/nvme0
+  cntlid=1
+  state=live
+  current_link_width=2
+  firmware_rev=131P    
+  current_link_speed=8.0 GT/s PCIe
+  model=INTEL SSDPEKKF256G7L
+  serial=BTPY72320AU6256D</pre><p>
+<br/>
+<br/>
+
+</p>
+<p>Now let's look at the sizes of the dis<font face="Liberation Mono, monospace">ks
+using the '--size' or '-s' </font>option. The size of a DVD disk,
+even if there is one in the drive and it is mounted, is not shown.
+And there is no size associated with the enclosure (SES) device:</p>
+<pre class="western"><font face="monospace">#</font> <font face="monospace"><font size="3" style="font-size: 12pt">lsscsi -s</font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[0:0:0:0] cd/dvd PIONEER DVD-RW DVR-212D 1.22 /dev/sr0 -</font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[1:0:0:0] disk ATA ST3320620AS 3.AA /dev/sda 320GB</font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[6:0:0:0] disk SEAGATE ST32000444SS 0006 /dev/sdb 2.00TB</font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[6:0:1:0] disk ATA ST3500418AS CC34 /dev/sdc 500GB</font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[6:0:2:0] enclosu Intel RES2SV240 0600 - -</font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[6:0:3:0] disk SEAGATE ST373455SS 2189 /dev/sdd 73.4GB</font></font>
+
+
+
+So how to access that enclosure (SES) device? Use the '--generic' or '-g' option to see the corresponding SCSI generic device names:
+
+
+<font face="monospace"><font size="3" style="font-size: 12pt"># lsscsi -g</font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[0:0:0:0] cd/dvd PIONEER DVD-RW DVR-212D 1.22 /dev/sr0 /dev/sg0 </font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[1:0:0:0] disk ATA ST3320620AS 3.AA /dev/sda /dev/sg1 </font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[6:0:0:0] disk SEAGATE ST32000444SS 0006 /dev/sdb /dev/sg2 </font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[6:0:1:0] disk ATA ST3500418AS CC34 /dev/sdc /dev/sg3 </font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[6:0:2:0] enclosu Intel RES2SV240 0600 - /dev/sg4 </font></font>
+<font face="monospace"><font size="3" style="font-size: 12pt">[6:0:3:0] disk SEAGATE ST373455SS 2189 /dev/sdd /dev/sg5</font></font></pre><p>
+<br/>
+So the enclosure device can be accessed via /dev/sg4 (e.g. with
+a command like 'sg_ses /dev/sg4'). The lsscsi utility does not show
+the bsg device name but it is easily constructed from the above
+information; in this case it will be '/dev/bsg/6:0:2:0'. Note,
+depending on the context, those &quot;:&quot; characters may need to
+be escaped lest the shell interprets them as special
+characters.<br/>
+<br/>
+Version 0.26 adds the '--wwn' option to
+display the World Wide Number of a disk (i.e. Logical Unit name in
+SCSI terminology), typically in NAA-5 format. Following is lsscsi
+invoked with no option, the '--wwn' option then the '--transport'
+option:<br/>
+<br/>
+<font face="monospace"><font size="3" style="font-size: 12pt">#
+lsscsi<br/>
+[1:0:0:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp;
+ATA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ST3160812AS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+3.AA&nbsp; /dev/sda <br/>
+[6:0:0:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp;
+ATA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ST3500418AS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+CC34&nbsp; /dev/sdb <br/>
+[6:0:1:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp;
+SEAGATE&nbsp; ST32000444SS&nbsp;&nbsp;&nbsp;&nbsp; 0006&nbsp;
+/dev/sdc <br/>
+[6:0:2:0]&nbsp;&nbsp;&nbsp; enclosu Intel&nbsp;&nbsp;&nbsp;
+RES2SV240&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0600&nbsp; -<br/>
+<br/>
+#
+lsscsi --wwn<br/>
+[1:0:0:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp;
+ATA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ST3160812AS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+3.AA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sda <br/>
+[6:0:0:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp;
+ATA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ST3500418AS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+CC34&nbsp; 0x5000c500120bfe84&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sdb <br/>
+[6:0:1:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp;
+SEAGATE&nbsp; ST32000444SS&nbsp;&nbsp;&nbsp;&nbsp; 0006&nbsp;
+0x5000c500215725bf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sdc <br/>
+[6:0:2:0]&nbsp;&nbsp;&nbsp; enclosu Intel&nbsp;&nbsp;&nbsp;
+RES2SV240&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0600&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br/>
+<br/>
+# lsscsi
+--transport<br/>
+[1:0:0:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp;
+sata:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sda <br/>
+[6:0:0:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp;
+sas:0x5001517e85c3efe5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sdb <br/>
+[6:0:1:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp;
+sas:0x5000c500215725bd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sdc <br/>
+[6:0:2:0]&nbsp;&nbsp;&nbsp; enclosu
+sas:0x5001517e85c3effd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+-&nbsp;&nbsp;&nbsp;&nbsp;</font></font> <br/>
+<br/>
+Notice that both
+the '--wwn' and '--transport' options replace the manufacturer, model
+and revision information. The disk at <font face="monospace">/dev/sda</font>
+is an older SATA model that doesn't have a WWN and is connected via a
+SATA controller on the computer motherboard. The other two disks are
+connected via a SAS expander: <font face="monospace">/dev/sdb</font>
+is a newer SATA disk with a WWN while <font face="monospace">/dev/sdc</font>
+is a SAS disk which all have WWNs (a.k.a. &quot;Logical unit name&quot;).
+The 'lsscsi --transport' output is showing the transport type (as
+seen by Linux (hence &quot;sas&quot; for <font face="monospace">/dev/sdb</font>))
+and the target port identifier (which in SAS is a SAS address).
+Notice the WWN and target port identifier for <font face="monospace">/dev/sdc</font>
+are close but not the same. The situation for a SATA disk behind a
+SAS expander is a little different for the target port identifier
+(look at the '--wwn' and '--transport' output for <font face="monospace">/dev/sdb</font>),
+as the SAS expander &quot;makes up&quot; the target port identifier.
+The enclosure at 6:0:2:0 is closely associated with the SAS expander
+and the enclosure actually does have a WWN but udev (as used by
+lsscsi to data-mine the /dev directory) does not make it available,
+so it is not displayed. The sg_vpd utility (with the '-i' option) can
+be used to find the enclosure's WWN.<br/>
+<br/>
+Version 0.27 added
+the '--lunhex' option (short form: '-x'). Below are some examples,
+the first shows the last element of the tuple when the '--lunhex'
+option is not given:<br/>
+<br/>
+<tt class="western"><font size="3" style="font-size: 12pt">#
+lsscsi -g<br/>
+[0:0:0:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp;
+ATA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; INTEL SSDSC2CW12 400i&nbsp;
+/dev/sda&nbsp;&nbsp; /dev/sg0 <br/>
+[7:0:0:1]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; Linux&nbsp;&nbsp;&nbsp; scsi_debug&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0004&nbsp; /dev/sdb&nbsp;&nbsp; /dev/sg1 <br/>
+[7:0:0:49409]wlun&nbsp;&nbsp;&nbsp;
+Linux&nbsp;&nbsp;&nbsp; scsi_debug&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0004&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sg2<br/>
+<br/>
+# lsscsi -g --lunhex<br/>
+[0:0:0:0x0000]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; ATA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; INTEL
+SSDSC2CW12 400i&nbsp; /dev/sda&nbsp;&nbsp; /dev/sg0
+<br/>
+[7:0:0:0x0001]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; Linux&nbsp;&nbsp;&nbsp; scsi_debug&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0004&nbsp; /dev/sdb&nbsp;&nbsp; /dev/sg1 <br/>
+[7:0:0:0xc101]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+wlun&nbsp;&nbsp;&nbsp; Linux&nbsp;&nbsp;&nbsp; scsi_debug&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0004&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sg2<br/>
+<br/>
+# lsscsi -xx<br/>
+[0:0:0:0x0000000000000000]&nbsp;
+disk&nbsp;&nbsp;&nbsp; ATA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; INTEL
+SSDSC2CW12 400i&nbsp; /dev/sda <br/>
+[7:0:0:0x0001000000000000]&nbsp;
+disk&nbsp;&nbsp;&nbsp; Linux&nbsp;&nbsp;&nbsp; scsi_debug&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0004&nbsp; /dev/sdb <br/>
+[7:0:0:0xc101000000000000]&nbsp; wlun&nbsp;&nbsp;&nbsp;
+Linux&nbsp;&nbsp;&nbsp; scsi_debug&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0004&nbsp; -</font></tt><br/>
+<br/>
+Version 0.27 added the
+'--scsi_id' option (short form: '-i'):<br/>
+<br/>
+<tt class="western"><font size="3" style="font-size: 12pt">#
+lsscsi -i<br/>
+[0:0:0:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp;
+ATA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; INTEL SSDSC2CW12 400i&nbsp;
+/dev/sda&nbsp;&nbsp; SATA_INTEL_SSDSC2CW1CVCV<br/>
+[6:0:0:1]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; Linux&nbsp;&nbsp;&nbsp; scsi_debug&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0004&nbsp; /dev/sdb&nbsp;&nbsp;
+353333330000036b1<br/>
+[6:0:0:49409]wlun&nbsp;&nbsp;&nbsp; Linux&nbsp;&nbsp;&nbsp;
+scsi_debug&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0004&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+-</font></tt><br/>
+<br/>
+Version 0.28 added the '--unit' option
+(short form: '-u'). It outputs the LU name as provided by the device
+identification VPD page, or the WWN for&nbsp; SATA disks. That VPD
+page became available in lk 3.15 so this option will not work (i.e.
+outputs spaces) for older kernels. For a mixed SAS (with expanders)
+and SATA environment that has these manufacturer, product, revision
+strings:</p>
+<p><font size="3" style="font-size: 12pt"><br/>
+</font><tt class="western"><font size="3" style="font-size: 12pt">#
+lsscsi<br/>
+[3:0:0:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp;
+ATA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ST3160812AS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+D&nbsp;&nbsp;&nbsp;&nbsp; /dev/sda <br/>
+[6:0:0:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; SEAGATE&nbsp; ST32000444SS&nbsp;&nbsp;&nbsp;&nbsp;
+0008&nbsp; /dev/sdf <br/>
+[6:0:1:0]&nbsp;&nbsp;&nbsp; enclosu
+Areca&nbsp;&nbsp;&nbsp; ARC-802801.13.1D 0113&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br/>
+[6:0:2:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp; ATA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ST500LM000-1EJ16 DEM6&nbsp; /dev/sdg <br/>
+[6:0:3:0]&nbsp;&nbsp;&nbsp;
+enclosu Intel&nbsp;&nbsp;&nbsp; RES2SV240&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0d00&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br/>
+[6:0:4:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; ATA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ST3500418AS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CC34&nbsp; /dev/sdh</font></tt><tt class="western"><br/>
+</tt><br/>
+The
+LU names can look like this:</p>
+<p><br/>
+<tt class="western"><font size="3" style="font-size: 12pt">#
+lsscsi -u<br/>
+[3:0:0:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sda <br/>
+[6:0:0:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp;
+5000c500215925bf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sdf <br/>
+[6:0:1:0]&nbsp;&nbsp;&nbsp; enclosu
+5001b4d516e9c03d&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br/>
+[6:0:2:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; 5000c50072e9d0c4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sdg <br/>
+[6:0:3:0]&nbsp;&nbsp;&nbsp; enclosu
+5001517e85c9effd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br/>
+[6:0:4:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; 5000c5001209fe84&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sdh</font></tt><br/>
+<br/>
+<font size="3" style="font-size: 12pt">The
+first disk is a relatively old SATA disk that does not have a WWN,
+hence the blanks. An example of using '-u' with an iSCSI device is
+given in the Overview section. When '--unit' is compared with '--wwn'
+it can be seen that the former is more general and is now preferred.
+For example '--unit' will show the LU name of non-disk devices such
+as enclosures and handle iSCSI devices (but the '--wwn' option will
+not).</font></p>
+<p>Support for NVMe device was added in lsscsi version 0.30 . For
+examples of its use, see the PCIe transport section above.</p>
+<h2 class="western">6 ) Download and Build information</h2>
+<p>Here is a table of the versions of lsscsi available for the lk 2.6
+and 3 series. <br/>
+&nbsp; 
+</p>
+<table width="100%" cellpadding="2" cellspacing="0">
+	<col width="28*"/>
+
+	<col width="24*"/>
+
+	<col width="23*"/>
+
+	<col width="181*"/>
+
+	<tr valign="top">
+		<td width="11%" style="border: 1px double #808080; padding: 0.05cm"><p>
+			<b>tarball&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</b>
+			</p>
+		</td>
+		<td width="9%" style="border: 1px double #808080; padding: 0.05cm"><p>
+			<b>binary rpm + deb</b></p>
+		</td>
+		<td width="9%" style="border: 1px double #808080; padding: 0.05cm"><p>
+			<b>source rpm</b></p>
+		</td>
+		<td width="71%" style="border: 1px double #808080; padding: 0.05cm"><p>
+			<b>notes</b></p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.11.tgz">lsscsi-0.11.tgz</a></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.11-1.i386.rpm">lsscsi-0.11-1.i386.rpm</a></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.11-1.src.rpm">lsscsi-0.11-1.src.rpm</a></p>
+		</td>
+		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			suitable for lk 2.6.1</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.12.tgz">lsscsi-0.12.tgz</a></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.12-1.i386.rpm">lsscsi-0.12-1.i386.rpm</a></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.12-1.src.rpm">lsscsi-0.12-1.src.rpm</a></p>
+		</td>
+		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			lk 2.6.6, add '-d' for device major+minor</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.13.tgz">lsscsi-0.13.tgz</a></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			lk 2.6.7 add timeout value to --long option</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.14.tgz">lsscsi-0.14.tgz</a></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.14-1.i386.rpm">lsscsi-0.14-1.i386.rpm</a> 
+			</p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.14-1.src.rpm">lsscsi-0.14-1.src.rpm</a> 
+			</p>
+		</td>
+		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			port to use sysfsutils-1.2.0&nbsp; or later</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.15.tgz">lsscsi-0.15.tgz</a></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.15-1.i386.rpm">lsscsi-0.15-1.i386.rpm</a> 
+			</p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.15-1.src.rpm">lsscsi-0.15-1.src.rpm</a> 
+			</p>
+		</td>
+		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			lk 2.6.12 with optional select arguments and /dev scanning. Does
+			not use libsysfs.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.16.tgz">lsscsi-0.16.tgz</a></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.16-1.i386.rpm">lsscsi-0.16-1.i386.rpm</a> 
+			</p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.16-1.src.rpm">lsscsi-0.16-1.src.rpm</a> 
+			</p>
+		</td>
+		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			lk 2.6.14, fixes for osst and ch devices, Debian build. Does not
+			use libsysfs. 
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.17.tgz">lsscsi-0.17.tgz</a></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.17-1.i386.rpm">lsscsi-0.17-1.i386.rpm</a></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.17-1.src.rpm">lsscsi-0.17-1.src.rpm</a></p>
+		</td>
+		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			lk 2.6.16, kernel (sysfs) change that first appeared in lk
+			2.6.16-rc1 requires this version to see block devices</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.18.tgz">lsscsi-0.18.tgz</a></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.18-1.i386.rpm">lsscsi-0.18-1.i386.rpm</a> 
+			</p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.18-1.src.rpm">lsscsi-0.18-1.src.rpm</a> 
+			</p>
+		</td>
+		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			allow for &quot;generic&quot; and &quot;tape&quot; symlinks to be
+			dropped in sysfs.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.19.tgz">lsscsi-0.19.tgz</a><br/>
+<b>20070125</b></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.19-1.i386.rpm">lsscsi-0.19-1.i386.rpm</a><br/>
+<a href="lsscsi_0.19-0.1_i386.deb">lsscsi_0.19-0.1_i386.deb</a></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.19-1.src.rpm">lsscsi-0.19-1.src.rpm</a> 
+			</p>
+		</td>
+		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			add transport information, '--list' option, fixes for lk 2.6.20</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.20.tgz">lsscsi-0.20.tgz</a><br/>
+<b>20080709</b></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.20-1.i386.rpm">lsscsi-0.20-1.i386.rpm</a><br/>
+<a href="lsscsi_0.20-0.1_i386.deb">lsscsi_0.20-0.1_i386.deb</a>
+						</p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.20-1.src.rpm">lsscsi-0.20-1.src.rpm</a> 
+			</p>
+		</td>
+		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			for lk 2.6.26 when CONFIG_SYSFS_DEPRECATED_V2<br/>
+not defined</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.21.tgz">lsscsi-0.21.tgz</a><br/>
+<b>20080910</b></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.21-1.i386.rpm">lsscsi-0.21-1.i386.rpm</a><br/>
+<a href="lsscsi_0.21-0.1_i386.deb">lsscsi_0.21-0.1_i386.deb</a></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.21-1.src.rpm">lsscsi-0.21-1.src.rpm</a></p>
+		</td>
+		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			more changes for lk 2.6.26</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.22.tgz">lsscsi-0.22.tgz</a><br/>
+<b>20081226</b></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.22-1.i386.rpm">lsscsi-0.22-1.i386.rpm</a><br/>
+<a href="lsscsi_0.22-0.1_i386.deb">lsscsi_0.22-0.1_i386.deb</a></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.22-1.src.rpm">lsscsi-0.22-1.src.rpm</a> 
+			</p>
+		</td>
+		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			show protection information with '--protection' option, ATA, SATA
+			and USB transport information</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.23.tgz">lsscsi-0.23.tgz</a><br/>
+<b>20091203</b></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.23-1.i386.rpm">lsscsi-0.23-1.i386.rpm</a><br/>
+<a href="lsscsi_0.23-0.1_i386.deb">lsscsi_0.23-0.1_i386.deb</a></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.23-1.src.rpm">lsscsi-0.23-1.src.rpm</a></p>
+		</td>
+		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			stop scanning /proc/mounts; assume /sys unless overridden by
+			'--sysfsroot=PATH' option</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.24.tgz">lsscsi-0.24.tgz</a><br/>
+<b>20101224</b></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.24-1.i386.rpm">lsscsi-0.24-1.i386.rpm</a><br/>
+<a href="lsscsi_0.24-0.1_i386.deb">lsscsi_0.24-0.1_i386.deb</a>
+						</p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.24-1.src.rpm">lsscsi-0.24-1.src.rpm</a> 
+			</p>
+		</td>
+		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			add &quot;(null)&quot; to the currently accepted &quot;&lt;NULL&gt;&quot;
+			as the string representation of NULL; FC transport syntax changes
+			(colon to slash). Needed around lk 2.6.32 and later</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.25.tgz">lsscsi-0.25.tgz</a><br/>
+<b>20110509</b></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.25-1.i386.rpm">lsscsi-0.25-1.i386.rpm</a><br/>
+<a href="lsscsi_0.25-0.1_i386.deb">lsscsi_0.25-0.1_i386.deb</a></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.25-1.src.rpm">lsscsi-0.25-1.src.rpm</a><a href="lsscsi-0.25-1.src.rpm">
+			</a>
+			</p>
+		</td>
+		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			add --size and --protmode options</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.26.tgz">lsscsi-0.26.tgz</a><br/>
+<b>20120219</b></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.26-1.i386.rpm">lsscsi-0.26-1.i386.rpm</a><br/>
+<a href="lsscsi_0.26-0.1_i386.deb">lsscsi_0.26-0.1_i386.deb</a></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.26-1.src.rpm">lsscsi-0.26-1.src.rpm</a> 
+			</p>
+		</td>
+		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			add --wwn option and support for FCoE</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.27.tgz">lsscsi-0.27.tgz</a><br/>
+<b>20130508</b></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.27-1.i386.rpm">lsscsi-0.27-1.i386.rpm</a><br/>
+<a href="lsscsi-0.27-1.x86_64.rpm">lsscsi-0.27-1.x86_64.rpm</a><br/>
+<a href="lsscsi_0.27-0.1_i386.deb">lsscsi_0.27-0.1_i386.deb</a><br/>
+<a href="lsscsi_0.27-0.1_amd64.deb">lsscsi_0.27-0.1_amd64.deb</a></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.27-1.src.rpm">lsscsi-0.27-1.src.rpm</a> 
+			</p>
+		</td>
+		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			add --lunhex (-x)&nbsp; option: accept Linux LUN numbers from
+			sysfs as large as 64 bits. Add scsi_id (-i) option: udev derived
+			information from /dev/disk/by-id/ . Improve handling of large
+			number of disks.</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.28.tgz">lsscsi-0.28.tgz</a><br/>
+<b>20141127</b></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.28-1.i386.rpm">lsscsi-0.28-1.i386.rpm</a><br/>
+<a href="lsscsi-0.28-1.x86_64.rpm">lsscsi-0.28-1.x86_64.rpm</a><br/>
+<a href="lsscsi_0.28-0.1_i386.deb">lsscsi_0.28-0.1_i386.deb</a><br/>
+<a href="lsscsi_0.28-0.1_amd64.deb">lsscsi_0.28-0.1_amd64.deb</a>
+						</p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.28-1.src.rpm">lsscsi-0.28-1.src.rpm</a> 
+			</p>
+		</td>
+		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			add --unit (-u) option: display LU name or WWN for ATA disks;
+			requires lk &gt;= 3.15 .</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.29.tgz">lsscsi-0.29.tgz</a><br/>
+20160514<br/>
+belated</p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.30.tgz">lsscsi-0.30.tgz</a><br/>
+<b>20180612</b></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
+			<a href="lsscsi_0.30-0.1_amd64.deb">lsscsi_0.30-0.1_amd64.deb</a></p>
+			<p><a href="lsscsi-0.30-1.x86_64.rpm">lsscsi-0.30-1.x86_64.rpm</a></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.30-1.src.rpm">lsscsi-0.30-1.src.rpm</a></p>
+		</td>
+		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			add NVMe support which is indicated by a tuple of [N:*:*:*] or
+			[N:*]. Add --brief and --pdt options to aid parsing plus the
+			--sz-lbs option</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
+			<a href="lsscsi-0.31.tgz">lsscsi-0.31.tgz</a></p>
+			<p><b>20200220</b></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			Mainly a bug fix version</p>
+		</td>
+	</tr>
+</table>
+<p>Here is the most recent <a href="lsscsi.ChangeLog">ChangeLog</a> .</p>
+<p>To build from the tarball, extract its contents, move to the top
+level directory in the extracted sub-tree then do '<tt class="western">./configure
+; make ; make install</tt>', Normal autotools conventions apply. If
+some configuration files are altered then the ./autogen.sh script may
+need to be called. The ./build_debian.sh script is provided to create
+a Debian package. A lsscsi.spec file is provided to facilitate
+building a &quot;rpm&quot; style package.</p>
+<h3 class="western">6.1 ) Github mirror</h3>
+<p>The lsscsi package is developed by the author using subversion.
+Subversion revisions, which are ascending integers, can be seen in
+the ChangeLog file and the version string (i.e. '<tt class="western">lsscsi
+-V</tt>') . Some users have asked for git access and a contributor
+has set up a git mirror on github:</p>
+<ul>
+	<li><p><a href="https://github.com/hreinecke/lsscsi">https://github.com/hreinecke/lsscsi</a></p>
+	<li><p></p>
+</ul>
+<p>Updates are sent to that mirror whenever a beta is placed on the
+main page, perhaps more often than that. Please report any problems
+to me.</p>
+<p>Return to <a href="../sg/index.html">main</a> page. 
+</p>
+<p align="center">Douglas Gilbert (dgilbert@interlog.com) 
+</p>
+<p align="center"><br/>
+Last updated: 3rd February 2021</p>
+<p>&nbsp; 
+</p>
+</body>
+</html>
