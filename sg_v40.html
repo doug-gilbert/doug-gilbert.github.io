@@ -5,7 +5,7 @@
 	<title>Linux SG driver version 4.0</title>
 	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2021-01-25T18:41:23.746295635"/>
+	<meta name="changed" content="2021-02-12T15:29:52.376821147"/>
 	<meta name="keywords" content="Linux, SCSI, SG_IO, pass-through"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -3589,17 +3589,17 @@ a more in depth explanation after the table:</p>
 		</td>
 		<td width="26%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
 			<u>required</u>: MULTIPLE_REQS</p>
-			<p>optional: STOP_IF, SIGNAL, NO_WAITQ</p>
+			<p>optional: STOP_IF, SIGNAL, NO_WAITQ, HIPRI</p>
 			<p><i>excluded</i>: IMMED, SHARE</p>
 		</td>
 		<td width="29%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
 			<u>required</u>: MULTIPLE_REQS</p>
-			<p>optional: STOP_IF, SIGNAL,  NO_WAITQ</p>
+			<p>optional: STOP_IF, SIGNAL,  NO_WAITQ, HIPRI</p>
 			<p><i>excluded</i>: IMMED, SHARE</p>
 		</td>
 		<td width="32%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 			<u>required</u>: MULTIPLE_REQS, SHARE</p>
-			<p>optional: STOP_IF, SIGNAL, ORDERED_WR, NO_WAITQ</p>
+			<p>optional: STOP_IF, SIGNAL, ORDERED_WR, NO_WAITQ, HIPRI</p>
 			<p><i>excluded</i>: IMMED</p>
 		</td>
 	</tr>
@@ -3611,21 +3611,22 @@ a more in depth explanation after the table:</p>
 			</p>
 		</td>
 		<td width="26%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
-			optional: SHARE, DO_ON_OTHER, NO_DXFER</p>
+			optional: SHARE, DO_ON_OTHER, NO_DXFER,HIPRI</p>
 			<p><i>excluded</i>: <strong><span style="font-weight: normal">MULTIPLE_REQS</span></strong></p>
 			<p><strong><i><span style="font-weight: normal">ignored</span></i></strong><strong><span style="font-weight: normal">:
 			IMMED</span></strong><strong><span style="font-weight: normal">, 
 			NO_WAITQ</span></strong></p>
 		</td>
 		<td width="29%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
-			optional: SHARE, DO_ON_OTHER, NO_DXFER,  COMPLETE_B4</p>
+			optional: SHARE, DO_ON_OTHER, NO_DXFER, COMPLETE_B4,</p>
+			<p>HIPRI</p>
 			<p><i>excluded</i>: <strong><span style="font-weight: normal">MULTIPLE_REQS</span></strong></p>
 			<p><strong><i><span style="font-weight: normal">ignored</span></i></strong><strong><span style="font-weight: normal">:
 			IMMED</span></strong><strong><span style="font-weight: normal">, 
 			NO_WAITQ</span></strong></p>
 		</td>
 		<td width="32%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
-			optional: SHARE, DO_ON_OTHER, NO_DXFER</p>
+			optional: SHARE, DO_ON_OTHER,NO_DXFER,HIPRI</p>
 			<p><i>excluded</i>: <strong><span style="font-weight: normal">MULTIPLE_REQS</span></strong></p>
 			<p><strong><i><span style="font-weight: normal">ignored</span></i></strong><strong><span style="font-weight: normal">:
 			IMMED</span></strong><strong><span style="font-weight: normal">, 
@@ -3956,12 +3957,12 @@ request.</span></span><span style="font-variant: normal"><span style="font-style
 				<u>required</u>: MULTIPLE_REQS, IMMED</p>
 				<p>optional: SIGNAL, MMAP_IO, REC_ORDER</p>
 				<p><i><span style="font-weight: normal">excluded</span></i>:
-				STOP_IF, NO_WAITQ, SHARE</p>
+				STOP_IF, NO_WAITQ, SHARE, HIPRI</p>
 			</td>
 			<td width="48%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 				<u>required</u>: MULTIPLE_REQS, IMMED, NO_WAITQ</p>
 				<p>optional: SIGNAL, MMAP_IO, REC_ORDER</p>
-				<p><i>excluded</i>: STOP_IF, SHARE</p>
+				<p><i>excluded</i>: STOP_IF, SHARE, HIPRI</p>
 			</td>
 		</tr>
 		<tr valign="top">
@@ -3977,13 +3978,15 @@ request.</span></span><span style="font-variant: normal"><span style="font-style
 				optional: SIGNAL</p>
 				<p><i>excluded</i>: SHARE, DO_ON_OTHER, COMPLETE_B4,
 				<strong><span style="font-weight: normal">MULTIPLE_REQS</span></strong></p>
-				<p><strong><span style="font-weight: normal">ignored:  NO_WAITQ</span></strong></p>
+				<p><strong><span style="font-weight: normal">ignored:  NO_WAITQ</span></strong><strong><span style="font-weight: normal">,
+				HIPRI</span></strong></p>
 			</td>
 			<td width="48%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 				optional: SIGNAL</p>
 				<p><i>excluded</i>: SHARE, DO_ON_OTHER, COMPLETE_B4,
 				<strong><span style="font-weight: normal">MULTIPLE_REQS</span></strong></p>
-				<p><strong><span style="font-weight: normal">ignored:  NO_WAITQ</span></strong></p>
+				<p><strong><span style="font-weight: normal">ignored:  NO_WAITQ</span></strong><strong><span style="font-weight: normal">,
+				HIPRI</span></strong></p>
 			</td>
 		</tr>
 		<tr valign="top">
@@ -4022,7 +4025,7 @@ request.</span></span><span style="font-variant: normal"><span style="font-style
 			</td>
 			<td width="38%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
 				<u>required</u>: MULTIPLE_REQS</p>
-				<p>optional: IMMED, SIGNAL,NO_WAITQ</p>
+				<p>optional: IMMED, SIGNAL,NO_WAITQ, HIPRI</p>
 				<p><i>excluded</i>: STOP_IF</p>
 			</td>
 			<td width="48%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
@@ -4862,27 +4865,30 @@ typically in a script file) will use REQ_HIPRI and blk_poll().</font>
 The assumption by the block layer interface is that any user (higher
 layer) that issues a request with the REQ_HIPRI flag <font color="#000000">will
 complete that request by one or more calls to blk_poll() and </font><font color="#000000"><i><u>not</u></i></font><font color="#000000">
-with other mechanisms the usually involve the LLD firing an interrupt
-to indicate a completion. blk_poll()'s third argument is a boolean
-called spin that if true will cause the LLD to continue polling and
-only return when a completion or an error occurs. In the case of the
-SCSI subsystem, each command/request has a timeout value and if the
-request/command doesn't complete in the given time, or the user fails
-to call blk_poll()</font><font color="#000000"> before that timeout,
-then the request command will be aborted.</font></p>
+with other mechanisms th</font><font color="#000000">at</font><font color="#000000">
+usually involve the LLD firing an interrupt to indicate a completion.
+blk_poll()'s third argument is a boolean called </font><font color="#000000"><i>spin</i></font><font color="#000000">
+that if true will cause the LLD to continue polling and only return
+when a completion or an error occurs. In the case of the SCSI
+subsystem, each command/request has a timeout value and if the
+request/command doesn't complete in the given time, </font><font color="#000000"><i><u>or</u></i></font><font color="#000000">
+the user fails to call blk_poll()</font><font color="#000000"> before
+that timeout, then th</font><font color="#000000">at</font><font color="#000000">
+request</font><font color="#000000">/</font><font color="#000000">command
+will be aborted.</font></p>
 <p><font color="#000000">The sg driver has a new command/request
 flag: SGV4_FLAG_HIPRI that causes the associated command to be issued
 with </font><font color="#000000">the REQ_HIPRI flag </font><font color="#000000">set.
 Strictly speaking nothing needs to be done differently on the
 completion side as the driver knows which commands are &quot;hipri&quot;
-and arranges for completion with blk_poll(spin&lt;-false)
+and arranges for completion with blk_poll(spin&lt;-</font><font color="#000000">-</font><font color="#000000">false)
 accordingly. For example a call to </font><font color="#000000"><b>ioctl</b></font><font color="#000000">(SG_GET_NUM_WAITING)</font><font color="#000000">
-usually count the number of this file descriptor's requests that are
-in SG_RQ_AWAIT_RCV state (actually a running count is kept to speed
-this ioctl). If any of those requests where issued with
-SGV4_FLAG_HIPRI and are in SG_RQ_INFLIGHT state then
-blk_poll(spin&lt;-false) is called once before the running count is
-returned. If th</font><font color="#000000">at</font><font color="#000000">
+usually count</font><font color="#000000">s</font><font color="#000000">
+the number of this file descriptor's requests that are in
+SG_RQ_AWAIT_RCV state (actually a running count is kept to speed this
+ioctl). If any of those requests where issued with SGV4_FLAG_HIPRI
+and are in SG_RQ_INFLIGHT state then blk_poll(spin&lt;-</font><font color="#000000">-</font><font color="#000000">false)
+is called once before the running count is returned. If th</font><font color="#000000">at</font><font color="#000000">
 blk_poll() flushes out a completion then </font><font color="#000000">that
 request will transition from INFLIGHT--&gt;AWAIT_RCV and that running
 count will be incremented. So no change is required in the user
@@ -4895,13 +4901,13 @@ arises.</font></p>
 </font><font color="#000000"><b>ioctl</b></font><font color="#000000">(SG_</font><font color="#000000">S</font><font color="#000000">ET_</font><font color="#000000">GET_EXTENDED</font><font color="#000000">)</font><font color="#000000">
 sub-command: </font><font color="#000000"><span style="font-weight: normal">SG_SEIM_</span></font><font color="#000000"><span style="font-weight: normal">BLK_POLL</span></font><font color="#000000"><b>
 </b></font><font color="#000000"><span style="font-weight: normal">that
-calls blk_poll() directly. It uses the </span></font><font color="#6b6400"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt"><span style="font-weight: normal">sg_extended_info::numo</span></font></font></font><font color="#000000"><span style="font-weight: normal">
+calls blk_poll() directly. It uses the </span></font><font color="#6b6400"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt"><span style="font-weight: normal">sg_extended_info::num</span></font></font></font><font color="#000000"><span style="font-weight: normal">
 field as a loop count, that is the number of times it will call
 blk_poll(spin&lt;</span></font><font color="#000000"><span style="font-weight: normal">--</span></font><font color="#000000"><span style="font-weight: normal">false)
 on each request with </span></font><font color="#000000"><span style="font-weight: normal">SGV4_FLAG_HIPRI
 </span></font><font color="#000000"><span style="font-weight: normal">set
 and belonging to the given file descriptor. </span></font><font color="#000000"><span style="font-weight: normal">If
-</span></font><font color="#6b6400"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt"><span style="font-weight: normal">sg_extended_info::numo</span></font></font></font><font color="#000000"><span style="font-weight: normal">
+</span></font><font color="#6b6400"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt"><span style="font-weight: normal">sg_extended_info::num</span></font></font></font><font color="#000000"><span style="font-weight: normal">
 is 0 then blk_poll(s</span></font><font color="#000000"><span style="font-weight: normal">pin&lt;</span></font><font color="#000000"><span style="font-weight: normal">--f</span></font><font color="#000000"><span style="font-weight: normal">alse</span></font><font color="#000000"><span style="font-weight: normal">)
 is called once on each candidate request. If </span></font><font color="#6b6400"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt"><span style="font-weight: normal">sg_extended_info::num</span></font></font></font><font color="#000000"><span style="font-weight: normal">
 is negative then blk_poll(s</span></font><font color="#000000"><span style="font-weight: normal">pin&lt;</span></font><font color="#000000"><span style="font-weight: normal">--true)
@@ -5452,21 +5458,27 @@ depending on the LLD.</p>
 			</td>
 			<td width="63%" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 				Number of non-blocking requests on the active list that are
-				waiting to be read. That &quot;read&quot; can be done with either
-				an <b>ioctl</b>(<font color="#a3238e">SG_IORECEIVE</font>) or a
-				<b>read</b>(2) system call. Requests that are <i>inflight</i> are
-				not counted. If there are any blocking requests waiting on the
-				list, they are not counted. Similar to <b>ioctl</b>(SG_SET_GET_EXTENDED,
-				{SG_SEIRV_SUBMITTED}) which additionally counts (non-blocking)
-				<i>inflight</i> requests. When using non-blocking multiple
-				requests this will be the expected number of responses that
-				<b>ioctl</b>(<font color="#a3238e">SG_IORECEIVE</font>,
+				waiting to be read (i.e. in SG_AWAIT_RCV state). That &quot;read&quot;
+				can be done with either an <b>ioctl</b>(<font color="#a3238e">SG_IORECEIVE</font>)
+				or a <b>read</b>(2) system call. Requests that are <i>inflight</i>
+				are not counted. If there are any blocking requests waiting on
+				the list, they are not counted. Similar to
+				<b>ioctl</b>(SG_SET_GET_EXTENDED, {SG_SEIRV_SUBMITTED}) which
+				additionally counts (non-blocking) <i>inflight</i> requests. When
+				using non-blocking multiple requests this will be the expected
+				number of responses that <b>ioctl</b>(<font color="#a3238e">SG_IORECEIVE</font>,
 				FLAG_MULTIPLE_REQS | FLAG_IMMED) will receive. This <b>ioctl</b>(2)
 				holds no locks in the sg driver and accesses an atomic integer.
 				So it is fast and should never block making it suitable for
 				polling. In the presence of other producers or consumers the
 				number waiting may change before a user has time to act on the
 				result of this call.</p>
+				<p>If SGV4_FLAG_HIPRI has been given on a recent request to this
+				file descriptor, then blk_poll() is called on any request with
+				that flag set <i>prior</i> to any other action. This will give
+				the associated LLD the opportunity to poll for that request's
+				completion and if that occurs place that request in SG_AWAIT_RCV
+				state.</p>
 			</td>
 		</tr>
 	</tbody>
@@ -7015,8 +7027,7 @@ determining if an sg device changed or not, it is best to use the raw
 fields yielded by <b>SG_SEIRV_DEV_TS_LOWER</b><span style="font-weight: normal">
 and </span><b>SG_SEIRV_DEV_TS_</b><b>UPPER</b><span style="font-weight: normal">
 ioctl calls.</span></p>
-<h2 class="western"><a name="__RefHeading___Toc17996_3956569564"></a><b>16
-System Calls</b></h2>
+<h2 class="western"><b>16 System Calls</b></h2>
 <p><span style="font-weight: normal">This section lists Linux system
 calls that can be used with a sg file descriptor</span><span style="font-weight: normal">,
 normally as the first argument</span><span style="font-weight: normal">
@@ -7281,9 +7292,8 @@ calls</span></font></font></b></font></p>
 (i.e. struct sg_io_v4) uses <b>ioctl</b>(2)s for all its submissions,
 completions and adds new support for aborting a SCSI command that is
 underway.</p>
-<h2 class="western"><a name="__RefHeading___Toc1578_4294551682"></a>17
-Downloads and testing</h2>
-<p>This tarball: <a href="p/sgv4_20210125.tgz">sgv4_20210125</a>
+<h2 class="western">17 Downloads and testing</h2>
+<p>This tarball: <a href="p/sgv4_20210125.tgz">sgv4_202101</a><a href="p/sgv4_20210125.tgz">25</a>
 contains a README file that outlines what is included. There are
 earlier versions of this driver for the <u>lk5.</u><u>7</u><u>, lk5.8</u>
 and <u>lk5.</u><u>9</u><u> series</u>. The most recent versions of
@@ -7410,13 +7420,11 @@ in, a local copy of the new &lt;kernel_src&gt;/include/uapi/scsi/sg.h
 header needed for the sg v4 driver is kept in the testing directory.
 It has the name 'uapi_sg.h' so it won't collide with the &quot;real&quot;
 header if it is present.</p>
-<h2 class="western"><a name="__RefHeading___Toc1580_4294551682"></a>18
-Other documents</h2>
+<h2 class="western">18 Other documents</h2>
 <p>The original sg driver documentation is here: <a href="http://www.tldp.org/HOWTO/SCSI-Generic-HOWTO/index.html">SCSI-Generic-HOWTO</a>
 and a more recent discussion of <b>ioctl</b>(SG_IO) is here: <a href="sg_io.html">sg_io</a>
 .</p>
-<h2 class="western"><a name="__RefHeading___Toc1582_4294551682"></a>19
-Conclusion</h2>
+<h2 class="western">19 Conclusion</h2>
 <p>The sg v4 driver is designed to be backwardly compatible with the
 v3 driver. This simplest way for an application to find which driver
 version it has is with the <b>ioctl</b>(SG_GET_VERSION_NUM). Removing
@@ -7429,7 +7437,7 @@ apps that use sg driver nodes and check their functionality.</p>
 <p>Return to <a href="index.html">main</a> page. 
 </p>
 <p align="center" style="margin-bottom: 0.1cm">Douglas Gilbert</p>
-<p align="center" style="margin-bottom: 0.1cm">Last updated: 25
-January 2021 19:00</p>
+<p align="center" style="margin-bottom: 0.1cm">Last updated: 12
+February 2021 15:30</p>
 </body>
 </html>
