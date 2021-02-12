@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
+	<meta name="created" content="2021-02-06T18:32:05.641846000"/>
+	<meta name="changed" content="2021-02-11T20:24:17.223846753"/>
+	<style type="text/css">
+		@page { size: 21.59cm 27.94cm; margin: 2cm }
+		p { margin-bottom: 0.25cm; line-height: 115%; background: transparent }
+		h1 { margin-bottom: 0.21cm; background: transparent; page-break-after: avoid }
+		h1.western { font-family: "Liberation Sans", sans-serif; font-size: 18pt; font-weight: bold }
+		h1.cjk { font-family: "Noto Sans CJK SC"; font-size: 18pt; font-weight: bold }
+		h1.ctl { font-family: "Lohit Devanagari"; font-size: 18pt; font-weight: bold }
+		h2 { margin-top: 0.35cm; margin-bottom: 0.21cm; background: transparent; page-break-after: avoid }
+		h2.western { font-family: "Liberation Sans", sans-serif; font-size: 16pt; font-weight: bold }
+		h2.cjk { font-family: "Noto Sans CJK SC"; font-size: 16pt; font-weight: bold }
+		h2.ctl { font-family: "Lohit Devanagari"; font-size: 16pt; font-weight: bold }
+		a:link { color: #000080; so-language: zxx; text-decoration: underline }
+		strong { font-weight: bold }
+	</style>
+</head>
+<body lang="en-CA" link="#000080" vlink="#800000" dir="ltr"><h1 class="western" align="center">
+RD6006, RD6012, RD6018 DC Power Supplies with Unisoft firmware</h1>
+<h2 class="western">Introduction</h2>
+<p style="margin-bottom: 0cm; line-height: 100%">This document
+describes firmware running in the popular &quot;DC Power Supplies&quot;
+models RD6006, RD6012 and RD6018 written by Unisoft. They are made by
+Hangzhou Ruideng Technology Co., Ltd that hereafter will be called
+<b>Ruideng</b> or <b>Riden</b> which is the name that appears on the
+front of these power supplies. Electrically they can termed as DC
+<i>buck</i> converters, that are designed to take an input voltage in
+the 65 to 70 Volts DC range and step it <i>down</i> to a
+user-selectable voltage in the 0-60 Volts DC range. The last two
+digits of the product name indicated the maximum current they can
+deliver (e.g. the RD6018 can deliver up to 18 Amps). <b>Ruideng</b>
+has done a good job of documenting their power supplies and
+postscript files can be found at this <a href="http://www.ruidengkeji.com/inst/">url</a>
+(note: http rather than https).</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">Note that DC power
+supplies used in electronics, often called lab power supplies,
+typically take <i>mains</i> AC Voltage as input (85 to 250 Volts AC,
+50 or 60 Hertz). That is one reason why retailers of the RD60xx
+products usually sell a mains AC adapter to 65 to 70 Volts DC and a
+box to hold the adapter and the RD60xx. The author's power supply
+(PS) is a RD6018 with a 800 Watt AC adapter that outputs around 68
+Volts DC under no load.  As most of the screenshots are from the
+author's PS small differences may appear between the reader's PS and
+other models. For example, only the RD6006 has 1 milliAmp (mA)
+current setting resolution while the two &quot;larger&quot; models
+have 10 milliAmp current setting resolution. Bigger is not always
+better.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">On 25 June 2020
+<a href="https://www.eevblog.com/">eevblog</a> user &quot;UniSoft&quot;
+sent a post to the Test Equipment board in the &quot;RuiDeng Riden
+RD6006 DC power supply&quot; thread that stated: &quot;I recovered
+firmware source code of RD6006... Here is my <strong>beta</strong>
+version, if anyone interested.&quot; Probably before that date he
+sent beta versions to a Russian electronics board. His bio on eevblog
+gives his nationality as from Kazakhstan, his gender: male and his
+location as Shenzhen, China. Other than that we know he writes good
+firmware and is very responsive to any bug reports. It seems the
+manufacturer, Ruideng, has paid Unisoft the ultimate compliment of
+copying some his his improvements into their mainline (i.e.
+production) firmware. So for users of these DC power supplies, this
+seems like a win-win situation. The source code that generates
+UniSoft's firmware has not been open sourced. When asked about this
+UniSoft said that it contained some encryption code that the
+manufacturer would not want to see made public. That said, UniSoft
+has stated that he has no relationship with Ruideng.</p>
+<h2 class="western">Status</h2>
+<p style="margin-bottom: 0cm; line-height: 100%">xxxx</p>
+<h2 class="western">Front Panel</h2>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">xxxxx</p>
+<p style="margin-bottom: 0cm; line-height: 100%">xxxx</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">Status</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_389e54db83c93776.png" name="Image2" align="left" width="688" height="409">
+  <br clear="left"/>
+</img>
+<br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">Legend:</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_1802db5c0e2d9479.png" name="Image3" align="left" width="1073" height="323">
+  <br clear="left"/>
+</img>
+<br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">When referring to a
+button on the front panel, &quot;[&lt;letter&gt;]&quot; is used where
+&lt;letter&gt; is a letter in the above front panel image. Since [L]
+covers four buttons, [^], [v], [&lt;], and [&gt;] are used for more
+precision.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">For Unisoft firmware
+we might add these extra markings:</p>
+<ul>
+	<li><p style="margin-bottom: 0cm; line-height: 100%">a greyed &quot;OPP&quot;
+	above the MEM button [C]</p>
+	<li><p style="margin-bottom: 0cm; line-height: 100%">a greyed &quot;TIME&quot;
+	above the up arrow [^]</p>
+	<li><p style="margin-bottom: 0cm; line-height: 100%">a greyed &quot;UVP&quot;
+	or &quot;ORP&quot; above the down arrow [v]</p>
+</ul>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">And if we are
+putting extra markings on the RD60xx front panel:</p>
+<ul>
+	<li><p style="margin-bottom: 0cm; line-height: 100%">a greyed &quot;ISOL&quot;
+	under the USB Micro B receptacle to indicate it is isolated from
+	terminals [G], [H] and [I] (plus isolated from the Mains AC
+	protective ground)</p>
+</ul>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">yyyy</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_24900d5ad2f03d04.png" name="Image4" align="left" width="336" height="256">
+  <br clear="left"/>
+</img>
+<br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">zzzzz</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_354961205ecda99c.png" name="Image5" align="left" width="336" height="256">
+  <br clear="left"/>
+</img>
+<br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">zzzzzz</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_6f445bed60b4551f.png" name="Image6" align="left" width="336" height="256">
+  <br clear="left"/>
+</img>
+<br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">zzzzz</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_bca6707da65a9e8b.png" name="Image7" align="left" width="336" height="256">
+  <br clear="left"/>
+</img>
+<br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">zzzzz</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_1cd519880ed95fe9.png" name="Image8" align="left" width="336" height="256">
+  <br clear="left"/>
+</img>
+<br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">zzzzz</p>
+<h2 class="western">Manufacturer's Technical Parameters</h2>
+<p style="margin-bottom: 0cm; line-height: 100%">yyyyy</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_33a023951ccbbe2d.gif" name="Object2" align="left" width="647" height="980">
+  <br clear="left"/>
+</img>
+<br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_6671218f1dca09d2.png" name="Image1" align="left" width="641" height="292">
+  <br clear="left"/>
+</img>
+<br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">aaaa</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">aaa</p>
+</body>
+</html>
