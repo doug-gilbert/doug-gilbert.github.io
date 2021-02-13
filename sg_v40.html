@@ -5,7 +5,7 @@
 	<title>Linux SG driver version 4.0</title>
 	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2021-02-12T15:29:52.376821147"/>
+	<meta name="changed" content="2021-02-12T20:37:47.990642836"/>
 	<meta name="keywords" content="Linux, SCSI, SG_IO, pass-through"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -534,9 +534,14 @@ patchset:</p>
 	and 4.</p>
 	<li><p>while the order of responses (i.e. completions) picked up by
 	a <i>mrq</i> <b>ioctl</b>(SG_IORECEIVE) can vary, the user can
-	control <u>where</u> those responses are placed in response array.
-	The user can also give a maximum number of responses that a <i>mrq</i>
-	<b>ioctl</b>(SG_IORECEIVE) can receive.</p>
+	control <i><u>where</u></i> those responses are placed in response
+	array. The user can also give a maximum number of responses that a
+	<i>mrq</i> <b>ioctl</b>(SG_IORECEIVE) can receive.</p>
+	<li><p>use iopoll/hipri/blk_poll with multiple requests (mrq),
+	especially svb. With svb blk_poll(spin&lt;--false) calls can be
+	interleaved between multiple request on the read-side and their
+	pairs on the write-side. Apart from setting the flags on the control
+	object, no extra work is required on the user space side.</p>
 	<li><p>bump the driver version number to 4.0.46</p>
 </ul>
 <p>There are still some things to do:</p>
@@ -4769,17 +4774,19 @@ of the requests in an array</span></font></span><span style="font-variant: norma
 motivation for th</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">is
 flag came about while writing a &quot;sgv4&quot; </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">engine
 (</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">back</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">-</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">end</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">)</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
-for the fio utility. The implementation uses an array of (maximum)
-iodepth for submissions and is filled from the front (bottom) and is
-committed at or before the iodepth is reached. </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">In
+for the </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>fio</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+utility. The implementation uses an array of (maximum) iodepth for
+submissions and is filled from the front (bottom) and is committed at
+or before the iodepth is reached. </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">In
 the version under development the initial (say 8) requests are issued
 </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">as
 they are queued by </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">individual
 </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">,
 </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">non-blocking
 ioctl(SG_IOSUBMIT) calls. Thereafter &quot;prep&quot;-ed and
-&quot;queue&quot;-d requests are held until the array fills or fio
-send a commit. Then those held requests a</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">re</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+&quot;queue&quot;-d requests are held until the array fills or </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>fio</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+send</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">s</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
+a commit. Then those held requests a</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">re</span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
 sent with a non-blocking </span></font></span><span style="font-variant: normal"><font color="#000000"><i>mrq</i></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
 ioctl(SG_IOSUBMIT). Finally one or more non-blocking </span></font></span><span style="font-variant: normal"><font color="#000000"><i>mrq</i></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">
 </span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal"><b>ioctl</b></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="font-style: normal">(SG_IORECEIVE)
@@ -4856,15 +4863,17 @@ be <u>OR</u>-ed with other <font color="#a3238e">flags</font>.</p>
 probably being the original name. <i><u>blk_poll </u></i>is the name
 of a function in the block layer available to higher layers that
 results in a polling operation in the associated storage device's low
-level driver (LLD). Yet another name is <i><u>hipri</u></i> and
+level driver (LLD). Yet another name is <i><u>hipri</u></i> which
 probably originates from the REQ_HIPRI flag placed on a request as it
-is issued by the block layer to invoke this behaviour. The fio
-utility uses the keyword <i><u>hipri</u></i> to <font color="#000000">indicate
-that request/commands that it issues (dictated by other fio commands,
-typically in a script file) will use REQ_HIPRI and blk_poll().</font>
-The assumption by the block layer interface is that any user (higher
-layer) that issues a request with the REQ_HIPRI flag <font color="#000000">will
-complete that request by one or more calls to blk_poll() and </font><font color="#000000"><i><u>not</u></i></font><font color="#000000">
+is <font color="#000000">passed to</font> the block layer to invoke
+this behaviour. The <b>fio</b> utility uses the keyword <i><u>hipri</u></i>
+to <font color="#000000">indicate that request/commands that it
+issues (dictated by other </font><font color="#000000"><b>fio</b></font><font color="#000000">
+commands, typically in a script file) will use REQ_HIPRI and
+blk_poll().</font> The assumption by the block layer interface is
+that any user (higher layer) that issues a request with the REQ_HIPRI
+flag <font color="#000000">will complete that request by one or more
+calls to blk_poll() and </font><font color="#000000"><i><u>not</u></i></font><font color="#000000">
 with other mechanisms th</font><font color="#000000">at</font><font color="#000000">
 usually involve the LLD firing an interrupt to indicate a completion.
 blk_poll()'s third argument is a boolean called </font><font color="#000000"><i>spin</i></font><font color="#000000">
@@ -7027,7 +7036,8 @@ determining if an sg device changed or not, it is best to use the raw
 fields yielded by <b>SG_SEIRV_DEV_TS_LOWER</b><span style="font-weight: normal">
 and </span><b>SG_SEIRV_DEV_TS_</b><b>UPPER</b><span style="font-weight: normal">
 ioctl calls.</span></p>
-<h2 class="western"><b>16 System Calls</b></h2>
+<h2 class="western"><a name="__RefHeading___Toc17996_3956569564"></a><b>16
+System Calls</b></h2>
 <p><span style="font-weight: normal">This section lists Linux system
 calls that can be used with a sg file descriptor</span><span style="font-weight: normal">,
 normally as the first argument</span><span style="font-weight: normal">
@@ -7292,7 +7302,8 @@ calls</span></font></font></b></font></p>
 (i.e. struct sg_io_v4) uses <b>ioctl</b>(2)s for all its submissions,
 completions and adds new support for aborting a SCSI command that is
 underway.</p>
-<h2 class="western">17 Downloads and testing</h2>
+<h2 class="western"><a name="__RefHeading___Toc1578_4294551682"></a>17
+Downloads and testing</h2>
 <p>This tarball: <a href="p/sgv4_20210125.tgz">sgv4_202101</a><a href="p/sgv4_20210125.tgz">25</a>
 contains a README file that outlines what is included. There are
 earlier versions of this driver for the <u>lk5.</u><u>7</u><u>, lk5.8</u>
@@ -7420,11 +7431,13 @@ in, a local copy of the new &lt;kernel_src&gt;/include/uapi/scsi/sg.h
 header needed for the sg v4 driver is kept in the testing directory.
 It has the name 'uapi_sg.h' so it won't collide with the &quot;real&quot;
 header if it is present.</p>
-<h2 class="western">18 Other documents</h2>
+<h2 class="western"><a name="__RefHeading___Toc1580_4294551682"></a>18
+Other documents</h2>
 <p>The original sg driver documentation is here: <a href="http://www.tldp.org/HOWTO/SCSI-Generic-HOWTO/index.html">SCSI-Generic-HOWTO</a>
 and a more recent discussion of <b>ioctl</b>(SG_IO) is here: <a href="sg_io.html">sg_io</a>
 .</p>
-<h2 class="western">19 Conclusion</h2>
+<h2 class="western"><a name="__RefHeading___Toc1582_4294551682"></a>19
+Conclusion</h2>
 <p>The sg v4 driver is designed to be backwardly compatible with the
 v3 driver. This simplest way for an application to find which driver
 version it has is with the <b>ioctl</b>(SG_GET_VERSION_NUM). Removing
@@ -7438,6 +7451,6 @@ apps that use sg driver nodes and check their functionality.</p>
 </p>
 <p align="center" style="margin-bottom: 0.1cm">Douglas Gilbert</p>
 <p align="center" style="margin-bottom: 0.1cm">Last updated: 12
-February 2021 15:30</p>
+February 2021 20:30</p>
 </body>
 </html>
