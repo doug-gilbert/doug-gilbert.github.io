@@ -5,7 +5,7 @@
 	<title></title>
 	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="2021-02-06T18:32:05.641846000"/>
-	<meta name="changed" content="2021-02-11T20:24:17.223846753"/>
+	<meta name="changed" content="2021-02-16T00:00:10.971719722"/>
 	<style type="text/css">
 		@page { size: 21.59cm 27.94cm; margin: 2cm }
 		p { margin-bottom: 0.25cm; line-height: 115%; background: transparent }
@@ -17,27 +17,34 @@
 		h2.western { font-family: "Liberation Sans", sans-serif; font-size: 16pt; font-weight: bold }
 		h2.cjk { font-family: "Noto Sans CJK SC"; font-size: 16pt; font-weight: bold }
 		h2.ctl { font-family: "Lohit Devanagari"; font-size: 16pt; font-weight: bold }
+		pre { background: transparent }
+		pre.western { font-family: "Liberation Mono", monospace; font-size: 10pt }
+		pre.cjk { font-family: "Noto Sans Mono CJK SC", monospace; font-size: 10pt }
+		pre.ctl { font-family: "Liberation Mono", monospace; font-size: 10pt }
 		a:link { color: #000080; so-language: zxx; text-decoration: underline }
 		strong { font-weight: bold }
 	</style>
 </head>
 <body lang="en-CA" link="#000080" vlink="#800000" dir="ltr"><h1 class="western" align="center">
-RD6006, RD6012, RD6018 DC Power Supplies with Unisoft firmware</h1>
+RD6006, RD6012, RD6018 DC Power Supplies with UniSoft firmware</h1>
 <h2 class="western">Introduction</h2>
 <p style="margin-bottom: 0cm; line-height: 100%">This document
 describes firmware running in the popular &quot;DC Power Supplies&quot;
-models RD6006, RD6012 and RD6018 written by Unisoft. They are made by
-Hangzhou Ruideng Technology Co., Ltd that hereafter will be called
-<b>Ruideng</b> or <b>Riden</b> which is the name that appears on the
-front of these power supplies. Electrically they can termed as DC
-<i>buck</i> converters, that are designed to take an input voltage in
-the 65 to 70 Volts DC range and step it <i>down</i> to a
-user-selectable voltage in the 0-60 Volts DC range. The last two
-digits of the product name indicated the maximum current they can
-deliver (e.g. the RD6018 can deliver up to 18 Amps). <b>Ruideng</b>
-has done a good job of documenting their power supplies and
-postscript files can be found at this <a href="http://www.ruidengkeji.com/inst/">url</a>
-(note: http rather than https).</p>
+models RD6006, RD6012 and RD6018 written by UniSoft. There are
+variants sold with a WIFI daughter board that have &quot;W&quot;
+append to the model name and they use the same firmware. The power
+supplies are made by Hangzhou Ruideng Technology Co. Ltd that
+hereafter will be called <b>Ruideng</b> or <b>Riden</b><span style="font-weight: normal">;</span>
+the latter is the name that appears on the front of these power
+supplies. Electrically they can termed as DC <i>buck</i> converters,
+that are designed to take an input voltage in the 65 to 70 Volts DC
+range and step it <i>down</i> to a user-selectable voltage in the
+0-60 Volts DC range. The last two digits of the product name
+indicated the maximum current they can deliver (e.g. the RD6018 can
+deliver up to 18 Amps). <b>Ruideng</b> has done a good job of
+documenting their power supplies and postscript files can be found at
+this <a href="http://www.ruidengkeji.com/inst/">url</a> (note: http
+rather than https).</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -67,32 +74,34 @@ sent beta versions to a Russian electronics board. His bio on eevblog
 gives his nationality as from Kazakhstan, his gender: male and his
 location as Shenzhen, China. Other than that we know he writes good
 firmware and is very responsive to any bug reports. It seems the
-manufacturer, Ruideng, has paid Unisoft the ultimate compliment of
-copying some his his improvements into their mainline (i.e.
-production) firmware. So for users of these DC power supplies, this
-seems like a win-win situation. The source code that generates
-UniSoft's firmware has not been open sourced. When asked about this
-UniSoft said that it contained some encryption code that the
-manufacturer would not want to see made public. That said, UniSoft
-has stated that he has no relationship with Ruideng.</p>
+manufacturer, Ruideng, has adopted some of UniSoft's ideas and
+incorporated them in their more recent firmware updates. This can
+make it a little difficult to identify a feature as a UniSoft
+addition is it may appear later in Ruideng firmware. But for users of
+these DC power supplies, this seems like a win-win situation. The
+source code that generates UniSoft's firmware has not been open
+sourced. When asked about this UniSoft said that it contained some
+encryption code that the manufacturer would not want to see made
+public. That said, UniSoft has stated that he has no relationship
+with Ruideng.</p>
 <h2 class="western">Status</h2>
-<p style="margin-bottom: 0cm; line-height: 100%">xxxx</p>
+<p style="margin-bottom: 0cm; line-height: 100%">This document was
+started in February 2021. The most recent beta firmware at the time
+were:  RD6006 1.32.13k (in zip file: RD60061_V1.34.1m.zip), RD6012
+(in zip file: RD60121_V1.33.1m.zip) and RD6018 (in zip file:
+RD60181_V1.34.1m.zip) released on 14 February 2021. This firmware
+will also work on the “W” variants (e.g. RD6006W) which add a
+WIFI daughter board for remote control and monitoring. Note that the
+recently released RD6006P (a hybrid switching/linear DC power supply)
+has sufficiently different hardware that UniSoft has indicated that
+he won’t be producing firmware for it at this time.</p>
 <h2 class="western">Front Panel</h2>
+<p style="margin-bottom: 0cm; line-height: 100%">Here is a rendering
+of the front panel of a RD6012 from Ruideng's manual, as is the
+following legend:</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
-<p style="margin-bottom: 0cm; line-height: 100%">xxxxx</p>
-<p style="margin-bottom: 0cm; line-height: 100%">xxxx</p>
-<p style="margin-bottom: 0cm; line-height: 100%"><br/>
-
-</p>
-<p style="margin-bottom: 0cm; line-height: 100%"><br/>
-
-</p>
-<p style="margin-bottom: 0cm; line-height: 100%"><br/>
-
-</p>
-<p style="margin-bottom: 0cm; line-height: 100%">Status</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_389e54db83c93776.png" name="Image2" align="left" width="688" height="409">
   <br clear="left"/>
 </img>
@@ -113,14 +122,14 @@ has stated that he has no relationship with Ruideng.</p>
 
 </p>
 <p style="margin-bottom: 0cm; line-height: 100%">When referring to a
-button on the front panel, &quot;[&lt;letter&gt;]&quot; is used where
-&lt;letter&gt; is a letter in the above front panel image. Since [L]
-covers four buttons, [^], [v], [&lt;], and [&gt;] are used for more
+button on the front panel, &quot;[{letter}]&quot; is used where
+{letter} is a letter in the above front panel image. Since [L] covers
+four buttons, [^], [v], [&lt;], and [&gt;] are used for more
 precision.</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
-<p style="margin-bottom: 0cm; line-height: 100%">For Unisoft firmware
+<p style="margin-bottom: 0cm; line-height: 100%">For UniSoft firmware
 we might add these extra markings:</p>
 <ul>
 	<li><p style="margin-bottom: 0cm; line-height: 100%">a greyed &quot;OPP&quot;
@@ -134,13 +143,143 @@ we might add these extra markings:</p>
 
 </p>
 <p style="margin-bottom: 0cm; line-height: 100%">And if we are
-putting extra markings on the RD60xx front panel:</p>
+putting extra markings on the RD60xx front panel, this one is a good
+reminder:</p>
 <ul>
 	<li><p style="margin-bottom: 0cm; line-height: 100%">a greyed &quot;ISOL&quot;
 	under the USB Micro B receptacle to indicate it is isolated from
 	terminals [G], [H] and [I] (plus isolated from the Mains AC
 	protective ground)</p>
 </ul>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">The power button
+[A], the four buttons to its right [B], [C], [D], [E] and the ON/OFF
+button [J] are translucent so that internal green LEDs can illuminate
+them to show that the corresponding function or mode has been
+selected. So they are mode indicators which will go out when
+de-selected or another mode is chosen. The power button [A] is often
+termed as &quot;soft&quot; because it doesn't really turn of the
+power coming into the RD60xx. And to illustrate this its green LED
+slowly pulsates when its is indicating &quot;power off&quot;. The
+ON/OFF button [J] controls whether power is being delivered to the
+front panel terminals: [G], [H] and [I]. The box sold as an accessory
+has a &quot;real&quot; power switch on it that will cut the AC mains
+supply to the AC/DC supply and thus the RD60xx DC power supply.
+Beware that there may be enough residual energy in the AC/DC supply
+to run the RD60xx for another few seconds. The safest order to
+de-power the unit if first press the ON/OFF button [J] so its LED
+goes out, then press button [A] so it starts pulsating, then turn off
+the AC main supply with the switch at the back of the box (if
+present).</p>
+<h2 class="western">A little theory</h2>
+<p style="margin-bottom: 0cm; line-height: 100%">A few formulae and
+some basic arithmetic is all that is needed to understand a DC power
+supply. Happily all electrical units are in &quot;metric&quot; units,
+at least as long as the author can remember. The most recent change
+was from cycles-per-second to Hertz in 1960.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<pre class="western">	E = P * t	&lt;1&gt;</pre><p style="margin-bottom: 0cm; line-height: 100%">
+with E (for Energy) in Joules, P (for Power) in Watts and 't' (for
+time) in seconds. In practice we tend to use Watt-Hours (3600
+Joules), kiloWatt-Hours (3600000 Joules) and MegaWatt-Hours (3.6 *
+10^9 Joules) as units of energy. For comparison a horsepower is
+around 735 Watts (&quot;around&quot; since countries have different
+size horses, so the term <i>horsepower</i> is best left to
+journalists).</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<pre class="western">	P = V * I	&lt;2&gt;</pre><p style="margin-bottom: 0cm; line-height: 100%">
+with P in Watts, V in Volts and I in Amps (formal name: Ampere). More
+generally when not speaking about specific amounts, we speak about
+voltage and amperage or current. Using fluid flow as an analogy,
+voltage can be thought about as pressure and amperage as the volume
+that comes out of a pipe in a unit of time. Current is actually the
+flow of electrons but before that was known, the electrical
+convention was that current flows from higher voltage node (aka the
+<i>plus</i> terminal) toward the lower voltage node (aka the <i>negative</i>
+terminal) while in reality the electrons flow the other way. Note
+that in almost all electronics, for simple DC power supplies, the
+negative terminal is known as the <i>ground</i>. A power supply
+<i>ground</i> <u>may, or may not </u>be connected to the protective
+earth pin of AC Mains outlets. The RD60xx <u>does not</u> have its
+negative terminal connected to the protective earth pin of the AC
+Mains outlet to which it is plugged; it is said to be floating with
+respect to the protective earth. What voltages are considered
+dangerous? Well that depends on the situation, for a patient in a
+hospital with probes in their chest, just about any &quot;stray&quot;
+voltage is dangerous. As a rule of thumb, anything higher than 40
+Volts (DC or AC) can be considered dangerous. Note that these DC
+power supplies are designed to output up to 60 Volts, so keep that in
+mind. When experimenting, always re-check wiring before pressing the
+ON/OFF button [J]. AC Mains supply (90 to 264 Volts AC, 45-65 Hertz)
+should always be considered extremely dangerous.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<pre class="western">	V = I * R	&lt;3&gt; Ohm's law
+	P = I^2 * R	&lt;derived from &lt;2&gt; and &lt;3&gt; (substituting V)&gt;</pre><p style="margin-bottom: 0cm; line-height: 100%">
+And finally we get to Ohm's law (formula &lt;3&gt;), where R is the
+resistance in Ohms. All practical electronic components including
+wire have resistance  (greater than 0).  Resistance in wires doubles
+when  the wire length is doubled, and halves when the cross-sectional
+area of the conductor is doubled. As is often the case, Wikipedia
+have a good information about this topic, see: <a href="https://en.wikipedia.org/wiki/American_wire_gauge">AWG</a>
+. And it is current in conductors that makes them hot (or even fuse)
+and the last formula above often is used to refer to this waste (e.g.
+&quot;I-squared R losses&quot;). It is not <i>waste</i>, if the
+purpose of driving the current through the resistance is to generate
+heat. This is why when USB-C Power Delivery (PD) wants to provide 100
+Watts it chooses 20 Volts ((near) its maximum voltage) at 5 Amps and
+not say 5 Volts at 20 Amps. Also note that even high quality banana
+plugs are not rated above 15 Amps, so spade or ring connectors should
+be used on the RD6018 for currents in excess of 15 Amps.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">In digital
+electronics the simplest things to measure are voltage (often using a
+ADC (analog to digital converter)) and time (including frequency).
+Current is usually indirectly measured using Ohm's law &lt;3&gt; with
+a low-valued resistor in series with the positive rail (near terminal
+[I]) or the negative rail (near terminal [G]). The low valued
+resistor used for this purpose is often called a <i>shunt</i>
+resistor. Power is calculated using formula &lt;2&gt;. And the Energy
+usage is often shown in the bottom right of the screen is calculated
+using formula &lt;1&gt;.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">yyyy</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">zzzz</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">T<img src="rd60xx-unisoft_html_5b7e9f9214c5e84.png" name="Image9" align="left" width="336" height="256">
+  <br clear="left"/>
+</img>
+he
+above is an illustration of OCP (over current protection) being
+triggered. Setting OCP lower than I-SET is typically not a good idea;
+it was done in this case to deliberately trigger OCP. Once OCP is
+triggered, the ON/OFF button is taken to off state which is reflected
+by the main Voltage, Amperage and Power all showing zero. The OCP
+setting of 4.00 Amps is also changed from turquoise to red and a red
+background white OCP replaces the blue background, white tick in the
+middle bottom of the screen.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -191,13 +330,19 @@ putting extra markings on the RD60xx front panel:</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
-<p style="margin-bottom: 0cm; line-height: 100%"><br/>
-
-</p>
-<p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_33a023951ccbbe2d.gif" name="Object2" align="left" width="647" height="980">
+<p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_33a023951ccbbe2d.gif" name="Object2" align="left" width="676" height="1024">
   <br clear="left"/>
 </img>
 <br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
 <p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_6671218f1dca09d2.png" name="Image1" align="left" width="641" height="292">
@@ -214,5 +359,15 @@ putting extra markings on the RD60xx front panel:</p>
 
 </p>
 <p style="margin-bottom: 0cm; line-height: 100%">aaa</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="center" style="margin-bottom: 0cm; line-height: 100%">Compiled
+by Douglas Gilbert</p>
+<p align="center" style="margin-bottom: 0cm; line-height: 100%">20210214
+23:00 -0500</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
 </body>
 </html>
