@@ -5,7 +5,7 @@
 	<title>Linux SG driver version 4.0</title>
 	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2021-02-12T20:37:47.990642836"/>
+	<meta name="changed" content="2021-02-20T20:07:13.664034901"/>
 	<meta name="keywords" content="Linux, SCSI, SG_IO, pass-through"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -343,15 +343,15 @@ found in block/scsi_ioctl.c kernel source code).</p>
 <h3 class="western"><a name="__RefHeading___Toc7793_510494588"></a>1.1
 Status</h3>
 <p>A recent first stage patchset (containing 45 patches) was sent to
-the linux-scsi list on 20210117. Its cover was titled: &quot;[PATCH
-v13 00/45] sg: add v4 interface&quot;.  Patch 45 bumps the driver
-version number to 4.0.12 . The sgv4_20210117 patchset below <font color="#000000">combines
+the linux-scsi list on 20210219. Its cover was titled: &quot;[PATCH
+v16 00/45] sg: add v4 interface&quot;.  Patch 45 bumps the driver
+version number to 4.0.12 . The sgv4_20210208 patchset below <font color="#000000">combines
 the first and second stage patchsets.</font> Its first stage patchset
  contains 45 patches. Its second stage patchset adds the new features
 such as file and request sharing, multiple requests (in one
 invocation) and supports and the so-called <i>extended</i> <b>ioctl</b>(2).
 The second patchset is only currently available from this page (as
-patches 0046 to 0083 applied on top of the first stage). Its second
+patches 0046 to 0084 applied on top of the first stage). Its second
 stage bumps the driver version number to 4.0.46 . See <a href="#15 Downloads and testing|outline">Downloads
 and testing section</a> below.</p>
 <p>In keeping with a new Linux kernel coding style directive, the
@@ -413,8 +413,6 @@ patchset:</p>
 	between SCSI devices and kernel buffers controlled by this driver;
 	they still take place. This level of control is needed for the
 	&quot;sharing&quot; request feature discussed below.</p>
-	<li><p>add support for blk_poll() and REQ_HIPRI with the
-	SGV4_FLAG_HIPRI</p>
 	<li><p>'re-purpose' previously unused 8 bytes at end of <i>struct
 	sg_scsi_id</i> for the full SCSI LUN as an array of 8 bytes. Use
 	anonymous union within the structure to avoid breaking existing
@@ -423,10 +421,10 @@ patchset:</p>
 	/sys/kernel/debug/scsi_generic/snapshot'. This is the initial
 	debugfs support. Add snapshot_devs read-write attribute that can be
 	used to limit which sg devices are shown in the snapshot.</p>
-	<li><p>add support for iopoll, also known as hipri and blk_poll.
-	Currently both sync and async usage is supported but restrictions
-	may need to be added for async usage. This feature is &quot;new
-	ground&quot; for the SCSI subsystem.</p>
+	<li><p>add support for iopoll, also known as hipri and blk_poll with
+	new SGV4_FLAG_HIPRI. Currently both sync and async usage is
+	supported but restrictions may need to be added for async usage.
+	This feature is &quot;new ground&quot; for the SCSI subsystem.</p>
 	<li><p>bump the driver version number to 4.0.12</p>
 </ul>
 <p>Probably the most important aspect of the first patchset not shown
@@ -4920,7 +4918,11 @@ and belonging to the given file descriptor. </span></font><font color="#000000">
 is 0 then blk_poll(s</span></font><font color="#000000"><span style="font-weight: normal">pin&lt;</span></font><font color="#000000"><span style="font-weight: normal">--f</span></font><font color="#000000"><span style="font-weight: normal">alse</span></font><font color="#000000"><span style="font-weight: normal">)
 is called once on each candidate request. If </span></font><font color="#6b6400"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 11pt"><span style="font-weight: normal">sg_extended_info::num</span></font></font></font><font color="#000000"><span style="font-weight: normal">
 is negative then blk_poll(s</span></font><font color="#000000"><span style="font-weight: normal">pin&lt;</span></font><font color="#000000"><span style="font-weight: normal">--true)
-is called once on each candidate request.</span></font></p>
+is called once on each candidate request.</span></font><font color="#000000"><span style="font-weight: normal">
+With </span></font><font color="#000000"><span style="font-weight: normal">blk_poll(s</span></font><font color="#000000"><span style="font-weight: normal">pin&lt;</span></font><font color="#000000"><span style="font-weight: normal">--true)
+</span></font><font color="#000000"><span style="font-weight: normal">
+the completion process is serialized with the order being most likely
+the submission order.</span></font></p>
 <h2 class="western"><a name="__RefHeading___Toc1572_4294551682"></a>13
 Bi-directional command support</h2>
 <p><u>N.B. Support for SCSI bidirectional commands has been removed
@@ -7304,7 +7306,7 @@ completions and adds new support for aborting a SCSI command that is
 underway.</p>
 <h2 class="western"><a name="__RefHeading___Toc1578_4294551682"></a>17
 Downloads and testing</h2>
-<p>This tarball: <a href="p/sgv4_20210125.tgz">sgv4_202101</a><a href="p/sgv4_20210125.tgz">25</a>
+<p>This tarball: <a href="p/sgv4_20210208.tgz">sgv4_20210208</a>
 contains a README file that outlines what is included. There are
 earlier versions of this driver for the <u>lk5.</u><u>7</u><u>, lk5.8</u>
 and <u>lk5.</u><u>9</u><u> series</u>. The most recent versions of
@@ -7371,7 +7373,8 @@ are &quot;v4&quot; driver aware:</p>
 	<li><p><b>sgs_dd</b><span style="text-decoration: none"><span style="font-weight: normal">:</span></span>
 	<span style="font-weight: normal">is</span> yet another <b>dd</b>(1)
 	clone. It is an old (resurrected) utility for testing polling, SIGIO
-	and RT signal usage with the sg driver.</p>
+	and RT signal, polling (with and without HIPRI) usage with the sg
+	driver.</p>
 	<li><p><b>sg_mrq_dd</b>: yes, another dd clone: using share variable
 	blocking (svb) <i>mrq</i> for sg to sg copies. It can take
 	scatter-gather lists with its skip= and seek= operands (like the
@@ -7450,7 +7453,7 @@ apps that use sg driver nodes and check their functionality.</p>
 <p>Return to <a href="index.html">main</a> page. 
 </p>
 <p align="center" style="margin-bottom: 0.1cm">Douglas Gilbert</p>
-<p align="center" style="margin-bottom: 0.1cm">Last updated: 12
-February 2021 20:30</p>
+<p align="center" style="margin-bottom: 0.1cm">Last updated: 20
+February 2021 20:00</p>
 </body>
 </html>
