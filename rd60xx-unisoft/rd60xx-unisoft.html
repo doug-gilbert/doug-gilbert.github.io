@@ -5,7 +5,7 @@
 	<title></title>
 	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="2021-02-06T18:32:05.641846000"/>
-	<meta name="changed" content="2021-02-23T12:47:21.216272087"/>
+	<meta name="changed" content="2021-02-23T18:18:30.508589735"/>
 	<style type="text/css">
 		@page { size: 21.59cm 27.94cm; margin: 2cm }
 		p { margin-bottom: 0.25cm; line-height: 115%; background: transparent }
@@ -261,6 +261,8 @@ using formula &lt;1&gt;.</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
+<p style="margin-bottom: 0cm; line-height: 100%">Helpful article: 
+<a href="https://www.electronicdesign.com/power-management/power-protection/whitepaper/21120596/protection-for-the-power-supply-and-its-load">protection-for-the-power-supply-and-its-load</a></p>
 <p style="margin-bottom: 0cm; line-height: 100%">yyyy</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
@@ -535,9 +537,41 @@ SHIFT then ([^] or [v])</p>
 
 </p>
 <p style="margin-bottom: 0cm; line-height: 100%">zzzzz</p>
+<h2 class="western">ORP</h2>
+<p style="margin-bottom: 0cm; line-height: 100%">This abbreviation
+stands for &quot;Over Resistance Protection&quot;, a term not often
+used. Inrush Current Limiting (ICL) is related but ORP trips out this
+PS while ICL (on other power supplies) places an upper limit on the
+current it will source. An example of an ORP <i>trip</i> is shown
+below:</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
+<p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_4994a4cd25a696c7.png" name="Image15" align="left" width="336" height="256">
+  <br clear="left"/>
+</img>
+<br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">The protection trip
+is indicated ORP in white with a red background in the middle of the
+bottom of the image (plus the 0 Volts and Amps output measurements).
+In this case ORP was turned on and the &quot;ORP set&quot; value was
+adjusted to 6 Ohms (settings of 0.01 Ohms up to 10 Ohms are
+permitted) and the ORP delay was left at &quot;Auto&quot; (these
+settings are found in the SHIFT then [^] menu). The RD6018 was
+connected to an electronic load which was placed in CR (constant
+resistance) mode at 5 Ohms. ORP was triggered because the PS measured
+its output voltage divided by its output current (i.e. the effective
+load resistance) was 5 Ohms which is less than 6 Ohms from &quot;ORP
+set&quot;. It took about a second to trip after the ON/OFF button
+enabled the output (the electronic load was already on). So it is not
+quick enough to limit inrush current, more likely it is looking at
+the average of several V/I calculations for that second.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">yyyy</p>
 <h2 class="western">Manufacturer's Technical Parameters</h2>
 <p style="margin-bottom: 0cm; line-height: 100%">yyyyy</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
@@ -578,7 +612,7 @@ SHIFT then ([^] or [v])</p>
 <p align="center" style="margin-bottom: 0cm; line-height: 100%">Compiled
 by Douglas Gilbert</p>
 <p align="center" style="margin-bottom: 0cm; line-height: 100%">20210223
-12:45 -0500</p>
+18:15 -0500</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
