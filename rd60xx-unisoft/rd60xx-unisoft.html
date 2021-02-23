@@ -5,7 +5,7 @@
 	<title></title>
 	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="2021-02-06T18:32:05.641846000"/>
-	<meta name="changed" content="2021-02-16T00:00:10.971719722"/>
+	<meta name="changed" content="2021-02-22T20:27:27.780174796"/>
 	<style type="text/css">
 		@page { size: 21.59cm 27.94cm; margin: 2cm }
 		p { margin-bottom: 0.25cm; line-height: 115%; background: transparent }
@@ -87,14 +87,14 @@ with Ruideng.</p>
 <h2 class="western">Status</h2>
 <p style="margin-bottom: 0cm; line-height: 100%">This document was
 started in February 2021. The most recent beta firmware at the time
-were:  RD6006 1.32.13k (in zip file: RD60061_V1.34.1m.zip), RD6012
-(in zip file: RD60121_V1.33.1m.zip) and RD6018 (in zip file:
+were:  RD6006 (in zip file: RD60061_V1.34.1m.zip), RD6012 (in zip
+file: RD60121_V1.33.1m.zip) and RD6018 (in zip file:
 RD60181_V1.34.1m.zip) released on 14 February 2021. This firmware
 will also work on the “W” variants (e.g. RD6006W) which add a
 WIFI daughter board for remote control and monitoring. Note that the
 recently released RD6006P (a hybrid switching/linear DC power supply)
 has sufficiently different hardware that UniSoft has indicated that
-he won’t be producing firmware for it at this time.</p>
+he is not producing firmware for it at this time.</p>
 <h2 class="western">Front Panel</h2>
 <p style="margin-bottom: 0cm; line-height: 100%">Here is a rendering
 of the front panel of a RD6012 from Ruideng's manual, as is the
@@ -325,6 +325,77 @@ middle bottom of the screen.</p>
 
 </p>
 <p style="margin-bottom: 0cm; line-height: 100%">zzzzz</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<h2 class="western">Graph Mode</h2>
+<p style="margin-bottom: 0cm; line-height: 100%">Graph mode is
+entered by pressing [&lt;] once, or [&gt;] three times (it is a four
+way rotation). After running for a short while, graph mode might look
+like this:</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_e46fbd3ad966e6af.png" name="Image10" align="left" width="336" height="256">
+  <br clear="left"/>
+</img>
+<br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">The action of the
+graph is similar to roll mode in an oscilloscope. The new values are
+placed at the right margin (axis) and push the older values to the
+left. V-SET and I-SET values are shown in the top left in yellow,
+under the heading &quot;SET&quot;. Under the &quot;OUTPUT&quot;
+heading are the values measured at the output of the PS. The value in
+green on the right is the current voltage. Under that, in turquoise,
+is the current amperage (the load in this case is a 10 Ohm, 20 Watt
+resistor). Under that in pink is the current power being output,
+which is the product of the previous two values. Those colours
+correspond to the units of the lines on the graph. The white/grey
+line (the topmost line on the graph) is the <i>ex</i><i>ternal
+</i>temperature of the PS. The external temperature is from the
+sensor plugged into the &quot;External temperature sensor interface&quot;
+and is shown periodically in the bottom right of the screen. The
+icons and values shown at the bottom of the above image are the same
+as they are in other modes.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">The line directly
+<i>below</i> the graph contains the y-axis <i>per</i><i>-</i><i>interval
+</i> amounts. So for voltage (green) it is 1.00 Volts per division
+and the green line is constant, at 3 intervals up, so close to 3.00
+volts (actually we can see it is 2.995 Volts).  The pause symbol
+(two, parallel white bars with a blue background) indicates the graph
+is paused. When running the graph state is shown as a white arrowhead
+with a read background at the same location. The pause/run state can
+be toggled by pressing ENTER is graph mode (sometimes it needs to be
+pressed twice). Perhaps UniSoft can tell us what the &quot;D:&quot;
+means at the left hand side of that line.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">The rate at which
+the graph moves is controlled by the &quot;Graph Window&quot; setting
+found within the SHIFT-[v] menu. The setting is for hours and
+minutes. The fastest setting permitted is 1 minute and that implies
+that a set of values written at the right margin will take 1 minute
+to be <i>pushed</i> to the left margin. If the Graph Window setting
+was 1 hour then values will take 1 hour to move from the right margin
+to the left margin.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">inxxxx</p>
+<p style="margin-bottom: 0cm; line-height: 100%">yyyy</p>
+<p style="margin-bottom: 0cm; line-height: 100%">zzzzz</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
 <h2 class="western">Manufacturer's Technical Parameters</h2>
 <p style="margin-bottom: 0cm; line-height: 100%">yyyyy</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
@@ -364,8 +435,8 @@ middle bottom of the screen.</p>
 </p>
 <p align="center" style="margin-bottom: 0cm; line-height: 100%">Compiled
 by Douglas Gilbert</p>
-<p align="center" style="margin-bottom: 0cm; line-height: 100%">20210214
-23:00 -0500</p>
+<p align="center" style="margin-bottom: 0cm; line-height: 100%">20210222
+20:00 -0500</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
