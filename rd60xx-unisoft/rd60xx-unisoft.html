@@ -5,7 +5,7 @@
 	<title></title>
 	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="2021-02-06T18:32:05.641846000"/>
-	<meta name="changed" content="2021-02-23T00:36:14.992774676"/>
+	<meta name="changed" content="2021-02-23T12:47:21.216272087"/>
 	<style type="text/css">
 		@page { size: 21.59cm 27.94cm; margin: 2cm }
 		p { margin-bottom: 0.25cm; line-height: 115%; background: transparent }
@@ -21,6 +21,10 @@
 		pre.western { font-family: "Liberation Mono", monospace; font-size: 10pt }
 		pre.cjk { font-family: "Noto Sans Mono CJK SC", monospace; font-size: 10pt }
 		pre.ctl { font-family: "Liberation Mono", monospace; font-size: 10pt }
+		h3 { margin-top: 0.25cm; margin-bottom: 0.21cm; background: transparent; page-break-after: avoid }
+		h3.western { font-family: "Liberation Sans", sans-serif; font-size: 14pt; font-weight: bold }
+		h3.cjk { font-family: "Noto Sans CJK SC"; font-size: 14pt; font-weight: bold }
+		h3.ctl { font-family: "Lohit Devanagari"; font-size: 14pt; font-weight: bold }
 		a:link { color: #000080; so-language: zxx; text-decoration: underline }
 		strong { font-weight: bold }
 	</style>
@@ -374,8 +378,9 @@ volts (actually we can see it is 2.995 Volts).  The pause symbol
 is paused. When running the graph state is shown as a white arrowhead
 with a read background at the same location. The pause/run state can
 be toggled by pressing ENTER is graph mode (sometimes it needs to be
-pressed twice). Perhaps UniSoft can tell us what the &quot;D:&quot;
-means at the left hand side of that line.</p>
+pressed twice). The &quot;D:&quot; on the left hand side of that line
+stands for &quot;division&quot; (we think). When it has a normal
+background</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -384,9 +389,8 @@ the graph moves is controlled by the &quot;Graph Window&quot; setting
 found within the SHIFT-[v] menu. The setting is for hours and
 minutes. The fastest setting permitted is 1 minute and that implies
 that a set of values written at the right margin will take 1 minute
-to be <i>pushed</i> to the left margin. If the Graph Window setting
-was 1 hour then values will take 1 hour to move from the right margin
-to the left margin.</p>
+to be <i>pushed</i> to the left margin. If the . then values will
+take 1 hour to move from the right margin to the left margin.</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -426,11 +430,35 @@ connected to the + lug on the battery) plus the white TIME with a red
 background is the reason why the charging stopped. N.B. the &quot;Cutoff
 current&quot; setting in the battery group is a <i>lower</i> bound so
 0 mA is a good starting point.</p>
+<p style="margin-bottom: 0cm; line-height: 100%">xxxx</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_3d4409cfb8c1cee0.png" name="Image14" align="left" width="336" height="256">
+  <br clear="left"/>
+</img>
+<br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">The above image was
+taken while the battery charging was ongoing. That can be seen with
+the red battery icon with the yellow background.  Initially I-SET was
+1 Amp but was increased to 1.5 Amp (as that was stated current of a
+dedicated 6/12 Volt trickle charger device on hand). At that point
+the PS went into CC mode; a short time later the battery voltage
+reached V-SET and the PS switched to CV mode where it stayed until
+the screen shot was taken. Notice the current was slowly dropping
+from the point the PS switched from CC to CV mode (as is the Power).
+The &quot;play&quot; button (red background, white arrowhead pointing
+right) indicates graphing mode was ongoing when the screenshot was
+taken. The  Graph Window setting was still 1 hour.</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
-<p style="margin-bottom: 0cm; line-height: 100%">Enter View Mode: MEM
-then ENTER</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<h3 class="western">Enter View Mode: MEM then ENTER</h3>
 <p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_28a22f112902890e.png" name="Image13" align="left" width="336" height="256">
   <br clear="left"/>
 </img>
@@ -453,18 +481,49 @@ x-axis position of the red line.</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
-<p style="margin-bottom: 0cm; line-height: 100%">Switch to
-autoscaling: SHIFT then ENCODER 
+<h3 class="western">Clear the graph: MEM then &quot;.&quot;</h3>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">xxxx</p>
+<h3 class="western">Pause/Play: ENTER</h3>
+<p style="margin-bottom: 0cm; line-height: 100%">yyyy</p>
+<h3 class="western">Toggle auto-scaling: MEM then click ENCODER 
+</h3>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">Toggles between
+setting the amount per division (and the y-axis offset) in this
+sequence (press MEM then click ENCODER to move to next):</p>
+<ul>
+	<li><p style="margin-bottom: 0cm; line-height: 100%">voltage</p>
+	<li><p style="margin-bottom: 0cm; line-height: 100%">current</p>
+	<li><p style="margin-bottom: 0cm; line-height: 100%">power</p>
+	<li><p style="margin-bottom: 0cm; line-height: 100%">external
+	temperature</p>
+	<li><p style="margin-bottom: 0cm; line-height: 100%">auto-scaling</p>
+</ul>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">When it setting mode
+for the first four above, the &quot;D&quot; on the left has a red
+background, when in auto-scaling mode (the default) the &quot;D&quot;
+has the default background.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
 </p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
-<p style="margin-bottom: 0cm; line-height: 100%">Pause/Play: ENTER</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
-<p style="margin-bottom: 0cm; line-height: 100%">Select parameter to
-scale: ENCODER</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<h3 class="western">Select parameter to scale: MEM + click ENCODER</h3>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -475,8 +534,6 @@ SHIFT then ([^] or [v])</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
-<p style="margin-bottom: 0cm; line-height: 100%">inxxxx</p>
-<p style="margin-bottom: 0cm; line-height: 100%">yyyy</p>
 <p style="margin-bottom: 0cm; line-height: 100%">zzzzz</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
@@ -520,8 +577,8 @@ SHIFT then ([^] or [v])</p>
 </p>
 <p align="center" style="margin-bottom: 0cm; line-height: 100%">Compiled
 by Douglas Gilbert</p>
-<p align="center" style="margin-bottom: 0cm; line-height: 100%">20210222
-20:00 -0500</p>
+<p align="center" style="margin-bottom: 0cm; line-height: 100%">20210223
+12:45 -0500</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
