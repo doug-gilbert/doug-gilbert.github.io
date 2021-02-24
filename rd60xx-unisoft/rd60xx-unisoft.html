@@ -5,7 +5,7 @@
 	<title></title>
 	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="2021-02-06T18:32:05.641846000"/>
-	<meta name="changed" content="2021-02-23T18:18:30.508589735"/>
+	<meta name="changed" content="2021-02-24T11:59:50.782996996"/>
 	<style type="text/css">
 		@page { size: 21.59cm 27.94cm; margin: 2cm }
 		p { margin-bottom: 0.25cm; line-height: 115%; background: transparent }
@@ -71,7 +71,7 @@ better.</p>
 <p style="margin-bottom: 0cm; line-height: 100%">On 25 June 2020
 <a href="https://www.eevblog.com/">eevblog</a> user &quot;UniSoft&quot;
 sent a post to the Test Equipment board in the &quot;RuiDeng Riden
-RD6006 DC power supply&quot; thread that stated: &quot;I recovered
+RD6006 DC power supply&quot; thread announcing: &quot;I recovered
 firmware source code of RD6006... Here is my <strong>beta</strong>
 version, if anyone interested.&quot; Probably before that date he
 sent beta versions to a Russian electronics board. His bio on eevblog
@@ -571,6 +571,47 @@ the average of several V/I calculations for that second.</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
+<p style="margin-bottom: 0cm; line-height: 100%">To demonstrate the
+ORP delay setting, it was set to its maximum value of 10 seconds
+while the ORP setting was 1.12 Ohms and the Graph Window was set to 1
+minute (its minimum). The attached electronic load was set to 1 Ohm
+and turned on before the RD6018 (plus the graphing was started about
+15 seconds before that). What can be seen below is that the PS output
+9 Volts and 9 Amps (it was in CV mode) for approximately 10 seconds
+and then tripped out with ORP. So the ORP delay setting waits that
+amount of time <i>before</i> calculating V/I to determine whether ORP
+should trip, and it does because the effective load resistance is 1
+Ohm which is less than the ORP set value (1.12 Ohms). There was no
+beep when OCR was triggered, perhaps that should be a default
+setting.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_7df4287d7aebcc34.png" name="Image16" align="left" width="336" height="256">
+  <br clear="left"/>
+</img>
+<br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">View mode could then
+be selected (MEM then ENTER) so the reference vertical red line
+cursor could be moved left and right to get the timestamps of the
+turn ON to ORP trip and thus calculate the hold-off delay. The ORP
+trip indication (white letters, red background) was cleared when view
+mode was selected, perhaps it should be kept.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_c66a40bc2c3606c2.png" name="Image17" align="left" width="336" height="256">
+  <br clear="left"/>
+</img>
+<br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">zzzz</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
 <p style="margin-bottom: 0cm; line-height: 100%">yyyy</p>
 <h2 class="western">Manufacturer's Technical Parameters</h2>
 <p style="margin-bottom: 0cm; line-height: 100%">yyyyy</p>
@@ -611,8 +652,8 @@ the average of several V/I calculations for that second.</p>
 </p>
 <p align="center" style="margin-bottom: 0cm; line-height: 100%">Compiled
 by Douglas Gilbert</p>
-<p align="center" style="margin-bottom: 0cm; line-height: 100%">20210223
-18:15 -0500</p>
+<p align="center" style="margin-bottom: 0cm; line-height: 100%">20210224
+12:00 -0500</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
