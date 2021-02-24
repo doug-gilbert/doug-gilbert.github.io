@@ -5,7 +5,7 @@
 	<title></title>
 	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="2021-02-06T18:32:05.641846000"/>
-	<meta name="changed" content="2021-02-24T11:59:50.782996996"/>
+	<meta name="changed" content="2021-02-24T18:33:12.026624863"/>
 	<style type="text/css">
 		@page { size: 21.59cm 27.94cm; margin: 2cm }
 		p { margin-bottom: 0.25cm; line-height: 115%; background: transparent }
@@ -233,15 +233,16 @@ wire have resistance  (greater than 0).  Resistance in wires doubles
 when  the wire length is doubled, and halves when the cross-sectional
 area of the conductor is doubled. As is often the case, Wikipedia
 have a good information about this topic, see: <a href="https://en.wikipedia.org/wiki/American_wire_gauge">AWG</a>
-. And it is current in conductors that makes them hot (or even fuse)
-and the last formula above often is used to refer to this waste (e.g.
-&quot;I-squared R losses&quot;). It is not <i>waste</i>, if the
-purpose of driving the current through the resistance is to generate
-heat. This is why when USB-C Power Delivery (PD) wants to provide 100
-Watts it chooses 20 Volts ((near) its maximum voltage) at 5 Amps and
-not say 5 Volts at 20 Amps. Also note that even high quality banana
-plugs are not rated above 15 Amps, so spade or ring connectors should
-be used on the RD6018 for currents in excess of 15 Amps.</p>
+. There is also contact resistance in each connector. And it is
+current in conductors that makes them hot (or even fuse) and the last
+formula above often is used to refer to this waste (e.g. &quot;I-squared
+R losses&quot;). It is not <i>waste</i>, if the purpose of driving
+the current through the resistance is to generate heat. This is why
+when USB-C Power Delivery (PD) wants to provide 100 Watts it chooses
+20 Volts ((near) its maximum voltage) at 5 Amps and not say 5 Volts
+at 20 Amps. Also note that even high quality banana plugs are not
+rated above 15 Amps, so spade or ring connectors should be used on
+the RD6018 for currents in excess of 15 Amps.</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -331,6 +332,48 @@ middle bottom of the screen.</p>
 
 </p>
 <p style="margin-bottom: 0cm; line-height: 100%">zzzzz</p>
+<h2 class="western">Isolation in general and with the front panel USB
+port</h2>
+<p style="margin-bottom: 0cm; line-height: 100%">The USB type B micro
+port on the front of the RD60xx family of power supplies, is
+electrically isolated from other voltages in and out of these
+supplies. The 2Pai Semi &lt;pi symbol&gt; 122U31 integrated circuit
+is used which claims 3000 Volts AC rms isolation (UL certificate
+number: E494497). This implies, for example, that any of three
+terminals on a RD600xx could be connected to the &quot;hot&quot; side
+of a SMPS without the user holding a laptop connected via USB through
+the front panel receptacle, being at risk. Before doing something
+like that a user may want to check the level of isolation provided by
+the AC/DC power adapter providing power to the RD60xx. Even without
+dangerous voltages being involved, it is still possible to have
+unexpected current flows through the negative terminal (often called
+ground in electronics) if the USB port was <i>not</i> isolated. For
+example, a laptop connected to a large screen could effectively be
+tied the the AC mains' protective ground (via that large screen); and
+if the RD60xx was powering a circuit that was protective ground
+referenced, then connecting a USB cable between the laptop and a
+<u>non</u>-isolated USP port of the RD60xx, then that could cause a
+protection trip or worse. So it is re-assuring to know that the USB
+port on the font panel of the RD60xx units <i><u>is</u></i> isolated.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">Assuming the AC/DC
+power adapter's output (e.g. the 70 Volts DC output) is isolated from
+the AC mains' <i>protective ground</i> (i.e. green with yellow trace
+insulated wire, or bare copper wire; also known as <i>protective
+earth</i>) then the 3 output terminals on the front of the RD60xx
+units will also be isolated. This make the RD60xx units <i>floating</i>
+supplies. Some confusion may arise due to Ruideng's choice of a <font color="#00a933"><u>green</u></font>
+terminal as an alternate &quot;+&quot; terminal for battery charging,
+since many other power supplies (e.g. Agilent U8001A) choose to have
+a &quot;third&quot; terminal on the front of their units which is
+<font color="#00a933">green</font> and connected to the AC mains
+<i>protective ground</i>.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">yyyy</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -608,6 +651,14 @@ mode was selected, perhaps it should be kept.</p>
 <br/>
 
 </p>
+<p style="margin-bottom: 0cm; line-height: 100%">Measured on an
+oscilloscope and not shown, if the ORP set delay is at its minimum
+value of 0.1 seconds, then with the above setup, ORP took 1.2 seconds
+to trip. When the ORP delay was set to AUTO, it took about 1.6
+seconds to trip.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
 <p style="margin-bottom: 0cm; line-height: 100%">zzzz</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
@@ -653,7 +704,7 @@ mode was selected, perhaps it should be kept.</p>
 <p align="center" style="margin-bottom: 0cm; line-height: 100%">Compiled
 by Douglas Gilbert</p>
 <p align="center" style="margin-bottom: 0cm; line-height: 100%">20210224
-12:00 -0500</p>
+18:00 -0500</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
