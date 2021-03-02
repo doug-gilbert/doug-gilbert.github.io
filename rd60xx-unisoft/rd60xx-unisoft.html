@@ -5,7 +5,7 @@
 	<title></title>
 	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="2021-02-06T18:32:05.641846000"/>
-	<meta name="changed" content="2021-03-02T12:24:43.050837771"/>
+	<meta name="changed" content="2021-03-02T17:33:36.277888960"/>
 	<style type="text/css">
 		@page { size: 21.59cm 27.94cm; margin: 2cm }
 		p { margin-bottom: 0.25cm; line-height: 115%; background: transparent }
@@ -397,11 +397,14 @@ like this:</p>
 <p style="margin-bottom: 0cm; line-height: 100%">The action of the
 graph is similar to roll mode in an oscilloscope. The new values are
 placed at the right margin (axis) and push the older values to the
-left. V-SET and I-SET values are shown in the top left in yellow,
-under the heading &quot;SET&quot;. Under the &quot;OUTPUT&quot;
-heading are the values measured at the output of the PS. The value in
-green on the right is the current voltage. Under that, in turquoise,
-is the current amperage (the load in this case is a 10 Ohm, 20 Watt
+left. This means that time is on the x-axis and increases from left
+to right. The dotted lines divide the graph into 5 rows and 7 columns
+and its origin can be thought of as the bottom right corner. V-SET
+and I-SET values are shown in the top left in yellow, under the
+heading &quot;SET&quot;. Under the &quot;OUTPUT&quot; heading are the
+values measured at the output of the PS. The value in green on the
+right is the current voltage. Under that, in turquoise, is the
+current amperage (the load in this case is a 10 Ohm, 20 Watt
 resistor). Under that in pink is the current power being output,
 which is the product of the previous two values. Those colours
 correspond to the units of the lines on the graph. The white/grey
@@ -422,17 +425,18 @@ these graphs.</p>
 
 </p>
 <p style="margin-bottom: 0cm; line-height: 100%">The line directly
-<i>below</i> the graph contains the y-axis <i>per</i><i>-</i><i>interval
-</i> amounts. So for voltage (green) it is 1.00 Volts per division
-and the green line is constant, at 3 intervals up, so close to 3.00
-volts (actually we can see it is 2.995 Volts).  The pause symbol
-(two, parallel white bars with a blue background) indicates the graph
-is paused. When running the graph state is shown as a white arrowhead
-with a read background at the same location. The pause/run state can
-be toggled by pressing ENTER is graph mode (sometimes it needs to be
+<i>below</i> the graph contains the y-axis <i>per</i><i>-</i><i>division</i>
+amounts. So for voltage (green) it is 1.00 Volts per division and the
+green line is constant, at 3 divisions up, so close to 3.00 volts
+(actually we can see it is 2.995 Volts).  The pause symbol (two,
+parallel white bars with a blue background) indicates the graph is
+paused. When running, the graph state is shown as a white arrowhead
+with a red background at the same location. The pause/run state can
+be toggled by pressing ENTER in graph mode (sometimes it needs to be
 pressed twice). The &quot;D:&quot; on the left hand side of that line
-stands for &quot;division&quot; (we think). When it has a normal
-background</p>
+stands for &quot;division&quot;.  When it has a normal background, it
+is auto-scaling the four 
+</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -441,8 +445,10 @@ the graph moves is controlled by the &quot;Graph Window&quot; setting
 found within the SHIFT-[v] menu. The setting is for hours and
 minutes. The fastest setting permitted is 1 minute and that implies
 that a set of values written at the right margin will take 1 minute
-to be <i>pushed</i> to the left margin. If the . then values will
-take 1 hour to move from the right margin to the left margin.</p>
+to be <i>pushed</i> to the left margin. If 1 hour is chosen then
+values will take 1 hour to move from the right margin to the left
+margin. The slowest/maximum Graph Window setting is 23 hours, 59
+minutes, effectively a full day.</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -482,7 +488,9 @@ connected to the + lug on the battery) plus the white TIME with a red
 background is the reason why the charging stopped. N.B. the &quot;Cutoff
 current&quot; setting in the battery group is a <i>lower</i> bound so
 0 mA is a good starting point.</p>
-<p style="margin-bottom: 0cm; line-height: 100%">xxxx</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_3d4409cfb8c1cee0.png" name="Image14" align="left" width="336" height="256">
   <br clear="left"/>
 </img>
@@ -725,7 +733,7 @@ mode was selected, perhaps it should be kept.</p>
 <p align="center" style="margin-bottom: 0cm; line-height: 100%">Compiled
 by Douglas Gilbert</p>
 <p align="center" style="margin-bottom: 0cm; line-height: 100%">20210302
-12:00 -0500</p>
+17:00 -0500</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
