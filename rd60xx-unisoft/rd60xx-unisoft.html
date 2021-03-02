@@ -5,7 +5,7 @@
 	<title></title>
 	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="2021-02-06T18:32:05.641846000"/>
-	<meta name="changed" content="2021-02-24T18:33:12.026624863"/>
+	<meta name="changed" content="2021-03-02T12:24:43.050837771"/>
 	<style type="text/css">
 		@page { size: 21.59cm 27.94cm; margin: 2cm }
 		p { margin-bottom: 0.25cm; line-height: 115%; background: transparent }
@@ -414,6 +414,13 @@ as they are in other modes.</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
+<p style="margin-bottom: 0cm; line-height: 100%"><b>Ruideng</b>
+documentation refers to Graph mode as Curve mode. Graph mode feels a
+little more generic as there are more straight lines than curves on
+these graphs.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
 <p style="margin-bottom: 0cm; line-height: 100%">The line directly
 <i>below</i> the graph contains the y-axis <i>per</i><i>-</i><i>interval
 </i> amounts. So for voltage (green) it is 1.00 Volts per division
@@ -583,10 +590,11 @@ SHIFT then ([^] or [v])</p>
 <h2 class="western">ORP</h2>
 <p style="margin-bottom: 0cm; line-height: 100%">This abbreviation
 stands for &quot;Over Resistance Protection&quot;, a term not often
-used. Inrush Current Limiting (ICL) is related but ORP trips out this
-PS while ICL (on other power supplies) places an upper limit on the
-current it will source. An example of an ORP <i>trip</i> is shown
-below:</p>
+used with other power supplies. Inrush Current Limiting (ICL) is
+related but ORP trips out (i.e. stops) this PS while ICL (on other
+power supplies) temporarily places a PS in CC mode so the inrush
+current limit is not exceeded. An example of an ORP <i>trip</i> is
+shown below:</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -597,20 +605,22 @@ below:</p>
 
 </p>
 <p style="margin-bottom: 0cm; line-height: 100%">The protection trip
-is indicated ORP in white with a red background in the middle of the
-bottom of the image (plus the 0 Volts and Amps output measurements).
-In this case ORP was turned on and the &quot;ORP set&quot; value was
-adjusted to 6 Ohms (settings of 0.01 Ohms up to 10 Ohms are
-permitted) and the ORP delay was left at &quot;Auto&quot; (these
-settings are found in the SHIFT then [^] menu). The RD6018 was
-connected to an electronic load which was placed in CR (constant
-resistance) mode at 5 Ohms. ORP was triggered because the PS measured
-its output voltage divided by its output current (i.e. the effective
-load resistance) was 5 Ohms which is less than 6 Ohms from &quot;ORP
-set&quot;. It took about a second to trip after the ON/OFF button
-enabled the output (the electronic load was already on). So it is not
-quick enough to limit inrush current, more likely it is looking at
-the average of several V/I calculations for that second.</p>
+is indicated by ORP in white with a red background in the middle of
+the bottom of the image which is the PS status icon. Also the
+measured Volts and Amps are both zero. ORP settings are found in the
+SHIFT then [v] menu. In this menu ORP was turned on, the &quot;ORP
+set&quot; value was adjusted to 6 Ohms (settings of 0.01 Ohms up to
+10 Ohms are permitted) and the ORP delay was left at &quot;Auto&quot;.
+The RD6018 was connected to a 5 Ohm, 20 Watt resistor. ORP was
+triggered because the PS measured its output voltage divided by its
+output current (i.e. the effective load resistance) to be 5 Ohms
+which is less than 6 Ohms from &quot;ORP set&quot;. It took 1.8
+seconds to trip after the ON/OFF button enabled the output (and the
+resistor in place). With the RD6018 started, then the 5 Ohm resistor
+being connected after that, the delay before the ORP trip came down
+to 1.2 seconds. So it is not quick enough to limit inrush current,
+more likely it is looking at the average of several V/I calculations
+for those periods.</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -624,8 +634,8 @@ and turned on before the RD6018 (plus the graphing was started about
 and then tripped out with ORP. So the ORP delay setting waits that
 amount of time <i>before</i> calculating V/I to determine whether ORP
 should trip, and it does because the effective load resistance is 1
-Ohm which is less than the ORP set value (1.12 Ohms). There was no
-beep when OCR was triggered, perhaps that should be a default
+Ohm which is less than the ORP set value (1.12 Ohms). There was <i>no
+beep</i> when OCR was triggered, perhaps that should be a default
 setting.</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
@@ -634,6 +644,19 @@ setting.</p>
   <br clear="left"/>
 </img>
 <br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">Measured on an
+oscilloscope and not shown, if the ORP set delay is at its minimum
+value of 0.1 seconds, then with the 5 Ohm resistor setup, ORP took
+0.14 seconds to trip from the ON button press (measured from when the
+output voltage started to rise above zero).  With the RD6018 already
+ON, it took about 0.7 seconds to trip after the 5 Ohm resistor was
+connected.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
 <p style="margin-bottom: 0cm; line-height: 100%">View mode could then
@@ -651,11 +674,9 @@ mode was selected, perhaps it should be kept.</p>
 <br/>
 
 </p>
-<p style="margin-bottom: 0cm; line-height: 100%">Measured on an
-oscilloscope and not shown, if the ORP set delay is at its minimum
-value of 0.1 seconds, then with the above setup, ORP took 1.2 seconds
-to trip. When the ORP delay was set to AUTO, it took about 1.6
-seconds to trip.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -703,8 +724,8 @@ seconds to trip.</p>
 </p>
 <p align="center" style="margin-bottom: 0cm; line-height: 100%">Compiled
 by Douglas Gilbert</p>
-<p align="center" style="margin-bottom: 0cm; line-height: 100%">20210224
-18:00 -0500</p>
+<p align="center" style="margin-bottom: 0cm; line-height: 100%">20210302
+12:00 -0500</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
