@@ -5,7 +5,7 @@
 	<title></title>
 	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="2021-02-06T18:32:05.641846000"/>
-	<meta name="changed" content="2021-03-02T17:33:36.277888960"/>
+	<meta name="changed" content="2021-03-02T22:35:33.909474345"/>
 	<style type="text/css">
 		@page { size: 21.59cm 27.94cm; margin: 2cm }
 		p { margin-bottom: 0.25cm; line-height: 115%; background: transparent }
@@ -308,10 +308,7 @@ middle bottom of the screen.</p>
 
 </p>
 <p style="margin-bottom: 0cm; line-height: 100%">zzzzzz</p>
-<p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_6f445bed60b4551f.png" name="Image6" align="left" width="336" height="256">
-  <br clear="left"/>
-</img>
-<br/>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
@@ -373,10 +370,6 @@ a &quot;third&quot; terminal on the front of their units which is
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
-<p style="margin-bottom: 0cm; line-height: 100%">yyyy</p>
-<p style="margin-bottom: 0cm; line-height: 100%"><br/>
-
-</p>
 <h2 class="western">Graph Mode</h2>
 <p style="margin-bottom: 0cm; line-height: 100%">Graph mode is
 entered by pressing [&lt;] once, or [&gt;] three times (it is a four
@@ -396,7 +389,7 @@ like this:</p>
 </p>
 <p style="margin-bottom: 0cm; line-height: 100%">The action of the
 graph is similar to roll mode in an oscilloscope. The new values are
-placed at the right margin (axis) and push the older values to the
+placed at the right margin (y-axis) and push the older values to the
 left. This means that time is on the x-axis and increases from left
 to right. The dotted lines divide the graph into 5 rows and 7 columns
 and its origin can be thought of as the bottom right corner. V-SET
@@ -434,9 +427,31 @@ paused. When running, the graph state is shown as a white arrowhead
 with a red background at the same location. The pause/run state can
 be toggled by pressing ENTER in graph mode (sometimes it needs to be
 pressed twice). The &quot;D:&quot; on the left hand side of that line
-stands for &quot;division&quot;.  When it has a normal background, it
-is auto-scaling the four 
+stands for &quot;division&quot;.  When the &quot;D:&quot; has a
+normal background, it is auto-scaling the divisions of the four
+graphed values. When pressing MEM then click ENCODER, the user is
+given the chance to change the units per division and the value of
+that unit at the x-axis (bottom margin) which is 0 by default.
+Continuing to press MEM then click ENCODER will cycle through the
+units in this order:</p>
+<ul>
+	<li><p style="margin-bottom: 0cm; line-height: 100%">voltage</p>
+	<li><p style="margin-bottom: 0cm; line-height: 100%">current</p>
+	<li><p style="margin-bottom: 0cm; line-height: 100%">power</p>
+	<li><p style="margin-bottom: 0cm; line-height: 100%">external
+	temperature</p>
+	<li><p style="margin-bottom: 0cm; line-height: 100%">auto-scaling</p>
+</ul>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
 </p>
+<p style="margin-bottom: 0cm; line-height: 100%">When one of the
+first four (i.e. the units) are selected, the &quot;D:&quot; at the
+start of the line has a red background. The ENCODER knob can be used
+to increase and decrease the units per division with the zero value
+turning the graphing of that unit OFF. The [^] and [v] buttons can be
+used to change the value of this unit at the x-axis (i.e. the bottom
+margin of the graph).</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -483,11 +498,13 @@ acid battery. The external temperature sensor was placed under the
 PS. The battery group setting &quot;cutoff time&quot; was set to 1
 hour at which point the charging ceased and 6.64 Watt-hours of energy
 had been transferred. The battery symbol on the bottom line shows
-that it was in battery mode (and the green terminal on the PS was
-connected to the + lug on the battery) plus the white TIME with a red
-background is the reason why the charging stopped. N.B. the &quot;Cutoff
-current&quot; setting in the battery group is a <i>lower</i> bound so
-0 mA is a good starting point.</p>
+that it was in battery mode (and the <font color="#00a933"><u>green</u></font>
+terminal on the PS was connected to the + lug on the battery) plus
+the white TIME with a red background is the reason why the charging
+stopped. N.B. the &quot;Cutoff current&quot; setting in the battery
+group is a <i><u>lower</u></i> bound so 0 mA is a good starting
+point. 
+</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -508,7 +525,7 @@ the screen shot was taken. Notice the current was slowly dropping
 from the point the PS switched from CC to CV mode (as is the Power).
 The &quot;play&quot; button (red background, white arrowhead pointing
 right) indicates graphing mode was ongoing when the screenshot was
-taken. The  Graph Window setting was still 1 hour.</p>
+taken. The Graph Window setting was still 1 hour.</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -518,7 +535,7 @@ taken. The  Graph Window setting was still 1 hour.</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
-<h3 class="western">Enter View Mode: MEM then ENTER</h3>
+<h3 class="western">Enter Graph (View) Mode: MEM then ENTER</h3>
 <p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_28a22f112902890e.png" name="Image13" align="left" width="336" height="256">
   <br clear="left"/>
 </img>
@@ -532,12 +549,15 @@ taken. The  Graph Window setting was still 1 hour.</p>
 
 </p>
 <p style="margin-bottom: 0cm; line-height: 100%">The above image
-shows the graph in &quot;View Mode&quot;. A red vertical line appears
+shows the &quot;Graph (view) Mode&quot;. A red vertical line appears
 on the graph (it starts at the right margin) and can be moved left
 and right with the ENCODER knob. It shows voltage, current, wattage
 and external temperature where the red vertical line intercepts the
 four lines. It also shows the timestamp that corresponds to the
-x-axis position of the red line.</p>
+x-axis position of the red line. To get out of Graph (view) mode,
+first leave Graph mode with [&lt;] or [&gt;] then re-enter Graph mode
+with [&gt;] or [&lt;] ! [[It would seem more logical to make MEM then
+ENTER a toggle to both enter <u>and</u> leave Graph (view) mode.]]</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -570,13 +590,8 @@ sequence (press MEM then click ENCODER to move to next):</p>
 <p style="margin-bottom: 0cm; line-height: 100%">When it setting mode
 for the first four above, the &quot;D&quot; on the left has a red
 background, when in auto-scaling mode (the default) the &quot;D&quot;
-has the default background.</p>
-<p style="margin-bottom: 0cm; line-height: 100%"><br/>
-
-</p>
-<p style="margin-bottom: 0cm; line-height: 100%"><br/>
-
-</p>
+has the default background. [This is described in Graph mode section
+above.]</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -589,12 +604,85 @@ has the default background.</p>
 </p>
 <p style="margin-bottom: 0cm; line-height: 100%">  Change Offset Y :
 [^] or [v]</p>
-<p style="margin-bottom: 0cm; line-height: 100%">  Reset Offset Y&quot;
+<p style="margin-bottom: 0cm; line-height: 100%">  Reset Offset Y:
 SHIFT then ([^] or [v])</p>
+<p style="margin-bottom: 0cm; line-height: 100%">  Change units per
+division: turn ENCODER knob left or right. If the units per division
+is set to zero then the corresponding unit (i.e. voltage, current,
+power or external_temperature) is not shown in the graph</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
-<p style="margin-bottom: 0cm; line-height: 100%">zzzzz</p>
+<h2 class="western">Battery charge mode</h2>
+<p style="margin-bottom: 0cm; line-height: 100%">Battery charge mode
+is entered when the PS is OFF and a battery is connected to it. The
+negative terminal of the battery should be connected to the <u><b>black</b></u>
+terminal ([G] on the front panel) and the positive terminal of the
+battery should be connected to the <font color="#00a933"><u><b>green</b></u></font>
+terminal ([H] on the front panel). The battery panel (press [&gt;]
+twice (or [&lt;] twice)) should be selected and it looks like this:</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_fdfb7fa0a7ece407.png" name="Image6" align="left" width="336" height="256">
+  <br clear="left"/>
+</img>
+<br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">When the battery
+voltage is detected by the PS, the lowest sub-panel on the right
+should illuminate (cyan in the default colour scheme) with its last
+line showing: &quot;CHARGE:  DETECT&quot;. Charging a battery needs
+knowledge of the type of battery and other parameters. This document
+will not attempt to describe what the user needs to know about this
+process, just how to make settings for the PS. V-SET should be set to
+a value <i><u>greater than</u></i> V-BATT which is measured between
+the black and green terminals, otherwise the battery will attempt to
+force power into the Riden power supply which is not good. Various
+battery charging parameters can be adjusted in the battery settings
+(SHIFT [0] which should enter the battery settings menu with battery
+symbol highlighted, with a red background, in the bottom left of the
+screen). As noted in an above section, the (battery) cutoff current
+is a lower bound, so if the PS is ON and the charge current is less
+than that figure (for a period that seems to be around 5 seconds)
+then charging will turn off and something like the following
+screenshot will appear:</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><img src="rd60xx-unisoft_html_dc417a7e51e7dd53.png" name="Image18" align="left" width="336" height="256">
+  <br clear="left"/>
+</img>
+<br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">From the time it was
+turned ON the PS took around 6.8 seconds to cutoff (since the cutoff
+current was set at 18 Amps which thankfully was never reached).
+Notice the CHARGE state is now I-OFF (in red) and the battery symbol
+on the bottom line has a red background. The default cutoff current
+value of 0 mA would have been a better option.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">To observe what is
+happening with the electrically parameters (potentially including
+temperature) the user is referred to the Graph mode section above.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">Final observation:
+each of the RD60xx power supplies contains a large relay (Ruideng use
+blue coloured relays) and that relay connects the  <font color="#00a933"><u><b>green</b></u></font>
+terminal to the <font color="#ff0000"><u><b>red</b></u></font>
+terminal ([I] on the front panel) <i><u>only</u></i> when charging is
+taking place. An audible click can be heard from these supplies when
+they start charging (i.e. when the ON/OFF button is pressed and
+becomes illuminated) and when they exit charging mode.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
 <h2 class="western">ORP</h2>
 <p style="margin-bottom: 0cm; line-height: 100%">This abbreviation
 stands for &quot;Over Resistance Protection&quot;, a term not often
@@ -642,9 +730,9 @@ and turned on before the RD6018 (plus the graphing was started about
 and then tripped out with ORP. So the ORP delay setting waits that
 amount of time <i>before</i> calculating V/I to determine whether ORP
 should trip, and it does because the effective load resistance is 1
-Ohm which is less than the ORP set value (1.12 Ohms). There was <i>no
+Ohm which is less than the ORP set value (1.12 Ohms). [[There was <i>no
 beep</i> when OCR was triggered, perhaps that should be a default
-setting.</p>
+setting.]]</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -733,7 +821,7 @@ mode was selected, perhaps it should be kept.</p>
 <p align="center" style="margin-bottom: 0cm; line-height: 100%">Compiled
 by Douglas Gilbert</p>
 <p align="center" style="margin-bottom: 0cm; line-height: 100%">20210302
-17:00 -0500</p>
+22:00 -0500</p>
 <p style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
