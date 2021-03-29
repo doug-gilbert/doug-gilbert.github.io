@@ -5,10 +5,11 @@
 	<title>The Linux SCSI Generic (sg) Driver</title>
 	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2021-02-20T20:10:39.327238678"/>
+	<meta name="changed" content="2021-03-29T18:43:57.779491114"/>
 	<meta name="description" content="Linux SCSI Generic driver home
       page"/>
 	<meta name="keywords" content="Linux storage, SCSI, sg driver, pass      through"/>
+	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -148,8 +149,8 @@ The Linux SCSI Generic (sg) Driver</h1>
 	</ol>
 </ol>
 <h2 class="western"><a name="mozTocId682829"></a>News</h2>
-<p>[2021-02-20] pre-release (beta) of sg3_utils-1.46 (<a href="https://github.com/doug-gilbert/sg3_utils/tree/master/trunk">revision</a>
-876). See <a href="sg3_utils.html">sg3_utils</a> page.</p>
+<p>[2021-03-29] release of sg3_utils-1.46 . See <a href="sg3_utils.html">sg3_utils</a>
+page.</p>
 <p>[2021-02-20] Updated sg version 4 driver. See the <a href="sg_v40.html">sg_v40</a>
 page, this driver is in development</p>
 <p>[2021-02-12] Updated <a href="scsi_debug.html">scsi_debug</a> page
@@ -164,8 +165,6 @@ page</p>
 page.</p>
 <p>[2020-03-03] release of sdparm version 1.11 . See <a href="sdparm.html">sdparm</a>
 page</p>
-<p>[2020-03-02] release of sg3_utils version 1.45 . See <a href="sg3_utils.html">sg3_utils</a>
-page.</p>
 <p>[2020-02-20] <a href="lsscsi-0.31.tgz">lsscsi-0.31</a> released,
 see <a href="../scsi/lsscsi.html">lsscsi</a> page.</p>
 <p><br/>
@@ -180,7 +179,7 @@ packages are mirrored on Hannes Reinecke's site at github :
 <a href="https://github.com/hreinecke/sg3_utils">https://github.com/hreinecke/sg3_utils</a>
 in the master (default) branch. The author continues to track
 progress with a subversion revision number which is a sequential
-number currently at 841 for sg3_utils. The github sg3_utils package's
+number currently at 891 for sg3_utils. The github sg3_utils package's
 <a href="https://github.com/hreinecke/sg3_utils/blob/master/ChangeLog">ChangeLog</a>
 file shows where the mirror is &quot;at&quot; and currently that is
 revision 841 dated 20200210, several commits behind the author's
@@ -196,20 +195,15 @@ The author
 also has a github account at <a href="https://github.com/doug-gilbert">https://github.com/doug-gilbert</a>
 which has mirrors for the <a href="sdparm.html">sdparm</a>, <a href="ddpt.html">ddpt</a>
 and <a href="smp_utils.html">smp_utils</a> packages and alternative
-mirrors for sg3_utils and lsscsi. Since sdparm and ddpt depend on a
-library from sg3_utils, a partial package called sg3_utils_lib is
-also there. sg3_utils_lib only contains the <tt class="western">lib/</tt>
-and <tt class="western">include/</tt> sub-directories from the
-sg3_utils package. Currently sg3_utils_lib corresponds to version 844
-of the author's sg3_utils subversion repository and the sdparm and
-ddpt packages assume that revision. So it is better to build sdparm
-and ddpt with sg3_utils_lib than with Hannes' sg3_utils
-repository.<br/>
+mirrors for <a href="https://github.com/doug-gilbert/sg3_utils">sg3_utils</a>
+and <a href="https://github.com/doug-gilbert/lsscsi">lsscsi</a>. The
+sdparm and ddpt packages depend on a library from sg3_utils. <br/>
 <br/>
-So, for example to build sdparm, clone the
-github sdparm and sg3_utils_lib repositories to the build machine;
-then from sg3_utils_lib clone, copy the <tt class="western">include/</tt>
-and <tt class="western">lib/</tt> directories with those names and
+So,
+for example to build sdparm, clone the github sdparm and
+sg3_utils_lib repositories to the build machine; then from
+sg3_utils_lib clone, copy the <tt class="western">include/</tt> and
+<tt class="western">lib/</tt> directories with those names and
 contents over to the sdparm clone, under the main directory. So that
 main directory should end up at least containing these
 sub-directories: <tt class="western">src/</tt>, <tt class="western">doc/</tt>,
@@ -557,8 +551,8 @@ section above<br/>
 for betas</p>
 		</td>
 		<td valign="top" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-			<a href="p/sg3_utils-1.45.tgz">sg3_utils-1.45.tgz</a><br/>
-<a href="p/sg3_utils-1.45.tar.xz">sg3_utils-1.45.tar.xz</a></p>
+			<a href="p/sg3_utils-1.46.tgz">sg3_utils-1.46.tgz</a><br/>
+<a href="p/sg3_utils-1.46.tar.xz">sg3_utils-1.46.tar.xz</a></p>
 		</td>
 		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<br/>
@@ -571,8 +565,8 @@ for betas</p>
 			</p>
 		</td>
 		<td valign="top" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-			<a href="p/sg3-utils_1.45-0.1_amd64.deb">sg3-utils_1.45-0.1_amd64.deb</a><br/>
-<a href="p/libsgutils2-2_1.45-0.1_amd64.deb">libsgutils2-2_1.45-0.1_amd64.deb</a></p>
+			<a href="p/sg3-utils_1.46-0.1_amd64.deb">sg3-utils_1.46-0.1_amd64.deb</a><br/>
+<a href="p/libsgutils2-2_1.46-0.1_amd64.deb">libsgutils2-2_1.46-0.1_amd64.deb</a></p>
 		</td>
 	</tr>
 	<tr>
@@ -720,8 +714,8 @@ sites:
 </ul>
 <p align="center" style="margin-bottom: 0cm"><a href="mailto:dgilbert%20at%20%20interlog%20dot%20com">Douglas
 Gilbert</a> can be emailed at that address. <br/>
-Last updated: 20th
-February 2021, 20:00 [UTC-5]</p>
+Last updated: 29th
+March 2021, 19:00 [UTC-4]</p>
 <p style="margin-bottom: 0cm"><br/>
 
 </p>

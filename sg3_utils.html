@@ -3,10 +3,12 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title>The sg3_utils package</title>
-	<meta name="generator" content="LibreOffice 6.4.5.2 (Linux)"/>
+	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2020-09-03T18:00:19.898564215"/>
+	<meta name="changed" content="2021-03-29T18:34:35.928702272"/>
 	<meta name="keywords" content="sg3_utils, SCSI utilities, Linux"/>
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -37,20 +39,20 @@
 	<meta name="created" content="00:00:00">
 	<style type="text/css">
 		@page { size: 21.59cm 27.94cm; margin-left: 2cm; margin-right: 1cm; margin-top: 1cm; margin-bottom: 1cm }
-		p { margin-bottom: 0.25cm; color: #000000; line-height: 115%; background: transparent }
-		h2 { margin-top: 0.35cm; margin-bottom: 0.21cm; color: #000000; background: transparent; page-break-after: avoid }
+		p { margin-bottom: 0.25cm; background: transparent; color: #000000; line-height: 115%; background: transparent }
+		h2 { margin-top: 0.35cm; margin-bottom: 0.21cm; background: transparent; color: #000000; background: transparent; page-break-after: avoid }
 		h2.western { font-family: "Liberation Serif", serif; font-size: 18pt; font-weight: bold }
 		h2.cjk { font-family: "Noto Sans CJK SC Regular"; font-size: 18pt; font-weight: bold }
 		h2.ctl { font-family: "Lohit Devanagari"; font-size: 18pt; font-weight: bold }
-		h3 { margin-top: 0.25cm; margin-bottom: 0.21cm; color: #000000; background: transparent; page-break-after: avoid }
+		h3 { margin-top: 0.25cm; margin-bottom: 0.21cm; background: transparent; color: #000000; background: transparent; page-break-after: avoid }
 		h3.western { font-family: "Liberation Serif", serif; font-size: 14pt; font-weight: bold }
 		h3.cjk { font-family: "Noto Sans CJK SC Regular"; font-size: 14pt; font-weight: bold }
 		h3.ctl { font-family: "Lohit Devanagari"; font-size: 14pt; font-weight: bold }
-		pre { color: #000000; background: transparent }
+		pre { background: transparent; color: #000000; background: transparent }
 		pre.western { font-family: "Liberation Mono", monospace; font-size: 10pt }
 		pre.cjk { font-family: "Courier New", monospace; font-size: 10pt }
 		pre.ctl { font-family: "Liberation Mono", monospace; font-size: 10pt }
-		td p { color: #000000; background: transparent }
+		td p { background: transparent; color: #000000; background: transparent }
 		tt.western { font-family: "Liberation Mono", monospace }
 		tt.cjk { font-family: "Courier New", monospace }
 		tt.ctl { font-family: "Liberation Mono", monospace }
@@ -96,13 +98,13 @@ that use SCSI command sets.<br/>
 SCSI command sets are divided
 into a common set and several device class specific sets. The common
 set of commands is referred to as the SCSI Primary Commands (SPC)
-with SPC-4 being the most recent standard. The mandatory SCSI INQUIRY
-command is defined in SPC-4. The SCSI Block Commands (SBC) cover
-direct access devices such as disks. The MultiMedia Commands (MMC)
-cover CD, DVD and BD drives and the media within them. SCSI command
-sets and transport definitions can be found at the <a href="http://www.t10.org/">www.t10.org</a>
-. That site includes this helpful diagrammatic overview:
-<a href="http://www.t10.org/scsi-3.htm">www.t10.org/scsi-3.htm</a>
+with SPC-5 [INCITS 502-2019] being the most recent standard. The
+mandatory SCSI INQUIRY command is defined in SPC-5. The SCSI Block
+Commands (SBC) cover direct access devices such as disks. The
+MultiMedia Commands (MMC) cover CD, DVD and BD drives and the media
+within them. SCSI command sets and transport definitions can be found
+at the <a href="http://www.t10.org/">www.t10.org</a> . That site
+includes this helpful diagrammatic overview: <a href="http://www.t10.org/scsi-3.htm">www.t10.org/scsi-3.htm</a>
 .<br/>
 <br/>
 The <b>sg3_utils</b> package was developed for the Linux
@@ -110,7 +112,7 @@ kernel 2.4, 2.6, 3, 4 and 5 series and is still being enhanced. An
 earlier package called sg_utils targeted the Linux kernel 2.2 series
 with some support for the 2.0 series. See an earlier version of this
 web <a href="uu_index.html">page</a> for further information about
-sg_utils.&nbsp; This document describes <b>version 1.45</b> of
+sg_utils.&nbsp; This document describes <b>version 1.46</b> of
 <b>sg3_utils</b> .&nbsp; The majority of these utilities have been
 ported to the FreeBSD, Solaris, Tru64 and the Windows operating
 systems (Windows 2000 and later supported).<br/>
@@ -2107,24 +2109,23 @@ information. An example of this is VPD pages fetched by the SCSI
 INQUIRY command. Many of the utilities that decode information have a
 '--in=' or '--inhex=' option that will take one of these hex files
 rather than send a command to a SCSI device. This is useful for
-testing and remote support.</p>
-<p><br/>
-The <b>lib</b> sub-directory was introduced in version 1.25
-and contains C source files that are used by many of the utilities.
-Depending on the target architecture and configure options, these
-files may be build into a library. The source files are written to
-compile cleanly as C or C++.<br/>
+testing and remote support.<br/>
+The <b>lib</b> sub-directory was
+introduced in version 1.25 and contains C source files that are used
+by many of the utilities. Depending on the target architecture and
+configure options, these files may be build into a library. The
+source files are written to compile cleanly as C or C++.<br/>
 <br/>
-The <b>suse</b> sub-directory
-contains rules for building a Linux Suse package (i.e. &quot;.rpm&quot;)
-from the source code.<br/>
+The
+<b>suse</b> sub-directory contains rules for building a Linux Suse
+package (i.e. &quot;.rpm&quot;) from the source code.<br/>
 <br/>
-The <b>src</b> sub-directory was
-introduced in version 1.25 . It contains the C source code for each
-of the main utilities. In most cases each utility has a single C
-source file (e.g. <font face="monospace">sg_inq.c</font> for the
-<font face="monospace">sg_inq</font> utility). In some cases there
-may be an additional helper file (e.g. the <font face="monospace">sg_vpd</font>
+The
+<b>src</b> sub-directory was introduced in version 1.25 . It contains
+the C source code for each of the main utilities. In most cases each
+utility has a single C source file (e.g. <font face="monospace">sg_inq.c</font>
+for the <font face="monospace">sg_inq</font> utility). In some cases
+there may be an additional helper file (e.g. the <font face="monospace">sg_vpd</font>
 utility has both <font face="monospace">sg_vpd.c</font> and
 <font face="monospace">sg_vpd_vendor.c</font>).<br/>
 <br/>
@@ -2135,6 +2136,10 @@ sub-directory, many of these scripts can take multiple device names.
 For example: '<font face="monospace">scsi_stop /dev/sd*</font>' will
 attempt to stop (spin down) all SCSI disks. See the <font face="monospace">README</font>
 file in that directory for more information.</p>
+<p>The <b>testing</b> sub-directory contains programs (C and C++)
+mainly designed for testing the Linux scsi generic (sg) driver.
+tst_sg_lib.c does test some functions of this package's library found
+in the <b>lib</b> sub-directory.</p>
 <h2 class="western"><a name="__RefHeading___Toc252_3724309425"></a><a name="mozTocId736867"></a>
 Exit status</h2>
 <p>These command line utilities run as processes and finish with an
@@ -3404,7 +3409,7 @@ tarballs and packages</b></p>
 			<b>1.39</b><br/>
 20140612</p>
 		</td>
-		<td width="20%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="20%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
 			<a href="p/sg3_utils-1.39.tgz">sg3_utils-1.39.tgz</a><br/>
 <a href="p/sg3_utils-1.39.tar.xz">sg3_utils-1.39.tar.xz</a>
 						</p>
@@ -3585,6 +3590,28 @@ tarballs and packages</b></p>
 <a href="p/libsgutils2-2_1.45-0.1_amd64.deb">libsgutils2-2_1.45-0.1_amd64.deb</a></p>
 		</td>
 	</tr>
+	<tr valign="top">
+		<td width="8%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.1cm">
+			<b>1.46</b></p>
+			<p style="margin-bottom: 0.1cm; font-weight: normal">20210329</p>
+			<p style="margin-bottom: 0.1cm; font-weight: normal">[svn: r891]</p>
+		</td>
+		<td width="20%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
+			<a href="p/sg3_utils-1.46.tgz">sg3_utils-1.46.tgz</a></p>
+			<p style="margin-bottom: 0.5cm"><a href="p/sg3_utils-1.46.tar.xz">sg3_utils-1.46.tar.xz</a></p>
+		</td>
+		<td width="19%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
+			<a href="p/sg3_utils-1.46-1.src.rpm">sg3_utils-1.46-1.src.rpm</a></p>
+		</td>
+		<td width="26%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
+			<a href="p/sg3_utils-1.46-1.x86_64.rpm">sg3_utils-1.46-1.x86_64.rpm</a><br/>
+<a href="p/sg3_utils-libs-1.46-1.x86_64.rpm">sg3_utils-libs-1.46-1.x86_64.rpm</a></p>
+		</td>
+		<td width="27%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
+			<a href="p/sg3-utils_1.46-0.1_amd64.deb">sg3-utils_1.46-0.1_amd64.deb</a><br/>
+<a href="p/libsgutils2-2_1.46-0.1_amd64.deb">libsgutils2-2_1.46-0.1_amd64.deb</a></p>
+		</td>
+	</tr>
 </table>
 <p style="margin-bottom: 0cm"><br/>
 The zip files below are built
@@ -3657,7 +3684,7 @@ file is a tarball of man pages converted to html by man2html.</p>
 		</td>
 	</tr>
 	<tr valign="top">
-		<td width="120" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+		<td width="120" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p style="margin-bottom: 0.5cm">
 			<b>1.43</b></p>
 			<p>20180911</p>
 		</td>
@@ -3672,7 +3699,7 @@ file is a tarball of man pages converted to html by man2html.</p>
 		</td>
 	</tr>
 	<tr valign="top">
-		<td width="120" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+		<td width="120" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p style="margin-bottom: 0.5cm">
 			<b>1.44</b></p>
 			<p style="font-weight: normal">20180912</p>
 		</td>
@@ -3701,6 +3728,21 @@ file is a tarball of man pages converted to html by man2html.</p>
 		</td>
 		<td width="236" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 			<a href="p/sg3_utils145_man_html.zip">sg3_utils145_man_html</a></p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="120" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p style="margin-bottom: 0.1cm">
+			<b>1.46</b></p>
+			<p style="font-weight: normal">20210329</p>
+		</td>
+		<td width="233" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+			<a href="p/sg3_utils-1.46mgw32.zip">sg3_utils-1.46mgw32</a></p>
+		</td>
+		<td width="246" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+			<a href="p/sg3_utils-1.46mgw64.zip">sg3_utils-1.46mgw64</a></p>
+		</td>
+		<td width="236" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
+			<a href="p/sg3_utils146_man_html.zip">sg3_utils146_man_html</a></p>
 		</td>
 	</tr>
 </table>
@@ -3792,8 +3834,7 @@ sg_utils tarballs and packages</b></p>
 <br/>
 
 </p>
-<h3 class="western"><a name="__RefHeading___Toc142_3724309425"></a><a name="mozTocId264683"></a>
-Github mirror</h3>
+<h3 class="western">Github mirror</h3>
 <p>The sg3_utils package is developed by the author using subversion.
 Subversion revisions, which are ascending integers, can be seen in
 the ChangeLog file. Many users have asked for git access so Hannes
@@ -3815,7 +3856,6 @@ updates appearing on github. Please report any problems to me or
 report them as an &quot;Issues&quot; on the github reflector.</p>
 <p>Return to <a href="index.html">main</a> page. 
 </p>
-<p align="center">Last updated: 3rd <font color="#000000">September 
-</font>2020</p>
+<p align="center">Last updated: 29th <font color="#000000">March </font>2021</p>
 </body>
 </html>
