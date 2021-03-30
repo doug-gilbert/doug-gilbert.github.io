@@ -1,1231 +1,1573 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
-  <head>
-    <title>The sg_ses utility</title>
-    <meta http-equiv="Content-Type" content="text/html;
-      charset=windows-1252">
-    <meta name="keywords" content="sg_ses, SES, SCSI">
-    <meta name="GENERATOR" content="Mozilla/4.79 [en] (X11; U; Linux
-      2.5.31 i686) [Netscape]">
-  </head>
-  <body bgcolor="#ffffff" background="paper.jpg" vlink="#000080"
-    text="#000000" link="#0000ff" alink="#ff0000">
-    <center>
-      <h1><a class="mozTocH1" name="mozTocId228087"></a> The sg_ses
-        utility<br>
-      </h1>
-    </center>
-    <a href="#Conclusion"></a>
-    <ol id="mozToc">
-      <!--mozToc h1 1 h2 2 h3 3 h4 4 h5 5 h6 6-->
-      <li><a href="#mozTocId228087"> The sg_ses utility </a>
-        <ol>
-          <li><a href="#mozTocId370866">Introduction</a></li>
-          <li><a href="#mozTocId283192">Overview</a></li>
-          <li><a href="#mozTocId352668">Command line options</a></li>
-          <li><a href="#mozTocId352668">Indexing</a></li>
-          <li><a href="#mozTocId807507">Descriptor Names, Device Slot
-              Numbers and SAS Addresses </a></li>
-          <li><a href="#mozTocId57479">clear, get and set</a></li>
-          <li><a href="#mozTocId774345">Record once, analyse often</a></li>
-          <li><a href="#mozTocId395029">Raw page writes</a></li>
-          <li><a href="#mozTocId478955">sg_ses and NVMe</a></li>
-          <li><a href="#mozTocId157981">Conclusion</a></li>
-        </ol>
-      </li>
-    </ol>
-    <h2><a class="mozTocH2" name="mozTocId370866"></a>Introduction</h2>
-    The <span style="font-weight: bold;">sg_ses</span> utility enables
-    a user "to manage and sense the state of the power supplies, cooling
-    devices, displays, indicators, individual drives, and other non-SCSI
-    elements installed in an enclosure". The SCSI Enclosure Services
-    standards (most recent is SES-3&nbsp; T10/BSR INCITS 518) and the
-    latest draft (ses4r01.pdf at <a href="http://www.t10.org/">www.t10.org</a>)
-    describe the format that the <span style="font-weight: bold;">sg_ses</span>
-    utility expects to find in a SES device ("logical unit" or
-    "process"). <br>
-    <br>
-    The <span style="font-weight: bold;">sg_ses</span> utility is found
-    in the <a href="sg3_utils.html">sg3_utils</a> package. The utility
-    was originally written for Linux and has ports to FreeBSD, Solaris
-    and Windows. This page outlines the features of the sg_ses utility
-    version 2.34 found in the <a href="sg3_utils.html">sg3_utils</a>
-    version 1.43 package.<br>
-    <br>
-    The <b>sg_ses_microcode</b> utility was added in the <a
-      href="sg3_utils.html">sg3_utils</a> version 1.40 package. It is
-    designed to download microcode (firmware) to an enclosure and report
-    on that download.
-    <h2><a class="mozTocH2" name="mozTocId283192"></a>Overview</h2>
-    Typically the first problem to solve is finding an Operating System
-    handle for a SES device. SCSI disks are typically easier to find but
-    rarely is a SCSI disk also a SES device (only if the EncServ bit is
-    set in the disk's INQUIRY command response). First let us try the
-    sg_ses utility on a SAS disk (in Linux):<br>
-    <br>
-    <code>$ sg_ses /dev/sdb<br>
-      &nbsp; SEAGATE&nbsp;&nbsp;
-      ST33000650SS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0002<br>
-      &nbsp;&nbsp;&nbsp; disk device (not an enclosure)<br>
-      Supported diagnostic pages:<br>
-      &nbsp; Supported diagnostic pages [sdp] [0x0]<br>
-      &nbsp; Protocol specific (SAS transport) [] [0x3f]<br>
-      &nbsp; Translate address (SBC) [] [0x40]</code><br>
-    <br>
-    Without any options sg_ses reports the names of the supported
-    diagnostic pages. The SAS disk does support some pages but none that
-    belong to the SES standard. On Linux it helps to list all SCSI
-    devices with the <a href="../scsi/lsscsi.html">lsscsi</a> utility
-    (including showing the generic device names with the '<tt>-g</tt>'
-    option; '<tt>modprobe sg</tt>' may be needed if hyphens appear in
-    the last column):<br>
-    <br>
-    <code>$ lsscsi -g<br>
-      [1:0:0:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp;
-      ATA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      ST3320620AS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.AA&nbsp;
-      /dev/sda&nbsp;&nbsp; /dev/sg0<br>
-      [6:0:0:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp; SEAGATE&nbsp;
-      ST33000650SS&nbsp;&nbsp;&nbsp;&nbsp; 0002&nbsp;
-      /dev/sdb&nbsp;&nbsp; /dev/sg1<br>
-      [6:0:1:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp; SEAGATE&nbsp;
-      ST32000444SS&nbsp;&nbsp;&nbsp;&nbsp; 0006&nbsp;
-      /dev/sdc&nbsp;&nbsp; /dev/sg2<br>
-      [6:0:2:0]&nbsp;&nbsp;&nbsp; enclosu Intel&nbsp;&nbsp;&nbsp;
-      RES2SV240&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0600&nbsp;
-      -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /dev/sg3</code><br>
-    <br>
-    The last item is an enclosure and notice that it does not have a
-    disk device node (i.e. there is no <code>/dev/sdd</code>). In Linux
-    the bsg driver could also be used and its device node would be <code>/dev/bsg/6:0:2:0</code>
-    for the enclosure. Now let us try sg_ses on <code>/dev/sg3</code> :<br>
-    <br>
-    <code>$ sg_ses /dev/sg3<br>
-      &nbsp; Intel&nbsp;&nbsp;&nbsp;&nbsp;
-      RES2SV240&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0600<br>
-      Supported diagnostic pages:<br>
-      &nbsp; Supported diagnostic pages [sdp] [0x0]<br>
-      &nbsp; Configuration (SES) [cf] [0x1]<br>
-      &nbsp; Enclosure status/control (SES) [ec,es] [0x2]<br>
-      &nbsp; String In/Out (SES) [str] [0x4]<br>
-      &nbsp; Threshold In/Out (SES) [th] [0x5]<br>
-      &nbsp; Element descriptor (SES) [ed] [0x7]<br>
-      &nbsp; Additional element status (SES-2) [aes] [0xa]<br>
-      &nbsp; Supported SES diagnostic pages (SES-2) [ssp] [0xd]<br>
-      &nbsp; Download microcode (SES-2) [dm] [0xe]<br>
-      &nbsp; Subenclosure nickname (SES-2) [snic] [0xf]</code><br>
-    <br>
-    So now we see several diagnostic pages related to the SES (and
-    SES-2) standard. Of these the most important are the Configuration
-    page and the Enclosure Status/Control page. All the pages referred
-    to below are actually diagnostic pages, so the term diagnostic will
-    be dropped in many case for brevity.<br>
-    <br>
-    Let us assume that a 6-disk SAS/SATA disk array is associated with
-    this SES device. We might suspect the disk on the left of the array
-    is "slot 0" but would like to check before removing the disk. One
-    way to double check is to ask "slot 0" to identify itself by
-    flashing its LED for 10 seconds. This can be done like this:<br>
-    <br>
-    <code>$ sg_ses --dev-slot-num=0 --set=ident /dev/sg3<br>
-      $ sleep 10<br>
-      $ sg_ses --dsn=0 --clear=ident /dev/sg3<br>
-    </code> <br>
-    In the latter invocation '--dsn=0' is a synonym for '<tt>--dev-slot-num=0</tt>'.
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title>The sg_ses utility</title>
+	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
+	<meta name="created" content="00:00:00"/>
+	<meta name="changed" content="2021-03-29T22:30:31.696086372"/>
+	<meta name="keywords" content="sg_ses, SES, SCSI"/>
+	<style type="text/css">
+		@page { size: 21.59cm 27.94cm; margin-left: 2cm; margin-right: 1cm; margin-top: 1cm; margin-bottom: 1cm }
+		p { margin-bottom: 0.25cm; color: #000000; line-height: 115%; background: transparent }
+		h1 { margin-bottom: 0.21cm; color: #000000; background: transparent; page-break-after: avoid }
+		h1.western { font-family: "Liberation Serif", serif; font-size: 24pt; font-weight: bold }
+		h1.cjk { font-family: "Noto Serif CJK SC"; font-size: 24pt; font-weight: bold }
+		h1.ctl { font-family: "Lohit Devanagari"; font-size: 24pt; font-weight: bold }
+		h2 { margin-top: 0.35cm; margin-bottom: 0.21cm; color: #000000; background: transparent; page-break-after: avoid }
+		h2.western { font-family: "Liberation Serif", serif; font-size: 18pt; font-weight: bold }
+		h2.cjk { font-family: "Noto Serif CJK SC"; font-size: 18pt; font-weight: bold }
+		h2.ctl { font-family: "Lohit Devanagari"; font-size: 18pt; font-weight: bold }
+		td p { color: #000000; background: transparent }
+		pre { color: #000000; background: transparent }
+		pre.western { font-family: "Liberation Mono", monospace; font-size: 10pt }
+		pre.cjk { font-family: "Noto Sans Mono CJK SC", monospace; font-size: 10pt }
+		pre.ctl { font-family: "Liberation Mono", monospace; font-size: 10pt }
+		a:link { color: #0000ff; so-language: zxx; text-decoration: underline }
+		a:visited { color: #000080; so-language: zxx; text-decoration: underline }
+		code.western { font-family: "Liberation Mono", monospace }
+		code.cjk { font-family: "Noto Sans Mono CJK SC", monospace }
+		code.ctl { font-family: "Liberation Mono", monospace }
+		tt.western { font-family: "Liberation Mono", monospace }
+		tt.cjk { font-family: "Noto Sans Mono CJK SC", monospace }
+		tt.ctl { font-family: "Liberation Mono", monospace }
+	</style>
+</head>
+<body lang="en-CA" text="#000000" link="#0000ff" vlink="#000080" background="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/wgALCADYANgBAREA/8QAGAABAQEBAQAAAAAAAAAAAAAAAQIAAwb/2gAIAQEAAAAB9z1ybbnhz03OVvQIiULolVueZTsSzTtsIai86M7VEjkoqSsZszzmq0pDquWd0eZTl5Z2mgNVXA5NUnWJi8bVA69UFXIbUxO6EzWikvMnWDN7QRVGKJy6rmWgUink5BZek041QUkumVwtTWmzThaIbl5O6xqmVUYcNkVUTLXQZl2agcGuKamdrqYzUNMbGmrm9iHW8XoSNEYrNzfMLKnpopmJVNqU2nVRtjM1zK2qOkyz0mysbDtow1pL56imtsPPUm5jumh0ubQ1aJti+cOV0hVW40dCKxXOGWnYd0zjSXBeTntNO01VbO257ax0CCFnTZHaZ1u2iUwi27bbadW2xGxts1W222xppxy2zrYpcOCue2uaiUd0edTYx0iemiXpJgmtd85Tr//EAB0QAAEFAQEBAQAAAAAAAAAAAAEQESAwQABQMWD/2gAIAQEAAQUC2PF5CB1nE1ryEmmFOk7mQ2AUlRzwEGudDE5jFkE3sPGtrQpwmDoFPFRaYAI29qjd9QDK/inUZHwBYYNe1bROo/ixMbQEMf/EABQQAQAAAAAAAAAAAAAAAAAAAJD/2gAIAQEABj8CNn//xAAhEAEBAQADAQEBAQEBAQEAAAABABEQITFBUWEgcTChgf/aAAgBAQABPyF76s67vbSzeGZjL7ttjZ1ZMuzGBx0W2d9ywAS75wHfDYQJfyOuCTwG32/qO3hlAsR3bkd9zbbhbrEdy5BLx/W2Xq7vLcIPux+W4WzvAg4A9beXuPLYb2X5YrOBN22pPhJlkDBPVnfcvGrd2Z6zwZ6ONvXcDsAWdyRsJsJkzbvYPsv9u3cDvJgm+T7bLJ1ERf8ALDJnu6+WMvwmzru9/wCSwa8J+XhHbt3bM8ZhrL3PdnVnyDq3u7C2YOuFC3uZ8sYMJbuVXg6X3OAdx3LLBLArbhZB+zdl8v3jOoLNui2Xyz9lhgT8F5PGOEODgG9wd8JwDBOFn7brbez2wgz/ALwy238s+8A+xJZBZZHkTJv26OuF+Fn63vH2e+izJ6v44w+8Yt+m9hJtl8k/t/yOjkn9vO7V4D7HV/2Y6sgXiXI/Y7b5NkmGE/hfbu19YMId+Qdzd/YPNtI/tvUEuW36nudk8jl7eRL3ZBnd82LP2LcnYOpeS7z4t74ZkvXUOrwWQQ4XIWBW/kt28byd+yPLL5P8v0l6hXhxt7Hus+Qf/I4RggzhTLeNLdtneM0n8g6gjvhbV7t1y8d2SdSx5bZrBwy4LLcssjI7utyLbZb1ZrkBw9zxt22xO7PGdxlm2Z1bY2YW5HXd/Edt8s1jPkE2T5BLe8GSy/nsvKwXkudFis+S98B+wd2YXn+QmXUMEuF3/wDs9H9t7l1tveS3vkz22/8AkHC5Lb3HCu3uDOAV7lCVv5eR1wflvwhIe227gWC+8bLwexLLEsd3k9Tq8LByELYuiDWzD/CWS/IHhbtNlucMH3jIIt7j2yDDIgZ/rZ7nqxy1BkHDhwCZlvkxB1B3BdtnH3/DwFn+GU98PttmydcEQf8AgzsH+lD23bCXLd4f5Zwf+elsq+RecLhOxdwKz1H9gvLNeA595WHZ8v8AsfrbC6C3W3J/WXbyH1iPYOF1vLYtlwhV4VgbomW1YNe7fhP5PlrKys7fJV8sPeF3xvV3HRf/2gAIAQEAAAAQgPzz/wCfn/f/APPt/wD7X4/P3/N/bf3u/ft/vW/vmZv/AEDH/wBY+a//AN82x+/++dn9jmd/X0j/AIOAX16AF5vgMfP5DK/2CSp/A2HfwHh/4Awf+AAD/gAQ/IAevyizvu9//8QAGhAAAgIDAAAAAAAAAAAAAAAAARFQYCExgP/aAAgBAQABPxC8pQBBCNIGRhhg44SpbJAFYjkAvIMzAQFBKmwigoNBwFnQ4IAgBQcbAwqFIRSGBilABsH0BAulBIgCCfCwsECWGgOiwMxScxAIZGtJUEFJgYQIQEOIoENO0rwgUwgYahcUKIAIhDCITIQEwgpmQHEGDEioVTsAhEcLABIeQXFAwk0gAKRCGKAHCQgjTCImQAeACzJKQhgUkGEpIAAhQAAwGhZCAmQHBBkxgIJgIARNU//Z" dir="ltr"><h1 class="western" align="center">
+The sg_ses utility</h1>
+<ol>
+	<li><p style="margin-bottom: 0cm"><a name="mozToc"></a><a href="#mozTocId228087">The
+	sg_ses utility </a>
+	</p>
+	<ol>
+		<li><p style="margin-bottom: 0cm"><a href="#mozTocId370866">Introduction</a>
+				</p>
+		<li><p style="margin-bottom: 0cm"><a href="#mozTocId283192">Overview</a>
+				</p>
+		<li><p style="margin-bottom: 0cm"><a href="#mozTocId352668">Command
+		line options</a> 
+		</p>
+		<li><p style="margin-bottom: 0cm"><a href="#mozTocId352668">Indexing</a>
+				</p>
+		<li><p style="margin-bottom: 0cm"><a href="#mozTocId807507">Descriptor
+		Names, Device Slot Numbers and SAS Addresses </a>
+		</p>
+		<li><p style="margin-bottom: 0cm"><a href="#mozTocId57479">clear,
+		get and set</a> 
+		</p>
+		<li><p style="margin-bottom: 0cm"><a href="#mozTocId774345">Record
+		once, analyse often</a> 
+		</p>
+		<li><p style="margin-bottom: 0cm"><a href="#mozTocId395029">Raw
+		page writes</a> 
+		</p>
+		<li><p style="margin-bottom: 0cm"><a href="#mozTocId478955">sg_ses
+		and NVMe</a> 
+		</p>
+		<li><p><a href="#mozTocId157981">Conclusion</a> 
+		</p>
+	</ol>
+</ol>
+<h2 class="western"><a name="mozTocId370866"></a>Introduction</h2>
+<p>The <b>sg_ses</b> utility enables a user &quot;to manage and sense
+the state of the power supplies, cooling devices, displays,
+indicators, individual drives, and other non-SCSI elements installed
+in an enclosure&quot;. The SCSI Enclosure Services standards (most
+recent is SES-3&nbsp; T10/BSR INCITS 518-2018) and the latest draft
+(ses4r05.pdf at <a href="http://www.t10.org/">www.t10.org</a>)
+describe the format that the <b>sg_ses</b> utility expects to find in
+a SES device (&quot;logical unit&quot; or &quot;process&quot;). <br/>
+<br/>
+The
+<b>sg_ses</b> utility is found in the <a href="sg3_utils.html">sg3_utils</a>
+package. The utility was originally written for Linux (including
+Android) and has ports to FreeBSD, Solaris and Windows. This page
+outlines the features of the sg_ses utility version 2.48 found in the
+<a href="sg3_utils.html">sg3_utils</a> version 1.46 package.<br/>
+<br/>
+The
+<b>sg_ses_microcode</b> utility was added in the <a href="sg3_utils.html">sg3_utils</a>
+<font color="#000000">release</font> 1.40 . It is designed to
+download microcode (firmware) to an enclosure and report any errors
+returned by the enclosure. 
+</p>
+<h2 class="western"><a name="mozTocId283192"></a>Overview</h2>
+<p>Typically the first problem to solve is finding an Operating
+System handle for a SES device. SCSI disks are typically easier to
+find but rarely is a SCSI disk also a SES device (only if the EncServ
+bit is set in the disk's INQUIRY command response). First let us try
+the sg_ses utility on a SAS disk (in Linux):<br/>
+<br/>
+<code class="western">$
+sg_ses /dev/sdb<br/>
+&nbsp; SEAGATE&nbsp;&nbsp; ST33000650SS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0002<br/>
+&nbsp;&nbsp;&nbsp; disk device (not an enclosure)<br/>
+Supported
+diagnostic pages:<br/>
+&nbsp; Supported diagnostic pages [sdp]
+[0x0]<br/>
+&nbsp; Protocol specific (SAS transport) [] [0x3f]<br/>
+&nbsp;
+Translate address (SBC) [] [0x40]</code><br/>
+<br/>
+Without any
+options sg_ses reports the names of the supported diagnostic pages.
+The SAS disk does support some pages but none that belong to the SES
+standard. On Linux it helps to list all SCSI devices with the <a href="../scsi/lsscsi.html">lsscsi</a>
+utility (including showing the generic device names with the '<tt class="western">-g</tt>'
+option; '<tt class="western">modprobe sg</tt>' may be needed if
+hyphens appear in the last column):<br/>
+<br/>
+<code class="western">$
+lsscsi -g<br/>
+[1:0:0:0]&nbsp;&nbsp;&nbsp; disk&nbsp;&nbsp;&nbsp;
+ATA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ST3320620AS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+3.AA&nbsp; /dev/sda&nbsp;&nbsp; /dev/sg0<br/>
+[6:0:0:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; SEAGATE&nbsp; ST33000650SS&nbsp;&nbsp;&nbsp;&nbsp;
+0002&nbsp; /dev/sdb&nbsp;&nbsp; /dev/sg1<br/>
+[6:0:1:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; SEAGATE&nbsp; ST32000444SS&nbsp;&nbsp;&nbsp;&nbsp;
+0006&nbsp; /dev/sdc&nbsp;&nbsp; /dev/sg2<br/>
+[6:0:2:0]&nbsp;&nbsp;&nbsp;
+enclosu Intel&nbsp;&nbsp;&nbsp; RES2SV240&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0600&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sg3</code><br/>
+<br/>
+The last item is an enclosure and notice
+that it does not have a disk device node (i.e. there is no <code class="western">/dev/sdd</code>).
+In Linux the bsg driver could also be used and its device node would
+be <code class="western">/dev/bsg/6:0:2:0</code> for the enclosure.
+Now let us try sg_ses on <code class="western">/dev/sg3</code> :<br/>
+<br/>
+<code class="western">$
+sg_ses /dev/sg3<br/>
+&nbsp; Intel&nbsp;&nbsp;&nbsp;&nbsp;
+RES2SV240&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0600<br/>
+Supported diagnostic pages:<br/>
+&nbsp; Supported
+diagnostic pages [sdp] [0x0]<br/>
+&nbsp; Configuration (SES) [cf]
+[0x1]<br/>
+&nbsp; Enclosure status/control (SES) [ec,es] [0x2]<br/>
+&nbsp;
+String In/Out (SES) [str] [0x4]<br/>
+&nbsp; Threshold In/Out (SES)
+[th] [0x5]<br/>
+&nbsp; Element descriptor (SES) [ed] [0x7]<br/>
+&nbsp;
+Additional element status (SES-2) [aes] [0xa]<br/>
+&nbsp; Supported
+SES diagnostic pages (SES-2) [ssp] [0xd]<br/>
+&nbsp; Download
+microcode (SES-2) [dm] [0xe]<br/>
+&nbsp; Subenclosure nickname
+(SES-2) [snic] [0xf]</code><br/>
+<br/>
+So now we see several
+diagnostic pages related to the SES (and SES-2) standard. Of these
+the most important are the Configuration page and the Enclosure
+Status/Control page. All the pages referred to below are actually
+diagnostic pages, so the term diagnostic will be dropped in many case
+for brevity.<br/>
+<br/>
+Let us assume that a 6-disk SAS/SATA disk
+array is associated with this SES device. We might suspect the disk
+on the left of the array is &quot;slot 0&quot; but would like to
+check before removing the disk. One way to double check is to ask
+&quot;slot 0&quot; to identify itself by flashing its LED for 10
+seconds. This can be done like this:<br/>
+<br/>
+<code class="western">$
+sg_ses --dev-slot-num=0 --set=ident /dev/sg3<br/>
+$ sleep 10<br/>
+$
+sg_ses --dsn=0 --clear=ident /dev/sg3<br/>
+</code><br/>
+In the latter
+invocation '--dsn=0' is a synonym for '<tt class="western">--dev-slot-num=0</tt>'.
+Now check the disk on the right (slot 5), this time using shorter
+option variants ('<tt class="western">-x 5</tt>' is equivalent to
+'<tt class="western">--dev-slot-num=5</tt>'):<br/>
+<br/>
+<code class="western">$
+sg_ses -x 5 -S ident /dev/sg3<br/>
+$ sleep 10<br/>
+$ sg_ses -x 5 -C
+ident /dev/sg3</code> <br/>
+<br/>
+Typically there is a lot of
+information held by a SES device divided into pages. Several of those
+pages carry information with a somewhat similar structure to
+relational database tables. To see a lot of information try these
+commands (one after the other):<br/>
+<br/>
+<code class="western">$
+sg_ses --join /dev/sg3<br/>
+$ sg_ses --join --filter /dev/sg3</code><br/>
+<tt class="western">$
+sg_ses -j -ff /dev/sg3</tt><br/>
+<br/>
+The first command will list
+information on all disks, fans, power supplies etc, even for disks
+and fans not installed. The second command attempts to filter out
+some less relevant information. The third command tries harder to
+filter out some less relevant information. 
+</p>
+<h2 class="western"><a name="mozTocId352668"></a>Command line options</h2>
+<p>sg_ses is a command line utility whose syntax varies depending on
+its role. To fetch and then decode (or output in hex or binary) all
+pages, a single page or a field within a page:<br/>
+<br/>
+&nbsp;&nbsp;
+<tt class="western">sg_ses </tt><tt class="western">[--all]
+</tt><tt class="western">[--descriptor=DES] [--dev-slot-num=SN]
+[--eiioe=A_F] [--filter] [--get=STR] [--hex] [--index=IIA | =TIA,II]
+[--inner-hex] [--join] [--maxlen=LEN] [--page=PG] [quiet] [--raw]
+[--readonly] [--sas-addr=SA] [--status] [--verbose] [--warn]
+DEVICE</tt><br/>
+<br/>
+To modify an SES page or a field within it:<br/>
+<br/>
+&nbsp;
+<tt class="western">sg_ses [--byte1=B1] [--clear=STR] [--control]
+[--data=H,H...] [--descriptor=DES] [--dev-slot-num=SN] [--index=IIA |
+=TIA,II] [--mask] [--maxlen=LEN] [--nickname=SEN] [--nickid=SEID]
+[--page=PG] [--sas-addr=SA] [--set=STR] [--verbose] DEVICE</tt><code class="western"><br/>
+</code><br/>
+If
+neither <tt class="western">--clear</tt> nor <tt class="western">--set</tt>
+options are given then the <tt class="western">--control</tt> option
+must be given to modify the state of the enclosure.<br/>
+<br/>
+There
+is also the mode that fetches diagnostic page data from a file rather
+than a DEVICE:<br/>
+<br/>
+&nbsp; <tt class="western">sg_ses
+--data=@FN --status [--raw --raw] &lt;all options from the first form
+above&gt;</tt><br/>
+<br/>
+And that leaves some housekeeping variants
+of which the most interesting is <tt class="western">--enumerate</tt>
+which dumps tables held by this utility. These housekeeping variants
+are:<br/>
+<br/>
+&nbsp;&nbsp; <tt class="western">sg_ses [--enumerate]
+[--help] [--list] [--version]</tt><br/>
+<br/>
+Below is a table of
+sg_ses options sorted alphabetically by their long option name:</p>
+<table width="1503" cellpadding="2" cellspacing="1">
+	<col width="69"/>
 
+	<col width="185"/>
 
+	<col width="1231"/>
 
-    Now check the disk on the right (slot 5), this time using shorter
-    option variants ('<tt>-x 5</tt>' is equivalent to '<tt>--dev-slot-num=5</tt>'):<br>
-    <br>
-    <code>$ sg_ses -x 5 -S ident /dev/sg3<br>
-      $ sleep 10<br>
-      $ sg_ses -x 5 -C ident /dev/sg3</code> <br style="font-family:
-      monospace;">
-    <br>
-    Typically there is a lot of information held by a SES device divided
-    into pages. Several of those pages carry information with a somewhat
-    similar structure to relational database tables. To see a lot of
-    information try these commands (one after the other):<br>
-    <br>
-    <code>$ sg_ses --join /dev/sg3<br>
-      $ sg_ses --join --filter /dev/sg3</code><br>
-    <tt>$ sg_ses -j -ff /dev/sg3</tt><br>
-    <br>
-    The first command will list information on all disks, fans, power
-    supplies etc, even for disks and fans not installed. The second
-    command attempts to filter out some less relevant information. The
-    third command tries harder to filter out some less relevant
-    information.
-    <h2><a class="mozTocH2" name="mozTocId352668"></a>Command line
-      options</h2>
-    sg_ses is a command line utility whose syntax varies depending on
-    its role. To fetch and then decode (or output in hex or binary) a
-    page or a field within it:<br>
-    <br>
-    &nbsp;&nbsp; <tt>sg_ses [--descriptor=DES] [--dev-slot-num=SN]
-      [--eiioe=A_F] [--filter] [--get=STR] [--hex] [--index=IIA |
-      =TIA,II] [--inner-hex] [--join] [--maxlen=LEN] [--page=PG] [quiet]
-      [--raw] [--readonly] [--sas-addr=SA] [--status] [--verbose]
-      [--warn] DEVICE</tt><br>
-    <br>
-    To modify an SES page or a field within it:<br>
-    <br>
-    &nbsp; <tt>sg_ses [--byte1=B1] [--clear=STR] [--control]
-      [--data=H,H...] [--descriptor=DES] [--dev-slot-num=SN]
-      [--index=IIA | =TIA,II] [--mask] [--maxlen=LEN] [--nickname=SEN]
-      [--nickid=SEID] [--page=PG] [--sas-addr=SA] [--set=STR]
-      [--verbose] DEVICE</tt><code><br>
-    </code><br>
-    If neither <tt>--clear</tt> nor <tt>--set</tt> options are given
-    then the <tt>--control</tt> option must be given to modify the
-    state of the enclosure.<br>
-    <br>
-    There is also the mode that fetches diagnostic page data from a file
-    rather than a DEVICE:<br>
-    <br>
-    &nbsp; <tt>sg_ses --data=@FN --status [--raw --raw] &lt;all options
-      from the first form above&gt;</tt><br>
-    <br>
-    And that leaves some housekeeping variants of which the most
-    interesting is <tt>--enumerate</tt> which dumps tables held by this
-    utility. These housekeeping variants are:<br>
-    <br>
-    &nbsp;&nbsp; <tt>sg_ses [--enumerate] [--help] [--list] [--version]</tt><br>
-    <br>
-    Below is a table of sg_ses options sorted alphabetically by their
-    long option name:<br>
-    <span style="font-weight: bold;"><br>
-    </span>
-    <table style="width: 100%; text-align: left;" cellspacing="2"
-      cellpadding="2" border="1">
-      <caption align="bottom"><span style="font-weight: bold;">Table
-          1&nbsp; sg_ses command line options</span><br>
-      </caption> <tbody>
-        <tr>
-          <td style="vertical-align: top;"><span style="font-weight:
-              bold;">short option</span><br>
-          </td>
-          <td style="vertical-align: top;"><span style="font-weight:
-              bold;">long option</span><br>
-          </td>
-          <td style="vertical-align: top;"><span style="font-weight:
-              bold;">Brief description</span><br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;"><tt>-b B1</tt><span
-              style="font-style: italic;"></span><br>
-          </td>
-          <td style="vertical-align: top;"><tt>--byte1=B1</tt><br>
-          </td>
-          <td style="vertical-align: top;">byte 1 (2nd byte) of control
-            page set to B1. Only active with <tt>--control</tt><br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;"><tt>-C STR</tt><br>
-          </td>
-          <td style="vertical-align: top;"><tt>--clear=STR</tt><br>
-          </td>
-          <td style="vertical-align: top;">clear value of field
-            described by <tt>STR</tt>. Requires an indexing option to
-            choose an element.</td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;"><tt>-c</tt><br>
-          </td>
-          <td style="vertical-align: top;"><tt>--control</tt><br>
-          </td>
-          <td style="vertical-align: top;">send control information.
-            That information is provided by <tt>--data=</tt> option<br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;"><tt>-d H,H...</tt></td>
-          <td style="vertical-align: top;"><tt>--data=H,H...</tt><br>
-          </td>
-          <td style="vertical-align: top;">H,H... is a <span
-              style="font-style: italic;"></span>string of ASCII hex
-            bytes for control pages</td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;"><tt>-d -</tt><br>
-          </td>
-          <td style="vertical-align: top;"><tt>--data=-</tt><br>
-          </td>
-          <td style="vertical-align: top;">fetch that string of ASCII
-            hex bytes from stdin (or binary if '<tt>-rr</tt>' is also
-            given)<br>
-          </td>
-        </tr>
-        <tr>
-          <td valign="top"><tt>-d @FN</tt><br>
-          </td>
-          <td valign="top"><tt>--data=@FN</tt><br>
-          </td>
-          <td valign="top">FN is a file name containing ASCII hex bytes
-            (or binary if '<tt>--raw --raw</tt>' is given)<br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;"><tt>-D DES</tt></td>
-          <td style="vertical-align: top;"><tt>--descriptor=DES</tt><br>
-          </td>
-          <td style="vertical-align: top;">for indexing: find element
-            whose Element Descriptor page's name entry matches <tt>DES</tt>.
-            Implies <tt>--join</tt><br>
-          </td>
-        </tr>
-        <tr>
-          <td valign="top"><tt>-x SN</tt><br>
-          </td>
-          <td valign="top"><tt>--dev-slot-num=SN</tt><br>
-            <tt>--dsn=SN</tt><br>
-          </td>
-          <td valign="top">for indexing: find element whose Additional
-            Element status page's device slot number entry matches <tt>SN</tt>.
-            Implies <tt>--join</tt>. Found in sg_ses version 1.79 and
-            later (from sg3_utils version 1.38). The <tt>--dsn</tt>
-            synonym was added in sg_ses version 1.94 .<br>
-          </td>
-        </tr>
-        <tr>
-          <td valign="top"><tt>-E=A_F</tt><br>
-          </td>
-          <td valign="top"><tt>--eiioe=A_F</tt><br>
-          </td>
-          <td valign="top"><tt>A_F</tt> is either '<tt>auto</tt>' or '<tt>force</tt>'.
+	<tr>
+		<td width="69" style="border-top: 1px double #808080; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding: 0.05cm"><p>
+			<b>short option</b></p>
+		</td>
+		<td width="185" style="border-top: 1px double #808080; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding: 0.05cm"><p>
+			<b>long option</b></p>
+		</td>
+		<td width="1231" style="border-top: 1px double #808080; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding: 0.05cm"><p>
+			<b>Brief description</b></p>
+		</td>
+	</tr>
+	<tr>
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><pre class="western"><font size="3" style="font-size: 12pt">-a</font></pre>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><pre class="western"><font size="3" style="font-size: 12pt">--all</font></pre>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			synonym for <font size="3" style="font-size: 12pt">--join</font>
+			which is the closest option to output all information available.
+			Maybe too much</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-b B1</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--byte1=B1</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			byte 1 (2nd byte) of control page set to B1. Only active with
+			<tt class="western">--control</tt></p>
+		</td>
+	</tr>
+	<tr>
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-C STR</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--clear=STR</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			clear value of field described by <tt class="western">STR</tt>.
+			Requires an indexing option to choose an element.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-c</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--control</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			send control information. That information is provided by <tt class="western">--data=</tt>
+			option</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-d H,H...</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--data=H,H...</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			H,H... is a string of ASCII hex bytes for control pages</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-d -</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--data=-</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			fetch that string of ASCII hex bytes from stdin (or binary if
+			'<tt class="western">-rr</tt>' is also given)</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-d @FN</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--data=@FN</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			FN is a file name containing ASCII hex bytes (or binary if '<tt class="western">--raw
+			--raw</tt>' is given). When given any DEVICE supplied on the
+			command line will be ignored and the hex bytes (or raw binary)
+			will be decoded as if they are the contents of diagnostics pages.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-D DES</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--descriptor=DES</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			for indexing: find element whose Element Descriptor page's name
+			entry matches <tt class="western">DES</tt>. Implies <tt class="western">--join</tt></p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-x SN</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--dev-slot-num=SN</tt><br/>
+<tt class="western">--dsn=SN</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			for indexing: find element whose Additional Element status page's
+			device slot number entry matches <tt class="western">SN</tt>.
+			Implies <tt class="western">--join</tt>. Found in sg_ses version
+			1.79 and later (from sg3_utils version 1.38). The <tt class="western">--dsn</tt>
+			synonym was added in sg_ses version 1.94 .</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-E=A_F</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--eiioe=A_F</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">A_F</tt> is either '<tt class="western">auto</tt>'
+			or '<tt class="western">force</tt>'. Prior to the EIIOE bit's
+			introduction in ses3r06 several arrays acted as if this bit was
+			present and set. If '<tt class="western">force</tt>' is given the
+			Additional Element Status page's element index field is treated as
+			if EIIOE=1. If '<tt class="western">auto</tt>' is given a
+			heuristic is used to decide whether to set EIIOE or not. Found in
+			sg_ses version 1.88 and later (from sg3_utils version 1.39). 
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-e</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--enumerate</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			list recognized diagnostic page codes and Element Type names. When
+			used twice lists acronyms for the <tt class="western">--clear</tt>,
+			<tt class="western">--get</tt> and <tt class="western">--set</tt>
+			options. Ignores other options and DEVICE argument</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-f</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--filter</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			reduce the amount of output when displaying pages (e.g. Enclosure
+			Status and the Additional Element Status). Use twice to further
+			reduce output</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-G STR</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--get=STR</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			get value of field described by <tt class="western">STR</tt>.
+			Requires an indexing option to choose an element.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-h</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--help</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			print usage message then exit</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-H</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--hex</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			print the read diagnostic page in hexadecimal. Action varies
+			depending on other options. For example with the <tt class="western">--get=STR</tt>
+			option prints the output value in hex. Use '<tt class="western">-HHH</tt>'
+			or '<tt class="western">-HHHH</tt>' to output ASCII hex suitable
+			for '<tt class="western">--data=@FN</tt>' in a later invocation</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-I IIA</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--index=IIA</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			individual index ('-1' for overall) or Element Type abbreviation
+			(e.g. 'arr'). Range of indexes can also be given (e.g. <tt class="western">--index=3-5</tt>
+			matches array index 3, 4 and 5)</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-I TIA,II</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--index=TIA,II</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">TIA</tt> is Type Header index or Element Type
+			abbreviation; <tt class="western">II</tt> is individual index
+			('-1' for overall)</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><pre class="western"><font size="3" style="font-size: 12pt">-X FN</font></pre>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><pre class="western"><font size="3" style="font-size: 12pt">--inhex=FN</font></pre>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			FN is a file name containing ASCII hex bytes (or binary if '<tt class="western">--raw
+			--raw</tt>' is given). Same as <tt class="western">--data=@FN</tt></p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-i</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--inner-hex</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			decode page and print element(s) in hex</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-j</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--join</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			group (or &quot;join&quot;) Enclosure Status, Element Descriptor
+			and Additional Element Status pages. Use twice to add Threshold In
+			page</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-l</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--list</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			same action as <tt class="western">--enumerate</tt></p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-M</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--mask</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--clear</tt> and <tt class="western">--set</tt>
+			do a read (status element), mask, modify, write cycle attempting
+			to preserve other settings in the element. The mask step zeros
+			parts of the status element that are reserved (or different) in
+			the control element. This option drops the mask step. Prior to&nbsp;
+			sg_ses version 1.99 (in sg3_utils version 1.40), there was no mask
+			step.</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-m LEN</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--maxlen=LEN</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			maximum response length in bytes. Default is 65532 which may be
+			too large for old systems</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-N SEID</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--nickid=SEID</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">SEID</tt> is subenclosure identifier (default:
+			0 (which is primary enclosure))</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-n SEN</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--nickname=SEN</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">SEN</tt> is the new subenclosure nickname</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-p PG</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--page=PG</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			SES diagnostic page code <tt class="western">PG</tt> is an
+			abbreviation or a number in decimal (prefix with '<tt class="western">0x</tt>'
+			(or '<tt class="western">h</tt>' suffix) for hex). Use
+			'<tt class="western">--page=all</tt>' to output all diagnostics
+			pages whose page numbers are 0x2f and lower (i.e. all SES dpages
+			plus page 0x0)</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-q</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--quiet</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			suppress some output messages</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-r</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--raw</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			print status page in ASCII hex suitable for <tt class="western">--data=-</tt>
+			; when used twice outputs page in binary to stdout</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-R</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--readonly</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			open DEVICE read-only (default: open it read-write)</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-A SA</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--sas-addr=SA</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			for indexing: find element whose Additional Element status page's
+			SAS address entry matches <tt class="western">SA</tt>. Will only
+			match device slot and array device slot elements. Implies <tt class="western">--join</tt>
+			. Found in sg_ses version 1.79 and later (from sg3_utils version
+			1.38).</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-S STR</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--set=STR</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			set value of field described by <tt class="western">STR</tt>.
+			Requires an indexing option to choose an element.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-s</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--status</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			fetch status information. The default action when no options given
+			is to display the Supported Diagnostic Pages page. If this is the
+			only option, the action is the same.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-v</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--verbose</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			increase verbosity of output. Use multiple times for more debug
+			information</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-V</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--version</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			print version number and its date then exit</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">-w</tt></p>
+		</td>
+		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<tt class="western">--warn</tt></p>
+		</td>
+		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			warn about join problems and some other issues. Output is sent to
+			stderr</p>
+		</td>
+	</tr>
+</table>
+<p align="center" style="margin-bottom: 0cm"><b>Table 1&nbsp; sg_ses
+command line options</b></p>
+<p><br/>
+DEVICE should be a SCSI device (logical unit) whose INQUIRY
+response has its Peripheral Device Type field set to 13<b>.</b>
+Alternatively it could be another Peripheral Device Type with the
+EncServ bit (also in the INQUIRY response) set. This latter case is
+now rare.<br/>
+<br/>
+The manpage for sg_ses (use '<tt class="western">man
+sg_ses</tt>' at the command prompt) has more details on the command
+line options. For downloading microcode to a SES device, try '<tt class="western">man
+sg_ses_microcode</tt>' for details on its command line options.</p>
+<h2 class="western">Indexing</h2>
+<p>A SES device often contains a daunting amount of information.
+Often we are interested in a single element, for example flashing the
+ident LED on one disk drive carrier prior to replacing it. The sg_ses
+utility uses indexing to pinpoint a single element. Actually the
+single element may be several closely related elements that can be
+viewed as one. Currently one of four indexing methods can be used:</p>
+<ol>
+	<li><p style="margin-bottom: 0cm"><tt class="western">--index=</tt>
+	option, based on the structure outlined in the Configuration page 
+	</p>
+	<li><p style="margin-bottom: 0cm"><tt class="western">--descriptor=DES</tt>
+	where DES matches the Descriptor entry in the Element Descriptor
+	page 
+	</p>
+	<li><p style="margin-bottom: 0cm"><tt class="western">--dev-slot-num=SN</tt>
+	(or <tt class="western">--dsn=SN</tt>) where SN matches the device
+	slot number entry in the Additional Element Status page 
+	</p>
+	<li><p><tt class="western">--sas-addr=SA</tt> where SA matches an
+	SAS address entry in the Additional Element Status page 
+	</p>
+</ol>
+<p style="margin-bottom: 0cm">The first method is low level indexing
+and is described in this section. It can be used to index any element
+provided by the SES device. The final three methods are medium level
+indexing and are described in the next section. The final three
+methods are preferable (i.e. simpler) but require optional support
+from the SES device (e.g. <tt class="western">--descriptor=DES</tt>
+needs the Element Descriptor page with sensible names (e.g.
+unique)).<br/>
+<br/>
+There are two important pages to understand for
+low level indexing: the Configuration page and the Enclosure Status
+page. The Configuration page contains meta-information (information
+about information, similar to a database schema) while the Enclosure
+Status page contains 4-byte &quot;elements&quot;. Amongst other
+things each disk slot in an enclosure has one 4-byte element in the
+Enclosure Status page; and that 4-byte restriction obviously limits
+the amount of information that can be held. So additional information
+is placed in other diagnostic pages that have a same (or similar)
+element order as the Enclosure Status page. Those extra pages are the
+Threshold page (also with 4-byte elements) and the Element Descriptor
+page (which has variable length fields). And there is the Additional
+Element Status page which has fewer elements but the elements it does
+have, correspond to elements in the Enclosure Status page.<br/>
+<br/>
+The
+sg_ses utility uses a two level index or a descriptor name to
+identify a single element within the Enclosure Status page. The first
+level index is a Type Header index or an Element Type abbreviation.
+The second level is an overall element indication (&quot;-1&quot;) or
+an individual element index. All indexes (apart from the overall
+element indication) are origin 0.<br/>
+<br/>
+Below is the Type
+Descriptor Header format taken from a SES-3 draft. There is an array
+of these in the Configuration page.<br/>
+<br/>
+<img src="sg_ses_fg1.png" name="Image1" align="bottom" width="713" height="165" border="0"/>
+</p>
+<p align="justify" style="margin-left: 3.18cm; margin-bottom: 0cm">&nbsp;<b>Figure
+1&nbsp; Taken from ses3r03.pdf at t10.org</b></p>
+<p><br/>
+It looks tempting to use the Element Type (an 8-bit number)
+as an index but the same element type can appear more than once. The
+example that the standard uses is having one &quot;power supply&quot;
+Element Type for 5 volt power supplies and another for 12 volt power
+supplies. So when the Element Type is used as an index it needs a
+sub-index to distinguish such cases. Each Type Descriptor Header has
+a corresponding &quot;overall&quot; element in the Enclosure Status
+page. In addition the Enclosure Status page has &quot;Number of
+possible elements&quot; of &quot;individual&quot; elements; note that
+may be zero. For indexing purposes the &quot;Subenclosure identifier&quot;
+field is ignored as is the &quot;type descriptor text length&quot;
+field.<br/>
+<br/>
+As an example, let us assume a Configuration page
+has the following four Type Descriptor Headers (each number is placed
+in a byte):</p>
+<ul>
+	<li><p style="margin-bottom: 0cm"><font face="monospace">23,3,0,0</font>
+		</p>
+	<li><p style="margin-bottom: 0cm"><font face="monospace">2,2,0,0</font>
+		</p>
+	<li><p style="margin-bottom: 0cm"><font face="monospace">2,1,0,0</font>
+		</p>
+	<li><p><font face="monospace">134,0,0,0</font> 
+	</p>
+</ul>
+<p>The Type Header indexes are 0, 1, 2, 3 respectively; the Element
+Types are Array Device Slot, Power Supply, Power Supply and Vendor
+Specific LED display (element_type=134). The latter Element Type has
+been made up for this example. These four Type Descriptor Headers
+imply ten element instances in the Enclosure Status page: one overall
+instance for each Type Header (4) plus the sum of the &quot;Number of
+possible elements&quot; fields (3+2+1+0=6). The elements instances
+should appear in the order shown in the table below. The various ways
+that sg_ses can index these instances are shown in columns A, B, C,
+D, E and F:</p>
+<table cellpadding="2" cellspacing="2">
+	<tr>
+		<td style="border-top: 1px double #808080; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding: 0.05cm"><p>
+			<b>Element instances</b></p>
+		</td>
+		<td style="border-top: 1px double #808080; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding: 0.05cm"><p>
+			<b>A</b><br/>
+--index=</p>
+		</td>
+		<td style="border-top: 1px double #808080; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding: 0.05cm"><p>
+			<b>B</b><br/>
+--index=</p>
+		</td>
+		<td style="border-top: 1px double #808080; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding: 0.05cm"><p>
+			<b>C</b><br/>
+--index=</p>
+		</td>
+		<td style="border-top: 1px double #808080; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding: 0.05cm"><p>
+			<b>D</b><br/>
+--index=</p>
+		</td>
+		<td style="border-top: 1px double #808080; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding: 0.05cm"><p>
+			<b>E</b><br/>
+--index=</p>
+		</td>
+		<td style="border-top: 1px double #808080; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding: 0.05cm"><p>
+			<b>F</b><br/>
+--index=</p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			Array Device Slot<br/>
+overall element</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0,-1</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			-1</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			arr,-1</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			arr</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			_23,-1</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			_23</p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			Array Device Slot<br/>
+individual element 0</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0,0</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			arr,0</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
 
+			</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			_23,0</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
 
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			Array Device Slot<br/>
+individual element 1</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0,1</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			1</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			arr,1</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
 
-            Prior to the EIIOE bit's introduction in ses3r06 several
-            arrays acted as if this bit was present and set. If '<tt>force</tt>'
-            is given the Additional Element Status page's element index
-            field is treated as if EIIOE=1. If '<tt>auto</tt>' is given
-            a heuristic is used to decide whether to set EIIOE or not.
-            Found in sg_ses version 1.88 and later (from sg3_utils
-            version 1.39). </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;"><tt>-e</tt><tt><span
-                style="font-style: italic;"></span></tt><br>
-          </td>
-          <td style="vertical-align: top;"><tt>--enumerate</tt><br>
-          </td>
-          <td style="vertical-align: top;">list recognized diagnostic
-            page codes and Element Type names. When used twice lists
-            acronyms for the <tt>--clear</tt>, <tt>--get</tt> and <tt>--set</tt>
-            options. Ignores other options and DEVICE argument<br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;"><tt>-f</tt><br>
-          </td>
-          <td style="vertical-align: top;"><tt>--filter</tt><br>
-          </td>
-          <td style="vertical-align: top;">reduce the amount of output
-            when displaying pages (e.g. Enclosure Status and the
-            Additional Element Status). Use twice to further reduce
-            output<br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;"><tt>-G STR</tt><br>
-          </td>
-          <td style="vertical-align: top;"><tt>--get=STR</tt><br>
-          </td>
-          <td style="vertical-align: top;">get value of field described
-            by <tt>STR</tt>. Requires an indexing option to choose an
-            element.<br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;"><tt>-h</tt><br>
-          </td>
-          <td style="vertical-align: top;"><tt>--help</tt><br>
-          </td>
-          <td style="vertical-align: top;">print usage message then exit<br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;"><tt>-H</tt><br>
-          </td>
-          <td style="vertical-align: top;"><tt>--hex</tt><br>
-          </td>
-          <td style="vertical-align: top;">print the read diagnostic
-            page in hexadecimal. Action varies depending on other
-            options. For example with the <tt>--get=STR</tt> option
-            prints the output value in hex. Use '<tt>-HHH</tt>' or '<tt>-HHHH</tt>'
-            to output ASCII hex suitable for '<tt>--data=@FN</tt>' in a
-            later invocation<br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;"><tt>-I IIA</tt><br>
-          </td>
-          <td style="vertical-align: top;"><tt>--index=IIA</tt></td>
-          <td style="vertical-align: top;">individual index ('-1' for
-            overall) or Element Type abbreviation (e.g. 'arr'). Range of
-            indexes can also be given (e.g. <tt>--index=3-5</tt>
-            matches array index 3, 4 and 5)<br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;"><tt>-I TIA,II</tt><br>
-          </td>
-          <td style="vertical-align: top;"><tt>--index=TIA,II</tt><br>
-          </td>
-          <td style="vertical-align: top;"><tt>TIA</tt> is Type Header
-            index or Element Type abbreviation; <tt>II</tt> is
-            individual index ('-1' for overall)<br>
-          </td>
-        </tr>
-        <tr>
-          <td valign="top"><tt>-i</tt><br>
-          </td>
-          <td valign="top"><tt>--inner-hex</tt></td>
-          <td valign="top">decode page and print element(s) in hex</td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;"><tt>-j</tt><br>
-          </td>
-          <td style="vertical-align: top;"><tt>--join</tt><br>
-          </td>
-          <td style="vertical-align: top;">group (or "join") Enclosure
-            Status, Element Descriptor and Additional Element Status
-            pages. Use twice to add Threshold In page<br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;"><tt>-l</tt><br>
-          </td>
-          <td style="vertical-align: top;"><tt>--list</tt><br>
-          </td>
-          <td style="vertical-align: top;">same action as <tt>--enumerate</tt><br>
-          </td>
-        </tr>
-        <tr>
-          <td valign="top"><tt>-M</tt><br>
-          </td>
-          <td valign="top"><tt>--mask</tt><br>
-          </td>
-          <td valign="top"><tt>--clear</tt> and <tt>--set</tt> do a
-            read (status element), mask, modify, write cycle attempting
-            to preserve other settings in the element. The mask step
-            zeros parts of the status element that are reserved (or
-            different) in the control element. This option drops the
-            mask step. Prior to&nbsp; sg_ses version 1.99 (in sg3_utils
-            version 1.40), there was no mask step.<br>
-          </td>
-        </tr>
-        <tr>
-          <td valign="top"><tt>-m LEN</tt></td>
-          <td valign="top"><tt>--maxlen=LEN</tt></td>
-          <td valign="top">maximum response length in bytes. Default is
-            65532 which may be too large for old systems</td>
-        </tr>
-        <tr>
-          <td valign="top"><tt>-N SEID</tt><br>
-          </td>
-          <td valign="top"><tt>--nickid=SEID</tt><br>
-          </td>
-          <td valign="top"><tt>SEID</tt> is subenclosure identifier
-            (default: 0 (which is primary enclosure))<br>
-          </td>
-        </tr>
-        <tr>
-          <td valign="top"><tt>-n SEN</tt></td>
-          <td valign="top"><tt>--nickname=SEN</tt></td>
-          <td valign="top"><tt>SEN</tt> is the new subenclosure nickname</td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;"><tt>-p PG</tt><br>
-          </td>
-          <td style="vertical-align: top;"><tt>--page=PG</tt><br>
-          </td>
-          <td style="vertical-align: top;">SES diagnostic page code <tt>PG</tt>
-            is an abbreviation or a number in decimal (prefix with '<tt>0x</tt>'
-            (or '<tt>h</tt>' suffix) for hex). Use '<tt>--page=all</tt>'
-            to output all diagnostics pages whose page numbers are 0x2f
-            and lower (i.e. all SES dpages plus page 0x0)<br>
-          </td>
-        </tr>
-        <tr>
-          <td valign="top"><tt>-q</tt><br>
-          </td>
-          <td valign="top"><tt>--quiet</tt><br>
-          </td>
-          <td valign="top">suppress some output messages<br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;"><tt>-r</tt><br>
-          </td>
-          <td style="vertical-align: top;"><tt>--raw</tt><br>
-          </td>
-          <td style="vertical-align: top;">print status page in ASCII
-            hex suitable for <tt>--data=-</tt> ; when used twice
-            outputs page in binary to stdout<br>
-          </td>
-        </tr>
-        <tr>
-          <td valign="top"><tt>-R</tt><br>
-          </td>
-          <td valign="top"><tt>--readonly</tt><br>
-          </td>
-          <td valign="top">open DEVICE read-only (default: open it
-            read-write)<br>
-          </td>
-        </tr>
-        <tr>
-          <td valign="top"><tt>-A SA</tt><br>
-          </td>
-          <td valign="top"><tt>--sas-addr=SA</tt><br>
-          </td>
-          <td valign="top">for indexing: find element whose Additional
-            Element status page's SAS address entry matches <tt>SA</tt>.
-            Will only match device slot and array device slot elements.
-            Implies <tt>--join</tt> . Found in sg_ses version 1.79 and
-            later (from sg3_utils version 1.38).</td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;"><tt>-S STR</tt><br>
-          </td>
-          <td style="vertical-align: top;"><tt>--set=STR</tt><br>
-          </td>
-          <td style="vertical-align: top;">set value of field described
-            by <tt>STR</tt>. Requires an indexing option to choose an
-            element.</td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;"><tt>-s</tt><br>
-          </td>
-          <td style="vertical-align: top;"><tt>--status</tt><br>
-          </td>
-          <td style="vertical-align: top;">fetch status information. The
-            default action when no options given is to display the
-            Supported Diagnostic Pages page. If this is the only option,
-            the action is the same.<br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;"><tt>-v</tt><br>
-          </td>
-          <td style="vertical-align: top;"><tt>--verbose</tt><br>
-          </td>
-          <td style="vertical-align: top;">increase verbosity of output.
-            Use multiple times for more debug information<br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;"><tt>-V</tt><br>
-          </td>
-          <td style="vertical-align: top;"><tt>--version</tt><br>
-          </td>
-          <td style="vertical-align: top;">print version number and its
-            date then exit<br>
-          </td>
-        </tr>
-        <tr>
-          <td valign="top"><tt>-w</tt><br>
-          </td>
-          <td valign="top"><tt>--warn</tt><br>
-          </td>
-          <td valign="top">warn about join problems and some other
-            issues. Output is sent to stderr<br>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <br>
-    DEVICE should be a SCSI device (logical unit) whose INQUIRY response
-    has its Peripheral Device Type field set to 13<span
-      style="font-weight: bold;">.</span> Alternatively it could be
-    another Peripheral Device Type with the EncServ bit (also in the
-    INQUIRY response) set. This latter case is now rare.<br>
-    <br>
-    The manpage for sg_ses (use '<tt>man sg_ses</tt>' at the command
-    prompt) has more details on the command line options. For
-    downloading microcode to a SES device, try '<tt>man sg_ses_microcode</tt>'
-    for details on its command line options.<br>
-    <br>
-    <h2><a class="mozTocH2" name="mozTocId352668"></a>Indexing</h2>
-    A SES device often contains a daunting amount of information. Often
-    we are interested in a single element, for example flashing the
-    ident LED on one disk drive carrier prior to replacing it. The
-    sg_ses utility uses indexing to pinpoint a single element. Actually
-    the single element may be several closely related elements that can
-    be viewed as one. Currently one of four indexing methods can be
-    used:<br>
-    <ol>
-      <li><tt>--index=</tt> option, based on the structure outlined in
-        the Configuration page</li>
-      <li><tt>--descriptor=DES</tt> where DES matches the Descriptor
-        entry in the Element Descriptor page</li>
-      <li><tt>--dev-slot-num=SN</tt> (or <tt>--dsn=SN</tt>) where SN
-        matches the device slot number entry in the Additional Element
-        Status page</li>
-      <li><tt>--sas-addr=SA</tt> where SA matches an SAS address entry
-        in the Additional Element Status page</li>
-    </ol>
-    The first method is low level indexing and is described in this
-    section. It can be used to index any element provided by the SES
-    device. The final three methods are medium level indexing and are
-    described in the next section. The final three methods are
-    preferable (i.e. simpler) but require optional support from the SES
-    device (e.g. <tt>--descriptor=DES</tt> needs the Element Descriptor
-    page with sensible names (e.g. unique)).<br>
-    <br>
-    There are two important pages to understand for low level indexing:
-    the Configuration page and the Enclosure Status page. The
-    Configuration page contains meta-information (information about
-    information, similar to a database schema) while the Enclosure
-    Status page contains 4-byte "elements". Amongst other things each
-    disk slot in an enclosure has one 4-byte element in the Enclosure
-    Status page; and that 4-byte restriction obviously limits the amount
-    of information that can be held. So additional information is placed
-    in other diagnostic pages that have a same (or similar) element
-    order as the Enclosure Status page. Those extra pages are the
-    Threshold page (also with 4-byte elements) and the Element
-    Descriptor page (which has variable length fields). And there is the
-    Additional Element Status page which has fewer elements but the
-    elements it does have, correspond to elements in the Enclosure
-    Status page.<br>
-    <br>
-    The sg_ses utility uses a two level index or a descriptor name to
-    identify a single element within the Enclosure Status page. The
-    first level index is a Type Header index or an Element Type
-    abbreviation. The second level is an overall element indication
-    ("-1") or an individual element index. All indexes (apart from the
-    overall element indication) are origin 0.<br>
-    <br>
-    Below is the Type Descriptor Header format taken from a SES-3 draft.
-    There is an array of these in the Configuration page.<br>
-    <br>
-    <img src="sg_ses_fg1.png" alt=""><br>
-    <div style="text-align: justify; margin-left: 120px;">&nbsp;<span
-        style="font-weight: bold;">Figure 1&nbsp; Taken from ses3r03.pdf
-        at t10.org</span><br>
-    </div>
-    <br>
-    It looks tempting to use the Element Type (an 8-bit number) as an
-    index but the same element type can appear more than once. The
-    example that the standard uses is having one "power supply" Element
-    Type for 5 volt power supplies and another for 12 volt power
-    supplies. So when the Element Type is used as an index it needs a
-    sub-index to distinguish such cases. Each Type Descriptor Header has
-    a corresponding "overall" element in the Enclosure Status page. In
-    addition the Enclosure Status page has "Number of possible elements"
-    of "individual" elements; note that may be zero. For indexing
-    purposes the "Subenclosure identifier" field is ignored as is the
-    "type descriptor text length" field.<br>
-    <br>
-    As an example, let us assume a Configuration page has the following
-    four Type Descriptor Headers (each number is placed in a byte):<br>
-    <ul>
-      <li style="font-family: monospace;">23,3,0,0</li>
-      <li style="font-family: monospace;">2,2,0,0</li>
-      <li style="font-family: monospace;">2,1,0,0</li>
-      <li style="font-family: monospace;">134,0,0,0</li>
-    </ul>
-    The Type Header indexes are 0, 1, 2, 3 respectively; the Element
-    Types are Array Device Slot, Power Supply, Power Supply and Vendor
-    Specific LED display (element_type=134). The latter Element Type has
-    been made up for this example. These four Type Descriptor Headers
-    imply ten element instances in the Enclosure Status page: one
-    overall instance for each Type Header (4) plus the sum of the
-    "Number of possible elements" fields (3+2+1+0=6). The elements
-    instances should appear in the order shown in the table below. The
-    various ways that sg_ses can index these instances are shown in
-    columns A, B, C, D, E and F:<br>
-    <br>
-    <table style="width: 100%; text-align: left;" cellspacing="2"
-      cellpadding="2" border="1">
-      <caption align="bottom"><span style="font-weight: bold;">Table
-          2&nbsp; Indexing elements in the Enclosure Status page</span><br>
-      </caption> <tbody>
-        <tr>
-          <td style="vertical-align: top;"><span style="font-weight:
-              bold;">Element instances<br>
-              <br>
-            </span> </td>
-          <td style="vertical-align: top;"><span style="font-weight:
-              bold;">A</span><br>
-            --index=<br>
-          </td>
-          <td style="vertical-align: top;"><span style="font-weight:
-              bold;">B</span><br>
-            --index=<br>
-          </td>
-          <td style="vertical-align: top;"><span style="font-weight:
-              bold;">C</span><br>
-            --index=<br>
-          </td>
-          <td style="vertical-align: top;"><span style="font-weight:
-              bold;">D</span><br>
-            --index=<br>
-          </td>
-          <td style="vertical-align: top;"><span style="font-weight:
-              bold;">E</span><br>
-            --index=<br>
-          </td>
-          <td style="vertical-align: top;"><span style="font-weight:
-              bold;">F</span><br>
-            --index=<br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;">Array Device Slot<br>
-            overall element<br>
-          </td>
-          <td style="vertical-align: top;">0,-1<br>
-          </td>
-          <td style="vertical-align: top;">-1<br>
-          </td>
-          <td style="vertical-align: top;">arr,-1<br>
-          </td>
-          <td style="vertical-align: top;">arr<br>
-          </td>
-          <td style="vertical-align: top;">_23,-1<br>
-          </td>
-          <td style="vertical-align: top;">_23<br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;">Array Device Slot<br>
-            individual element 0<br>
-          </td>
-          <td style="vertical-align: top;">0,0<br>
-          </td>
-          <td style="vertical-align: top;">0<br>
-          </td>
-          <td style="vertical-align: top;">arr,0<br>
-          </td>
-          <td style="vertical-align: top;"><br>
-          </td>
-          <td style="vertical-align: top;">_23,0<br>
-          </td>
-          <td style="vertical-align: top;"><br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;">Array Device Slot<br>
-            individual element 1<span style="font-style: italic;"></span><br>
-          </td>
-          <td style="vertical-align: top;">0,1<br>
-          </td>
-          <td style="vertical-align: top;">1<br>
-          </td>
-          <td style="vertical-align: top;">arr,1<br>
-          </td>
-          <td style="vertical-align: top;"><br>
-          </td>
-          <td style="vertical-align: top;">_23,1<br>
-          </td>
-          <td style="vertical-align: top;"><br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;">Array Device Slot<br>
-            individual element 2<span style="font-style: italic;"></span><span
-              style="font-style: italic;"></span></td>
-          <td style="vertical-align: top;">0,2<br>
-          </td>
-          <td style="vertical-align: top;">2<br>
-          </td>
-          <td style="vertical-align: top;">arr,2<br>
-          </td>
-          <td style="vertical-align: top;"><br>
-          </td>
-          <td style="vertical-align: top;">_23,2<br>
-          </td>
-          <td style="vertical-align: top;"><br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;">Power Supply (5v)<br>
-            overall element<br>
-          </td>
-          <td style="vertical-align: top;">1,-1<br>
-          </td>
-          <td style="vertical-align: top;"><br>
-          </td>
-          <td style="vertical-align: top;">ps,-1<br>
-          </td>
-          <td style="vertical-align: top;">ps<br>
-          </td>
-          <td style="vertical-align: top;">_2,-1<br>
-          </td>
-          <td style="vertical-align: top;">_2<br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;">Power Supply (5v)<br>
-            individual element 0<br>
-          </td>
-          <td style="vertical-align: top;">1,0<br>
-          </td>
-          <td style="vertical-align: top;"><br>
-          </td>
-          <td style="vertical-align: top;">ps,0<br>
-          </td>
-          <td style="vertical-align: top;"><br>
-          </td>
-          <td style="vertical-align: top;">_2,0<br>
-          </td>
-          <td style="vertical-align: top;"><br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;">Power Supply (5v)<br>
-            individual element 1<br>
-          </td>
-          <td style="vertical-align: top;">1,1<br>
-          </td>
-          <td style="vertical-align: top;"><br>
-          </td>
-          <td style="vertical-align: top;">ps,1<br>
-          </td>
-          <td style="vertical-align: top;"><br>
-          </td>
-          <td style="vertical-align: top;">_2,1<br>
-          </td>
-          <td style="vertical-align: top;"><br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;">Power Supply (12v)<br>
-            overall element</td>
-          <td style="vertical-align: top;">2,-1<br>
-          </td>
-          <td style="vertical-align: top;"><br>
-          </td>
-          <td style="vertical-align: top;">ps1,-1<br>
-          </td>
-          <td style="vertical-align: top;">ps1<br>
-          </td>
-          <td style="vertical-align: top;">_2_1,-1<br>
-          </td>
-          <td style="vertical-align: top;">_2_1<br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;">Power Supply (12v)<br>
-            individual element 0</td>
-          <td style="vertical-align: top;">2,0<br>
-          </td>
-          <td style="vertical-align: top;"><br>
-          </td>
-          <td style="vertical-align: top;">ps1,0<br>
-          </td>
-          <td style="vertical-align: top;"><br>
-          </td>
-          <td style="vertical-align: top;">_2_1,0<br>
-          </td>
-          <td style="vertical-align: top;"><br>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top;">Vendor Specific LED display<br>
-            overall element<br>
-          </td>
-          <td style="vertical-align: top;">3,-1<br>
-          </td>
-          <td style="vertical-align: top;"><br>
-          </td>
-          <td style="vertical-align: top;"><br>
-          </td>
-          <td style="vertical-align: top;"><br>
-          </td>
-          <td style="vertical-align: top;">_134,-1<br>
-          </td>
-          <td style="vertical-align: top;">_134<br>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <br>
-    Note that only two columns can index the full ten instances: A and
-    E. The simpler of the two is column A using the Type Header index
-    followed by the individual index and this is the scheme used
-    internally by sg_ses. Column C may be more intuitive but gets a bit
-    messy with the second Power Supply Element Type (i.e. the 12v one)
-    and can't index the Vendor Specific Element Type (i.e. the last
-    row).<br>
-    <br>
-    Numbers shown above are in decimal. Their hexadecimal equivalents
-    may also be given either prefixed with '0x' (or '0X') or with a
-    trailing 'h' (or 'H'). One consideration is that strings like "ah"
-    ('a' in hex (10 in decimal)) appearing in a position that can either
-    be an abbreviation or a number, will be interpreted as an
-    abbreviation. Adding a leading '0' will cause it (e.g. "0ah") to be
-    interpreted as a number.<br>
-    <br>
-    Also see index ranges described at the end of the <a
-      href="#mozTocId57479">clear, get and set</a> section.<br>
-    <h2><a class="mozTocH2" name="mozTocId807507"></a>Descriptor Names,
-      Device Slot Numbers and SAS Addresses<br>
-    </h2>
-    Optionally a SES device may support the Element Descriptor page. If
-    so that page will have the same number of elements as the Enclosure
-    Status page. So it is possible that the descriptor names found in
-    the Element Descriptor page may be used as an alternative to the
-    --index= option discussed in the previous section. The <tt>
-      --descriptor=DES</tt> option was introduced for this purpose.<br>
-    <br>
-    Apart from having a Element Descriptor page, the descriptor names
-    need to be suitable. Some or all of the descriptor names might be
-    empty which does not help indexing. Also the descriptor names might
-    be so long (e.g. including part and serial numbers) as to make them
-    unwieldy as indexes. A simple way to find out is to look at the
-    descriptor names in the Element Descriptor page with:<br>
-    <br>
-    <code>$ sg_ses --page=ed /dev/sg3<br>
-      Element descriptor In diagnostic page:<br>
-      &nbsp; generation code: 0x0<br>
-      &nbsp; element descriptor list (grouped by type):<br>
-      &nbsp;&nbsp;&nbsp; Element type: Array device slot, subenclosure
-      id: 0 [ti=0]<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Overall descriptor:
-      ArrayDevicesInSubEnclsr0<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Element 0 descriptor: ArrayDevice00<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Element 1 descriptor: ArrayDevice01<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Element 2 descriptor: ArrayDevice02<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...</code><br>
-    <br>
-    The above example shows descriptor names suitable for indexing.
-    Given these descriptor names, one would expect these two commands to
-    do the same thing, namely turn on the ident LED on the disk in slot
-    0:<br>
-    <br>
-    <code>$ sg_ses --index=arr,0 --set=ident /dev/sg3<br>
-      $ sg_ses --descriptor=ArrayDevice00 --set=ident /dev/sg3<br>
-    </code><br>
-    If an unrecognized descriptor name is given then response will be
-    like this:<br>
-    <br>
-    <code>$ sg_ses --descriptor=xxx --set=ident /dev/sg3<br>
-      descriptor name: xxx not found (check 'ed' page [0x7])</code><br>
-    <br>
-    A SAS disk or tape can be indexed by its SAS address (also known as
-    its target port identifier in SCSI jargon). SAS disks are typically
-    dual ported and have two target ports whose SAS addresses are
-    usually adjacent values. When a SATA disk is involved, it is usually
-    connected via a SAS expander which typically assigns it an arbitrary
-    "SAS" address. And that arbitrary "SAS" address is typically
-    different from the SATA disk's WWN. One can see that in the
-    following example where the SAS address (<tt>5001517e85c3efe1</tt><tt>)
-    </tt>is surprisingly close to that of the SAS expander (<tt>5001517e85c3efff</tt>).&nbsp;
+			</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			_23,1</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
 
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			Array Device Slot<br/>
+individual element 2</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0,2</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			2</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			arr,2</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
 
+			</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			_23,2</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
 
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			Power Supply (5v)<br/>
+overall element</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			1,-1</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
 
+			</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			ps,-1</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			ps</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			_2,-1</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			_2</p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			Power Supply (5v)<br/>
+individual element 0</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			1,0</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
 
-    If that SATA disk was placed in another slot, the address would
-    probably change (slightly) in sympathy. For indexing based on SAS
-    addresses to work, the Additional Element Status page needs to be
-    present.<br>
-    <br>
-    <tt># sg_ses --sas-addr=5001517e85c3efe1 /dev/sg3</tt><tt><br>
-    </tt><tt></tt><tt>ArrayDevice01 [0,1]&nbsp; Element type: Array
-      device slot</tt><tt><br>
-    </tt><tt>&nbsp; Enclosure Status:</tt><tt><br>
-    </tt><tt>&nbsp;&nbsp;&nbsp; Predicted failure=0, Disabled=0, Swap=0,
-      status: OK</tt><tt><br>
-    </tt><tt>&nbsp;&nbsp;&nbsp; OK=0, Reserved device=0, Hot spare=0,
-      Cons check=0</tt><tt><br>
-    </tt><tt>&nbsp;&nbsp;&nbsp; In crit array=0, In failed array=0,
-      Rebuild/remap=0, R/R abort=0</tt><tt><br>
-    </tt><tt>&nbsp;&nbsp;&nbsp; App client bypass A=0, Do not remove=0,
-      Enc bypass A=0, Enc bypass B=0</tt><tt><br>
-    </tt><tt>&nbsp;&nbsp;&nbsp; Ready to insert=0, RMV=0, Ident=0,
-      Report=0</tt><tt><br>
-    </tt><tt>&nbsp;&nbsp;&nbsp; App client bypass B=0, Fault sensed=0,
-      Fault reqstd=0, Device off=0</tt><tt><br>
-    </tt><tt>&nbsp;&nbsp;&nbsp; Bypassed A=0, Bypassed B=0, Dev bypassed
-      A=0, Dev bypassed B=0</tt><tt><br>
-    </tt><tt>&nbsp; Additional Element Status:</tt><tt><br>
-    </tt><tt>&nbsp;&nbsp;&nbsp; Transport protocol: SAS</tt><tt><br>
-    </tt><tt>&nbsp;&nbsp;&nbsp; number of phys: 1, not all phys: 0,
-      device slot number: 1</tt><tt><br>
-    </tt><tt>&nbsp;&nbsp;&nbsp; phy index: 0</tt><tt><br>
-    </tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; device type: no SAS device
-      attached</tt><tt><br>
-    </tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; initiator port for:</tt><tt><br>
-    </tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; target port for: SATA_device</tt><tt><br>
-    </tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; attached SAS address:
-      0x5001517e85c3efff</tt><tt><br>
-    </tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SAS address:
-      0x5001517e85c3efe1</tt><tt><br>
-    </tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; phy identifier: 0x0</tt><br>
-    <br>
-    The 'attached SAS address' shown above is that of the SAS expander.
-    From the above we can see that the SATA disk is associated with
-    device slot number 1. So the ident flag can be set as follows:<br>
-    <br>
-    <tt># sg_ses --dev-slot-num=1 --set=ident /dev/sg3</tt><br>
-    <br>
-    Device slot numbers describe a position in a disk enclosure. They
-    may also be available in SAS expanders often associated with SES
-    devices. Some SAS-2 and all SAS-3 expanders should report device
-    slot numbers. The number is a 1 byte value from 0 to 255 where 255
-    indicates there is no associated slot. Device slot numbers, if
-    available, will be in the output of the smp_discover utility in the
-    <a href="smp_utils.html">smp_utils</a> package.
-    <h2><a class="mozTocH2" name="mozTocId57479"></a>clear, get and set</h2>
-    These three command line options allow a named field within an
-    element to be fetched or changed. These options can only be used on
-    the Enclosure Status, Element Descriptor, Threshold In (or Out) and
-    the Additional Element Status pages. Since the Element Descriptor
-    and Additional Element Status pages are read-only only the <tt>--get=</tt>
-    option can be used with them.<br>
-    <br>
-    The Enclosure Status and the Enclosure Control pages have the same
-    page number, the difference is that the "Status" page is used for
-    fetching fields (i.e. the current state) while the "Control" page is
-    used for changing fields. Other pages such as the Threshold page use
-    "In" and "Out" in the same way (i.e. "In" to fetch the current
-    state, "Out" to change it).<br>
-    <br>
-    sg_ses attempts to name some often used fields, for example the
-    "ident" field (also known as "locate" by some vendors) found in the
-    Array Device Slot element . In some cases this can be a bit
-    difficult because the naming of a field may differ from one Element
-    Type to another. The "ident" field is in byte 2, bit position 1 and
-    is 1 bit long in the Array Device Slot status element:<br>
-    <br>
-    <img src="sg_ses_fg2.png" alt=""><br>
-    <div style="margin-left: 120px;"><span style="font-weight: bold;">Figure
+			</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			ps,0</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
 
+			</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			_2,0</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
 
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			Power Supply (5v)<br/>
+individual element 1</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			1,1</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
 
+			</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			ps,1</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
 
+			</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			_2,1</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
 
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			Power Supply (12v)<br/>
+overall element</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			2,-1</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
 
+			</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			ps1,-1</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			ps1</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			_2_1,-1</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			_2_1</p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			Power Supply (12v)<br/>
+individual element 0</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			2,0</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
 
+			</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			ps1,0</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
 
+			</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			_2_1,0</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
 
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			Vendor Specific LED display<br/>
+overall element</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			3,-1</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
 
+			</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
 
+			</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
 
-
-        2&nbsp; Taken from ses3r03.pdf at t10.org</span><br>
-    </div>
-    <br>
-    Notice in the corresponding "Control" element that field is called
-    "Rqst Ident". Not a major problem, but the naming discrepancy can be
-    larger for example the "Fault Sensed" field (byte 3, bit 6, 1 bit
-    long) in the Status page has no corresponding field in the Control
-    page. Starting with sg_ses version 1.99 a mask is applied to the
-    status element so that status element bits corresponding to Reserved
-    field in the control element will be zero. For example if "Fault
-    sensed" is set then some SES devices will object to a <tt>--set=ident</tt>
-    because byte 3, bit 6 is reserved in the control element. The prior
-    sg_ses behaviour (i.e. no mask applied) can selected with the <tt>--mask</tt>
-    option.<br>
-    <br>
-    <img src="sg_ses_fg3.png" alt=""><br>
-    <div style="margin-left: 120px;"><span style="font-weight: bold;">Figure
-
-
-
-
-
-
-
-
-
-
-
-
-
-        3&nbsp; Taken from ses3r03.pdf at t10.org</span><br>
-    </div>
-    <br>
-    When using the <tt>--clear</tt>, <tt>--get</tt> and <tt>--set</tt>
-    options, the default page is the Enclosure Status/Control page (the
-    Status page for <tt>--get</tt>, the Control page for <tt>--clear</tt>
-    and <tt>--set</tt>). All of the following invocations attempt to
-    set the "ident" field on the disk in slot 5 and all should cause its
-    LED to flash:<br>
-    <br>
-    <code>$ sg_ses --index=arr,5 --set=ident /dev/sg3<br>
-      $ sg_ses --index=arr,5 --set=ident=1 /dev/sg3<br>
-      $ sg_ses --index=arr,5 --set=ident --page=ec /dev/sg3<br>
-    </code><code>$ sg_ses --index=5 --set=ident /dev/sg3</code><br>
-    <code>$ sg_ses --index=arr,5 --set=2:1 /dev/sg3<br>
-      $ sg_ses --index=arr,5 --set=2:1=1 /dev/sg3<br>
-      $ sg_ses --index=arr,5 --set=2:1:1=1 /dev/sg3</code><br>
-    <br>
-    The latter three invocations use a numerical description of the
-    field whose format is
-    &lt;start_byte&gt;:&lt;start_bit&gt;[:&lt;number_of_bits&gt;] . The
-    &lt;number_of_bits&gt; defaults to 1 when it is not given. To get a
-    listing of the field names supported by sg_ses use the <tt>--enumerate</tt>
-    option twice (or more simply: '<tt>-ee</tt>'). For example:<br>
-    <br>
-    <code>$ sg_ses -ee<br>
-      --clear, --get, --set acronyms for enclosure status/control [0x2]
-      page:<br>
-      &nbsp; ...<br>
-      &nbsp; ident&nbsp; [Device slot] [2:1:1]<br>
-      &nbsp; ident&nbsp; [Array device slot] [2:1:1]<br>
-      &nbsp; ident&nbsp; [Power supply] [1:7:1]<br>
-      &nbsp; ident&nbsp; [Cooling] [1:7:1]<br>
-      &nbsp; ...<br>
-      &nbsp; locate&nbsp; [Device slot] [2:1:1]<br>
-      &nbsp; locate&nbsp; [Array device slot] [2:1:1]<br>
-      &nbsp; locate&nbsp; [Power supply] [1:7:1]<br>
-      &nbsp; </code><code>locate&nbsp; [Cooling] [1:7:1]<br>
-      &nbsp; ...</code><br>
-    <br>
-    Assuming there is only one power supply and it has an "ident" LED
-    then this invocation should cause it to flash:<br>
-    <br>
-    <code>$ sg_ses --index=ps,0 --set=ident /dev/sg3</code><br>
-    <br>
-    Notice that the "ident" field is in a different location in the
-    Power Supply and Cooling Element Types (i.e. byte 1, bit 7) compared
-    to the Device Slot and Array Device Slot Element Types (i.e. byte 2,
-    bit 1).<br>
-    <br>
-    To be absolutely sure of what is written to a control element, the
-    whole 4 bytes (32 bits) can be written explicitly:<br>
-    <br>
-    <tt>$ sg_ses --dsn=3 --set=0:7:32=0x200</tt><tt> /dev/sg3</tt><br>
-    <br>
-    That will set the RQST IDENT bit in the Array device slot control
-    element whose device slot number is 3.<br>
-    <br>
-    From sg3_utils version 1.43 (subversion revision 711) multiple
-    clear, get and set options can appear in one invocation (up to a
-    maximum of 8). They are applied in the order they appear (i.e. left
-    to right) so if they contradict one another, the rightmost is
-    applied last.<br>
-    At the same time, the numeric part of the <tt>--index=</tt>
-    argument was expanded to accept a range. For example:<br>
-    <code><br>
-      $ sg_ses --index=3-5 --set=ident /dev/sg3</code><br>
-    <br>
-    will set the IDENT bit on the (array) indexes 3, 4 and 5.<br>
-    <br>
-    <h2><a name="mozTocId774345" class="mozTocH2"></a>Record once,
-      analyse often</h2>
-    One or more diagnostic pages can be "captured" on a machine
-    controlling or near an enclosure and stored in a file as either
-    ASCII hexadecimal text or binary. Then later, potentially at another
-    location, sg_ses can be run taking that file as input in order to
-    analyse the state of the enclosure when the data was captured.<br>
-    <br>
-    The '-HHH' (or '-HHHH' which adds dpage names as comments) option
-    can be used together with redirection of stdout to capture the state
-    of an enclosure (i.e. read all the SES diagnostic pages). For
-    example:<br>
-    <br>
-    <tt>$ sg_ses --page=all -HHHH /dev/sg3 &gt; enc_stat.hex</tt><br>
-    <br>
-    To capture the equivalent enclosure state in binary:<br>
-    <br>
-    <tt>$ sg_ses --page=all -rr /dev/sg3 &gt; enc_stat.bin</tt><br>
-    <br>
-    Then, at some later time and place, that file can be used by sg_ses
-    to do any operation (that does not attempt to change the state of
-    the enclosure). for example:<br>
-    <br>
-    <tt>$ sg_ses --data=@enc_stat.hex --status --join</tt><br>
-    <br>
-    The equivalent invocation for a binary file is:<br>
-    <br>
-    <tt>$ sg_ses --data=@enc_stat.bin --status -rr&nbsp; --join</tt><br>
-    <br>
-    Note that in "playback" or analyse mode, no device is needed. The
-    --status option needs to be given to stress the the data file is
-    being used for input and not output.<br>
-    <h2><a class="mozTocH2" name="mozTocId395029"></a>Raw page writes</h2>
-    There are six SES diagnostic pages that can be modified:&nbsp;
-    Enclosure Control, Threshold Out, String Out, Subenclosure String
-    Out, Download Microcode Control and Subenclosure Nickname Control.
-    Of those only the Enclosure Control and Threshold Out pages can be
-    modified with the <tt>--set</tt> and <tt>--clear</tt> options as
-    discussed in the previous section. So if we need to change one of
-    the others then an alternative technique is required. However the
-    use of this lower level technique is awkward involving three steps:
-    read, modify then write. Following is an example of changing the
-    String page using the <tt> --raw</tt> and <tt>--control</tt>
-    options.<br>
-    <br>
-    The current String In page can be shown with:<br>
-    <br>
-    <code>$ sg_ses --page=str /dev/bsg/6:0:2:0</code><br>
-    <br>
-    Now the "read" step: the following command will send the contents of
-    the String page (from byte 4 onwards) to stdout. The output will be
-    in ASCII hex with pairs of hex digits representing a byte, 16 pairs
-    per line, space separated. The redirection puts stdout in a file
-    called "t":<br>
-    <br>
-    <code>$ sg_ses --page=str --raw /dev/bsg/6:0:2:0 &gt; t</code><br>
-    <br>
-    Then, perhaps with the aid of the SES-3 document (in SES-3 revision
-    3: section 6.1.6), use your favourite text editor to change t. The
-    changes can be written to the device with:<br>
-    <br>
-    <code>$ sg_ses --page=str --control --data=- /dev/bsg/6:0:2:0 &lt; t</code><br>
-    <br>
-    If the above is successful, the String should have been changed. To
-    check try:<br>
-    <br>
-    <code>$ sg_ses --page=str /dev/bsg/6:0:2:0</code><br>
-    <br>
-    Note that the first four bytes of the fetched pages are not output
-    when the <tt>--raw</tt> option is given. Likewise when the <tt>--control</tt>
-    and <tt>--data</tt> options are given, sg_ses does not expect the
-    first four bytes of the page to be provided. Byte 0 is the page
-    number while bytes 2 and 3 contain the count of following bytes.
-    Byte 1 is usually 0 but in some cases it may not be, hence the <tt>--byte1=B1</tt>
-    option.<br>
-    <br>
-    In the Enclosure Control page the lower 4 bits of byte 1 contain the
-    Info, Non-crit, Crit and Unrecov bit fields. To change these with
-    sg_ses the <tt>--raw</tt> and <tt>--control</tt> technique can be
-    used. Following is an example of setting the Info bit field (and
-    zeroing the other byte 1 bits if they happened to be set):<br>
-    <br>
-    <code>$ sg_ses --page=es --raw /dev/bsg/6:0:2:0 &gt; t<br>
-      $ sg_ses --page=ec --byte1=0x8 </code><code>--control --data=-
-      /dev/bsg/6:0:2:0 &lt; t</code><br>
-    <br>
-    In the Subenclosure String Out, Subenclosure Nickname Control and
-    Download Microcode Control pages, byte 1 is the Subenclosure
-    identifier.<br>
-    <br>
-    To set the Subenclosure nickname, the '<tt>--nickid=SEID</tt>' and '<tt>--nickname=SEN</tt>'
-    options can be used. To download microcode, the sg_ses_microcode
-    utility is recommended.<br>
-    <br>
-    <h2><a name="mozTocId478955" class="mozTocH2"></a>sg_ses and NVMe</h2>
-    The NVME-MI (Management Interface) specification has recently added
-    the MI (Admin) commands: "SES Send" and "SES Receive". These NVMe
-    commands are mirrors of the SCSI SEND DIAGNOSTIC and RECEIVE
-    DIAGNOSTIC RESULTS commands. The purpose of those&nbsp; new NVME-MI
-    commands is to support the SES-3 standard almost "as-is" for NVMe
-    enclosures. Support for this in sg_ses found in sg3_utils version
-    1.43 can be considered beta. sg_ses has been tested successfully on
-    one NVMEoF enclosure.<br>
-    <h2><a class="mozTocH2" name="mozTocId157981"></a>Conclusion</h2>
-    The sg_ses utility was first written in 2004. It has gone through
-    many iterations since then to allow more flexible access (e.g.
-    indexing), track large additions to the SES standards and fix bugs.
-    SAS-2 and SAS-3 expanders tend to have inbuilt SES devices so SES is
-    becoming more common. Many of the improvements to sg_ses are thanks
-    to reports and suggestions from users. Please continue to provide
-    that feedback.<br>
-    <br>
-    <p>Return to <a href="index.html">main</a> page. </p>
-    <center>
-      <p>Last updated: 20th March 2018<br>
-      </p>
-    </center>
-  </body>
+			</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			_134,-1</p>
+		</td>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			_134</p>
+		</td>
+	</tr>
+</table>
+<p align="center" style="margin-bottom: 0cm"><b>Table 2&nbsp;
+Indexing elements in the Enclosure Status page</b></p>
+<p><br/>
+Note that only two columns can index the full ten instances:
+A and E. The simpler of the two is column A using the Type Header
+index followed by the individual index and this is the scheme used
+internally by sg_ses. Column C may be more intuitive but gets a bit
+messy with the second Power Supply Element Type (i.e. the 12v one)
+and can't index the Vendor Specific Element Type (i.e. the last
+row).<br/>
+<br/>
+Numbers shown above are in decimal. Their
+hexadecimal equivalents may also be given either prefixed with '0x'
+(or '0X') or with a trailing 'h' (or 'H'). One consideration is that
+strings like &quot;ah&quot; ('a' in hex (10 in decimal)) appearing in
+a position that can either be an abbreviation or a number, will be
+interpreted as an abbreviation. Adding a leading '0' will cause it
+(e.g. &quot;0ah&quot;) to be interpreted as a number.<br/>
+<br/>
+Also
+see index ranges described at the end of the <a href="#mozTocId57479">clear,
+get and set</a> section.</p>
+<h2 class="western">Descriptor Names, Device Slot Numbers and SAS
+Addresses</h2>
+<p>Optionally a SES device may support the Element Descriptor page.
+If so that page will have the same number of elements as the
+Enclosure Status page. So it is possible that the descriptor names
+found in the Element Descriptor page may be used as an alternative to
+the --index= option discussed in the previous section. The
+<tt class="western">--descriptor=DES</tt> option was introduced for
+this purpose.<br/>
+<br/>
+Apart from having a Element Descriptor page,
+the descriptor names need to be suitable. Some or all of the
+descriptor names might be empty which does not help indexing. Also
+the descriptor names might be so long (e.g. including part and serial
+numbers) as to make them unwieldy as indexes. A simple way to find
+out is to look at the descriptor names in the Element Descriptor page
+with:<br/>
+<br/>
+<code class="western">$ sg_ses --page=ed
+/dev/sg3<br/>
+Element descriptor In diagnostic page:<br/>
+&nbsp;
+generation code: 0x0<br/>
+&nbsp; element descriptor list (grouped by
+type):<br/>
+&nbsp;&nbsp;&nbsp; Element type: Array device slot,
+subenclosure id: 0 [ti=0]<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Overall
+descriptor: ArrayDevicesInSubEnclsr0<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Element 0 descriptor: ArrayDevice00<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Element 1 descriptor: ArrayDevice01<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Element 2 descriptor: ArrayDevice02<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...</code><br/>
+<br/>
+The above example shows descriptor names
+suitable for indexing. Given these descriptor names, one would expect
+these two commands to do the same thing, namely turn on the ident LED
+on the disk in slot 0:<br/>
+<br/>
+<code class="western">$ sg_ses
+--index=arr,0 --set=ident /dev/sg3<br/>
+$ sg_ses
+--descriptor=ArrayDevice00 --set=ident /dev/sg3<br/>
+</code><br/>
+If
+an unrecognized descriptor name is given then response will be like
+this:<br/>
+<br/>
+<code class="western">$ sg_ses --descriptor=xxx
+--set=ident /dev/sg3<br/>
+descriptor name: xxx not found (check 'ed'
+page [0x7])</code><br/>
+<br/>
+A SAS disk or tape can be indexed by
+its SAS address (also known as its target port identifier in SCSI
+jargon). SAS disks are typically dual ported and have two target
+ports whose SAS addresses are usually adjacent values. When a SATA
+disk is involved, it is usually connected via a SAS expander which
+typically assigns it an arbitrary &quot;SAS&quot; address. And that
+arbitrary &quot;SAS&quot; address is typically different from the
+SATA disk's WWN. One can see that in the following example where the
+SAS address (<tt class="western">5001517e85c3efe1) </tt>is
+surprisingly close to that of the SAS expander (<tt class="western">5001517e85c3efff</tt>).&nbsp;
+If that SATA disk was placed in another slot, the address would
+probably change (slightly) in sympathy. For indexing based on SAS
+addresses to work, the Additional Element Status page needs to be
+present.<br/>
+<br/>
+<tt class="western"># sg_ses
+--sas-addr=5001517e85c3efe1 /dev/sg3<br/>
+ArrayDevice01 [0,1]&nbsp;
+Element type: Array device slot<br/>
+&nbsp; Enclosure Status:<br/>
+&nbsp;&nbsp;&nbsp;
+Predicted failure=0, Disabled=0, Swap=0, status: OK<br/>
+&nbsp;&nbsp;&nbsp;
+OK=0, Reserved device=0, Hot spare=0, Cons check=0<br/>
+&nbsp;&nbsp;&nbsp;
+In crit array=0, In failed array=0, Rebuild/remap=0, R/R abort=0<br/>
+&nbsp;&nbsp;&nbsp;
+App client bypass A=0, Do not remove=0, Enc bypass A=0, Enc bypass
+B=0<br/>
+&nbsp;&nbsp;&nbsp; Ready to insert=0, RMV=0, Ident=0,
+Report=0<br/>
+&nbsp;&nbsp;&nbsp; App client bypass B=0, Fault
+sensed=0, Fault reqstd=0, Device off=0<br/>
+&nbsp;&nbsp;&nbsp;
+Bypassed A=0, Bypassed B=0, Dev bypassed A=0, Dev bypassed B=0<br/>
+&nbsp;
+Additional Element Status:<br/>
+&nbsp;&nbsp;&nbsp; Transport
+protocol: SAS<br/>
+&nbsp;&nbsp;&nbsp; number of phys: 1, not all
+phys: 0, device slot number: 1<br/>
+&nbsp;&nbsp;&nbsp; phy index:
+0<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; device type: no SAS device
+attached<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; initiator port
+for:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; target port for:
+SATA_device<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; attached SAS address:
+0x5001517e85c3efff<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SAS address:
+0x5001517e85c3efe1<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; phy
+identifier: 0x0</tt><br/>
+<br/>
+The 'attached SAS address' shown
+above is that of the SAS expander. From the above we can see that the
+SATA disk is associated with device slot number 1. So the ident flag
+can be set as follows:<br/>
+<br/>
+<tt class="western"># sg_ses
+--dev-slot-num=1 --set=ident /dev/sg3</tt><br/>
+<br/>
+Device slot
+numbers describe a position in a disk enclosure. They may also be
+available in SAS expanders often associated with SES devices. Some
+SAS-2 and all SAS-3 expanders should report device slot numbers. The
+number is a 1 byte value from 0 to 255 where 255 indicates there is
+no associated slot. Device slot numbers, if available, will be in the
+output of the smp_discover utility in the <a href="smp_utils.html">smp_utils</a>
+package. 
+</p>
+<h2 class="western">clear, get and set</h2>
+<p style="margin-bottom: 0cm">These three command line options allow
+a named field within an element to be fetched or changed. These
+options can only be used on the Enclosure Status, Element Descriptor,
+Threshold In (or Out) and the Additional Element Status pages. Since
+the Element Descriptor and Additional Element Status pages are
+read-only only the <tt class="western">--get=</tt> option can be used
+with them.<br/>
+<br/>
+The Enclosure Status and the Enclosure Control
+pages have the same page number, the difference is that the &quot;Status&quot;
+page is used for fetching fields (i.e. the current state) while the
+&quot;Control&quot; page is used for changing fields. Other pages
+such as the Threshold page use &quot;In&quot; and &quot;Out&quot; in
+the same way (i.e. &quot;In&quot; to fetch the current state, &quot;Out&quot;
+to change it).<br/>
+<br/>
+sg_ses attempts to name some often used
+fields, for example the &quot;ident&quot; field (also known as
+&quot;locate&quot; by some vendors) found in the Array Device Slot
+element . In some cases this can be a bit difficult because the
+naming of a field may differ from one Element Type to another. The
+&quot;ident&quot; field is in byte 2, bit position 1 and is 1 bit
+long in the Array Device Slot status element:<br/>
+<br/>
+<img src="sg_ses_fg2.png" name="Image2" align="bottom" width="728" height="258" border="0"/>
+</p>
+<p style="margin-left: 3.18cm; margin-bottom: 0cm"><b>Figure 2&nbsp;
+Taken from ses3r03.pdf at t10.org</b></p>
+<p style="margin-bottom: 0cm"><br/>
+Notice in the corresponding
+&quot;Control&quot; element that field is called &quot;Rqst Ident&quot;.
+Not a major problem, but the naming discrepancy can be larger for
+example the &quot;Fault Sensed&quot; field (byte 3, bit 6, 1 bit
+long) in the Status page has no corresponding field in the Control
+page. Starting with sg_ses version 1.99 a mask is applied to the
+status element so that status element bits corresponding to Reserved
+field in the control element will be zero. For example if &quot;Fault
+sensed&quot; is set then some SES devices will object to a
+<tt class="western">--set=ident</tt> because byte 3, bit 6 is
+reserved in the control element. The prior sg_ses behaviour (i.e. no
+mask applied) can selected with the <tt class="western">--mask</tt>
+option.<br/>
+<br/>
+<img src="sg_ses_fg3.png" name="Image3" align="bottom" width="728" height="240" border="0"/>
+</p>
+<p style="margin-left: 3.18cm; margin-bottom: 0cm"><b>Figure 3&nbsp;
+Taken from ses3r03.pdf at t10.org</b></p>
+<p><br/>
+When using the <tt class="western">--clear</tt>, <tt class="western">--get</tt>
+and <tt class="western">--set</tt> options, the default page is the
+Enclosure Status/Control page (the Status page for <tt class="western">--get</tt>,
+the Control page for <tt class="western">--clear</tt> and <tt class="western">--set</tt>).
+All of the following invocations attempt to set the &quot;ident&quot;
+field on the disk in slot 5 and all should cause its LED to flash:<br/>
+<br/>
+<code class="western">$
+sg_ses --index=arr,5 --set=ident /dev/sg3<br/>
+$ sg_ses --index=arr,5
+--set=ident=1 /dev/sg3<br/>
+$ sg_ses --index=arr,5 --set=ident
+--page=ec /dev/sg3<br/>
+$ sg_ses --index=5 --set=ident /dev/sg3</code><br/>
+<code class="western">$
+sg_ses --index=arr,5 --set=2:1 /dev/sg3<br/>
+$ sg_ses --index=arr,5
+--set=2:1=1 /dev/sg3<br/>
+$ sg_ses --index=arr,5 --set=2:1:1=1
+/dev/sg3</code><br/>
+<br/>
+The latter three invocations use a
+numerical description of the field whose format is
+&lt;start_byte&gt;:&lt;start_bit&gt;[:&lt;number_of_bits&gt;] . The
+&lt;number_of_bits&gt; defaults to 1 when it is not given. To get a
+listing of the field names supported by sg_ses use the <tt class="western">--enumerate</tt>
+option twice (or more simply: '<tt class="western">-ee</tt>'). For
+example:<br/>
+<br/>
+<code class="western">$ sg_ses -ee<br/>
+--clear,
+--get, --set acronyms for enclosure status/control [0x2] page:<br/>
+&nbsp;
+...<br/>
+&nbsp; ident&nbsp; [Device slot] [2:1:1]<br/>
+&nbsp; ident&nbsp;
+[Array device slot] [2:1:1]<br/>
+&nbsp; ident&nbsp; [Power supply]
+[1:7:1]<br/>
+&nbsp; ident&nbsp; [Cooling] [1:7:1]<br/>
+&nbsp; ...<br/>
+&nbsp;
+locate&nbsp; [Device slot] [2:1:1]<br/>
+&nbsp; locate&nbsp; [Array
+device slot] [2:1:1]<br/>
+&nbsp; locate&nbsp; [Power supply]
+[1:7:1]<br/>
+&nbsp; locate&nbsp; [Cooling] [1:7:1]<br/>
+&nbsp;
+...</code><br/>
+<br/>
+Assuming there is only one power supply and it
+has an &quot;ident&quot; LED then this invocation should cause it to
+flash:<br/>
+<br/>
+<code class="western">$ sg_ses --index=ps,0
+--set=ident /dev/sg3</code><br/>
+<br/>
+Notice that the &quot;ident&quot;
+field is in a different location in the Power Supply and Cooling
+Element Types (i.e. byte 1, bit 7) compared to the Device Slot and
+Array Device Slot Element Types (i.e. byte 2, bit 1).<br/>
+<br/>
+To
+be absolutely sure of what is written to a control element, the whole
+4 bytes (32 bits) can be written explicitly:<br/>
+<br/>
+<tt class="western">$
+sg_ses --dsn=3 --set=0:7:32=0x200 /dev/sg3</tt><br/>
+<br/>
+That will
+set the RQST IDENT bit in the Array device slot control element whose
+device slot number is 3.<br/>
+<br/>
+From sg3_utils version 1.43
+(subversion revision 711) multiple clear, get and set options can
+appear in one invocation (up to a maximum of 8). They are applied in
+the order they appear (i.e. left to right) so if they contradict one
+another, the rightmost is applied last.<br/>
+At the same time, the
+numeric part of the <tt class="western">--index=</tt> argument was
+expanded to accept a range. For example:<br/>
+<code class="western"><br/>
+$
+sg_ses --index=3-5 --set=ident /dev/sg3</code><br/>
+<br/>
+will set
+the IDENT bit on the (array) indexes 3, 4 and 5.</p>
+<h2 class="western">Record once, analyse often</h2>
+<p>One or more diagnostic pages can be &quot;captured&quot; on a
+machine controlling or near an enclosure and stored in a file as
+either ASCII hexadecimal text or binary. Then later, potentially at
+another location, sg_ses can be run taking that file as input in
+order to analyse the state of the enclosure when the data was
+captured.<br/>
+<br/>
+The '-HHH' (or '-HHHH' which adds dpage names as
+comments) option can be used together with redirection of stdout to
+capture the state of an enclosure (i.e. read all the SES diagnostic
+pages). For example:<br/>
+<br/>
+<tt class="western">$ sg_ses
+--page=all -HHHH /dev/sg3 &gt; enc_stat.hex</tt><br/>
+<br/>
+To
+capture the equivalent enclosure state in binary:<br/>
+<br/>
+<tt class="western">$
+sg_ses --page=all -rr /dev/sg3 &gt; enc_stat.bin</tt><br/>
+<br/>
+Then,
+at some later time and place, that file can be used by sg_ses to do
+any operation (that does not attempt to change the state of the
+enclosure). for example:<br/>
+<br/>
+<tt class="western">$ sg_ses
+--data=@enc_stat.hex --status --join</tt><br/>
+<br/>
+The equivalent
+invocation for a binary file is:<br/>
+<br/>
+<tt class="western">$
+sg_ses --data=@enc_stat.bin --status -rr&nbsp; --join</tt><br/>
+<br/>
+Note
+that in &quot;playback&quot; or analyse mode, no device is needed.
+The --status option needs to be given to stress the the data file is
+being used for input and not output.</p>
+<h2 class="western">Raw page writes</h2>
+<p>There are six SES diagnostic pages that can be modified:&nbsp;
+Enclosure Control, Threshold Out, String Out, Subenclosure String
+Out, Download Microcode Control and Subenclosure Nickname Control. Of
+those only the Enclosure Control and Threshold Out pages can be
+modified with the <tt class="western">--set</tt> and <tt class="western">--clear</tt>
+options as discussed in the previous section. So if we need to change
+one of the others then an alternative technique is required. However
+the use of this lower level technique is awkward involving three
+steps: read, modify then write. Following is an example of changing
+the String page using the <tt class="western">--raw</tt> and
+<tt class="western">--control</tt> options.<br/>
+<br/>
+The current
+String In page can be shown with:<br/>
+<br/>
+<code class="western">$
+sg_ses --page=str /dev/bsg/6:0:2:0</code><br/>
+<br/>
+Now the &quot;read&quot;
+step: the following command will send the contents of the String page
+(from byte 4 onwards) to stdout. The output will be in ASCII hex with
+pairs of hex digits representing a byte, 16 pairs per line, space
+separated. The redirection puts stdout in a file called &quot;t&quot;:<br/>
+<br/>
+<code class="western">$
+sg_ses --page=str --raw /dev/bsg/6:0:2:0 &gt; t</code><br/>
+<br/>
+Then,
+perhaps with the aid of the SES-3 document (in SES-3 revision 3:
+section 6.1.6), use your favourite text editor to change t. The
+changes can be written to the device with:<br/>
+<br/>
+<code class="western">$
+sg_ses --page=str --control --data=- /dev/bsg/6:0:2:0 &lt; t</code><br/>
+<br/>
+If
+the above is successful, the String should have been changed. To
+check try:<br/>
+<br/>
+<code class="western">$ sg_ses --page=str
+/dev/bsg/6:0:2:0</code><br/>
+<br/>
+Note that the first four bytes of
+the fetched pages are not output when the <tt class="western">--raw</tt>
+option is given. Likewise when the <tt class="western">--control</tt>
+and <tt class="western">--data</tt> options are given, sg_ses does
+not expect the first four bytes of the page to be provided. Byte 0 is
+the page number while bytes 2 and 3 contain the count of following
+bytes. Byte 1 is usually 0 but in some cases it may not be, hence the
+<tt class="western">--byte1=B1</tt> option.<br/>
+<br/>
+In the
+Enclosure Control page the lower 4 bits of byte 1 contain the Info,
+Non-crit, Crit and Unrecov bit fields. To change these with sg_ses
+the <tt class="western">--raw</tt> and <tt class="western">--control</tt>
+technique can be used. Following is an example of setting the Info
+bit field (and zeroing the other byte 1 bits if they happened to be
+set):<br/>
+<br/>
+<code class="western">$ sg_ses --page=es --raw
+/dev/bsg/6:0:2:0 &gt; t<br/>
+$ sg_ses --page=ec --byte1=0x8 --control
+--data=- /dev/bsg/6:0:2:0 &lt; t</code><br/>
+<br/>
+In the
+Subenclosure String Out, Subenclosure Nickname Control and Download
+Microcode Control pages, byte 1 is the Subenclosure identifier.<br/>
+<br/>
+To
+set the Subenclosure nickname, the '<tt class="western">--nickid=SEID</tt>'
+and '<tt class="western">--nickname=SEN</tt>' options can be used. To
+download microcode, the sg_ses_microcode utility is recommended.</p>
+<h2 class="western">sg_ses and NVMe</h2>
+<p>The NVME-MI (Management Interface) specification has recently
+added the MI (Admin) commands: &quot;SES Send&quot; and &quot;SES
+Receive&quot;. These NVMe commands are mirrors of the SCSI SEND
+DIAGNOSTIC and RECEIVE DIAGNOSTIC RESULTS commands. The purpose of
+those&nbsp; new NVME-MI commands is to support the SES-3 standard
+almost &quot;as-is&quot; for NVMe enclosures. Support for this in
+sg_ses found in sg3_utils version 1.43 can be considered beta. sg_ses
+has been tested successfully on one NVMEoF enclosure.</p>
+<h2 class="western">Conclusion</h2>
+<p>The sg_ses utility was first written in 2004. It has gone through
+many iterations since then to allow more flexible access (e.g.
+indexing), track large additions to the SES standards and fix bugs.
+SAS-2 and SAS-3 expanders tend to have inbuilt SES devices so SES is
+becoming more common. Many of the improvements to sg_ses are thanks
+to reports and suggestions from users. Please continue to provide
+that feedback.</p>
+<p>Return to <a href="index.html">main</a> page. 
+</p>
+<p align="center">Last updated: 29th March 2021</p>
+</body>
 </html>
