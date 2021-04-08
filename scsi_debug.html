@@ -5,8 +5,9 @@
 	<title>Scsi_debug adapter driver for Linux</title>
 	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2021-02-12T18:00:10.421179273"/>
+	<meta name="changed" content="2021-04-07T21:22:18.112495905"/>
 	<meta name="keywords" content="Linux driver, SCSI, ramdisk"/>
+	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -156,9 +157,9 @@ specifically the tcm_loop driver. In short: if you want create real
 SCSI devices then use the target subsystem; if you want to test or
 break something then read on. At the time of writing, the most recent
 version of this driver is 1.90 which adds the <font color="#006c3b">tur_ms_to_ready</font>
-parameter.</p>
+parameter and supports iopoll/blk_poll()/hipri requests.</p>
 <p>This page describes the driver as found in the Linux kernel
-version 5.9.0 and/or possibly 5.10.0 . Earlier versions of this
+version 5.11.0 and/or possibly 5.12.0 . Earlier versions of this
 driver worked with the Linux kernel 2.6 series. For information about
 the scsi_debug driver found in the lk 2.4 production series see this
 page. A not so ancient, earlier version is <a href="sdebug26.html"><font color="#21409a">here</font></a>
@@ -2818,11 +2819,7 @@ after setting REQ_HIPRI on a request then the SCSI mid-level will
 time-out that request (typically after 60 seconds). Timed out
 commands are logged and appear like this:</p>
 <pre class="western" style="margin-bottom: 0.5cm">sd 6:0:0:0: [sdf] tag#0 FAILED Result: hostbyte=DID_TIME_OUT driverbyte=DRIVER_OK cmd_age=125s</pre><p>
-<br/>
-<br/>
-
-</p>
-<p>usually together with the SCSI command (in hex bytes) that failed.
+usually together with the SCSI command (in hex bytes) that failed.
 Excessive timeouts can lead to SCSI sub-system instability and should
 be avoided, if possible. When simulating a fast device (say with a
 latency of &lt; 50 microseconds) poll based techniques (such as
@@ -2849,8 +2846,8 @@ Linux scsi generic (sg) driver has a new flag: SGV4_FLAG_HIPRI that
 leads to its requests being issued with REQ_HIPRI set. Also the sg
 driver's </span><b>ioctl</b><span style="font-weight: normal">(SG_GET_NUM_WAITING)
 will call blk_poll() if appropriate as will several other user space
-calls (e.g. </span><b>ioctl</b><span style="font-weight: normal">(SG_IO)
-).</span></p>
+calls (e.g.</span><span style="font-weight: normal"> the blocking
+</span><b>ioctl</b><span style="font-weight: normal">(SG_IO) ).</span></p>
 <h2 class="western"><a name="__RefHeading___Toc135_3679520260"></a>Examples</h2>
 <h3 class="western"><a name="__RefHeading___Toc137_3679520260"></a>Basic</h3>
 <p>Since scsi_debug is for testing it seems more useful to build it
@@ -3479,7 +3476,7 @@ with
 additions from<br/>
 Martin K. Petersen &lt;martin dot petersen at
 oracle dot com&gt;</p>
-<p style="margin-left: 8.75cm">Last updated: 12th February 2021 18:00
+<p style="margin-left: 8.75cm">Last updated: 7th April 2021 21:00
 -0500</p>
 </body>
 </html>
