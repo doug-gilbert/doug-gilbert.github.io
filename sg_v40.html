@@ -5,7 +5,7 @@
 	<title>Linux SG driver version 4.0</title>
 	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2021-04-07T20:55:39.657251009"/>
+	<meta name="changed" content="2021-04-08T14:46:29.556984124"/>
 	<meta name="keywords" content="Linux, SCSI, SG_IO, pass-through"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -2040,7 +2040,7 @@ Command or request</h3>
 interchangeably in this driver and its documentation. Strictly
 speaking a <i>command</i> refers to a SCSI command (or more precisely
 a SCSI Command Descriptor Block (cdb)) as documented in the various
-SCSI command set standards available from <a href="http://www.t10.org/">T10</a>
+SCSI command set standards available from <a href="https://www.t10.org/">T10</a>
 . An example of an important one of these is the &quot;SCSI Primary
 Commands - 4&quot; (usually known as: SPC-4). Quite often when a
 document refers to a SCSI command it implicitly also means the
@@ -7233,7 +7233,7 @@ completions and adds new support for aborting a SCSI command that is
 underway.</p>
 <h2 class="western"><a name="__RefHeading___Toc1578_4294551682"></a>17
 Downloads and testing</h2>
-<p>This tarball: <a href="p/sgv4_20210402.tgz">sgv4_2021040</a>2
+<p>This tarball: <a href="p/sgv4_20210402.tgz">sgv4_20210</a><a href="p/sgv4_20210402.tgz">4</a><a href="p/sgv4_20210402.tgz">0</a>2
 contains a README file that outlines what is included. There are
 earlier versions of this driver for the <u>lk5.8</u>, <u>lk5.</u><u>9</u>
 and <u>lk5.</u><u>11rc</u><span style="text-decoration: none"> </span><span style="text-decoration: none">
@@ -7529,11 +7529,13 @@ with 0 suggesting asynchronous mode if it is supported.</p>
 <p style="margin-bottom: 0.4cm">xxxxxxx</p>
 <p style="margin-bottom: 0.4cm">yyyy 
 </p>
-<h2 class="western">18 Other documents</h2>
-<p>The original sg driver documentation is here: <a href="http://www.tldp.org/HOWTO/SCSI-Generic-HOWTO/index.html">SCSI-Generic-HOWTO</a>
+<h2 class="western"><a name="__RefHeading___Toc1580_4294551682"></a>18
+Other documents</h2>
+<p>The original sg driver documentation is here: <a href="https://www.tldp.org/HOWTO/SCSI-Generic-HOWTO/index.html">SCSI-Generic-HOWTO</a>
 and a more recent discussion of <b>ioctl</b>(SG_IO) is here: <a href="sg_io.html">sg_io</a>
 .</p>
-<h2 class="western">19 Conclusion</h2>
+<h2 class="western"><a name="__RefHeading___Toc1582_4294551682"></a>19
+Conclusion</h2>
 <p>The sg v4 driver is designed to be backwardly compatible with the
 v3 driver. This simplest way for an application to find which driver
 version it has is with the <b>ioctl</b>(SG_GET_VERSION_NUM). Removing
@@ -7546,7 +7548,7 @@ apps that use sg driver nodes and check their functionality.</p>
 <p>Return to <a href="index.html">main</a> page. 
 </p>
 <p align="center" style="margin-bottom: 0.1cm">Douglas Gilbert</p>
-<p align="center" style="margin-bottom: 0.1cm">Last updated: 7 April
-2021 21:00</p>
+<p align="center" style="margin-bottom: 0.1cm">Last updated: 8 April
+2021 15:00</p>
 </body>
 </html>
