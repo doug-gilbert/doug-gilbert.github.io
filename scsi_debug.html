@@ -5,8 +5,13 @@
 	<title>Scsi_debug adapter driver for Linux</title>
 	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2021-04-08T14:51:12.054404507"/>
+	<meta name="changed" content="2021-04-16T11:52:27.527706437"/>
 	<meta name="keywords" content="Linux driver, SCSI, ramdisk"/>
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -130,7 +135,7 @@ Scsi_debug adapter driver for Linux</h1>
 <br/>
 
 </p>
-<h2 class="western"><a name="__RefHeading___Toc119_3679520260"></a><a name="__RefHeading___Toc117_1100238797"></a><a name="__RefHeading___Toc469_3114999558"></a><a name="__RefHeading___Toc235_974356461"></a><a name="__RefHeading___Toc293_941978325"></a><a name="mozTocId713269"></a><a name="__RefHeading___Toc145_2530062151"></a>
+<h2 class="western"><a name="__RefHeading___Toc117_1100238797"></a><a name="__RefHeading___Toc119_3679520260"></a><a name="__RefHeading___Toc145_2530062151"></a><a name="mozTocId713269"></a><a name="__RefHeading___Toc293_941978325"></a><a name="__RefHeading___Toc235_974356461"></a><a name="__RefHeading___Toc469_3114999558"></a>
 <b>Introduction</b></h2>
 <p>The scsi_debug adapter driver simulates a variable number of SCSI
 disks, each typically (but not always) sharing a common amount of RAM
@@ -379,8 +384,8 @@ directory.</p>
 		</td>
 		<td width="747" valign="top" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			IO command response delay: units are jiffies (configurable: 1 to
-			10 ms) . 0: no delay, all in one thread; -1: use &quot;hi&quot;
-			tasklet; -2: use normal tasklet</p>
+			10 ms) . 0: no delay, all in one thread; -1: use a workqueue (no
+			delay other than workqueue overhead) to complete each request.</p>
 		</td>
 	</tr>
 	<tr>
@@ -1907,12 +1912,10 @@ parameter and respond immediately: INQUIRY, REPORT LUNS, REQUEST
 SENSE, SYNCHRONIZE CACHE plus various other non &quot;media access&quot;
 commands. TEST UNIT READY is considered a media access command.</p>
 <p>The <font color="#006c3b"><b>delay</b></font> parameter may be set
-to -1 or -2 which uses a kernel tasklet to generate a more or less
-immediate response (but in a different kernel thread). The -1 variant
-schedules a high priority tasklet while -2 schedules a normal
-priority tasklet. Trying to write a new value to <font color="#006c3b"><b>delay</b></font>
-while there are queued command responses may result in an EBUSY
-error.</p>
+to -1 a kernel workqueue is used to generate a more or less immediate
+response (but in a different kernel thread). Trying to write a new
+value to <font color="#006c3b"><b>delay</b></font> while there are
+queued command responses may result in an EBUSY error.</p>
 <p>The <font color="#006c3b"><b>dev_size_mb</b></font> parameter
 allows the user to specify the size of the simulated storage. The
 unit is Mebibytes (each 2**20 bytes and a bit larger than a Megabyte)
@@ -2155,73 +2158,82 @@ flags. Values can be given either in decimal or hex (prefixed by
 The flags supported are: 
 </p>
 <ul>
-	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; 1&nbsp; -&nbsp;
-	&quot;noisy&quot; flag: all calls to entry points of driver are
-	logged. Commands to be executed are shown in hex. Additional
+	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; <font face="Liberation Serif, serif">1&nbsp;
+	-&nbsp; &quot;noisy&quot; flag: all calls to entry points of driver
+	are logged. Commands to be executed are shown in hex. Additional
 	information such as check conditions, command aborts and resets are
-	logged</p>
-	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; 2&nbsp; -&nbsp;
-	&quot;medium error&quot; flag: simulates a SCSI MEDIUM ERROR when
-	LBA <font color="#006c3b"><b>medium_error_start</b></font> (default:
-	0x1234 (4660 in decimal)) is read. The following <font color="#006c3b"><b>medium_error_count</b></font>
-	blocks (default: 10 blocks) less 1 also yield a medium error.</p>
-	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; 4&nbsp; -&nbsp;
-	ignores &quot;nth&quot; command causing a timeout in the SCSI
-	mid-level 
+	logged</font></p>
+	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; <font face="Liberation Serif, serif">2&nbsp;
+	-&nbsp; &quot;medium error&quot; flag: simulates a SCSI MEDIUM ERROR
+	when LBA </font><font color="#006c3b"><font face="Liberation Serif, serif"><b>medium_error_start</b></font></font>
+	<font face="Liberation Serif, serif">(default: 0x1234 (4660 in
+	decimal)) is read. The following </font><font color="#006c3b"><font face="Liberation Serif, serif"><b>medium_error_count</b></font></font>
+	<font face="Liberation Serif, serif">blocks (default: 10 blocks)
+	less 1 also yield a medium error.</font></p>
+	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; <font face="Liberation Serif, serif">4&nbsp;
+	-&nbsp; ignores &quot;nth&quot; command causing a timeout in the
+	SCSI mid-level </font>
 	</p>
-	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; 8&nbsp; -&nbsp;
-	causes &quot;nth&quot; READ or WRITE command to yield a
-	RECOVERED_ERROR. 
+	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; <font face="Liberation Serif, serif">8&nbsp;
+	-&nbsp; causes &quot;nth&quot; READ or WRITE command to yield a
+	RECOVERED_ERROR. </font>
 	</p>
-	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; 0x10 -&nbsp;
-	causes &quot;nth&quot; command to yield an ABORTED_COMMAND (ack/nak
-	timeout) which is a transport error. 
+	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; <font face="Liberation Serif, serif">0x10
+	-&nbsp; causes &quot;nth&quot; command to yield an ABORTED_COMMAND
+	(ack/nak timeout) which is a transport error. </font>
 	</p>
-	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; 0x20 -&nbsp;
-	causes &quot;nth&quot; READ or WRITE command to yield an
+	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; <font face="Liberation Serif, serif">0x20
+	-&nbsp; causes &quot;nth&quot; READ or WRITE command to yield an
 	ABORTED_COMMAND (logical block guard check failed), nominally a DIF
-	(Protection Information) error 
+	(Protection Information) error </font>
 	</p>
-	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; 0x40 -&nbsp;
-	causes &quot;nth&quot; READ or WRITE command to yield an
+	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; <font face="Liberation Serif, serif">0x40
+	-&nbsp; causes &quot;nth&quot; READ or WRITE command to yield an
 	ABORTED_COMMAND (logical block guard check failed), nominally a DIX
-	error 
+	error </font>
 	</p>
-	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; 0x80 -&nbsp;
-	ignores &quot;nth&quot; media access command causing a timeout 
+	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; <font face="Liberation Serif, serif">0x80
+	-&nbsp; ignores &quot;nth&quot; media access command causing a
+	timeout </font>
 	</p>
-	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; 0x100 - causes
-	&quot;nth&quot; READ command to yield half the data it was requested
-	to read 
+	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; <font face="Liberation Serif, serif">0x100
+	- causes &quot;nth&quot; READ command to yield half the data it was
+	requested to read </font>
 	</p>
-	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; 0x200 - log
-	generation of TASK SET FULL and host busy plus changes to queue
-	depth and type 
+	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; <font face="Liberation Serif, serif">0x200
+	- log generation of TASK SET FULL and host busy plus changes to
+	queue depth and type </font>
 	</p>
-	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; 0x400 - if
-	<font color="#006c3b">max_queue</font> is exceeded yield a TEST SET
-	FULL (default: host busy) 
+	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; <font face="Liberation Serif, serif">0x400
+	- if </font><font color="#006c3b"><font face="Liberation Serif, serif">max_queue</font></font>
+	<font face="Liberation Serif, serif">is exceeded yield a TEST SET
+	FULL (default: host busy) </font>
 	</p>
-	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; 0x800 - causes
-	&quot;nth&quot; command whose queue_depth is at it maximum value to
-	yield a status of TASK SET FULL 
+	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; <font face="Liberation Serif, serif">0x800
+	- causes &quot;nth&quot; command whose queue_depth is at it maximum
+	value to yield a status of TASK SET FULL </font>
 	</p>
-	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; 0x1000 - set
-	WCE field in the caching page to 0 (default WCE=1) 
+	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; <font face="Liberation Serif, serif">0x1000
+	- set WCE field in the caching page to 0 (default WCE=1) </font>
 	</p>
-	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; 0x2000 - log
-	only abort commands and the various levels of reset 
+	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; <font face="Liberation Serif, serif">0x2000
+	- log only abort commands and the various levels of reset </font>
 	</p>
-	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; 0x4000 - used
-	together with the noisy flag (1) to suppress the logging of cdb_s;
-	additional information (if any) is still logged. 
+	<li><p style="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; <font face="Liberation Serif, serif">0x4000
+	- used together with the noisy flag (1) to suppress the logging of
+	cdb_s; additional information (if any) is still logged. </font>
 	</p>
 	<li><p style="margin-bottom: 0cm; line-height: 100%">&nbsp;&nbsp;&nbsp;
-	0x8000 - causes &quot;nth&quot; command to yield a &quot;host busy&quot;
-	(mid-level sent <code class="western">SCSI_MLQUEUE_HOST_BUSY)</code></p>
-	<li><p style="margin-bottom: 0cm; line-height: 100%"><code class="western"><font face="Liberation Serif, serif">0x10000
-	- causes</font></code><code class="western"> </code><code class="western"><font face="Liberation Serif, serif">&quot;nth&quot;
-	command to be aborted (via a call to block layer)</font></code></p>
+	<font face="Liberation Serif, serif">0x8000 - causes &quot;nth&quot;
+	command to yield a &quot;host busy&quot; (mid-level sent
+	</font><code class="western"><font face="Liberation Serif, serif">SCSI_MLQUEUE_HOST_BUSY).
+	Note, if things are working properly, the mid-level will just
+	re-submit that command.</font></code></p>
+	<li><p style="margin-bottom: 0cm; line-height: 100%"><code class="western">&nbsp;
+	</code><code class="western"><font face="Liberation Serif, serif">0x10000
+	- causes &quot;nth&quot; command to be aborted (via a call to the
+	block layer). This is only active for workqueues (i.e. when
+	</font></code><code class="western"><font color="#006c3b"><font face="Liberation Serif, serif"><b>delay</b></font></font></code><code class="western"><font face="Liberation Serif, serif">=-1).</font></code></p>
 </ul>
 <p><br/>
 <br/>
@@ -2796,7 +2808,7 @@ and this leads to a device size 128 MiB with 13 <i>sequential write
 </i><i><u>required</u></i> zones in addition to the 3 conventional
 zones requested, for a total of 16 zones, each 8 MiB long. The
 maximum number of open zones is 8.</p>
-<h2 class="western"><a name="__RefHeading___Toc133_3679520260"></a>iopoll/blk_poll</h2>
+<h2 class="western">iopoll/blk_poll</h2>
 <p>This driver supports iopoll/blk_poll() in version 1.90 and later.
 It does this by defining the mq_poll() callback. This driver notices
 the REQ_HIPRI setting on an incoming request which is the block
@@ -2846,8 +2858,8 @@ driver's </span><b>ioctl</b><span style="font-weight: normal">(SG_GET_NUM_WAITIN
 will call blk_poll() if appropriate as will several other user space
 calls (e.g.</span> <span style="font-weight: normal">the blocking
 </span><b>ioctl</b><span style="font-weight: normal">(SG_IO) ).</span></p>
-<h2 class="western"><a name="__RefHeading___Toc135_3679520260"></a>Examples</h2>
-<h3 class="western"><a name="__RefHeading___Toc137_3679520260"></a>Basic</h3>
+<h2 class="western">Examples</h2>
+<h3 class="western">Basic</h3>
 <p>Since scsi_debug is for testing it seems more useful to build it
 as a module rather than build it into the kernel. Some parameters
 cannot be changed once the scsi_debug driver is running. So if it is
@@ -2941,8 +2953,7 @@ directory that has the form<tt class="western">
 device listed by <b>lsscsi</b>.<tt class="western"> </tt>This sysfs
 directory contains many important SCSI device parameters some of
 which can be modified.</p>
-<h3 class="western"><a name="__RefHeading___Toc139_3679520260"></a>Adding
-and removing hosts and devices</h3>
+<h3 class="western">Adding and removing hosts and devices</h3>
 <p>Individual devices can be removed via sysfs and the mid-level by
 writing any value into the &quot;delete&quot; member in the sysfs
 directory corresponding to the scsi device. Given these devices:</p>
@@ -2968,21 +2979,27 @@ command:</p>
 The three numbers in the &quot;echo&quot; are channel number, target
 number and lun, respectively. Wildcards (hyphen: &quot;-&quot;) can
 be given for any or all of the three numbers.</p>
-<pre class="western"><font face="monospace"># echo 3 &gt; </font><tt class="western"><font face="monospace">/sys/bus/pseudo/drivers/scsi_debug/</font></tt><tt class="western"><font color="#006c3b"><font face="monospace">max_luns</font></font></tt>
-<font face="monospace"># echo 2 &gt; </font><tt class="western"><font face="monospace">/sys/bus/pseudo/drivers/scsi_debug/</font></tt><tt class="western"><font color="#006c3b"><font face="monospace">num_tgts</font></font></tt>
-<tt class="western"><font face="monospace"># echo &quot;0 - -&quot; &gt; </font></tt><font face="monospace">/sys/class/scsi_host/host7/scan</font>
+<pre class="western"><font face="Liberation Mono, monospace"># echo 3 &gt; </font><tt class="western"><font face="Liberation Mono, monospace">/sys/bus/pseudo/drivers/scsi_debug/</font></tt><tt class="western"><font color="#006c3b"><font face="Liberation Mono, monospace">max_luns</font></font></tt>
+<font face="Liberation Mono, monospace"># echo 2 &gt; </font><tt class="western"><font face="Liberation Mono, monospace">/sys/bus/pseudo/drivers/scsi_debug/</font></tt><tt class="western"><font color="#006c3b"><font face="Liberation Mono, monospace">num_tgts</font></font></tt>
+<tt class="western"><font face="Liberation Mono, monospace"># echo &quot;0 - -&quot; &gt; </font></tt><font face="Liberation Mono, monospace">/sys/class/scsi_host/host7/scan</font>
 
-# lsscsi
-[0:0:0:0] disk SEAGATE ST200FM0073 0A04 /dev/sda 
-[4:0:0:0] disk ATA ST3160812AS D /dev/sdb 
-[7:0:0:0] disk Linux scsi_debug 0184 /dev/sdc 
-[7:0:0:1] disk Linux scsi_debug 0184 /dev/sdd 
-[7:0:0:2] disk Linux scsi_debug 0184 /dev/sde 
-[7:0:1:0] disk Linux scsi_debug 0184 /dev/sdf 
-[7:0:1:1] disk Linux scsi_debug 0184 /dev/sdg 
-[7:0:1:2] disk Linux scsi_debug 0184 /dev/sdh
-The '<tt class="western">echo &quot;0 - -&quot; &gt; scan</tt>' line above added five devices: <font face="monospace">/dev/sdd</font> to <font face="monospace">/dev/sdh</font> .</pre><p>
-Extra hosts can be added and removed from the scsi_debug driver as
+<font face="Liberation Mono, monospace"># lsscsi</font>
+<font face="Liberation Mono, monospace">[0:0:0:0] disk SEAGATE ST200FM0073 0A04 /dev/sda </font>
+<font face="Liberation Mono, monospace">[4:0:0:0] disk ATA ST3160812AS D /dev/sdb </font>
+<font face="Liberation Mono, monospace">[7:0:0:0] disk Linux scsi_debug 0184 /dev/sdc </font>
+<font face="Liberation Mono, monospace">[7:0:0:1] disk Linux scsi_debug 0184 /dev/sdd </font>
+<font face="Liberation Mono, monospace">[7:0:0:2] disk Linux scsi_debug 0184 /dev/sde </font>
+<font face="Liberation Mono, monospace">[7:0:1:0] disk Linux scsi_debug 0184 /dev/sdf </font>
+<font face="Liberation Mono, monospace">[7:0:1:1] disk Linux scsi_debug 0184 /dev/sdg </font>
+<font face="Liberation Mono, monospace">[7:0:1:2] disk Linux scsi_debug 0184 /dev/sdh</font></pre><p style="margin-bottom: 0cm; line-height: 100%; background: transparent">
+The '<tt class="western">echo &quot;0 - -&quot; &gt; scan</tt>' line
+above added five devices: <font face="monospace">/dev/sdd</font> to
+<font face="monospace">/dev/sdh</font> .</p>
+<p style="margin-bottom: 0cm; line-height: 100%; background: transparent">
+<br/>
+
+</p>
+<p>Extra hosts can be added and removed from the scsi_debug driver as
 follows:</p>
 <pre class="western"><tt class="western"># cd /sys/bus/pseudo/drivers/scsi_debug</tt>
 <tt class="western"># echo 1 &gt; </tt><tt class="western"><font color="#006c3b">add_host</font></tt><tt class="western">  # add a new host (after the existing hosts)</tt>
@@ -3012,8 +3029,7 @@ loaded. Two strategies can be used:</p>
 <p>Even though the scsi_debug can create ten thousand or more
 devices, it doesn't mean that the scsi mid-level, sd, sg, the block
 layer and various other kernel components will handle it gracefully.</p>
-<h3 class="western"><a name="__RefHeading___Toc141_3679520260"></a>Mode
-pages</h3>
+<h3 class="western">Mode pages</h3>
 <p>The supported mode pages are listed following the MODE SENSE entry
 in the supported commands sections above. Prior to version 1.80, when
 a mode page is read no block descriptor is included in the response.
@@ -3032,7 +3048,7 @@ pages can be modified:</p>
 <p>The saved pages are not supported, reflecting that the scsi_debug
 driver has only volatile storage. All fields can be changed, only
 those fields indicated above have side effects.</p>
-<h3 class="western"><a name="__RefHeading___Toc143_3679520260"></a>per_host_store</h3>
+<h3 class="western">per_host_store</h3>
 <p>Various users have asked for <i>each</i> scsi_debug device (i.e.
 &quot;Logical Unit&quot; (LU) in SCSI parlance) to have its own ram
 or backing store rather than all devices sharing the same ram. The
@@ -3078,7 +3094,7 @@ parameter is toggled (i.e. first written to 1 then written to 0) then
 the number of stores is shrunk to one, and all hosts (i.e. the same
 number of hosts present before the toggle) will share the one
 remaining store.</p>
-<h3 class="western"><a name="__RefHeading___Toc145_3679520260"></a>VERIFY</h3>
+<h3 class="western">VERIFY</h3>
 <p>Having more than one store, allows more thorough testing of copy
 operations. If the source and destination of a copy are on different
 stores owned by this driver, then just like a &quot;real&quot; copy,
@@ -3207,8 +3223,7 @@ This also demonstrates that request sharing works (since sgh_dd uses
 request sharing by default) when both file descriptors (i.e. the one
 associated with if=/dev/sg0 and the other associated with
 of=/dev/sg0) are opened on the <i>same</i> sg device.</p>
-<h3 class="western"><a name="__RefHeading___Toc147_3679520260"></a>ZBC
-test scripts</h3>
+<h3 class="western">ZBC test scripts</h3>
 <p>The following test script is found in the libzbc package that may
 need to be built before running it. The latest source can be found
 at:</p>
@@ -3217,25 +3232,25 @@ The build sequence should be: 'cd &lt;libzbc_root_directory&gt; ;
 ./autogen.sh ; ./configure --with-test ; make ; make install' with
 the 'make install' probably needing root permissions. To run the
 test, starting from the same directory:</p>
-<pre class="western"># modprobe scsi_debug <font color="#006c3b"><font face="monospace">max_luns</font></font>=1 <font color="#006c3b">sector_size</font>=512 <font color="#006c3b">zbc</font>=managed <font color="#006c3b">zone_size_mb</font>=8 <font color="#006c3b">zone_nr_conv</font>=3
-# lsscsi -g
-&lt; to see where the ZBC SCSI Generic device has &quot;landed&quot;, say /dev/sg1 &gt;
-# cd test
-# # ./zbc_test.sh /dev/sg1
-Executing section 00 - command completion tests...
-    00.010: REPORT_ZONES command completion...                                            [Passed]
-    00.011: REPORT_ZONES (partial bit) command completion...                              [Passed]
-    00.012: REPORT_ZONES (reporting option 0x10) command completion...                    [Passed]
-    00.013: REPORT_ZONES (reporting option 0x11) command completion...                    [Passed]
-    00.014: REPORT_ZONES (reporting option 0x3F) command completion...                    [Passed]
-    00.020: OPEN_ZONE command completion...                                               [Passed]
-...
-    02.073: WRITE implicit open to full...                                                [Passed]
-    02.074: WRITE closed to implicit open...                                              [Passed]
-    02.075: WRITE closed to full...                                                       [Passed]
-    02.076: WRITE explicit open to explicit open...                                       [Passed]
-    02.077: WRITE explicit open to full...                                                [Passed]
-    02.078: WRITE full to full...                                                         [Passed]</pre><p>
+<pre class="western"><font face="Liberation Mono, monospace"># modprobe scsi_debug <font color="#006c3b">max_luns</font>=1 <font color="#006c3b">sector_size</font>=512 <font color="#006c3b">zbc</font>=managed <font color="#006c3b">zone_size_mb</font>=8 <font color="#006c3b">zone_nr_conv</font>=3</font>
+<font face="Liberation Mono, monospace"># lsscsi -g</font>
+<font face="Liberation Mono, monospace">&lt; to see where the ZBC SCSI Generic device has &quot;landed&quot;, say /dev/sg1 &gt;</font>
+<font face="Liberation Mono, monospace"># cd test</font>
+<font face="Liberation Mono, monospace"># # ./zbc_test.sh /dev/sg1</font>
+<font face="Liberation Mono, monospace">Executing section 00 - command completion tests...</font>
+    <font face="Liberation Mono, monospace">00.010: REPORT_ZONES command completion...                                            [Passed]</font>
+    <font face="Liberation Mono, monospace">00.011: REPORT_ZONES (partial bit) command completion...                              [Passed]</font>
+    <font face="Liberation Mono, monospace">00.012: REPORT_ZONES (reporting option 0x10) command completion...                    [Passed]</font>
+    <font face="Liberation Mono, monospace">00.013: REPORT_ZONES (reporting option 0x11) command completion...                    [Passed]</font>
+    <font face="Liberation Mono, monospace">00.014: REPORT_ZONES (reporting option 0x3F) command completion...                    [Passed]</font>
+    <font face="Liberation Mono, monospace">00.020: OPEN_ZONE command completion...                                               [Passed]</font>
+<font face="Liberation Mono, monospace">...</font>
+    <font face="Liberation Mono, monospace">02.073: WRITE implicit open to full...                                                [Passed]</font>
+    <font face="Liberation Mono, monospace">02.074: WRITE closed to implicit open...                                              [Passed]</font>
+    <font face="Liberation Mono, monospace">02.075: WRITE closed to full...                                                       [Passed]</font>
+    <font face="Liberation Mono, monospace">02.076: WRITE explicit open to explicit open...                                       [Passed]</font>
+    <font face="Liberation Mono, monospace">02.077: WRITE explicit open to full...                                                [Passed]</font>
+    <font face="Liberation Mono, monospace">02.078: WRITE full to full...                                                         [Passed]</font></pre><p>
 All tests should show &quot;Passed&quot; (although some are N/A (not
 applicable)).</p>
 <p>There is another test that can be run that relies on the zonefs
@@ -3249,23 +3264,23 @@ should also be loaded (if not several tests will be skipped). This
 test runs using a normal SCSI block device (e.g. /dev/sdb) rather
 than a SCSI Generic device (e.g. /dev/sg1) as shown in the above
 test. To run the zonefs test:</p>
-<pre class="western"># modprobe scsi_debug <font color="#006c3b"><font face="monospace">max_luns</font></font>=1 <font color="#006c3b">sector_size</font>=512 <font color="#006c3b">zbc</font>=managed <font color="#006c3b">zone_size_mb</font>=8 <font color="#006c3b">zone_nr_conv</font>=3
-# lsscsi -s
-&lt; to see where the ZBC device has &quot;landed&quot;, say /dev/sdc &gt;
-# cd &lt;dir_with_zonefs-tools&gt;/tests
-# # ./zonefs-tests.sh /dev/sdc
-zonefs-tests on /dev/sdc:
-   16 zones (3 conventional zones, 13 sequential zones)
-   16384 512B sectors per zone (8 MiB)
-Running tests
-  Test 0010:  mkzonefs (options)                                   ... PASS
-  Test 0011:  mkzonefs (force format)                              ... PASS
-....
-  Test 0087:  Sequential file append (async)                       ... PASS
-  Test 0088:  Sequential file random read                          ... PASS
-  Test 0089:  Sequential file mmap read/write                      ... PASS
+<pre class="western"><font face="Liberation Mono, monospace"># modprobe scsi_debug <font color="#006c3b">max_luns</font>=1 <font color="#006c3b">sector_size</font>=512 <font color="#006c3b">zbc</font>=managed <font color="#006c3b">zone_size_mb</font>=8 <font color="#006c3b">zone_nr_conv</font>=3</font>
+<font face="Liberation Mono, monospace"># lsscsi -s</font>
+<font face="Liberation Mono, monospace">&lt; to see where the ZBC device has &quot;landed&quot;, say /dev/sdc &gt;</font>
+<font face="Liberation Mono, monospace"># cd &lt;dir_with_zonefs-tools&gt;/tests</font>
+<font face="Liberation Mono, monospace"># # ./zonefs-tests.sh /dev/sdc</font>
+<font face="Liberation Mono, monospace">zonefs-tests on /dev/sdc:</font>
+   <font face="Liberation Mono, monospace">16 zones (3 conventional zones, 13 sequential zones)</font>
+   <font face="Liberation Mono, monospace">16384 512B sectors per zone (8 MiB)</font>
+<font face="Liberation Mono, monospace">Running tests</font>
+  <font face="Liberation Mono, monospace">Test 0010:  mkzonefs (options)                                   ... PASS</font>
+  <font face="Liberation Mono, monospace">Test 0011:  mkzonefs (force format)                              ... PASS</font>
+<font face="Liberation Mono, monospace">....</font>
+  <font face="Liberation Mono, monospace">Test 0087:  Sequential file append (async)                       ... PASS</font>
+  <font face="Liberation Mono, monospace">Test 0088:  Sequential file random read                          ... PASS</font>
+  <font face="Liberation Mono, monospace">Test 0089:  Sequential file mmap read/write                      ... PASS</font>
 
-44 / 44 tests passed</pre><p>
+<font face="Liberation Mono, monospace">44 / 44 tests passed</font></pre><p>
 The author found with Ubuntu 18.04 LTS the mount command was too old
 (from util-linux 2.31.1) but all was well on Debian 10.3 and Ubuntu
 19.10 . To make the test more thorough either 'random=1' could be
@@ -3281,8 +3296,7 @@ between 0 and 1 milliseconds. For asynchronously run commands,
 &quot;random=1&quot; will lead to out-of-order completions. For
 example if A, B, C commands are submitted in that order, they may
 well complete in the A, C, B order.</p>
-<h3 class="western"><a name="__RefHeading___Toc149_3679520260"></a>REPORT
-LUNS Well Known LU</h3>
+<h3 class="western">REPORT LUNS Well Known LU</h3>
 <p>There are two techniques for discovering the luns that a SCSI
 target supports. The first (and oldest) is based sending commands
 like INQUIRY and REPORT LUNS to lun 0 (i.e. the LUN whose value is
@@ -3292,29 +3306,29 @@ units&quot;, specifically the REPORT LUNS well known logical unit. If
 present it must support the INQUIRY, REPORT LUNS, REQUEST SENSE and
 TEST UNIT READY commands. Simulating one with scsi_debug is somewhat
 contorted:</p>
-<pre class="western"><font face="monospace"># modprobe scsi_debug </font><font color="#006c3b"><font face="monospace">no_lun_0</font></font><font face="monospace">=1 </font><font color="#006c3b"><font face="monospace">max_luns</font></font><font face="monospace">=2</font>
-#
-# lsscsi -g
-[0:0:0:0] disk ATA INTEL SSDSC2BW18 DC32 /dev/sda /dev/sg0 
-[3:0:0:1] disk Linux scsi_debug 0184 /dev/sdb /dev/sg1
-#
-# lsscsi --hosts
-[0] ahci 
-[1] ahci 
-[2] ahci 
-[3] scsi_debug
-#
+<pre class="western"><font face="Liberation Mono, monospace"># modprobe scsi_debug <font color="#006c3b">no_lun_0</font>=1 <font color="#006c3b">max_luns</font>=2</font>
+<font face="Liberation Mono, monospace">#</font>
+<font face="Liberation Mono, monospace"># lsscsi -g</font>
+<font face="Liberation Mono, monospace">[0:0:0:0] disk ATA INTEL SSDSC2BW18 DC32 /dev/sda /dev/sg0 </font>
+<font face="Liberation Mono, monospace">[3:0:0:1] disk Linux scsi_debug 0184 /dev/sdb /dev/sg1</font>
+<font face="Liberation Mono, monospace">#</font>
+<font face="Liberation Mono, monospace"># lsscsi --hosts</font>
+<font face="Liberation Mono, monospace">[0] ahci </font>
+<font face="Liberation Mono, monospace">[1] ahci </font>
+<font face="Liberation Mono, monospace">[2] ahci </font>
+<font face="Liberation Mono, monospace">[3] scsi_debug</font>
+<font face="Liberation Mono, monospace">#</font>
 
-# ## Pick the host number corresponding to scsi_debug (i.e. &quot;3&quot;)
-# ## The host number is also the first number in the tuple (i.e. &quot;3&quot; in [3:0:0:1]).
-#
-<font face="monospace"># cd /sys/class/scsi_host/host3</font>
-# echo &quot;- - 49409&quot; &gt; scan
-#
-# lsscsi -g
-[0:0:0:0] disk ATA INTEL SSDSC2BW18 DC32 /dev/sda /dev/sg0 
-[3:0:0:1] disk Linux scsi_debug 0184 /dev/sdb /dev/sg1 
-<font face="monospace">[3:0:0:49409]wlun Linux scsi_debug 0184 - /dev/sg2</font></pre><p>
+<font face="Liberation Mono, monospace"># ## Pick the host number corresponding to scsi_debug (i.e. &quot;3&quot;)</font>
+<font face="Liberation Mono, monospace"># ## The host number is also the first number in the tuple (i.e. &quot;3&quot; in [3:0:0:1]).</font>
+<font face="Liberation Mono, monospace">#</font>
+<font face="Liberation Mono, monospace"># cd /sys/class/scsi_host/host3</font>
+<font face="Liberation Mono, monospace"># echo &quot;- - 49409&quot; &gt; scan</font>
+<font face="Liberation Mono, monospace">#</font>
+<font face="Liberation Mono, monospace"># lsscsi -g</font>
+<font face="Liberation Mono, monospace">[0:0:0:0] disk ATA INTEL SSDSC2BW18 DC32 /dev/sda /dev/sg0 </font>
+<font face="Liberation Mono, monospace">[3:0:0:1] disk Linux scsi_debug 0184 /dev/sdb /dev/sg1 </font>
+<font face="Liberation Mono, monospace">[3:0:0:49409]wlun Linux scsi_debug 0184 - /dev/sg2</font></pre><p>
 The scsi_debug driver needed to be told that it had <font color="#006c3b">no_lun_0</font>
 so it started generating luns at 1 ([3:0:0:1]) and then the scsi
 sub-system needed to be told to scan specifically for lun 49409
@@ -3324,8 +3338,7 @@ specific. In the case of the scsi_debug driver it has a magic
 transport (bus) called &quot;pseudo&quot; which does the right thing.
 Apart from target discovery, the scsi_debug driver tries to simulate
 SAS devices, see the next section.</p>
-<h3 class="western"><a name="__RefHeading___Toc151_3679520260"></a>SAS
-personality</h3>
+<h3 class="western">SAS personality</h3>
 <p>The scsi_debug driver has a Serial Attached SCSI (SAS)
 personality. For any application that cares, it looks like a dual
 ported SAS disk accessed via the primary port (relative target port
@@ -3413,52 +3426,52 @@ Notice that the above implies that the INQUIRY was sent via port 1
 specific port phy control and discover mode subpage [0x19,0x1] has
 target port/phy SAS addresses that correspond to the SCSI ports VPD
 page:</p>
-<pre class="western"><font face="monospace"># sdparm -t sas -p pcd -l /dev/sda</font>
- <font face="monospace">/dev/sda: Linux scsi_debug 0004</font>
- <font face="monospace">Direct access device specific parameters: WP=0 DPOFUA=0</font>
-<font face="monospace">port: phy control and discover (SAS) mode page:</font>
- <font face="monospace">PPID_1 6 [cha: n, def: 6] Port's (transport) protocol identifier</font>
- <font face="monospace">NOP 2 [cha: n, def: 2] Number of phys</font>
- <font face="monospace">PHID 0 [cha: n, def: 0] Phy identifier</font>
- <font face="monospace">ADT 1 [cha: n, def: 1] Attached device type</font>
- <font face="monospace">NPLR 9 [cha: n, def: 9] Negotiated physical link rate</font>
- <font face="monospace">ASIP 1 [cha: n, def: 1] Attached SSP initiator port</font>
- <font face="monospace">ATIP 0 [cha: n, def: 0] Attached STP initiator port</font>
- <font face="monospace">AMIP 0 [cha: n, def: 0] Attached SMP initiator port</font>
- <font face="monospace">ASTP 0 [cha: n, def: 0] Attached SSP target port</font>
- <font face="monospace">ATTP 0 [cha: n, def: 0] Attached STP target port</font>
- <font face="monospace">AMTP 0 [cha: n, def: 0] Attached SMP target port</font>
- <font face="monospace">SASA 0x52222220000007ce [cha: n, def:0x52222220000007ce] SAS address</font>
- <font face="monospace">ASASA 0x5111111000000001 [cha: n, def:0x5111111000000001] Attached SAS address</font>
- <font face="monospace">APHID 2 [cha: n, def: 2] Attached phy identifier</font>
- <font face="monospace">PMILR 8 [cha: n, def: 8] Programmed minimum link rate</font>
- <font face="monospace">HMILR 8 [cha: n, def: 8] Hardware minimum link rate</font>
- <font face="monospace">PMALR 9 [cha: n, def: 9] Programmed maximum link rate</font>
- <font face="monospace">HMALR 9 [cha: n, def: 9] Hardware maximum link rate</font>
- <font face="monospace">2_PHID 1 [cha: n, def: 1] Phy identifier</font>
- <font face="monospace">2_ADT 1 [cha: n, def: 1] Attached device type</font>
- <font face="monospace">2_NPLR 9 [cha: n, def: 9] Negotiated physical link rate</font>
- <font face="monospace">2_ASIP 1 [cha: n, def: 1] Attached SSP initiator port</font>
- <font face="monospace">2_ATIP 0 [cha: n, def: 0] Attached STP initiator port</font>
- <font face="monospace">2_AMIP 0 [cha: n, def: 0] Attached SMP initiator port</font>
- <font face="monospace">2_ASTP 0 [cha: n, def: 0] Attached SSP target port</font>
- <font face="monospace">2_ATTP 0 [cha: n, def: 0] Attached STP target port</font>
- <font face="monospace">2_AMTP 0 [cha: n, def: 0] Attached SMP target port</font>
- <font face="monospace">2_SASA 0x52222220000007cf [cha: n, def:0x52222220000007cf] SAS address</font>
- <font face="monospace">2_ASASA 0x5111111000000001 [cha: n, def:0x5111111000000001] Attached SAS address</font>
- <font face="monospace">2_APHID 3 [cha: n, def: 3] Attached phy identifier</font>
- <font face="monospace">2_PMILR 8 [cha: n, def: 8] Programmed minimum link rate</font>
- <font face="monospace">2_HMILR 8 [cha: n, def: 8] Hardware minimum link rate</font>
- <font face="monospace">2_PMALR 9 [cha: n, def: 9] Programmed maximum link rate</font>
- <font face="monospace">2_HMALR 9 [cha: n, def: 9] Hardware maximum link rate</font></pre><p>
+<pre class="western"><font face="Liberation Mono, monospace"># sdparm -t sas -p pcd -l /dev/sda</font>
+ <font face="Liberation Mono, monospace">/dev/sda: Linux scsi_debug 0004</font>
+ <font face="Liberation Mono, monospace">Direct access device specific parameters: WP=0 DPOFUA=0</font>
+<font face="Liberation Mono, monospace">port: phy control and discover (SAS) mode page:</font>
+ <font face="Liberation Mono, monospace">PPID_1 6 [cha: n, def: 6] Port's (transport) protocol identifier</font>
+ <font face="Liberation Mono, monospace">NOP 2 [cha: n, def: 2] Number of phys</font>
+ <font face="Liberation Mono, monospace">PHID 0 [cha: n, def: 0] Phy identifier</font>
+ <font face="Liberation Mono, monospace">ADT 1 [cha: n, def: 1] Attached device type</font>
+ <font face="Liberation Mono, monospace">NPLR 9 [cha: n, def: 9] Negotiated physical link rate</font>
+ <font face="Liberation Mono, monospace">ASIP 1 [cha: n, def: 1] Attached SSP initiator port</font>
+ <font face="Liberation Mono, monospace">ATIP 0 [cha: n, def: 0] Attached STP initiator port</font>
+ <font face="Liberation Mono, monospace">AMIP 0 [cha: n, def: 0] Attached SMP initiator port</font>
+ <font face="Liberation Mono, monospace">ASTP 0 [cha: n, def: 0] Attached SSP target port</font>
+ <font face="Liberation Mono, monospace">ATTP 0 [cha: n, def: 0] Attached STP target port</font>
+ <font face="Liberation Mono, monospace">AMTP 0 [cha: n, def: 0] Attached SMP target port</font>
+ <font face="Liberation Mono, monospace">SASA 0x52222220000007ce [cha: n, def:0x52222220000007ce] SAS address</font>
+ <font face="Liberation Mono, monospace">ASASA 0x5111111000000001 [cha: n, def:0x5111111000000001] Attached SAS address</font>
+ <font face="Liberation Mono, monospace">APHID 2 [cha: n, def: 2] Attached phy identifier</font>
+ <font face="Liberation Mono, monospace">PMILR 8 [cha: n, def: 8] Programmed minimum link rate</font>
+ <font face="Liberation Mono, monospace">HMILR 8 [cha: n, def: 8] Hardware minimum link rate</font>
+ <font face="Liberation Mono, monospace">PMALR 9 [cha: n, def: 9] Programmed maximum link rate</font>
+ <font face="Liberation Mono, monospace">HMALR 9 [cha: n, def: 9] Hardware maximum link rate</font>
+ <font face="Liberation Mono, monospace">2_PHID 1 [cha: n, def: 1] Phy identifier</font>
+ <font face="Liberation Mono, monospace">2_ADT 1 [cha: n, def: 1] Attached device type</font>
+ <font face="Liberation Mono, monospace">2_NPLR 9 [cha: n, def: 9] Negotiated physical link rate</font>
+ <font face="Liberation Mono, monospace">2_ASIP 1 [cha: n, def: 1] Attached SSP initiator port</font>
+ <font face="Liberation Mono, monospace">2_ATIP 0 [cha: n, def: 0] Attached STP initiator port</font>
+ <font face="Liberation Mono, monospace">2_AMIP 0 [cha: n, def: 0] Attached SMP initiator port</font>
+ <font face="Liberation Mono, monospace">2_ASTP 0 [cha: n, def: 0] Attached SSP target port</font>
+ <font face="Liberation Mono, monospace">2_ATTP 0 [cha: n, def: 0] Attached STP target port</font>
+ <font face="Liberation Mono, monospace">2_AMTP 0 [cha: n, def: 0] Attached SMP target port</font>
+ <font face="Liberation Mono, monospace">2_SASA 0x52222220000007cf [cha: n, def:0x52222220000007cf] SAS address</font>
+ <font face="Liberation Mono, monospace">2_ASASA 0x5111111000000001 [cha: n, def:0x5111111000000001] Attached SAS address</font>
+ <font face="Liberation Mono, monospace">2_APHID 3 [cha: n, def: 3] Attached phy identifier</font>
+ <font face="Liberation Mono, monospace">2_PMILR 8 [cha: n, def: 8] Programmed minimum link rate</font>
+ <font face="Liberation Mono, monospace">2_HMILR 8 [cha: n, def: 8] Hardware minimum link rate</font>
+ <font face="Liberation Mono, monospace">2_PMALR 9 [cha: n, def: 9] Programmed maximum link rate</font>
+ <font face="Liberation Mono, monospace">2_HMALR 9 [cha: n, def: 9] Hardware maximum link rate</font></pre><p>
 Other supported mode pages can be accessed in a similar way by the
 <a href="sdparm.html">sdparm</a> utility. Note that transport
 specific mode pages need the transport identified: hence the '-t sas'
 option above.</p>
-<h2 class="western"><a name="__RefHeading___Toc153_3679520260"></a>Downloads</h2>
+<h2 class="western">Downloads</h2>
 <p>There is nothing to download, see
 &lt;linux_kernel_source&gt;/drivers/scsi/scsi_debug.c .</p>
-<h2 class="western"><a name="__RefHeading___Toc155_3679520260"></a>Conclusion</h2>
+<h2 class="western">Conclusion</h2>
 <p>Hopefully the design of the scsi_debug driver lends itself to many
 extensions. If you think that you have a useful extension that others
 may be interested in, please contact the linux-scsi list or the
@@ -3474,7 +3487,7 @@ with
 additions from<br/>
 Martin K. Petersen &lt;martin dot petersen at
 oracle dot com&gt;</p>
-<p style="margin-left: 8.75cm">Last updated: 8th April 2021 15:00
--0500</p>
+<p style="margin-left: 8.75cm">Last updated: 16th April 2021 12:00
+-0400</p>
 </body>
 </html>
