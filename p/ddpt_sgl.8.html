@@ -1,0 +1,563 @@
+Content-type: text/html; charset=UTF-8
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DDPT_SGL</TITLE>
+</HEAD><BODY>
+<H1>DDPT_SGL</H1>
+Section: DDPT (8)<BR>Updated: April 2021<BR><A HREF="#index">Index</A>
+<A HREF="../index.html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+ddpt_sgl - helper for ddpt utility's scatter gather lists
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>ddpt_sgl</B>
+
+[<I>--action=ACT</I>] [<I>--a-sgl=SGL</I>] [<I>--b-sgl=SGL</I>]
+[<I>--chs=CHS</I>] [<I>--degen=DV</I>] [<I>--document</I>]
+[<I>--elem=SE[,LE]</I>] [<I>--extension=FNE</I>] [<I>--flexible</I>]
+[<I>--help</I>] [<I>--hex</I>] [<I>--iaf=IAF</I>] [<I>--index=IA</I>]
+[<I>--interleave=IL</I>] [<I>--non-overlap</I>] [<I>--out=O_SGL</I>]
+[<I>--quiet</I>] [<I>--round=RB</I>] [<I>--sort-cmp=SC</I>]
+[<I>--stats</I>] [<I>--verbose</I>] [<I>--version</I>]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+
+<P>
+
+This utility is a scatter gather list helper for the ddpt utility which
+copies data between or within SCSI devices (logical units). While ddpt's
+command line syntax is modelled on that of the POSIX dd command, this
+utility has a more standard Unix command line syntax with both short and
+long variants of each option.
+<P>
+
+Scatter gather lists (sgl_s) are made up of scatter gather elements. Each
+element is made up a starting logical block address (LBA) and a number of
+blocks (NUM) from and including that LBA.
+<P>
+
+The scatter gather lists can also be viewed as arrays in which elements can
+be accessed by an index. Multiple sgl elements can be accessed with an
+array of indexes, hence index arrays. Indexes in this utility start at 0
+and run to (n - 1) where n is the number of elements in the sgl. Also
+negative indexes are permitted where -1 is the index of the last sgl
+element, -2 is the index of the second last sgl element, etc.
+<P>
+
+For &quot;twin&quot; actions there is an assumed relationship between a-sgl and
+b-sgl as there is between two sgl_s used as the gather list (e.g. skip=)
+and the scatter list (e.g. seek=) in the ddpt utility. Breaking it down
+to individual logical blocks: LBAr0 is read and its data is written to
+LBAw0, LBAr1--&gt;LBAw1, LBAr2--&gt;LBAw2, etc; or more generally
+LBAr_n--&gt;LNAw_n. Many actions will change the order in which
+those &quot;read-write&quot; items are performed, the twin portion of the action
+attempts to maintain the LBAr_n--&gt;LNAw_n mapping. Generally speaking,
+copies are the same no matter what order the LBAs are read and written. One
+exception is an overlapping scatter list (i.e. on the write side) in which
+case the order of writes onto the same LBA does matter, hence there is an
+option to check sgl_s are well-formed in that respect:
+<I>--non-overlap</I>.
+<P>
+
+For background on scatter gather lists see the section of that name in the
+<A HREF="../man8/ddpt.8.html">ddpt</A>(8) manpage found in this package. There is a web page at
+<A HREF="https://sg.danny.cz/sg/ddpt.html">https://sg.danny.cz/sg/ddpt.html</A> .
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+Arguments to long options are mandatory for short options as well.
+<DL COMPACT>
+<DT><B>-a</B>, <B>--action</B>=<I>ACT</I><DD>
+<I>ACT</I> is some action to perform on the given scatter gather list(s).
+To list the available actions set <I>ACT</I> to 'xxx' (or 'enum'). The
+available actions are listed in the ACTIONS section below.
+<DT><B>-A</B>, <B>--a-sgl</B>=<I>SGL</I><DD>
+<I>SGL</I> is a scatter gather list, a sequence of comma separated unsigned
+integers (up to 64 bits each). <I>SGL</I> has several forms, the simplest
+is: LBA0,NUM0,LBA1,NUM1,LBA2,NUM2... and there should be an even number
+of values with the exception of LBA0 appearing by itself. In this case NUM0 is
+assumed to be 0. Other <I>SGL</I> forms are '@&lt;filename&gt;' and 'H@&lt;filename&gt;'
+where the contents of the &lt;filename&gt; is parsed as a scatter gather list.
+Since there are two options for inputting <I>SGL</I>s, this one is termed as
+the 'a-sgl'.
+<BR>
+
+See the section on FILE FORMATS below and the section on SCATTER GATHER
+LISTS in the <A HREF="../man8/ddpt.8.html">ddpt</A>(8) manpage for more information on sgl_s and their
+associated terminology.
+<DT><B>-B</B>, <B>--b-sgl</B>=<I>SGL</I><DD>
+<I>SGL</I> is a scatter gather list, a second list termed as the 'b-sgl' to
+differentiate it from the other sgl (a-sgl).
+<DT><B>-C</B>, <B>--chs</B>=<I>CHS</I><DD>
+<I>CHS</I> is a 3 element tuple, separated by commas. Currently 16 bit values
+from 1 to 0xffff are accepted (the cylinder can be one more: 0x10000 (or
+65536)). The first value is the number of cylinders, the second value is the
+number of heads (limited to 16), and the final value is the number
+of sectors per track (limited to 255). Sectors are counted origin 1 according
+to CHS conventions (cf. normal LBAs which nearly always count from 0).
+<DT><B>-D</B>, <B>--degen</B>=<I>DV</I><DD>
+<I>DV</I> of 0 (the default) means that all degenerate elements (apart from
+the last) are ignored (and dropped from the internal representation which may
+later be written to an output file). If <I>DV</I> is odd then a degenerate
+element's LBA is taken into account when calculating the highest and lowest
+LBA in a sgl (and may be included in an output file). If <I>DV</I> is even
+(apart from a <I>DV</I> of 0) then a degenerate element's LBA it taken into
+account when determining if a sgl is monotonic increasing, decreasing or
+neither (and may be included in an output file).
+<DT><B>-d</B>, <B>--document</B><DD>
+this option causes information about the a sgl or index array to be written
+as comments (i.e. lines starting with '#') to the beginning of output
+file(s) created by this utility.
+<BR>
+
+If this option is given twice then the command line that caused the output
+is added to the file as a comment (before any numbers are output).
+<DT><B>-E</B>, <B>--elem</B>=<I>SE[,LE]</I><DD>
+this option allows a single sgl element (at position <I>SE</I> (starting
+element index)) to be output to <I>O_SGL</I> or <I>O_SGL</I>.<I>FNE</I> (or
+<I>IAF</I>). <I>SE</I> is origin 0. If <I>LE</I> (last element index) is given
+then a range of sgl elements are output starting at index <I>SE</I> to index
+<I>LE</I> inclusive. If a &quot;twin&quot; operation is being performed then this
+option only applies to the &quot;a&quot; side output, not the &quot;twin&quot; side. This
+option is ignored by the output of the split_n and tsplit_n actions.
+<P>
+<BR>
+
+Negative values for either <I>SE</I> or <I>LE</I> count from the end of
+sgl. For example <I>--elem=0,-1</I> refers to the whole of the list.
+<BR>
+
+If <I>LE</I> is less than <I>SE</I> (after any negative indexes are
+converted to their equivalent positive index) then that range is output
+in reverse.
+<DT><B>-e</B>, <B>--extension</B>=<I>FNE</I><DD>
+<I>FNE</I> is the filename extension used when output filenames are
+generated. For non-split actions the generated filenames are of the form:
+<I>O_SGL</I>.<I>FNE</I> . For the split_n action the generated filenames
+are of the form: <I>O_SGL</I>[1..n].<I>FNE</I> . For the tsplit_n action
+the a-sg is named as per the previous sentence, while for the b-sgl
+the generated filenames are of the form: <I>O_SGL</I>[1..n]_t.<I>FNE</I> .
+<BR>
+
+If <I>O_SGL</I> is '-' (by itself) then all output is sent to stdout and
+this option is ignored.
+<DT><B>-f</B>, <B>--flexible</B><DD>
+this option effects the parsing (reading) of sgl_s and index arrays that
+are in files which are in hexadecimal. Such files should have a leading
+line (i.e. before any numbers) with 'HEX' on it. Without this option any
+such file must be invoked with 'H@' before the filename; in other words
+the 'H' in the invocation needs to match the 'HEX' in the file. With this
+option a file can be invoked with '@' and if a line with 'HEX' is parsed
+before any numbers then it switches to hexadecimal mode; so that all the
+parsed numbers are assumed to be in hexadecimal.
+<DT><B>-h</B>, <B>--help</B><DD>
+outputs the usage message summarizing command line options then exits.
+<DT><B>-H</B>, <B>--hex</B><DD>
+used to define the numeric format of sgl and index array elements written to
+output (often a file named <I>O_SGL</I> or stdout). If not given then only
+decimal values are written to output. If this option is given once then
+hexadecimal values, prefixed with '0x', are written. If this option is
+given twice then a line with the string 'HEX' is written to output, before
+any values, and those values are implicitly hexadecimal (i.e. no
+leading '0x' nor 'h' suffix).
+<DT><B>-I</B>, <B>--iaf</B>=<I>IAF</I><DD>
+where <I>IAF</I> is a filename (or '-' for stdout) to write an index array
+to. The only action that generates an index array currently is
+<I>--action=sort</I> (and tsort). This option can be together used with, or
+in place of, the <I>--out=O_SGL</I> option.
+<BR>
+
+The <I>--document</I>, <I>--elem=SE[,LE]</I> and <I>--hex</I> options
+effect what is written. See the section on FILE FORMATS below.
+<DT><B>-x</B>, <B>--index</B>=<I>IA</I><DD>
+where <I>IA</I> is one or more indexes, comma separated or, if prefixed
+by &quot;@&quot; or &quot;H@&quot;, a filename containing a list of indexes. These indexes are
+used by the <I>--action=select</I> and <I>--action=tselect</I> to
+select elements from the 'a-sgl'. Positive and negative indexes that are
+too large (in absolute terms) are ignored and create noise if the
+<I>--verbose</I> option is given. See the section on FILE FORMATS below.
+<DT><B>-i</B>, <B>--interleave</B>=<I>IL</I><DD>
+<I>IL</I> is an integer, starting from 0. When <I>IL</I> is 0 (the default)
+there is no interleave. The interleave only effects the split_n and tsplit_n
+actions and when greater than zero is the maximum number of logical blocks
+written in each segment in the output file, prior to moving to the next
+output file.
+<BR>
+
+For the case where <I>IL</I> is 1 and <I>--action=split_1</I> is given
+then the output file will have every LBA (given by the a-sgl) as a
+separate sgl element (and thus each will have a NUM of 1).
+<BR>
+
+For the tsplit_n action the interleave is only applied to the a-sgl
+but it does effect the twin sgl files.
+<DT><B>-N</B>, <B>--non-overlap</B><DD>
+Checks any given sgl and any resulting sgl (from an action) to see if
+any portion of the sgl overlaps. This is done by first sorting each
+sgl by the LBA field, then checking every element against the previous
+one to determine if there is overlap. SCSI commands that accept sgl_s
+process degenerate elements without error but if two elements in a
+WRITE command overlap then it is the storage device's choice which one
+to WRITE first. The last one to be written will be the one read in
+subsequent read operations.
+<BR>
+
+If no errors are detected then if (all) are non-overlapping then 0 is
+returned. If no errors are detected then if (any) are overlapping then 36
+is returned.
+<DT><B>-o</B>, <B>--out</B>=<I>O_SGL</I><DD>
+<I>O_SGL</I> is the name of a file to write a resultant scatter gather
+list to. If <I>O_SGL</I> is '-' then the output is directed to stdout.
+If <I>O_SGL</I> starts with '+' then the output is appended to the file
+whose name follows the '+'.
+<BR>
+
+For the split and tsplit actions, the leading '+' is interpreted as appended
+to all files that meet the template and exist, otherwise the file is
+created. If '-' is given then all output is directed to stdout (and the
+<I>--extension=FNE</I> option, if given, is ignored).
+<DT><B>-q</B>, <B>--quiet</B><DD>
+suppresses warning and messages announcing an action has succeeded. When
+this option is given, actions that have a logical (boolean) result don't
+output messages but still yield an indicative exit status. The exit status
+will typically be either 0 for true or 36 for false.
+are typically sent to stderr.
+<DT><B>-r</B>, <B>--round</B>=<I>RB</I><DD>
+<I>RB</I> is the number of round blocks. Without the option the split_n action
+will divide the number of blocks to be split by '&lt;n&gt;' (or use <I>IL</I>) to
+get a nominal value. This value is the number of blocks taken from the a-sgl
+before moving to the next output file. The <I>RB</I> value (default 0) is
+the maximum number of blocks the nominal value may be changed by to align
+with an existing element boundary in the a-sgl.
+<BR>
+
+If the number of blocks in 'a-sgl is less than 10 or <I>RB</I> is greater
+than one third of the nominal value, then <I>RB</I> is ignored (with a
+notification written to stderr).
+<BR>
+
+For the tsplit_n action this option only applies to the a-sgl.
+<DT><B>-S</B>, <B>--sort-cmp</B>=<I>SC</I><DD>
+where <I>SC</I> is a value indicating what the sort action's comparison will
+be. When <I>SC</I> is 0 (the default) the sort is ascending based on the LBA;
+when it is 1 the sort is descending based on LBA. When <I>SC</I> is 2 the
+sort is ascending based on NUM; when it is 3 the sort is descending based
+on NUM. Any other value is mapped to 0. All sorts are stable which means
+that sgl elements with the same LBA (in the case of <I>SC</I> being 0 or 1)
+keep their same relative position. A side effect of this is that the
+ascending and descending sorts are not always reversals of one another.
+<DT><B>-s</B>, <B>--stats</B><DD>
+print out sgl statistics on any given sgl and any resultant sgl.
+<DT><B>-v</B>, <B>--verbose</B><DD>
+increase the level of verbosity, (i.e. debug output).
+<DT><B>-V</B>, <B>--version</B><DD>
+print the version string and then exit.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>ACTIONS</H2>
+
+Actions are given on the command line as part of the <I>--action=ACT</I>
+option. Currently only one action is allowed per invocation. If more are
+allowed in the future, they will be comma separated and performed in the
+order in which they appear (i.e. left to right).
+<P>
+
+If no action is given and the <I>--a-sgl=SGL</I> and <I>--out=O_SGL</I>
+options (with no <I>--b-sgl=SGL</I> option) are given then the a-sgl
+is copied to <I>O_SGL</I> (or <I>O_SGL</I>.<I>FNE</I> if the
+<I>--extension=FNE</I> option is given).
+<P>
+
+The actions are listed below in alphabetical order.
+<DL COMPACT>
+<DT><B>append-b2a</B><DD>
+appends the b-sgl to the end of the a-sgl and outputs the result to
+<I>O_SGL</I> (or <I>O_SGL</I>.<I>FNE</I> if the <I>--extension=FNE</I> option
+is given). Requires the <I>--a-sgl=SGL</I>, <I>--b-sgl=SGL</I> and
+<I>--out=O_SGL</I> options.
+<DT><B>divisible&lt;n&gt;[,L|N]</B> or <B>divisible_&lt;n&gt;[,L|N]</B><DD>
+where &lt;n&gt; is an integer, 1 or higher. This action checks if each LBA and NUM
+in a-sgl is divisible by &lt;n&gt; (where 'is divisible' is equivalent to having a
+remainder of zero). If all are divisible then true is returned (i.e. the exit
+status 0); otherwise false is returned (i.e.  exit status 36).
+<BR>
+
+If the optional &quot;,L&quot; suffix (or &quot;,LBA&quot;) is given then only each LBA element
+in a-sgl is checked for divisibility. If the optional &quot;,N&quot; suffix (or &quot;,NUM&quot;)
+then only each NUM element in a-sgl is checked for divisibility.
+<BR>
+
+The output of the string to stderr announcing divisibility, or lack of it, can
+be suppressed by the <I>--quiet</I> option.
+<DT><B>enum</B><DD>
+prints out the list of supported actions then exits. Giving the action 'xxx'
+has the same effect.
+<DT><B>equal</B><DD>
+this action compares the sgl_s given to <I>--a-sgl=SGL</I> and
+<I>--b-sgl=SGL</I>. If the same LBAs are in the same order with the same
+overall number of blocks (but not necessarily the same number of elements)
+then true is returned (i.e. the exit status 0); otherwise false is
+returned (i.e.  exit status 36). For example the two element
+sgl &quot;0x10,0x5, 0x15,0x2&quot; is 'equal' to the one element sgl &quot;0x10, 0x7&quot;.
+<BR>
+
+The output of the string to stderr announcing equality, or lack of it, can
+be suppressed by the <I>--quiet</I> option.
+<DT><B>none</B><DD>
+this action does nothing. This is the default action. If <I>--a-sgl=SGL</I>
+and <I>--out=O_SGL</I> options are given and no other action, then a-sgl
+is copied to <I>O_SGL</I>.
+<BR>&nbsp;It&nbsp;is&nbsp;a&nbsp;placeholder.
+<DT><B>part-equal</B><DD>
+this action is similar to the <B>equal</B> action but relaxes the condition
+that both lists must have the same overall number of blocks. For example the
+two element sgl &quot;0x10,0x5, 0x15,0x2&quot; is 'part-equal' to the one element
+sgl &quot;0x10, 0x12&quot;.
+<DT><B>part-same</B><DD>
+this action is similar to the <B>same</B> action but relaxes the condition
+that both lists must have the same overall number of blocks. For example the
+two element sgl &quot;0x15,0x2,0x10,0x5&quot; is 'part-same' as the one element
+sgl &quot;0x10, 0x12&quot;.
+<DT><B>same</B><DD>
+this action is similar to the <B>equal</B> action but relaxes the condition
+that both lists must be in the same order. The implementation sorts both
+given lists before comparing them.  For example the two element
+sgl &quot;0x15,0x2, 0x10,0x5&quot; is the 'same' as the one element sgl &quot;0x10, 0x7&quot;.
+<DT><B>scale&lt;n&gt;</B> or <B>scale_&lt;n&gt;</B><DD>
+where &lt;n&gt; is an integer, positive or negative but not zero. When &lt;n&gt; is
+positive then the starting LBA and the NUM in each a-sgl element is
+multiplied by &lt;n&gt; . The new (scaled) sgl is written to <I>O_SGL</I> (or
+<I>O_SGL</I>.<I>FNE</I> if the <I>--extension=FNE</I> option is given).
+<BR>
+
+When &lt;n&gt; is negative then the absolute value of &lt;n&gt; is used as a divisor
+for each starting LBA and NUM in each a-sgl element.
+<BR>
+
+As an example: converting a 512 byte logical block (LB) size sgl to a 4096
+byte LB size and vice versa is relatively common. To convert from 4096 --&gt;
+512 byte LB size then <I>--action=scale_8</I> is appropriate. To convert
+from 512 --&gt; 4096 byte LB size then <I>--action=scale_-8</I> is
+appropriate.
+<BR>
+
+Note: because an integer division is used (that rounds 'towards zero')
+when &lt;n&gt; is negative then LBs or NUMs may be &quot;lost&quot; in this conversion. This
+can be checked beforehand with the <I>--action=divisible&lt;n&gt;[,L|N]</I>
+option. For example: for 512 --&gt; 4096 conversions:
+<I>--action=divisible_8</I> will report if any starting LBAs or NUMs are
+not divisible be 8 and hence are not able to be precisely represented as
+4096 byte LB addresses or number of 4096 byte blocks.
+<DT><B>select</B><DD>
+this action can be used to select a subset (or superset) of the a-sgl in the
+specified order. Alternatively it can be seen as re-ordering the elements
+in a-sgl such as is done toward the end of a sort operation. Assuming all
+the indexes in <I>IA</I> are valid, then the <I>O_SGL</I> file will have the
+same number of elements as there are indexes in <I>IA</I>.
+<BR>
+
+This option requires non-empty <I>--a-sgl=SGL</I> and <I>--index=IA</I>
+options, plus the <I>--out=O_SGL</I> option.
+<DT><B>sort</B><DD>
+this action will sort the sgl given by <I>--a-sgl=SGL</I> in ascending
+order by LBA. The resulting sgl is output to <I>O_SGL</I> (or
+<I>O_SGL</I>.<I>FNE</I> if the <I>--extension=FNE</I> option is given).
+<BR>
+
+The sort is &quot;stable&quot;, so if two elements have the same starting LBA then
+they will appear in the same relative order in the output.
+<DT><B>split&lt;n&gt;</B> or <B>split_&lt;n&gt;</B><DD>
+where &lt;n&gt; is an integer, 1 or higher. This action divides
+<I>--a-sgl=SGL</I> into &lt;n&gt; roughly equal length (i.e. number of blocks)
+output sgl_s. The output files are named &quot;<I>O_SGL</I>&lt;1..n&gt;&quot;
+or &quot;<I>O_SGL</I>&lt;1..n&gt;.<I>FNE</I>&quot;. Both the <I>--interleave=IL</I> and
+<I>--round=RB</I> options are taken into account during the split process.
+<DT><B>to-chs</B><DD>
+this action takes the 'flat' LBA SGL given to <I>--a-sgl=SGL</I> and
+converts it into CHS (cylinder/head/sector) based SGL which is written
+out as directed to <I>--out=O_SGL</I>. This action requires the
+<I>--chs=CHS</I> option as well as the <I>--a-sgl=SGL</I> and
+<I>--out=O_SGL</I> options.
+<DT><B>tselect</B><DD>
+this is a &quot;twin select&quot; action that selects from
+<I>--a-sgl=SGL</I> (a-sgl) then re-orders <I>--b-sgl=SGL</I> (b-sgl)
+in unison. The select from a-sgl is the same as described under the
+select action above. Additionally b-sgl is is broken up so it has &quot;breaks&quot;
+at the same positions (i.e. number of blocks from the start of the sgl) as
+a-sgl does; plus the &quot;breaks&quot; b-sgl has already got. So the &quot;broken up&quot;
+b-sgl will have at least as many elements as a-sgl. The output of the
+re-ordered b-sgl is then written to <I>O_SGL</I>_t or
+<I>O_SGL</I>_t.<I>FNE</I> if the <I>--extension=FNE</I> option is given.
+<DT><B>tsort</B><DD>
+this is a &quot;twin sort&quot; action that sorts <I>--a-sgl=SGL</I> (a-sgl) and
+re-orders <I>--b-sgl=SGL</I> (b-sgl) in unison. The sort of a-sgl is
+the same as described under the sort action above. Additionally b-sgl is
+is broken up so it has &quot;breaks&quot; at the same positions (i.e. number of blocks
+from the start of the sgl) as a-sgl does; plus the &quot;breaks&quot; b-sgl has
+already got. So the &quot;broken up&quot; b-sgl will have at least as many elements
+as a-sgl. The re-ordering vector generated by the stable sort of a-sgl
+is then applied to the broken up b-sgl. The output of the re-ordered
+b-sgl is then written to <I>O_SGL</I>_t or <I>O_SGL</I>_t.<I>FNE</I> if the
+<I>--extension=FNE</I> option is given.
+<DT><B>tsplit&lt;n&gt;</B> or <B>tsplit_&lt;n&gt;</B><DD>
+this is a &quot;twin split&quot; action that splits the <I>--a-sgl=SGL</I> and
+<I>--b-sgl=SGL</I> into separate series of output files. These separate
+series maintain the LBA to LBA correspondence of the original a_sgl and
+b_sgl lists. &lt;n&gt; is an integer, 1 or higher. This action divides
+<I>--a-sgl=SGL</I> into &lt;n&gt; roughly equal length (i.e. number of blocks)
+output sgl_s. The &quot;roughly equal length&quot; is influenced by the
+<I>--interleave=IL</I> and <I>--round=RB</I> options. The output filenames
+are generated the same way as described for the split action. The sgl
+from <I>--a-sgl=SGL</I> is expected to be a &quot;hard&quot; sgl which means its
+last element should not be degenerate (i.e. have a NUM of 0).
+<BR>
+
+The second half of the &quot;twin split&quot; is to split the <I>--b-sgl=SGL</I>
+sgl. The same number of output files are used as for the 'A' side but
+the filenames have a slightly different form: &quot;<I>O_SGL</I>&lt;1..n&gt;_t&quot;
+or &quot;<I>O_SGL</I>&lt;1..n&gt;_t.<I>FNE</I>&quot; (if the <I>--extension=FNE</I> option
+is given). The critical point of this split is that it moves in lockstep
+with the 'A' side split in the sense that whatever block count an 'A'
+side segment uses, the following 'B' side segment split uses the same
+block count. The sgl from <I>--b-sgl=SGL</I> may be a &quot;hard&quot; or &quot;soft&quot;
+sgl. In the simplest case the 'B' side sgl can be just '0' which gets
+expanded to '0,0' (i.e. degenerate list starting at LBA 0); this will use
+the overall block count from the 'A' side.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>FILE FORMATS</H2>
+
+Both sgl_s and index arrays can be read from, or written to, files.
+The options that supply sgl_s or index arrays to be read (e.g.
+<I>--a-sgl=SGL</I>, <I>--b-sgl=SGL</I> and <I>--index=IA</I>) by
+default allow them to be given directly on the command line. These
+will typically be comma separated lists (although space and tab could be
+used as separators if they were appropriately escaped). So with these
+options when reading sgl_s and index arrays, a leading &quot;@&quot; or &quot;H@&quot; is
+needed to indicate that a file name follows.
+<P>
+
+By default, numbers given in this utility and other utilities in this
+package are assumed to be in decimal. Hexadecimal (hex) numbers can be given
+with either a leading &quot;0x&quot; or trailing &quot;h&quot;. A whole file can be flagged
+as containing hex numbers (and thus not needing a leading &quot;0x&quot; nor
+trailing &quot;h&quot; on each number) by using &quot;H@&quot; on the command line before the
+filename. The file itself may contain a line with 'HEX' in it, prior to any
+numbers that are to be parsed. If the <I>--flexible</I> option is given
+then &quot;@&quot; can be used before the filename and when 'HEX' is detected in the
+file (before any numbers) the code switches to hex mode. Without the
+<I>--flexible</I> option &quot;H@&quot; must be use before the filename. As a
+convenience the 'HEX' string may appear after hex numbers have been
+decoded and it will be ignored. This is to allow hex sgl_s files to
+be concatenated together and still be parsed without error.
+<P>
+
+A file being parsed may contain comments following a &quot;#&quot; symbols.
+Everything from and include the hash mark to the end of a line is
+ignored. Blank lines and &quot;whitespace&quot; (spaces, tabs, CRs and LFs) are
+also ignored.
+<P>
+
+If large sgl_s or index arrays are being used it is better to have one
+element per line in the file to be read. This is because a line is not
+expected to be over 1024 bytes long with more than 254 parsable items on
+it.  This utility imposes no limit on the number of lines a file to be
+parsed may have.
+<P>
+
+Files to be written out by this utility have their names specified by the
+<I>--out=O_SGL</I> (optionally together with <I>--extension=FNE</I>) and
+the <I>--iaf=IAF</I> options. Unlike the file reading options, no &quot;@&quot;
+character should be placed in front of the filename on the command line. If
+a filename of &quot;-&quot; is given then output is written to stdout instead of a
+file. stdout is normally the console. If the filename starts with &quot;+&quot; then
+that character is skipped the output will be appended to that file, if
+it exists. If the filename starts with &quot;+&quot; and the file does not exist
+then it is created. If &quot;+&quot; is not given and the file already exists then
+it is truncated (to 0) then overwritten. Some output file names have
+numbers (e.g. as a result of the <I>--action=spilt_&lt;n&gt;</I> option)
+or &quot;_t&quot; (e.g. as a result of &quot;twin&quot; actions) appended to them (before the
+extension, if any). Sgl elements are output one per line, with a comma
+separating the LBA and the NUM. Index arrays are output one element (an
+index) per line. The <I>--hex</I> option controls the form of those
+numbers output. If <I>--hex</I> is not given, the numbers are output in
+decimal. If the <I>--hex</I> option is given one the number are output
+in hex with a &quot;0x&quot; prefix. If the <I>--hex</I> option is given twice then
+the line 'HEX' is written to the file before any numbers and those numbers
+are in hex without any adornment (i.e. with no leading &quot;0x&quot;).
+<P>
+
+If the <I>--document</I> option is given then some information including
+a date timestamp of generation is placed as comments at the beginning of
+files that are written out by this utility. If the <I>--document</I> option
+is given twice then the invocation line of this utility that caused the
+output is placed in the written file as an additional comment.
+<P>
+
+The written file format is compatible with the read file format. So, for
+example, a sgl generated by a invocation of this utility can later be used
+as a file to be read by another invocation of this utility.
+<A NAME="lbAH">&nbsp;</A>
+<H2>EXIT STATUS</H2>
+
+The exit status of ddpt_sgl is 0 when it is successful. Note that some
+options and actions that return a boolean value return 0 for true and
+36 for false. Otherwise the exit status for this utility is the same as
+that for ddpt. See the EXIT STATUS section in the ddpt man page.
+<A NAME="lbAI">&nbsp;</A>
+<H2>EXAMPLES</H2>
+
+Examples are needed. See testing/test_sgl.sh script in this package. That
+script can be run without root permissions and places its work file (sgl_s)
+in the /tmp directory.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>AUTHORS</H2>
+
+Written by Douglas Gilbert.
+<A NAME="lbAK">&nbsp;</A>
+<H2>REPORTING BUGS</H2>
+
+Report bugs to &lt;dgilbert at interlog dot com&gt;.
+<A NAME="lbAL">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright &#169; 2020-2021 Douglas Gilbert
+<BR>
+
+This software is distributed under a FreeBSD license. There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+<A NAME="lbAM">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<B><A HREF="../man8/ddpt.8.html">ddpt</A>(8), <A HREF="../man8/ddptctl.8.html">ddptctl</A>(8)</B>
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">ACTIONS</A><DD>
+<DT><A HREF="#lbAG">FILE FORMATS</A><DD>
+<DT><A HREF="#lbAH">EXIT STATUS</A><DD>
+<DT><A HREF="#lbAI">EXAMPLES</A><DD>
+<DT><A HREF="#lbAJ">AUTHORS</A><DD>
+<DT><A HREF="#lbAK">REPORTING BUGS</A><DD>
+<DT><A HREF="#lbAL">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAM">SEE ALSO</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 15:27:20 GMT, April 23, 2021
+</BODY>
+</HTML>
