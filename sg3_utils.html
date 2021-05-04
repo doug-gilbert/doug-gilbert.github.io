@@ -3,9 +3,9 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title>The sg3_utils package</title>
-	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
+	<meta name="generator" content="LibreOffice 6.4.7.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2021-04-08T14:49:30.732121759"/>
+	<meta name="changed" content="2021-05-04T12:09:44.725608022"/>
 	<meta name="keywords" content="sg3_utils, SCSI utilities, Linux"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -40,29 +40,31 @@
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
 	<style type="text/css">
-		p { margin-bottom: 0.25cm; background: transparent; color: #000000 }
-		h2 { margin-top: 0.35cm; margin-bottom: 0.21cm; background: transparent; color: #000000 }
-		h2.western { font-family: "Liberation Serif", serif }
-		h2.cjk { font-family: "Noto Sans CJK SC Regular" }
-		h2.ctl { font-family: "Lohit Devanagari" }
-		h3 { margin-top: 0.25cm; margin-bottom: 0.21cm; background: transparent; color: #000000 }
-		h3.western { font-family: "Liberation Serif", serif }
-		h3.cjk { font-family: "Noto Sans CJK SC Regular" }
-		h3.ctl { font-family: "Lohit Devanagari" }
-		pre { background: transparent; color: #000000 }
-		pre.western { font-family: "Liberation Mono", monospace }
-		pre.cjk { font-family: "Courier New", monospace }
-		pre.ctl { font-family: "Liberation Mono", monospace }
-		td p { background: transparent; color: #000000 }
+		@page { size: 21.59cm 27.94cm; margin-left: 2cm; margin-right: 1cm; margin-top: 1cm; margin-bottom: 1cm }
+		p { margin-bottom: 0.25cm; background: transparent; color: #000000; line-height: 115%; background: transparent }
+		h2 { margin-top: 0.35cm; margin-bottom: 0.21cm; background: transparent; color: #000000; background: transparent; page-break-after: avoid }
+		h2.western { font-family: "Liberation Serif", serif; font-size: 18pt; font-weight: bold }
+		h2.cjk { font-family: "Noto Sans CJK SC Regular"; font-size: 18pt; font-weight: bold }
+		h2.ctl { font-family: "Lohit Devanagari"; font-size: 18pt; font-weight: bold }
+		h3 { margin-top: 0.25cm; margin-bottom: 0.21cm; background: transparent; color: #000000; background: transparent; page-break-after: avoid }
+		h3.western { font-family: "Liberation Serif", serif; font-size: 14pt; font-weight: bold }
+		h3.cjk { font-family: "Noto Sans CJK SC Regular"; font-size: 14pt; font-weight: bold }
+		h3.ctl { font-family: "Lohit Devanagari"; font-size: 14pt; font-weight: bold }
+		pre { background: transparent; color: #000000; background: transparent }
+		pre.western { font-family: "Liberation Mono", monospace; font-size: 10pt }
+		pre.cjk { font-family: "Courier New", monospace; font-size: 10pt }
+		pre.ctl { font-family: "Liberation Mono", monospace; font-size: 10pt }
+		td p { background: transparent; color: #000000; background: transparent }
 		tt.western { font-family: "Liberation Mono", monospace }
 		tt.cjk { font-family: "Courier New", monospace }
 		tt.ctl { font-family: "Liberation Mono", monospace }
 		code.western { font-family: "Liberation Mono", monospace }
 		code.cjk { font-family: "Courier New", monospace }
 		code.ctl { font-family: "Liberation Mono", monospace }
-		a:link { color: #0000ff }
-		a:visited { color: #000080 }
+		a:link { color: #0000ff; so-language: zxx; text-decoration: underline }
+		a:visited { color: #000080; so-language: zxx; text-decoration: underline }
 	</style>
 </head>
 <body lang="en-CA" text="#000000" link="#0000ff" vlink="#000080" background="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/wgALCADYANgBAREA/8QAGAABAQEBAQAAAAAAAAAAAAAAAQIAAwb/2gAIAQEAAAAB9z1ybbnhz03OVvQIiULolVueZTsSzTtsIai86M7VEjkoqSsZszzmq0pDquWd0eZTl5Z2mgNVXA5NUnWJi8bVA69UFXIbUxO6EzWikvMnWDN7QRVGKJy6rmWgUink5BZek041QUkumVwtTWmzThaIbl5O6xqmVUYcNkVUTLXQZl2agcGuKamdrqYzUNMbGmrm9iHW8XoSNEYrNzfMLKnpopmJVNqU2nVRtjM1zK2qOkyz0mysbDtow1pL56imtsPPUm5jumh0ubQ1aJti+cOV0hVW40dCKxXOGWnYd0zjSXBeTntNO01VbO257ax0CCFnTZHaZ1u2iUwi27bbadW2xGxts1W222xppxy2zrYpcOCue2uaiUd0edTYx0iemiXpJgmtd85Tr//EAB0QAAEFAQEBAQAAAAAAAAAAAAEQESAwQABQMWD/2gAIAQEAAQUC2PF5CB1nE1ryEmmFOk7mQ2AUlRzwEGudDE5jFkE3sPGtrQpwmDoFPFRaYAI29qjd9QDK/inUZHwBYYNe1bROo/ixMbQEMf/EABQQAQAAAAAAAAAAAAAAAAAAAJD/2gAIAQEABj8CNn//xAAhEAEBAQADAQEBAQEBAQEAAAABABEQITFBUWEgcTChgf/aAAgBAQABPyF76s67vbbN4ZmMvu22NnVky7MYHHRbZ33LABLvnAd8NhAl/I64JPAbfb+o7eGUCxHduR33NtuFusR3LkEvH9bZeru8twg+7H5bhbO8CDgD1t5e48thvZflis4E3bak+EmWQME9Wd9y8at3ZnrPBno429dwOwBZ3JGwmwmTNu9g+y/27dwO8mCb5PtssnURF/ywyZ7uvljL8Js67vf+Swa8J+XhHbt3bM8ZhrL3PdnVnyDq3u7C2YOuFC3uZ8sYMJbuVXg6X3OAdx3LLBLArbhZB+zdl8v3jOoLNui2Xyz9lhgT8F5PGOEODgG9wd8JwDBOFn7brbez2wgz/vDLbfyz7wD7ElkFlkeRMm/bo64X4Wfre8fZ76LMnq/jjD7xi36b2Em2XyT+3/I6OSf287tXgPsdX/ZjqyBeJcj9jtvk2SYYT+F9u7X1gwh35B3N39g820j+29QS5bfqe52TyOXt5EvdkGd3zYs/Ytydg6l5LvPi3vhmS9dQ6vBZBDhchYFb+S3bxvJ37I8svk/y/SXqFeHG3se6z5B/8jhGCDOFMt40t22d4zSfyDqCO+FtXu3XLx3ZJ1LHltmsHDLgstyyyMju63IttlvVmuQHD3PG3bbE7s8Z3GWbZnVtjZhbkdd38R23yzWM+QTZPkEt7wZLL+ey8rBeS50WKz5L3wH7B3Zhef5CZdQwS4Xf/wCz0f23uXW295Le+TPbb/5BwuS29xwrt7gzgFe5Qlb+XkdcH5b8ISHttu4FgvvGy8HsSyxLHd5PU6vCwchC2Log1sw/wlkvyB4W7TZbnDB94yCLe49sgwyIGf62e56sctQZBw4cAmZb5MQdQdwXbZx9/wAPAWf4ZT3w+22bJ1wRB/4M7B/pQ9t2wly3eH+WcH/npbKvkcrhOxdwKz1H9gvLNeA595WHZ8v+x+tsLoLdbcn9ZdvIfWI9g4XW8ti2XCFXhWBuiZbVg17t+E/k+WsrKzt8lXyw94XfG9XcdF//2gAIAQEAAAAQgPzz/wCfn/f/APPt/wD7X4/P3/N/bf3u/ft/vW/vmZv/AEDH/wBY+a//AN82x+/++dn9jmd/X0j/AIOAX16AF5vgMfP5DK/2CSp/A2HfwHh/4Awf+AAD/gAQ/IAevyizvu9//8QAGxAAAgIDAQAAAAAAAAAAAAAAARFQYBAhMXD/2gAIAQEAAT8QylS7AIIRpAyMMMHHCVLZIArEcgF5BmYCAoJU2EUFBoOAs6HBAEAKDjYGFQpCKQwMUoANg+gIF0oJEAQT4WFggSw0B0WBmKTmIBDI1xKggpMDCBCAhxFAhp2leECmEDDULihRABEIYRCZCAmEFMyA6gwYkVCqdgEIj1IAJDyC4oGEmkABSIQxQA4SEEaYREyADwAWZJSEMCkgwlJAAEKAA5RDAaFkICZAcEGTGAgmAgBE1T//2Q==" dir="ltr"><p align="center" style="margin-top: 0.42cm; page-break-after: avoid">
@@ -3614,6 +3616,37 @@ tarballs and packages</b></p>
 <a href="p/libsgutils2-2_1.46-0.1_amd64.deb">libsgutils2-2_1.46-0.1_amd64.deb</a></p>
 		</td>
 	</tr>
+	<tr valign="top">
+		<td width="8%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.1cm; font-weight: normal">
+			1.47 <b>beta</b></p>
+			<p style="margin-bottom: 0.1cm; font-weight: normal"><br/>
+<br/>
+
+			</p>
+			<p style="margin-bottom: 0.1cm; font-weight: normal">[svn: r900]</p>
+		</td>
+		<td width="20%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
+			<a href="p/sg3_utils-1.47r900.tgz">sg3_utils-1.47r900.tgz</a></p>
+		</td>
+		<td width="19%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
+			<br/>
+<br/>
+
+			</p>
+		</td>
+		<td width="26%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
+			<br/>
+<br/>
+
+			</p>
+		</td>
+		<td width="27%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
+			<br/>
+<br/>
+
+			</p>
+		</td>
+	</tr>
 </table>
 <p style="margin-bottom: 0cm"><br/>
 The zip files below are built
@@ -3747,6 +3780,25 @@ file is a tarball of man pages converted to html by man2html.</p>
 			<a href="p/sg3_utils146_man_html.zip">sg3_utils146_man_html</a></p>
 		</td>
 	</tr>
+	<tr valign="top">
+		<td width="120" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p style="margin-bottom: 0.1cm">
+			<span style="font-weight: normal">1.47 </span><b>beta</b></p>
+			<p style="font-weight: normal">svn: [r900]</p>
+		</td>
+		<td width="233" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="246" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+			<a href="p/sg3_utils-1.47r900cyg_exe.zip">sg3_utils-1.47r900cyg_exe</a></p>
+		</td>
+		<td width="236" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
+			<br/>
+
+			</p>
+		</td>
+	</tr>
 </table>
 <p style="margin-bottom: 0cm"><br/>
 <br/>
@@ -3858,6 +3910,6 @@ updates appearing on github. Please report any problems to me or
 report them as an &quot;Issues&quot; on the github reflector.</p>
 <p>Return to <a href="index.html">main</a> page. 
 </p>
-<p align="center">Last updated: 8th <font color="#000000">April </font>2021</p>
+<p align="center">Last updated: 4th May<font color="#000000"> </font>2021</p>
 </body>
 </html>
