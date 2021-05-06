@@ -3,9 +3,9 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title>lsscsi utility for Linux</title>
-	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
+	<meta name="generator" content="LibreOffice 6.4.7.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2021-04-08T14:55:02.728735721"/>
+	<meta name="changed" content="2021-05-05T18:02:29.357149266"/>
 	<meta name="keywords" content="lsscsi, Linux storage scan, SCSI, sysfs"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -26,27 +26,30 @@
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
 	<style type="text/css">
-		p { margin-bottom: 0.25cm; background: transparent }
-		h2 { margin-top: 0.35cm; margin-bottom: 0.21cm; background: transparent }
-		h2.western { font-family: "Liberation Serif", serif }
-		h2.cjk { font-family: "Noto Sans CJK SC Regular" }
-		h2.ctl { font-family: "Lohit Devanagari" }
-		h3 { margin-top: 0.25cm; margin-bottom: 0.21cm; background: transparent }
-		h3.western { font-family: "Liberation Serif", serif }
-		h3.cjk { font-family: "Noto Sans CJK SC Regular" }
-		h3.ctl { font-family: "Lohit Devanagari" }
-		pre { background: transparent }
+		@page { size: 21.59cm 27.94cm; margin-left: 2cm; margin-right: 1cm; margin-top: 1cm; margin-bottom: 1cm }
+		p { margin-bottom: 0.25cm; background: transparent; line-height: 115%; background: transparent }
+		h2 { margin-top: 0.35cm; margin-bottom: 0.21cm; background: transparent; background: transparent; page-break-after: avoid }
+		h2.western { font-family: "Liberation Serif", serif; font-size: 18pt; font-weight: bold }
+		h2.cjk { font-family: "Noto Sans CJK SC Regular"; font-size: 18pt; font-weight: bold }
+		h2.ctl { font-family: "Lohit Devanagari"; font-size: 18pt; font-weight: bold }
+		h3 { margin-top: 0.25cm; margin-bottom: 0.21cm; background: transparent; background: transparent; page-break-after: avoid }
+		h3.western { font-family: "Liberation Serif", serif; font-size: 14pt; font-weight: bold }
+		h3.cjk { font-family: "Noto Sans CJK SC Regular"; font-size: 14pt; font-weight: bold }
+		h3.ctl { font-family: "Lohit Devanagari"; font-size: 14pt; font-weight: bold }
+		pre { background: transparent; background: transparent }
 		pre.western { font-family: "Liberation Mono", monospace; font-size: 12pt }
-		pre.cjk { font-family: "Courier New", monospace }
-		pre.ctl { font-family: "Liberation Mono", monospace }
-		td p { background: transparent }
+		pre.cjk { font-family: "Courier New", monospace; font-size: 10pt }
+		pre.ctl { font-family: "Liberation Mono", monospace; font-size: 10pt }
+		td p { background: transparent; background: transparent }
 		tt.western { font-family: "Liberation Mono", monospace }
 		tt.cjk { font-family: "Courier New", monospace }
 		tt.ctl { font-family: "Liberation Mono", monospace }
+		a:link { color: #000080; so-language: zxx; text-decoration: underline }
 	</style>
 </head>
-<body lang="en-CA" background="data:image/jpeg;base64,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" dir="ltr"><p align="center" style="margin-top: 0.42cm; page-break-after: avoid">
+<body lang="en-CA" link="#000080" vlink="#800000" background="data:image/jpeg;base64,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" dir="ltr"><p align="center" style="margin-top: 0.42cm; page-break-after: avoid">
 <font face="Albany, sans-serif"><font size="6" style="font-size: 28pt"><b>lsscsi</b></font></font></p>
 <div id="Table of Contents1" dir="ltr"><p><br/>
 <br/>
@@ -56,47 +59,50 @@
 		<font face="Albany, sans-serif"><font size="4" style="font-size: 16pt"><b>Table
 		of Contents</b></font></font></p>
 	</div>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc130_4141254284">1
-	) Introduction</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc132_4141254284">2
-	) Overview</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc134_4141254284">3
-	) Command line interface</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc136_4141254284">4
-	) Transports</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc138_4141254284">4.1
-	) ATA</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc140_4141254284">4.2
-	) FC</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc142_4141254284">4.3
-	) 1394</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc144_4141254284">4.4
-	) iSCSI</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc146_4141254284">4.5
-	) PCIe</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc148_4141254284">4.6
-	) SAS</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc150_4141254284">4.7
-	) SATA</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc152_4141254284">4.8
-	) SPI</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc154_4141254284">4.9
-	) SRP</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc156_4141254284">4.10
-	) USB</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc158_4141254284">5
-	) Examples</a></p>
-	<p style="margin-left: 0.5cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc160_4141254284">6
-	) Download and Build information</a></p>
-	<p style="margin-left: 1cm; margin-bottom: 0cm"><a href="#__RefHeading___Toc162_4141254284">6.1
-	) Git mirror</a></p>
+</div>
+<div id="Table of Contents1" dir="ltr"><p style="margin-left: 0.5cm; margin-bottom: 0cm; background: transparent; line-height: 100%">
+	<a href="#__RefHeading___Toc171_4025125013">1 ) Introduction</a></p>
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm; background: transparent; line-height: 100%">
+	<a href="#__RefHeading___Toc173_4025125013">2 ) Overview</a></p>
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm; background: transparent; line-height: 100%">
+	<a href="#__RefHeading___Toc175_4025125013">3 ) Command line
+	interface</a></p>
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm; background: transparent; line-height: 100%">
+	<a href="#__RefHeading___Toc177_4025125013">4 ) Transports</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm; background: transparent; line-height: 100%">
+	<a href="#__RefHeading___Toc179_4025125013">4.1 ) ATA</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm; background: transparent; line-height: 100%">
+	<a href="#__RefHeading___Toc181_4025125013">4.2 ) FC</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm; background: transparent; line-height: 100%">
+	<a href="#__RefHeading___Toc183_4025125013">4.3 ) 1394</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm; background: transparent; line-height: 100%">
+	<a href="#__RefHeading___Toc185_4025125013">4.4 ) iSCSI</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm; background: transparent; line-height: 100%">
+	<a href="#__RefHeading___Toc187_4025125013">4.5 ) PCIe (NVMe)</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm; background: transparent; line-height: 100%">
+	<a href="#__RefHeading___Toc189_4025125013">4.6 ) SAS</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm; background: transparent; line-height: 100%">
+	<a href="#__RefHeading___Toc191_4025125013">4.7 ) SATA</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm; background: transparent; line-height: 100%">
+	<a href="#__RefHeading___Toc193_4025125013">4.8 ) SPI</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm; background: transparent; line-height: 100%">
+	<a href="#__RefHeading___Toc195_4025125013">4.9 ) SRP</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm; background: transparent; line-height: 100%">
+	<a href="#__RefHeading___Toc197_4025125013">4.10 ) USB</a></p>
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm; background: transparent; line-height: 100%">
+	<a href="#__RefHeading___Toc199_4025125013">5 ) Examples</a></p>
+	<p style="margin-left: 0.5cm; margin-bottom: 0cm; background: transparent; line-height: 100%">
+	<a href="#__RefHeading___Toc201_4025125013">6 ) Download and Build
+	information</a></p>
+	<p style="margin-left: 1cm; margin-bottom: 0cm; background: transparent; line-height: 100%">
+	<a href="#__RefHeading___Toc203_4025125013">6.1 ) Github mirror</a></p>
 </div>
 <p><br/>
 <br/>
 
 </p>
-<h2 class="western"><a name="__RefHeading___Toc130_4141254284"></a>1
-) Introduction</h2>
+<h2 class="western"><a name="__RefHeading___Toc171_4025125013"></a><a name="__RefHeading___Toc130_4141254284"></a>
+1 ) Introduction</h2>
 <p>The <b>lsscsi</b> command lists information about SCSI devices in
 Linux. Using SCSI terminology, <b>lsscsi</b> lists SCSI <i>logical
 units</i> (or SCSI <i>targets</i> when the '--transport' option is
@@ -125,8 +131,8 @@ node name, its SCSI generic (sg) node name and its kernel name.<br/>
 <br/>
 The
 <b>lsscsi</b> command works in the 2.6, 3, 4 and 5 Linux kernel
-series.</p>
-<h2 class="western"><a name="__RefHeading___Toc132_4141254284"></a><a name="mozTocId305911"></a>
+series. At the time of writing <b>lsscsi 0.32</b> was being released.</p>
+<h2 class="western"><a name="__RefHeading___Toc173_4025125013"></a><a name="__RefHeading___Toc132_4141254284"></a><a name="mozTocId305911"></a>
 2 ) Overview</h2>
 <p>When executed without any options <b>lsscsi</b> outputs one line
 for each SCSI device attached to the system:</p>
@@ -266,7 +272,7 @@ device:</p>
 the bsg node name is '/dev/bsg/4:0:0:0'. Note that the shell may
 interpret &quot;:&quot; as a special character in certain contexts so
 it may need to be escaped or placed between quotes.</p>
-<h2 class="western"><a name="__RefHeading___Toc134_4141254284"></a><a name="mozTocId473619"></a>
+<h2 class="western"><a name="__RefHeading___Toc175_4025125013"></a><a name="__RefHeading___Toc134_4141254284"></a><a name="mozTocId473619"></a>
 3 ) Command line interface</h2>
 <p>The lsscsi command has this command line interface:</p>
 <pre class="western" style="margin-bottom: 0.5cm"> <font face="monospace"><font size="3" style="font-size: 12pt">lsscsi [options] [filter]</font></font></pre><p>
@@ -790,7 +796,8 @@ command line options</b></p>
 <p><br/>
 The <b>lsscsi</b>&nbsp; man page and the usage message in
 the executable also show the command line syntax.</p>
-<h2 class="western">4 ) Transports</h2>
+<h2 class="western"><a name="__RefHeading___Toc177_4025125013"></a>4
+) Transports</h2>
 <p>When the '--transport' (or '-t') option is given <b>lsscsi</b>
 attempts to determine the transport being used and outputs
 information specific to that transport. In the case of modern
@@ -847,7 +854,8 @@ iSCSI).<br/>
 In version 0.30 of lsscsi support for NVMe was
 added. 
 </p>
-<h3 class="western">4.1 ) ATA</h3>
+<h3 class="western"><a name="__RefHeading___Toc179_4025125013"></a>4.1
+) ATA</h3>
 <p>The detection of&nbsp; parallel ATA devices is somewhat crude and
 is performed after checks are made for more traditional SCSI
 transports. The identification of an ATA transport is made on the
@@ -903,7 +911,8 @@ In
 this case the device at 3:0:0:0 (and device node /dev/scd0) is a
 DVD/CD drive whose transport is (parallel) ATA. That device is
 attached to host3 which is associated with the ata_piix driver.</p>
-<h3 class="western">4.2 ) FC</h3>
+<h3 class="western"><a name="__RefHeading___Toc181_4025125013"></a>4.2
+) FC</h3>
 <p>For FC devices (logical units), the '--transport' option will show
 the port name and the port identifier instead of the SCSI INQUIRY
 &quot;strings&quot;. For example:</p>
@@ -980,7 +989,8 @@ The &quot;name=value&quot; pairs are fetched from a sysfs directory
 (apart from &quot;transport=fc&quot;) so the meaning should be what
 is defined by the transport. Too see which directory (or directories)
 provide this information add '-vvv'.</p>
-<h3 class="western">4.3 ) 1394</h3>
+<h3 class="western"><a name="__RefHeading___Toc183_4025125013"></a>4.3
+) 1394</h3>
 <p>There are two versions of the SBP SCSI standard known as SBP-2 and
 SBP-3 for conveying SCSI command sets over a IEEE 1394 transport. The
 SCSI commands sets are typically for accessing storage devices. Hence
@@ -1032,7 +1042,8 @@ SBP standard requires that disks (typically ATA disks in an external
 enclosure) use the SCSI peripheral device type: &quot;simplified
 direct access device&quot;. The is abbreviated by the lsscsi command
 to &quot;sim dsk&quot;.</p>
-<h3 class="western">4.4 ) iSCSI</h3>
+<h3 class="western"><a name="__RefHeading___Toc185_4025125013"></a>4.4
+) iSCSI</h3>
 <p>The <b>lsscsi</b> command won't show anything iSCSI related on a
 machine with a iSCSI target running (either as a kernel driver or as
 a user space daemon). The following output is from a machine running
@@ -1070,7 +1081,7 @@ a iSCSI initiator with a session established:</p>
 
 
 As can be seen, there is no useful host information (e.g. the iSCSI initiator name) when the '-H' option (or the '--hosts' option) is given. The information given for the target is session related. An iSCSI session is made up of 1 or more connections which have available information in sysfs but the <b>lsscsi</b> command doesn't output them currently.</pre><h3 class="western">
-4.5 ) PCIe</h3>
+<a name="__RefHeading___Toc187_4025125013"></a>4.5 ) PCIe (NVMe)</h3>
 <p>It is possible that SCSI SOP/PQI devices are present but more
 likely the presence of a PCIe storage transport indicates one or more
 NVMe devices are available. In version 0.30 of lsscsi support for
@@ -1128,7 +1139,8 @@ see NVMe namespaces (or controllers) use the 'N' filter:</p>
 <font size="3" style="font-size: 12pt">[N:0:0:1]    disk    WDC WDS256G1X0C-00ENX0__1                  /dev/nvme0n1   256GB</font></pre><p>
 To suppress the NVMe namespace (or controller) output use the '-N'
 option.</p>
-<h3 class="western">4.6 ) SAS</h3>
+<h3 class="western"><a name="__RefHeading___Toc189_4025125013"></a>4.6
+) SAS</h3>
 <p>For SAS devices (logical units), the '--transport' option will
 show the target's SAS (port) address instead of the SCSI INQUIRY
 &quot;strings&quot;. For example:</p>
@@ -1212,7 +1224,8 @@ Linux host corresponds to a initiator device (not one of its ports):</p>
 <font face="monospace"><font size="3" style="font-size: 12pt">[5] aic94xx sas:50000d100f2dc000</font></font></pre><p>
 Adding a '--list' option will print multiple 'name=value' pair lines,
 each indented with two or more spaces.</p>
-<h3 class="western">4.7 ) SATA</h3>
+<h3 class="western"><a name="__RefHeading___Toc191_4025125013"></a>4.7
+) SATA</h3>
 <p>The detection of serial ATA (SATA) devices is somewhat crude and
 is performed after checks are made for more traditional SCSI
 transports. The identification of an SATA transport is made on the
@@ -1221,7 +1234,8 @@ similar mechanism is used to detect&nbsp; parallel ATA devices and
 there is some overlap since some drivers support both SATA and PATA
 devices. No other attributes are provided. See the example in the <a href="#mozTocId961094">ATA</a>
 section, specifically device 0:0:0:0 and the associated host0.</p>
-<h3 class="western">4.8 ) SPI</h3>
+<h3 class="western"><a name="__RefHeading___Toc193_4025125013"></a>4.8
+) SPI</h3>
 <p>The SCSI parallel interface (SPI) can be detected and is indicated
 by the &quot;spi:&quot; prefix. Sysfs provides no world wide unique
 names (until lk 3.15 when it provides the device identification VPD
@@ -1259,7 +1273,7 @@ for SPI:</p>
 <font face="monospace"><font size="3" style="font-size: 12pt">[0] mptspi spi:</font></font>
  <font face="monospace"><font size="3" style="font-size: 12pt">transport=spi</font></font>
  <font face="monospace"><font size="3" style="font-size: 12pt">signalling=unknown</font></font></pre><h3 class="western">
-4.9 ) SRP</h3>
+<a name="__RefHeading___Toc195_4025125013"></a>4.9 ) SRP</h3>
 <p>The SCSI RDMA Protocol (SRP) transport can be detected and is
 indicated by the &quot;srp:&quot; prefix. Support was added in lsscsi
 version 0.28 . Here are some examples from its contributor, Bart Van
@@ -1291,7 +1305,7 @@ Assche:</p>
   <font size="3" style="font-size: 12pt">transport=srp</font>
   <font size="3" style="font-size: 12pt">orig_dgid=f452:1403:0015:6021</font>
   <font size="3" style="font-size: 12pt">dgid=f452:1403:0015:6021</font></pre><h3 class="western">
-4.10 ) USB</h3>
+<a name="__RefHeading___Toc197_4025125013"></a>4.10 ) USB</h3>
 <p>When a USB transport is detected the device or host summary line
 will contain &quot;usb:&quot; followed by a USB device name. The USB
 device name has the form &quot;&lt;b&gt;-&lt;p1&gt;[.&lt;p2&gt;]+:&lt;c&gt;.&lt;i&gt;&quot;
@@ -1307,7 +1321,8 @@ to the USB SCSI target associated with that USB SCSI host. See the
 example in the <a href="#mozTocId961094">ATA</a> section,
 specifically devices 5:0:0:0 and 6:0:0:0 . 5:0:0:0 is connected
 directly to a laptop while 6:0:0:0 is connected via an external hub.</p>
-<h2 class="western">5 ) Examples</h2>
+<h2 class="western"><a name="__RefHeading___Toc199_4025125013"></a>5
+) Examples</h2>
 <pre class="western" style="margin-bottom: 0.5cm"><font face="Liberation Serif, serif">Here is the output from a not so typical machine. It has a directly attached SATA DVD drive and one SATA disk (/dev/sda). The remaining devices are attached via an external SAS expander which has its own SES management device [6:0:2:0] :</font></pre><p>
 <br/>
 <br/>
@@ -1668,7 +1683,8 @@ as enclosures and handle iSCSI devices (but the '--wwn' option will
 not).</font></p>
 <p>Support for NVMe device was added in lsscsi version 0.30 . For
 examples of its use, see the PCIe transport section above.</p>
-<h2 class="western">6 ) Download and Build information</h2>
+<h2 class="western"><a name="__RefHeading___Toc201_4025125013"></a>6
+) Download and Build information</h2>
 <p>Here is a table of the versions of lsscsi available for the lk 2.6
 and 3 series. <br/>
 &nbsp; 
@@ -1676,11 +1692,11 @@ and 3 series. <br/>
 <table width="100%" cellpadding="2" cellspacing="0">
 	<col width="28*"/>
 
+	<col width="31*"/>
+
 	<col width="24*"/>
 
-	<col width="23*"/>
-
-	<col width="181*"/>
+	<col width="173*"/>
 
 	<tr valign="top">
 		<td width="11%" style="border: 1px double #808080; padding: 0.05cm"><p>
@@ -1688,13 +1704,13 @@ and 3 series. <br/>
 			</b>
 			</p>
 		</td>
-		<td width="9%" style="border: 1px double #808080; padding: 0.05cm"><p>
+		<td width="12%" style="border: 1px double #808080; padding: 0.05cm"><p>
 			<b>binary rpm + deb</b></p>
 		</td>
 		<td width="9%" style="border: 1px double #808080; padding: 0.05cm"><p>
 			<b>source rpm</b></p>
 		</td>
-		<td width="71%" style="border: 1px double #808080; padding: 0.05cm"><p>
+		<td width="68%" style="border: 1px double #808080; padding: 0.05cm"><p>
 			<b>notes</b></p>
 		</td>
 	</tr>
@@ -1702,13 +1718,13 @@ and 3 series. <br/>
 		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.11.tgz">lsscsi-0.11.tgz</a></p>
 		</td>
-		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="12%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.11-1.i386.rpm">lsscsi-0.11-1.i386.rpm</a></p>
 		</td>
 		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.11-1.src.rpm">lsscsi-0.11-1.src.rpm</a></p>
 		</td>
-		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="68%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			suitable for lk 2.6.1</p>
 		</td>
 	</tr>
@@ -1716,13 +1732,13 @@ and 3 series. <br/>
 		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.12.tgz">lsscsi-0.12.tgz</a></p>
 		</td>
-		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="12%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.12-1.i386.rpm">lsscsi-0.12-1.i386.rpm</a></p>
 		</td>
 		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.12-1.src.rpm">lsscsi-0.12-1.src.rpm</a></p>
 		</td>
-		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="68%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			lk 2.6.6, add '-d' for device major+minor</p>
 		</td>
 	</tr>
@@ -1730,7 +1746,7 @@ and 3 series. <br/>
 		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.13.tgz">lsscsi-0.13.tgz</a></p>
 		</td>
-		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="12%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<br/>
 
 			</p>
@@ -1740,7 +1756,7 @@ and 3 series. <br/>
 
 			</p>
 		</td>
-		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="68%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			lk 2.6.7 add timeout value to --long option</p>
 		</td>
 	</tr>
@@ -1748,7 +1764,7 @@ and 3 series. <br/>
 		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.14.tgz">lsscsi-0.14.tgz</a></p>
 		</td>
-		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="12%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.14-1.i386.rpm">lsscsi-0.14-1.i386.rpm</a> 
 			</p>
 		</td>
@@ -1756,7 +1772,7 @@ and 3 series. <br/>
 			<a href="lsscsi-0.14-1.src.rpm">lsscsi-0.14-1.src.rpm</a> 
 			</p>
 		</td>
-		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="68%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			port to use sysfsutils-1.2.0&nbsp; or later</p>
 		</td>
 	</tr>
@@ -1764,7 +1780,7 @@ and 3 series. <br/>
 		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.15.tgz">lsscsi-0.15.tgz</a></p>
 		</td>
-		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="12%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.15-1.i386.rpm">lsscsi-0.15-1.i386.rpm</a> 
 			</p>
 		</td>
@@ -1772,7 +1788,7 @@ and 3 series. <br/>
 			<a href="lsscsi-0.15-1.src.rpm">lsscsi-0.15-1.src.rpm</a> 
 			</p>
 		</td>
-		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="68%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			lk 2.6.12 with optional select arguments and /dev scanning. Does
 			not use libsysfs.</p>
 		</td>
@@ -1781,7 +1797,7 @@ and 3 series. <br/>
 		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.16.tgz">lsscsi-0.16.tgz</a></p>
 		</td>
-		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="12%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.16-1.i386.rpm">lsscsi-0.16-1.i386.rpm</a> 
 			</p>
 		</td>
@@ -1789,7 +1805,7 @@ and 3 series. <br/>
 			<a href="lsscsi-0.16-1.src.rpm">lsscsi-0.16-1.src.rpm</a> 
 			</p>
 		</td>
-		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="68%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			lk 2.6.14, fixes for osst and ch devices, Debian build. Does not
 			use libsysfs. 
 			</p>
@@ -1799,13 +1815,13 @@ and 3 series. <br/>
 		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.17.tgz">lsscsi-0.17.tgz</a></p>
 		</td>
-		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="12%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.17-1.i386.rpm">lsscsi-0.17-1.i386.rpm</a></p>
 		</td>
 		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.17-1.src.rpm">lsscsi-0.17-1.src.rpm</a></p>
 		</td>
-		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="68%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			lk 2.6.16, kernel (sysfs) change that first appeared in lk
 			2.6.16-rc1 requires this version to see block devices</p>
 		</td>
@@ -1814,7 +1830,7 @@ and 3 series. <br/>
 		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.18.tgz">lsscsi-0.18.tgz</a></p>
 		</td>
-		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="12%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.18-1.i386.rpm">lsscsi-0.18-1.i386.rpm</a> 
 			</p>
 		</td>
@@ -1822,7 +1838,7 @@ and 3 series. <br/>
 			<a href="lsscsi-0.18-1.src.rpm">lsscsi-0.18-1.src.rpm</a> 
 			</p>
 		</td>
-		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="68%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			allow for &quot;generic&quot; and &quot;tape&quot; symlinks to be
 			dropped in sysfs.</p>
 		</td>
@@ -1832,7 +1848,7 @@ and 3 series. <br/>
 			<a href="lsscsi-0.19.tgz">lsscsi-0.19.tgz</a><br/>
 <b>20070125</b></p>
 		</td>
-		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="12%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.19-1.i386.rpm">lsscsi-0.19-1.i386.rpm</a><br/>
 <a href="lsscsi_0.19-0.1_i386.deb">lsscsi_0.19-0.1_i386.deb</a></p>
 		</td>
@@ -1840,7 +1856,7 @@ and 3 series. <br/>
 			<a href="lsscsi-0.19-1.src.rpm">lsscsi-0.19-1.src.rpm</a> 
 			</p>
 		</td>
-		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="68%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			add transport information, '--list' option, fixes for lk 2.6.20</p>
 		</td>
 	</tr>
@@ -1849,7 +1865,7 @@ and 3 series. <br/>
 			<a href="lsscsi-0.20.tgz">lsscsi-0.20.tgz</a><br/>
 <b>20080709</b></p>
 		</td>
-		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="12%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.20-1.i386.rpm">lsscsi-0.20-1.i386.rpm</a><br/>
 <a href="lsscsi_0.20-0.1_i386.deb">lsscsi_0.20-0.1_i386.deb</a>
 						</p>
@@ -1858,7 +1874,7 @@ and 3 series. <br/>
 			<a href="lsscsi-0.20-1.src.rpm">lsscsi-0.20-1.src.rpm</a> 
 			</p>
 		</td>
-		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="68%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			for lk 2.6.26 when CONFIG_SYSFS_DEPRECATED_V2<br/>
 not defined</p>
 		</td>
@@ -1868,14 +1884,14 @@ not defined</p>
 			<a href="lsscsi-0.21.tgz">lsscsi-0.21.tgz</a><br/>
 <b>20080910</b></p>
 		</td>
-		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="12%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.21-1.i386.rpm">lsscsi-0.21-1.i386.rpm</a><br/>
 <a href="lsscsi_0.21-0.1_i386.deb">lsscsi_0.21-0.1_i386.deb</a></p>
 		</td>
 		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.21-1.src.rpm">lsscsi-0.21-1.src.rpm</a></p>
 		</td>
-		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="68%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			more changes for lk 2.6.26</p>
 		</td>
 	</tr>
@@ -1884,7 +1900,7 @@ not defined</p>
 			<a href="lsscsi-0.22.tgz">lsscsi-0.22.tgz</a><br/>
 <b>20081226</b></p>
 		</td>
-		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="12%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.22-1.i386.rpm">lsscsi-0.22-1.i386.rpm</a><br/>
 <a href="lsscsi_0.22-0.1_i386.deb">lsscsi_0.22-0.1_i386.deb</a></p>
 		</td>
@@ -1892,7 +1908,7 @@ not defined</p>
 			<a href="lsscsi-0.22-1.src.rpm">lsscsi-0.22-1.src.rpm</a> 
 			</p>
 		</td>
-		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="68%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			show protection information with '--protection' option, ATA, SATA
 			and USB transport information</p>
 		</td>
@@ -1902,14 +1918,14 @@ not defined</p>
 			<a href="lsscsi-0.23.tgz">lsscsi-0.23.tgz</a><br/>
 <b>20091203</b></p>
 		</td>
-		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="12%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.23-1.i386.rpm">lsscsi-0.23-1.i386.rpm</a><br/>
 <a href="lsscsi_0.23-0.1_i386.deb">lsscsi_0.23-0.1_i386.deb</a></p>
 		</td>
 		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.23-1.src.rpm">lsscsi-0.23-1.src.rpm</a></p>
 		</td>
-		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="68%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			stop scanning /proc/mounts; assume /sys unless overridden by
 			'--sysfsroot=PATH' option</p>
 		</td>
@@ -1919,7 +1935,7 @@ not defined</p>
 			<a href="lsscsi-0.24.tgz">lsscsi-0.24.tgz</a><br/>
 <b>20101224</b></p>
 		</td>
-		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="12%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.24-1.i386.rpm">lsscsi-0.24-1.i386.rpm</a><br/>
 <a href="lsscsi_0.24-0.1_i386.deb">lsscsi_0.24-0.1_i386.deb</a>
 						</p>
@@ -1928,7 +1944,7 @@ not defined</p>
 			<a href="lsscsi-0.24-1.src.rpm">lsscsi-0.24-1.src.rpm</a> 
 			</p>
 		</td>
-		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="68%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			add &quot;(null)&quot; to the currently accepted &quot;&lt;NULL&gt;&quot;
 			as the string representation of NULL; FC transport syntax changes
 			(colon to slash). Needed around lk 2.6.32 and later</p>
@@ -1939,7 +1955,7 @@ not defined</p>
 			<a href="lsscsi-0.25.tgz">lsscsi-0.25.tgz</a><br/>
 <b>20110509</b></p>
 		</td>
-		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="12%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.25-1.i386.rpm">lsscsi-0.25-1.i386.rpm</a><br/>
 <a href="lsscsi_0.25-0.1_i386.deb">lsscsi_0.25-0.1_i386.deb</a></p>
 		</td>
@@ -1948,7 +1964,7 @@ not defined</p>
 			</a>
 			</p>
 		</td>
-		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="68%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			add --size and --protmode options</p>
 		</td>
 	</tr>
@@ -1957,7 +1973,7 @@ not defined</p>
 			<a href="lsscsi-0.26.tgz">lsscsi-0.26.tgz</a><br/>
 <b>20120219</b></p>
 		</td>
-		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="12%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.26-1.i386.rpm">lsscsi-0.26-1.i386.rpm</a><br/>
 <a href="lsscsi_0.26-0.1_i386.deb">lsscsi_0.26-0.1_i386.deb</a></p>
 		</td>
@@ -1965,7 +1981,7 @@ not defined</p>
 			<a href="lsscsi-0.26-1.src.rpm">lsscsi-0.26-1.src.rpm</a> 
 			</p>
 		</td>
-		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="68%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			add --wwn option and support for FCoE</p>
 		</td>
 	</tr>
@@ -1974,7 +1990,7 @@ not defined</p>
 			<a href="lsscsi-0.27.tgz">lsscsi-0.27.tgz</a><br/>
 <b>20130508</b></p>
 		</td>
-		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="12%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.27-1.i386.rpm">lsscsi-0.27-1.i386.rpm</a><br/>
 <a href="lsscsi-0.27-1.x86_64.rpm">lsscsi-0.27-1.x86_64.rpm</a><br/>
 <a href="lsscsi_0.27-0.1_i386.deb">lsscsi_0.27-0.1_i386.deb</a><br/>
@@ -1984,7 +2000,7 @@ not defined</p>
 			<a href="lsscsi-0.27-1.src.rpm">lsscsi-0.27-1.src.rpm</a> 
 			</p>
 		</td>
-		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="68%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			add --lunhex (-x)&nbsp; option: accept Linux LUN numbers from
 			sysfs as large as 64 bits. Add scsi_id (-i) option: udev derived
 			information from /dev/disk/by-id/ . Improve handling of large
@@ -1996,7 +2012,7 @@ not defined</p>
 			<a href="lsscsi-0.28.tgz">lsscsi-0.28.tgz</a><br/>
 <b>20141127</b></p>
 		</td>
-		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="12%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.28-1.i386.rpm">lsscsi-0.28-1.i386.rpm</a><br/>
 <a href="lsscsi-0.28-1.x86_64.rpm">lsscsi-0.28-1.x86_64.rpm</a><br/>
 <a href="lsscsi_0.28-0.1_i386.deb">lsscsi_0.28-0.1_i386.deb</a><br/>
@@ -2007,7 +2023,7 @@ not defined</p>
 			<a href="lsscsi-0.28-1.src.rpm">lsscsi-0.28-1.src.rpm</a> 
 			</p>
 		</td>
-		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="68%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			add --unit (-u) option: display LU name or WWN for ATA disks;
 			requires lk &gt;= 3.15 .</p>
 		</td>
@@ -2018,7 +2034,7 @@ not defined</p>
 20160514<br/>
 belated</p>
 		</td>
-		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="12%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<br/>
 
 			</p>
@@ -2028,7 +2044,7 @@ belated</p>
 
 			</p>
 		</td>
-		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="68%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<br/>
 
 			</p>
@@ -2039,14 +2055,14 @@ belated</p>
 			<a href="lsscsi-0.30.tgz">lsscsi-0.30.tgz</a><br/>
 <b>20180612</b></p>
 		</td>
-		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
+		<td width="12%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
 			<a href="lsscsi_0.30-0.1_amd64.deb">lsscsi_0.30-0.1_amd64.deb</a></p>
 			<p><a href="lsscsi-0.30-1.x86_64.rpm">lsscsi-0.30-1.x86_64.rpm</a></p>
 		</td>
 		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<a href="lsscsi-0.30-1.src.rpm">lsscsi-0.30-1.src.rpm</a></p>
 		</td>
-		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="68%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			add NVMe support which is indicated by a tuple of [N:*:*:*] or
 			[N:*]. Add --brief and --pdt options to aid parsing plus the
 			--sz-lbs option</p>
@@ -2057,7 +2073,7 @@ belated</p>
 			<a href="lsscsi-0.31.tgz">lsscsi-0.31.tgz</a></p>
 			<p><b>20200220</b></p>
 		</td>
-		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="12%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<br/>
 
 			</p>
@@ -2067,8 +2083,25 @@ belated</p>
 
 			</p>
 		</td>
-		<td width="71%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="68%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			Mainly a bug fix version</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="11%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
+			<a href="lsscsi-0.32.tgz">lsscsi-0.32.tgz</a></p>
+			<p><b>20210505</b></p>
+		</td>
+		<td width="12%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
+			<a href="lsscsi_0.32-0.1_amd64.deb">lsscsi_0.32-0.1_amd64.deb</a></p>
+			<p><a href="lsscsi-0.32-1.x86_64.rpm">lsscsi-0.32-1.x86_64.rpm</a></p>
+		</td>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="lsscsi-0.32-1.src.rpm">lsscsi-0.32-1.src.rpm</a></p>
+		</td>
+		<td width="68%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			print nr_hw_queues when available for SCSI hosts; improve NVMe
+			device parsing; logic to select best SCSI id (--scsi_id) to output</p>
 		</td>
 	</tr>
 </table>
@@ -2080,7 +2113,8 @@ some configuration files are altered then the ./autogen.sh script may
 need to be called. The ./build_debian.sh script is provided to create
 a Debian package. A lsscsi.spec file is provided to facilitate
 building a &quot;rpm&quot; style package.</p>
-<h3 class="western">6.1 ) Github mirror</h3>
+<h3 class="western"><a name="__RefHeading___Toc203_4025125013"></a>6.1
+) Github mirror</h3>
 <p>The lsscsi package is developed by the author using subversion.
 Subversion revisions, which are ascending integers, can be seen in
 the ChangeLog file and the version string (i.e. '<tt class="western">lsscsi
@@ -2088,17 +2122,17 @@ the ChangeLog file and the version string (i.e. '<tt class="western">lsscsi
 has set up a git mirror on github:</p>
 <ul>
 	<li><p><a href="https://github.com/hreinecke/lsscsi">https://github.com/hreinecke/lsscsi</a></p>
-	<li><p></p>
+	<li><p><a href="https://github.com/doug-gilbert/lsscsi">https://github.com/doug-gilbert/lsscsi</a></p>
 </ul>
 <p>Updates are sent to that mirror whenever a beta is placed on the
 main page, perhaps more often than that. Please report any problems
-to me.</p>
+to the author.</p>
 <p>Return to <a href="../sg/index.html">main</a> page. 
 </p>
 <p align="center">Douglas Gilbert (dgilbert@interlog.com) 
 </p>
 <p align="center"><br/>
-Last updated: 8th April 2021</p>
+Last updated: 5th May 2021</p>
 <p>&nbsp; 
 </p>
 </body>
