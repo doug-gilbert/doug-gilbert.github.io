@@ -1,0 +1,2141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title>smp_utils package</title>
+	<meta name="generator" content="LibreOffice 6.4.7.2 (Linux)"/>
+	<meta name="created" content="00:00:00"/>
+	<meta name="changed" content="2021-09-12T14:09:34.472911373"/>
+	<meta name="keywords" content="smp_utils, Serial Attached SCSI      utilities, SMP"/>
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<style type="text/css">
+		@page { size: 21.59cm 27.94cm; margin-left: 2cm; margin-right: 1cm; margin-top: 1cm; margin-bottom: 1cm }
+		p { margin-bottom: 0.25cm; color: #000000; line-height: 115%; background: transparent }
+		h1 { margin-bottom: 0.21cm; color: #000000; background: transparent; page-break-after: avoid }
+		h1.western { font-family: "Liberation Serif", serif; font-size: 24pt; font-weight: bold }
+		h1.cjk { font-family: "Noto Serif CJK SC"; font-size: 24pt; font-weight: bold }
+		h1.ctl { font-family: "Lohit Devanagari"; font-size: 24pt; font-weight: bold }
+		h2 { margin-top: 0.35cm; margin-bottom: 0.21cm; color: #000000; background: transparent; page-break-after: avoid }
+		h2.western { font-family: "Liberation Serif", serif; font-size: 18pt; font-weight: bold }
+		h2.cjk { font-family: "Noto Sans CJK SC"; font-size: 18pt; font-weight: bold }
+		h2.ctl { font-family: "Lohit Devanagari"; font-size: 18pt; font-weight: bold }
+		h3 { margin-top: 0.25cm; margin-bottom: 0.21cm; color: #000000; background: transparent; page-break-after: avoid }
+		h3.western { font-family: "Liberation Serif", serif; font-size: 14pt; font-weight: bold }
+		h3.cjk { font-family: "Noto Sans CJK SC"; font-size: 14pt; font-weight: bold }
+		h3.ctl { font-family: "Lohit Devanagari"; font-size: 14pt; font-weight: bold }
+		td p { color: #000000; background: transparent }
+		tt.western { font-family: "Liberation Mono", monospace }
+		tt.cjk { font-family: "Courier New", monospace }
+		tt.ctl { font-family: "Liberation Mono", monospace }
+		a:link { color: #0000ff; so-language: zxx; text-decoration: underline }
+		a:visited { color: #000080; so-language: zxx; text-decoration: underline }
+	</style>
+</head>
+<body lang="en-CA" text="#000000" link="#0000ff" vlink="#000080" background="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/wgALCADYANgBAREA/8QAGAABAQEBAQAAAAAAAAAAAAAAAQIAAwb/2gAIAQEAAAAB9z1ybbnhz03OVvQIiULolVueZTsSzTtsIai86M7VEjkoqSsZszzmq0pDquWd0eZTl5Z2mgNVXA5NUnWJi8bVA69UFXIbUxO6EzWikvMnWDN7QRVGKJy6rmWgUink5BZek041QUkumVwtTWmzThaIbl5O6xqmVUYcNkVUTLXQZl2agcGuKamdrqYzUNMbGmrm9iHW8XoSNEYrNzfMLKnpopmJVNqU2nVRtjM1zK2qOkyz0mysbDtow1pL56imtsPPUm5jumh0ubQ1aJti+cOV0hVW40dCKxXOGWnYd0zjSXBeTntNO01VbO257ax0CCFnTZHaZ1u2iUwi27bbadW2xGxts1W222xppxy2zrYpcOCue2uaiUd0edTYx0iemiXpJgmtd85Tr//EAB0QAAEFAQEBAQAAAAAAAAAAAAEQESAwQABQMWD/2gAIAQEAAQUC2PF5CB1nE1ryEmmFOk7mQ2AUlRzwEGudDE5jFkE3sPGtrQpwmDoFPFRaYAI29qjd9QDK/inUZHwBYYNe1bROo/ixMbQEMf/EABQQAQAAAAAAAAAAAAAAAAAAAJD/2gAIAQEABj8CNn//xAAhEAEBAQADAQEBAQEBAQEAAAABABEQITFBUWEgcTChgf/aAAgBAQABPyF76s67vbbN4ZmMvu22NnVky7MYHHRbZ33LABLvnAd8NhAl/I64JPAbfb+o7eGUCxHduR33NtuFusR3LkEvH9bZeru8twg+7H5bhbO8CDgD1t5e48thvZflis4E3bak+EmWQME9Wd9y8at3ZnrPBno429dwOwBZ3JGwmwmTNu9g+y/27dwO8mCb5PtssnURF/ywyZ7uvljL8Js67vf+Swa8J+XhHbt3bM8ZhrL3PdnVnyDq3u7C2YOuFC3uZ8sYMJbuVXg6X3OAdx3LLBLArbhZB+zdl8v3jOoLNui2Xyz9lhgT8F5PGOEODgG9wd8JwDBOFn7brbez2wgz/vDLbfyz7wD7ElkFlkeRMm/bo64X4Wfre8fZ76LMnq/jjD7xi36b2Em2XyT+3/I6OSf287tXgPsdX/ZjqyBeJcj9jtvk2SYYT+F9u7X1gwh35B3N39g820j+29QS5bfqe52TyOXt5EvdkGd3zYs/Ytydg6l5LvPi3vhmS9dQ6vBZBDhchYFb+S3bxvJ37I8svk/y/SXqFeHG3se6z5B/8jhGCDOFMt40t22d4zSfyDqCO+FtXu3XLx3ZJ1LHltmsHDLgstyyyMju63IttlvVmuQHD3PG3bbE7s8Z3GWbZnVtjZhbkdd38R23yzWM+QTZPkEt7wZLL+ey8rBeS50WKz5L3wH7B3Zhef5CZdQwS4Xf/wCz0f23uXW295Le+TPbb/5BwuS29xwrt7gzgFe5Qlb+XkdcH5b8ISHttu4FgvvGy8HsSyxLHd5PU6vCwchC2Log1sw/wlkvyB4W7TZbnDB94yCLe49sgwyIGf62e56sctQZBw4cAmZb5MQdQdwXbZx9/wAPAWf4ZT3w+22bJ1wRB/4M7B/pQ9t2wly3eH+WcH/npbKvkcrhOxdwKz1H9gvLNeA595WHZ8v+x+tsLoLdbcn9ZdvIfWI9g4XW8ti2XCFXhWBuiZbVg17t+E/k+WsrKzt8lXyw94XfG9XcdF//2gAIAQEAAAAQgPzz/wCfn/f/APPt/wD7X4/P3/N/bf3u/ft/vW/vmZv/AEDH/wBY+a//AN82x+/++dn9jmd/X0j/AIOAX16AF5vgMfP5DK/2CSp/A2HfwHh/4Awf+AAD/gAQ/IAevyizvu9//8QAGxAAAgIDAQAAAAAAAAAAAAAAARFQYBAhMXD/2gAIAQEAAT8QylS7AIIRpAyMMMHHCVLZIArEcgF5BmYCAoJU2EUFBoOAs6HBAEAKDjYGFQpCKQwMUoANg+gIF0oJEAQT4WFggSw0B0WBmKTmIBDI1xKggpMDCBCAhxFAhp2leECmEDDULihRABEIYRCZCAmEFMyA6gwYkVCqdgEIj1IAJDyC4oGEmkABSIQxQA4SEEaYREyADwAWZJSEMCkgwlJAAEKAA5RDAaFkICZAcEGTGAgmAgBE1T//2Q==" dir="ltr"><h1 class="western" align="center">
+The&nbsp; smp_utils package</h1>
+<ol>
+	<li><p style="margin-bottom: 0cm"><a name="mozToc"></a><a href="#mozTocId697451">The&nbsp;
+	smp_utils package</a> 
+	</p>
+	<ol>
+		<li><p style="margin-bottom: 0cm"><a href="#mozTocId746876">Introduction</a>
+				</p>
+		<li><p style="margin-bottom: 0cm"><a href="#mozTocId131313">Contents
+		of smp_utils</a> 
+		</p>
+		<li><p style="margin-bottom: 0cm"><a href="#mozTocId301018">Interfaces</a>
+				</p>
+		<ol>
+			<li><p style="margin-bottom: 0cm"><a href="#mozTocId423006">Linux</a>
+						</p>
+			<li><p style="margin-bottom: 0cm"><a href="#mozTocId699241">Solaris</a>
+						</p>
+			<li><p style="margin-bottom: 0cm"><a href="#mozTocId97574">FreeBSD</a>
+						</p>
+		</ol>
+		<li><p style="margin-bottom: 0cm"><a href="#mozTocId585558">Notes</a>
+				</p>
+		<li><p style="margin-bottom: 0cm"><a href="#mozTocId396798">Enclosure
+		in and out ports</a> 
+		</p>
+		<li><p style="margin-bottom: 0cm"><a href="#mozTocId958107">Examples</a>
+				</p>
+		<ol>
+			<li><p style="margin-bottom: 0cm"><a href="#mozTocId10755">Finding
+			expanders</a> 
+			</p>
+			<li><p style="margin-bottom: 0cm"><a href="#mozTocId899026">Discover</a>
+						</p>
+			<li><p style="margin-bottom: 0cm"><a href="#mozTocId629167">General
+			information</a> 
+			</p>
+			<li><p style="margin-bottom: 0cm"><a href="#mozTocId273220">SATA
+			disk affiliations</a> 
+			</p>
+			<li><p style="margin-bottom: 0cm"><a href="#mozTocId471134">Zoning</a>
+						</p>
+			<li><p style="margin-bottom: 0cm"><a href="#mozTocId389989">Expanders
+			and enclosures</a> 
+			</p>
+		</ol>
+		<li><p><a href="#mozTocId356346">Download</a> 
+		</p>
+	</ol>
+</ol>
+<h2 class="western"><a name="mozTocId746876"></a>Introduction</h2>
+<p>The <b>smp_utils</b> package contains utilities for the Serial
+Attached SCSI (SAS) Serial Management Protocol (SMP).&nbsp; Most
+utilities correspond to a single SMP function, sending out a request,
+checking for errors and if all is well processing the response. The
+response is either decoded, printed out in ASCII hexadecimal or sent
+as binary to stdout.<br/>
+<br/>
+At the lower levels SAS is a point to
+point interconnect (like SATA). SAS has devices called expanders
+which have a similar role to switches in the Fibre Channel protocol
+and the Ethernet. The primary role of SMP is to monitor and control
+SAS expanders. Most SAS Host Bus Adapters (HBAs) contain a SMP
+initiator through which SMP requests are sent and responses received.
+SAS expanders contain SMP targets that respond to SMP requests. SAS
+disks do not normally contains SMP targets and SATA disks do not
+contain SMP targets. SAS has two other protocols: SSP for
+transporting SCSI command sets to SAS devices (e.g. SAS disks and
+tape drives) , and STP for tunnelling the ATA command set to a SAS
+expander.<br/>
+<br/>
+SAS now has multiple generations. The first six
+generations are approved standards: the original SAS (SAS ANSI INCITS
+376-2003), SAS 1.1 (INCITS 417-2006), SAS-2 (ANSI INCITS 457-2010),
+SAS-2.1 (ANSI INCITS 478-2011), SAS-3 (ANSI INCITS 519-2014) and
+SAS-4 (ANSI INCITS 534-2019) . In SAS-2.1 the higher level layers
+including the SMP protocol where placed in a separate standard known
+as the SAS Protocol Layer (SPL) and it now has four standards: SPL
+(ANSI INCITS 476-2011), SPL-2 (ANSI INCITS 505-2013), SPL-3 (ANSI
+INCITS 492-2015) and SPL-4 (ANSI INCITS 538-2018). The most recent
+SPL-5 draft is spl5r09.pdf . To lessen confusion, the six generations
+of SAS will be referred to here as 1, 1.1, 2, 2.1, 3.0 and 4.0.
+Drafts, including those just prior to standardization, can be found
+at the <a href="http://www.t10.org/">www.t10.org</a> site. The SMP
+functions for reading and writing to GPIO registers are defined in
+the Small Form Factor document SFF-8485 found at <a href="http://www.sffcommittee.com/">www.sffcommittee.com</a>
+.<br/>
+<br/>
+The <b>smp_utils</b> package targets the Linux kernel
+2.6, 3, 4 and 5 series. This page describes smp_utils version <b>0.99
+</b>. Ports to Solaris and FreeBSD (requiring FreeBSD 9.0 or later)
+were added in smp_utils version 0.97.<br/>
+<br/>
+Due to a large
+number of changes between smp_utils version 0.96 and older versions,
+an older version of this page can be found at <a href="smp_utils095.html">smp_utils095.html</a>
+. Its examples were written in 2008 and may be useful for older Linux
+kernels (e.g. prior to lk 2.6.30).</p>
+<h2 class="western"><a name="mozTocId131313"></a>Contents of
+smp_utils</h2>
+<p>Here is a list in alphabetical order of the utilities in the
+<b>smp_utils</b> package:</p>
+<p align="center" style="margin-bottom: 0cm"><b>Table 1. Utilities</b></p>
+<table width="1587" cellpadding="2" cellspacing="1">
+	<col width="187"/>
+
+	<col width="296"/>
+
+	<col width="51"/>
+
+	<col width="66"/>
+
+	<col width="959"/>
+
+	<tr>
+		<td width="187" style="border: 1px double #808080; padding: 0.05cm"><p>
+			<b>Utility</b></p>
+		</td>
+		<td width="296" style="border: 1px double #808080; padding: 0.05cm"><p>
+			<b>SMP function</b></p>
+		</td>
+		<td width="51" style="border: 1px double #808080; padding: 0.05cm"><p>
+			<b>SAS</b><br/>
+<b>version</b></p>
+		</td>
+		<td width="66" style="border: 1px double #808080; padding: 0.05cm"><p>
+			<b>smp_utils</b><br/>
+<b>version</b><br/>
+<b>added</b></p>
+		</td>
+		<td width="959" style="border: 1px double #808080; padding: 0.05cm"><p>
+			<b>Notes</b></p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_conf_general</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			CONFIGURE GENERAL</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			2</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.92</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_conf_phy_event</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			CONFIGURE PHY<br/>
+EVENT</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			2</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.97</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_conf_route_info</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			CONFIGURE ROUTE INFORMATION</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			1</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			SAS-2 expanders typically don't support this function</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_conf_zone_man_pass</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			CONFIGURE ZONE MANAGER PASSWORD</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			2</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.96</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_conf_zone_perm_tbl</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			CONFIGURE ZONE PERMISSION TABLE</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			2</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.96</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			all expanders within a ZPSDS should have the same zone permission
+			table</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_conf_zone_phy_info</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			CONFIGURE ZONE PHY INFORMATION</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			2</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.96</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			map expander phys to zone groups</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_discover</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			DISCOVER</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			1</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			SAS HBA drivers use this command to discover the topology</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_discover_list</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			DISCOVER LIST</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			2</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.91</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			more information returned in each response compared to the
+			DISCOVER function</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_ena_dis_zoning</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			ENABLE DISABLE ZONING</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			2</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.96</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_phy_control</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			PHY CONTROL</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			1</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			amongst other things, can send link and hard resets to attached
+			phy</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_phy_test</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			PHY TEST FUNCTION</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			1.1</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.91</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_read_gpio</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			READ GPIO REGISTER</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			1</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			defined in SFF-8485. May also be able to read the sideband signals
+			on a HBA's wide internal cables. Can also invoke the &quot;ENHANCED&quot;
+			variant function.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_rep_broadcast</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			REPORT BROADCAST</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			2</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.96</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_rep_exp_route_tbl</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			REPORT EXPANDER ROUTE TABLE LIST</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			2</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.93</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_rep_general</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			REPORT GENERAL</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			1</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			&nbsp;</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_rep_manufacturer</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			REPORT MANUFACTURER INFORMATION</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			1</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			Response contains device identification string somewhat like the
+			response to a SCSI INQUIRY command.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_rep_phy_err_log</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			REPORT PHY ERROR LOG</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			1</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_rep_phy_event</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			REPORT PHY EVENT</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			2</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.96</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_rep_phy_event_list</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			REPORT PHY EVENT LIST</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			2</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.96</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_rep_phy_sata 
+			</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			REPORT PHY SATA</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			1</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			for expander phys connected to a SATA device</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_rep_self_conf_stat</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			REPORT SELF CONFIGURATION STATUS</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			2</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.96</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_rep_route_info</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			REPORT ROUTE INFORMATION</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			1</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			&nbsp;SAS-2 expanders typically don't support this function 
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_rep_zone_man_pass</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			REPORT ZONE MANAGER PASSWORD</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			2</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.96</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_rep_zone_perm_tbl</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			REPORT ZONE PERMISSION TABLE</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			2</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.96</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			can be written to file which can then be used as input to
+			smp_conf_zone_perm_tbl</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_write_gpio</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			WRITE GPIO REGISTER</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			1</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			defined in SFF-8485. May also be able to write to the sideband
+			signals on a HBA's wide internal cables. Can also invoke the
+			&quot;ENHANCED&quot; variant function.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_zone_activate</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			ZONE ACTIVATE</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			2</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.96</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_zone_lock</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			ZONE LOCK</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			2</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.96</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			required prior to most other zone related functions; may need
+			password</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_zone_unlock</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			ZONE UNLOCK</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			2</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.96</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			completes a sequence of zone related functions</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="187" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			smp_zoned_broadcast</p>
+		</td>
+		<td width="296" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			ZONED BROADCAST</p>
+		</td>
+		<td width="51" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			2</p>
+		</td>
+		<td width="66" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			0.96</p>
+		</td>
+		<td width="959" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<br/>
+
+			</p>
+		</td>
+	</tr>
+</table>
+<p><br/>
+As can be seen, the utility name is closely related to the
+SMP function name. The &quot;SAS version&quot; column indicates the
+first SAS version in which the SMP function appeared. For more
+information see one of the SAS drafts (i.e. SAS 1, SAS 1.1, SAS 2,
+SPL [1], SPL 2, SPL 3, SPL 4 and SPL5), in the &quot;Application
+layer&quot; section within which the SMP functions are
+described.<br/>
+<br/>
+Each utility has its own man page. Information
+common to all utilities can be found in the smp_utils man page.</p>
+<h2 class="western"><a name="mozTocId301018"></a>Interfaces</h2>
+<h3 class="western"><a name="mozTocId423006"></a>Linux</h3>
+<p>SMP pass through interfaces are not yet as well established as
+those for the SCSI protocol. SMP is a request response protocol with
+each request and response limited currently to 1028 bytes in length
+(including a 4 byte CRC at the end of each request and
+response).<br/>
+<br/>
+This package currently supports three
+interfaces: 
+</p>
+<ul>
+	<li><p style="margin-bottom: 0cm"><b>aac</b>: supports Adaptec/PMC
+	RAID adapters (added in version 0.98)</p>
+	<li><p style="margin-bottom: 0cm"><b>mpt</b>: based on the MPT
+	Fusion <font face="monospace">/dev/mptctl</font>, <font face="monospace">/dev/mpt2ctl
+	or /dev/mpt3ctl</font>&nbsp; device 
+	</p>
+	<li><p><b>sgv4</b>: (also <b>sg</b>) uses the SCSI generic version 4
+	interface and the SAS transport layer (added in version 0.93 and
+	requires Linux kernel 2.6.24 or later) 
+	</p>
+</ul>
+<p>The aac interface uses a &quot;decorated&quot; device name of the
+form /dev/aac[N[,E_ID]] where &quot;N&quot; is the RAID controller
+identifier number (and is obtained from the <font face="Courier New, Courier, monospace">unique_id</font>
+as discussed below for the mpt interface) and &quot;E_ID&quot; is the
+expander identifier for cases where there is more than one expander.
+The mpt interface uses a single device node per system. Since there
+may be multiple HBAs in a system, an &quot;ioc_num&quot; is used to
+identify which HBA is going to send the SMP request.&nbsp; The
+&quot;ioc_num&quot; defaults to 0. If another value is needed then a
+syntax like this &quot;<font face="monospace">smp_rep_general
+/dev/mptctl,3</font>&quot; can be used. The ioc_num can be found in
+the <font face="monospace">/proc/scsi/mptsas/&lt;host_no&gt;</font>
+file in the Linux lk 2.4 series and additionally in
+<font face="monospace">/sys/class/scsi_host/host&lt;n&gt;/unique_id</font>
+file in the lk 2.6 and 3 series. The user could also check the log in
+the section where the MPT SAS HBA is registered for &quot;ioc&quot;
+strings and look at the following number. The SAS address of the
+target SMP device (typically a SAS expander) also needs to be given.
+The <font face="monospace">/dev/mptctl</font> device node is
+associated with the mptctl module. Hence a &quot;<font face="monospace">modprobe
+mptctl</font>&quot; command may be required. The <font face="monospace">/dev/mptctl</font>
+device node is a character device with major 10 and minor 220 while
+<font face="monospace">/dev/mpt2ctl </font>device node is a character
+device with major 10 and minor 221 .<br/>
+<br/>
+The sgv4 interface
+uses the SG_IO ioctl, the bsg driver and the SCSI generic version 4
+(hence &quot;sgv4&quot; which can be shortened to &quot;sg&quot;)
+structure. From Linux kernel 2.6.24 the SAS transport layer within
+the SCSI subsystem accepts SMP requests and forwards them on to those
+SAS low level (HBA) drivers that accept them. At this time SAS HBAs
+based on libsas should support this interface (e.g. those that use
+mptsas, mpt2sas and mpt3sas). Note that most SAS RAID controllers do
+not use libsas. The SMP target device is identified in one of two
+possible ways: via a sysfs directory name (e.g.
+<font face="monospace">/sys/class/bsg/expander-4:0</font> ) or via a
+device node created dynamically by the bsg driver (e.g.
+<font face="monospace">/dev/bsg/expander-4:0</font> ). The SAS
+address of the expander can be found in the <font face="monospace">/sys/class/sas_device</font>
+directory (e.g.&nbsp; <font face="monospace">/sys/class/sas_device/expander-4:0/sas_address</font>
+).<br/>
+<br/>
+Each utility attempts to work out at run time which
+interface it has. While there are two interfaces this is a reasonably
+simple process as their characteristics are quite different. To
+explicitly set the interface type the '--interface=&lt;intf&gt;[,force]'
+option can be given where &lt;intf&gt; is one of &quot;mpt&quot; or
+&quot;sgv4&quot; (or &quot;sg&quot;). Checks are also performed that
+the given device name isn't a normal file or worse a block device. A
+command like &quot;<font face="monospace">smp_discover /dev/sda</font>&quot;
+makes no sense but if allowed to go ahead, would write the SMP
+request over the disk's boot sector! Normally these utilities will
+reject such an invocation, before doing any damage. If the user feels
+that they know better then checks can be overridden with something
+like this: &quot;<font face="monospace">smp_discover
+--interface=mpt,force /dev/xyz</font>&quot; .<br/>
+<br/>
+If the
+&lt;smp_device&gt; is not given, then each utility will check if the
+SMP_UTILS_DEVICE environment variable exists. If so the contents of
+that environment variable are used. If the SMP target SAS address is
+not given (i.e. &quot;--sa=&lt;sas_addr&gt;&quot; is not given) and
+it is required, then each utility will check if the
+SMP_UTILS_SAS_ADDR environment variable exists. If so the contents of
+that environment variable are used.</p>
+<h3 class="western"><a name="mozTocId699241"></a>Solaris</h3>
+<p>The Solaris port uses the USMP pass-through mechanism which was
+introduced to Solaris in 2008. Expanders have device names like
+<font face="monospace">/dev/smp/expd3</font> .</p>
+<h3 class="western"><a name="mozTocId97574"></a>FreeBSD</h3>
+<p>Logic to support SMP was added to FreeBSD in late 2010 and is
+available in FreeBSD 9 and later. The CAM subsystem was extended but
+it has a problem because it only supports SCSI devices and an
+expander is not a SCSI device. SAS-2 expanders are often packaged (on
+the same silicon) with a SCSI Enclosure Services (SES) device. So
+FreeBSD uses this &quot;twin&quot; SES device to communicate with an
+expander. So expanders have device names like <font face="monospace">/dev/ses2</font>
+.</p>
+<h2 class="western"><a name="mozTocId585558"></a>Notes</h2>
+<p>The SFF-8485 document (see <a href="http://www.sffcommittee.com/">www.sffcommittee.com</a>
+) defines the READ GPIO REGISTER and WRITE GPIO REGISTER functions
+for manipulating registers associated with the SGPIO interface. The
+sideband signals found in the wide internal cables defined by SAS
+(SAS 4i and mini SAS 4i) may carry SGPIO signals. Some SAS HBAs have
+wide internal connectors and have virtual SMP target ports (visible
+to the HBA driver but not the rest of the attached SAS domain) so
+that the driver or user space programs can access or control those
+sideband signals. To find out if a virtual SMP target port is present
+on a HBA try something like this: &quot;<font face="monospace">smp_rep_manufacturer
+/dev/bsg/sas_host6</font>&quot;. Some enclosures have monitoring
+logic that present a SES-2 target type device on a SGPIO
+interface.<br/>
+<br/>
+In SAS-1.1 edge expanders and fanout expanders
+where defined. In SAS-2 there are just &quot;expanders&quot; with
+that name replacing the identifier previously used for &quot;edge
+expanders&quot;. In SAS-2 the attached device type identifier
+previously used for fanout expanders is now marked obsolete. SAS-2
+expanders are a lot more capable than SAS-1.1 expanders. For example
+SAS-2 expanders can configure themselves and other (e.g. SAS-1.1)
+expanders. SAS-1.1 expanders are still useful, typically as leaf
+expanders with a SAS-2 expander &quot;above&quot; them; and if
+possible all hosts (initiators) should be connected to the SAS-2
+expander. Also SAS-2 expanders run at 6 Gbps and some can also handle
+6 Gbps SATA disks and SSDs.</p>
+<h2 class="western"><a name="mozTocId396798"></a>Enclosure in and out
+ports</h2>
+<p>Each expander phy has a routing attribute. There are three routing
+attributes: direct, subtractive and table. Direct routing is the
+simplest and is all that is required if a single expander
+interconnects SAS end devices (e.g. SAS initiators (HBAs) and SAS
+targets (including SAS disks, tapes and SES devices)). Such an
+interconnect is termed in SAS as a &quot;Service Delivery Subsystem&quot;
+(SDS) while other transports might term this as a &quot;fabric&quot;.<br/>
+<br/>
+An
+expander port is typically a set of expander phys (all with the same
+routing attribute) on the same connector. Using mini SAS 4i and 4x
+cables, SFF-8087 refers to an internal cable which SFF-8088 refers to
+an external cable. Both SFF-8087 and SFF-8088 carry four phy
+circuits, additionally SFF-8087 cables may carry sideband signals
+(also know as SGPIO) which convey SES information to and from a disk
+enclosure. For SAS-3, the HD mini connectors are SFF-8643 (internal;
+optionally with sideband signals) and SFF-8644 (external).<br/>
+<br/>
+Things
+become more complex when there are two or more expanders
+interconnected in the same SDS. In SAS-1 an expander port with the
+table routing attribute is termed as an enclosure <i>out</i> port. In
+SAS-2 and later if the expander supports table-to-table attachments
+then an expander port with the table routing attribute is termed as
+an enclosure <i>universal</i> port. In all versions of SAS an
+expander port with the subtractive routing attribute is termed as an
+enclosure <i>in</i> port.<br/>
+<br/>
+The enclosure <i>in</i>, <i>out</i>
+and <i>universal</i> port indications need to be taken into account
+when interconnecting expanders. The ideal situation is when one of
+the above cables interconnects two expanders whose ports have the
+<i>universal</i> indication. An enclosure <i>universal</i> port may
+be connected to an enclosure <i>in</i> or <i>out</i> port with some
+routing restrictions. And an enclosure <i>in</i> port may be
+connected to an enclosure <i>out</i> port. Connecting an enclosure <i>in</i>
+port to an enclosure <i>in</i> port won't work. Also connecting an
+enclosure <i>out</i> port to an enclosure <i>out</i> port won't work.
+Note that the &quot;won't work&quot; cases do <i>not</i> cause any
+electrical problem (i.e. there is no risk of permanent
+damage).<br/>
+<br/>
+Enclosure <i>universal</i> ports were introduced
+in SAS-2 and some SAS-2 expander products use them exclusively. That
+reduces this &quot;in-out&quot; level of complexity in large Service
+Delivery Subsystems. Some SAS-3 expanders still have a few
+non-universal ports (e.g. <i>in</i> ports using subtractive routing)
+perhaps for backward compatibility.</p>
+<h2 class="western"><a name="mozTocId958107"></a>Examples</h2>
+<p>The utilities in the smp_utils package send requests to what the
+standard terms as a SMP target. A SMP target is not a SCSI device so
+SCSI commands like INQUIRY cannot be sent to a SMP target. Hence
+utilities such as those in the sg3_utils package cannot be used on a
+SMP target.<br/>
+<br/>
+&nbsp;A SAS expander will contain one SMP
+target with the SAS address of the expander. Some SAS host bus
+adapters (HBAs) have a (hidden) SMP target. Typically SAS end devices
+such as disk drives (both SAS and SATA) and tape drives do not
+contain a SMP target.<br/>
+<br/>
+A disk enclosure may contain zero or
+more expanders and SCSI Enclosure Services (SES) processors. As seen
+below SAS-2 expander chips often include a SES device (with a
+different SAS address) connected to a virtual expander phy. There is
+more on this subject in the&nbsp; <a href="#mozTocId389989">Expanders
+and enclosures</a> section below.<br/>
+<br/>
+This example has two
+machines called &quot;a&quot; and &quot;b&quot; connected to a SAS-2
+expander. Two disks (one SAS the other SATA) are connected to that
+expander.<br/>
+<br/>
+Some other examples can be found in the previous
+version of this page at <a href="smp_utils095.html">smp_utils095.html</a>
+. Amongst other things those older examples show that a hard reset on
+an expander phy will cause an attached SAS disk to report a Unit
+Attention (&quot;SCSI bus reset occurred&quot;). 
+</p>
+<h3 class="western"><a name="mozTocId10755"></a>Finding expanders</h3>
+<p>The first problem is to find a Linux device node corresponding to
+an expander. In Linux kernel 2.6.38 used for this example both LSI
+MPT and Adaptec SAS Host Bus Adapters (HBAs) work with the sgv4
+interface provided by the bsg driver. If a expander is connected to
+machine &quot;a&quot; then the following command should list
+it:<br/>
+<br/>
+<font face="monospace">root@a: # ls
+/dev/bsg/ex*</font><br/>
+<font face="monospace">/dev/bsg/expander-6:0</font><br/>
+<br/>
+It
+is often useful to find the SAS address of that expander:<br/>
+<br/>
+<font face="monospace">root@a:
+# cat /sys/class/sas_device/expander-6:0/sas_address
+</font><br/>
+<font face="monospace">0x5001517e85c3efff</font><br/>
+<br/>
+Also
+the SAS address of HBA (a.k.a. initiator port identifier) will be
+helpful:<br/>
+<br/>
+<font face="monospace">root@a: # lsscsi
+-Ht</font><br/>
+<font face="monospace">...</font><br/>
+<font face="monospace">[5]&nbsp;&nbsp;&nbsp;
+usb-storage&nbsp;&nbsp; usb: 1-2:1.0</font><br/>
+<font face="monospace">[6]&nbsp;&nbsp;&nbsp;
+mptsas&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+sas:0x500605b00006f260</font><br/>
+<br/>
+Now we list the disks that
+machine &quot;a&quot; can see on that mptsas HBA:<br/>
+<br/>
+<font face="monospace">root@a:
+# lsscsi -s 6</font><br/>
+<font face="monospace">[6:0:0:0]&nbsp;&nbsp;&nbsp;
+enclosu Intel&nbsp;&nbsp;&nbsp; RES2SV240&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0600&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+-</font><br/>
+<font face="monospace">[6:0:1:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; SEAGATE&nbsp; ST32000444SS&nbsp;&nbsp;&nbsp;&nbsp;
+0006&nbsp; /dev/sdb&nbsp;&nbsp; 2.00TB</font><br/>
+<font face="monospace">[6:0:2:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; ATA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ST31000528AS&nbsp;&nbsp;&nbsp;&nbsp; CC38&nbsp; /dev/sdc&nbsp;&nbsp;
+1.00TB</font><br/>
+<br/>
+Following is the corresponding information
+for machine &quot;b&quot; plus an extra call to lsscsi asking for the
+transport address (i.e. SAS address) of each device on controller
+6:<br/>
+<br/>
+<font face="monospace">root@b: # ls
+/dev/bsg/ex*</font><br/>
+<font face="monospace">/dev/bsg/expander-6:1</font><br/>
+<font face="monospace">root@b:
+# cat /sys/class/sas_device/expander-6:1/sas_address
+</font><br/>
+<font face="monospace">0x5001517e85c3efff</font><br/>
+<font face="monospace">root@b:
+# lsscsi -Ht</font><br/>
+<font face="monospace">...</font><br/>
+<font face="monospace">[6]&nbsp;&nbsp;&nbsp;
+mpt2sas&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+sas:0x500605b001d0d3e0</font><br/>
+<font face="monospace">root@b: #
+lsscsi -s 6</font><br/>
+<font face="monospace">[6:0:1:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; ATA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ST31000528AS&nbsp;&nbsp;&nbsp;&nbsp; CC38&nbsp; /dev/sdb&nbsp;&nbsp;
+1.00TB</font><br/>
+<font face="monospace">[6:0:2:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; SEAGATE&nbsp; ST32000444SS&nbsp;&nbsp;&nbsp;&nbsp;
+0006&nbsp; /dev/sdc&nbsp;&nbsp; 2.00TB</font><br/>
+<font face="monospace">[6:0:3:0]&nbsp;&nbsp;&nbsp;
+enclosu Intel&nbsp;&nbsp;&nbsp; RES2SV240&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0600&nbsp; -</font><br/>
+<font face="monospace">root@b: # lsscsi -st
+6</font><br/>
+<font face="monospace">[6:0:1:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; sas:0x5001517e85c3efe2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sdb&nbsp;&nbsp; 1.00TB</font><br/>
+<font face="monospace">[6:0:2:0]&nbsp;&nbsp;&nbsp;
+disk&nbsp;&nbsp;&nbsp; sas:0x5000c500215725bd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/sdc&nbsp;&nbsp; 2.00TB</font><br/>
+<font face="monospace">[6:0:3:0]&nbsp;&nbsp;&nbsp;
+enclosu sas:0x5001517e85c3effd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+-</font><br/>
+<br/>
+This confirms that the two machines are connected
+to the same expander. Both machines can see the 2 TB SAS disk, the 1
+TB SATA disk and the enclosure services device.<br/>
+<br/>
+The
+following method is used to locate the &quot;expander_id&quot; needed
+to talk to the aac device driver interface: One needs to have PMC's
+command line interface copied into the system. Run the command
+<font face="monospace">&quot;./arcconf expanderlist &lt;controller#&gt;&quot;</font>
+Below is a sample: <br/>
+<br/>
+<font face="monospace">./arcconf
+expanderlist 1<br/>
+Controllers found: 1<br/>
+<br/>
+Expander List for
+Controller 1:<br/>
+<br/>
+Expander# 1<br/>
+Expander
+ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;0<br/>
+Enclosure
+ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;0<br/>
+Reported
+Channel,Device&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;2,0<br/>
+Vendor
+ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;LSI
+CORP<br/>
+Product ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;SAS2X36<br/>
+Product
+Revision Level&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;0717<br/>
+SAS
+Address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;500304800115C47F<br/>
+<br/>
+Command
+completed successfully.</font><br/>
+<br/>
+The &quot;Expander ID&quot;
+field is the expander_id which is used in the smp request command.</p>
+<h3 class="western"><a name="mozTocId899026"></a>Discover(y)</h3>
+<p>To get an overview of what is connected to each phy on an
+expander, the DISCOVER or DISCOVER LIST SMP functions can be used.
+The corresponding utilities in the smp_utils are called smp_discover
+and smp_discover_list. The naming of all the utilities in the
+smp_utils package follows a similar pattern, but some words are
+shortened (e.g. &quot;rep&quot; instead of &quot;report&quot;) so the
+utility names don't become too long.<br/>
+<br/>
+Without options the
+smp_discover utility gives a one line summary for each active phy on
+the expander. First we check from machine &quot;a&quot;:<br/>
+<br/>
+<font face="monospace">root@a:
+# smp_discover /dev/bsg/expander-6:0</font><br/>
+&nbsp; <font face="monospace">phy&nbsp;&nbsp;
+0:T:attached:[500605b00006f264:04&nbsp; i(SSP+STP+SMP)]&nbsp; 3
+Gbps</font><br/>
+&nbsp; <font face="monospace">phy&nbsp;&nbsp;
+1:T:attached:[500605b00006f264:05&nbsp; i(SSP+STP+SMP)]&nbsp; 3
+Gbps</font><br/>
+&nbsp; <font face="monospace">phy&nbsp;&nbsp;
+2:T:attached:[500605b00006f264:06&nbsp; i(SSP+STP+SMP)]&nbsp; 3
+Gbps</font><br/>
+&nbsp; <font face="monospace">phy&nbsp;&nbsp;
+3:T:attached:[500605b00006f264:07&nbsp; i(SSP+STP+SMP)]&nbsp; 3
+Gbps</font><br/>
+&nbsp; <font face="monospace">phy&nbsp;&nbsp;
+5:T:attached:[5001517e85c3efe5:00&nbsp; t(SATA)]&nbsp; 3 Gbps</font><br/>
+&nbsp;
+<font face="monospace">phy&nbsp;&nbsp;
+7:T:attached:[5000c500215725bd:00&nbsp; t(SSP)]&nbsp; 6 Gbps</font><br/>
+&nbsp;
+<font face="monospace">phy&nbsp; 20:T:attached:[500605b001d0d3e0:03&nbsp;
+i(SSP+STP+SMP)]&nbsp; 6 Gbps</font><br/>
+&nbsp; <font face="monospace">phy&nbsp;
+21:T:attached:[500605b001d0d3e0:02&nbsp; i(SSP+STP+SMP)]&nbsp; 6
+Gbps</font><br/>
+&nbsp; <font face="monospace">phy&nbsp;
+22:T:attached:[500605b001d0d3e0:01&nbsp; i(SSP+STP+SMP)]&nbsp; 6
+Gbps</font><br/>
+&nbsp; <font face="monospace">phy&nbsp;
+23:T:attached:[500605b001d0d3e0:00&nbsp; i(SSP+STP+SMP)]&nbsp; 6
+Gbps</font><br/>
+&nbsp; <font face="monospace">phy&nbsp;
+24:D:attached:[5001517e85c3effd:00&nbsp; V i(SSP+SMP) t(SSP)]&nbsp; 6
+Gbps</font><br/>
+<br/>
+Now lets do to the equivalent check from
+machine &quot;b&quot;:<br/>
+<br/>
+<font face="monospace">root@b: #
+smp_discover_list /dev/bsg/expander-6:1<br/>
+&nbsp; phy&nbsp;&nbsp;
+0:T:attached:[500605b00006f264:04&nbsp; i(SSP+STP+SMP)]&nbsp; 3
+Gbps<br/>
+&nbsp; phy&nbsp;&nbsp; 1:T:attached:[500605b00006f264:05&nbsp;
+i(SSP+STP+SMP)]&nbsp; 3 Gbps<br/>
+&nbsp; phy&nbsp;&nbsp;
+2:T:attached:[500605b00006f264:06&nbsp; i(SSP+STP+SMP)]&nbsp; 3
+Gbps<br/>
+&nbsp; phy&nbsp;&nbsp; 3:T:attached:[500605b00006f264:07&nbsp;
+i(SSP+STP+SMP)]&nbsp; 3 Gbps<br/>
+&nbsp; phy&nbsp;&nbsp;
+5:T:attached:[5001517e85c3efe5:00&nbsp; t(SATA)]&nbsp; 3 Gbps<br/>
+&nbsp;
+phy&nbsp;&nbsp; 7:T:attached:[5000c500215725bd:00&nbsp; t(SSP)]&nbsp;
+6 Gbps<br/>
+&nbsp; phy&nbsp; 20:T:attached:[500605b001d0d3e0:03&nbsp;
+i(SSP+STP+SMP)]&nbsp; 6 Gbps<br/>
+&nbsp; phy&nbsp;
+21:T:attached:[500605b001d0d3e0:02&nbsp; i(SSP+STP+SMP)]&nbsp; 6
+Gbps<br/>
+&nbsp; phy&nbsp; 22:T:attached:[500605b001d0d3e0:01&nbsp;
+i(SSP+STP+SMP)]&nbsp; 6 Gbps<br/>
+&nbsp; phy&nbsp;
+23:T:attached:[500605b001d0d3e0:00&nbsp; i(SSP+STP+SMP)]&nbsp; 6
+Gbps<br/>
+&nbsp; phy&nbsp; 24:D:attached:[5001517e85c3effd:00&nbsp; V
+i(SSP+SMP) t(SSP)]&nbsp; 6 Gbps<br/>
+</font><br/>
+Unsurprisingly both
+machines see the same report when they ask the common expander what
+its active connections are. Summarizing those reports: expander phys
+0, 1, 2 and 3 are connected to machine &quot;a&quot;, expander phys
+20, 21, 22 and 23 are connected to machine &quot;b&quot;, expander
+phy 5 is connected to the SATA disk and expander phy 7 is connected
+to the SAS disk.<br/>
+<br/>
+Expander phy 24 is flagged as &quot;virtual&quot;
+which means that it is an internal connection within the expander
+chip. Attached to expander phy 24 is a relatively uncommon SCSI
+device, one that is both an initiator and a target. The target part
+contains the enclosure services device &quot;<font face="monospace">RES2SV240&quot;
+</font>listed in the lsscsi output in the previous section. The
+initiator part (i.e. &quot;i(SSP+SMP)&quot;) is SAS-2 expander magic
+and is used when configuring other (e.g. SAS-1.1) expanders and
+itself.<br/>
+<br/>
+SATA disks have a single phy connection while SAS
+disks can one or two phy connections. In this example both disks have
+a single phy connection to the expander. Connections between SAS HBAs
+and expanders are typically with cables that carry 4 phys (e.g.
+SFF-8087 based cables (a.k.a. mini 4i) and SFF-8088 based external
+cables (a.k.a. mini 4e)). So machine &quot;a&quot;'s&nbsp; connection
+to the expander is spread across 4 phys (phy identifiers 0, 1, 2 and
+3 at the expander end and 4, 5, 6 and 7 at the HBA end). The term
+&quot;wide link&quot; is used to describe this situation.<br/>
+<br/>
+By
+default a smp_discover invocation without options will assume the
+&quot;--summary&quot; option that outputs one line of information for
+each active expander phy. More information can be found about a
+specific phy on an expander including its current state and what it
+is connected to with a smp_discover invocation with the &quot;--phy=ID&quot;
+option:<br/>
+<br/>
+<font face="monospace">root@a: # smp_discover
+--phy=7 --brief /dev/bsg/expander-6:0</font><br/>
+<font face="monospace">Discover
+response (brief):</font><br/>
+&nbsp; <font face="monospace">expander
+change count: 61</font><br/>
+&nbsp; <font face="monospace">phy
+identifier: 7</font><br/>
+&nbsp; <font face="monospace">attached
+device type: end device</font><br/>
+&nbsp; <font face="monospace">attached
+reason: power on</font><br/>
+&nbsp; <font face="monospace">negotiated
+logical link rate: phy enabled; 6 Gbps</font><br/>
+&nbsp; <font face="monospace">attached
+initiator: ssp=0 stp=0 smp=0 sata_host=0</font><br/>
+&nbsp; <font face="monospace">attached
+target: ssp=1 stp=0 smp=0 sata_device=0</font><br/>
+&nbsp; <font face="monospace">SAS
+address: 0x5001517e85c3efff</font><br/>
+&nbsp; <font face="monospace">attached
+SAS address: 0x5000c500215725bd</font><br/>
+&nbsp; <font face="monospace">attached
+phy identifier: 0</font><br/>
+&nbsp; <font face="monospace">routing
+attribute: table</font><br/>
+<br/>
+Without the &quot;--brief&quot;
+option over 70 lines of information would have been produced. SAS-2
+introduced the enhanced DISCOVER LIST SMP function which has some
+extra features. These include a header with information common to all
+phys plus the ability to report on multiple expander phys in one
+response (up to 40). The smp_discover_list utility without options
+will give the same output as smp_discover. The smp_discover_list
+utility shows more information (than smp_discover) when the
+&quot;--phy=ID&quot; option is given:<br/>
+<br/>
+<font face="monospace">root@a:
+# smp_discover_list -p 7 /dev/bsg/expander-6:0</font><br/>
+<font face="monospace">Discover
+list response header:</font><br/>
+&nbsp; <font face="monospace">starting
+phy id: 7</font><br/>
+&nbsp; <font face="monospace">number of
+discover list descriptors: 1</font><br/>
+&nbsp; <font face="monospace">expander
+change count: 61</font><br/>
+&nbsp; <font face="monospace">filter:
+0</font><br/>
+&nbsp; <font face="monospace">descriptor type: 0</font><br/>
+&nbsp;
+<font face="monospace">discover list descriptor length: 116</font><br/>
+&nbsp;
+<font face="monospace">zoning supported: 1</font><br/>
+&nbsp; <font face="monospace">zoning
+enabled: 0</font><br/>
+&nbsp; <font face="monospace">self
+configuring: 0</font><br/>
+&nbsp; <font face="monospace">zone
+configuring: 0</font><br/>
+&nbsp; <font face="monospace">configuring:
+0</font><br/>
+&nbsp; <font face="monospace">externally configurable
+route table: 0</font><br/>
+&nbsp; <font face="monospace">last
+self-configuration status descriptor index: 0</font><br/>
+&nbsp; <font face="monospace">last
+phy event list descriptor index: 0</font><br/>
+<font face="monospace">descriptor
+1:</font><br/>
+&nbsp; <font face="monospace">phy identifier: 7</font><br/>
+&nbsp;
+<font face="monospace">attached device type: end device</font><br/>
+&nbsp;
+<font face="monospace">attached reason: power on</font><br/>
+&nbsp;
+<font face="monospace">negotiated logical link rate: phy enabled; 6
+Gbps</font><br/>
+&nbsp; <font face="monospace">attached initiator:
+ssp=0 stp=0 smp=0 sata_host=0</font><br/>
+&nbsp; <font face="monospace">attached
+sata port selector: 0</font><br/>
+&nbsp; <font face="monospace">attached
+target: ssp=1 stp=0 smp=0 sata_device=0</font><br/>
+&nbsp; <font face="monospace">SAS
+address: 0x5001517e85c3efff</font><br/>
+&nbsp; <font face="monospace">attached
+SAS address: 0x5000c500215725bd</font><br/>
+&nbsp; <font face="monospace">...</font><br/>
+<br/>
+An
+example of smp_discover_list request on aac device driver interface
+is shown below:<br/>
+<br/>
+<font face="monospace">[root@yuexiu ~]#
+smp_discover_list
+/dev/aac0,0<br/>
+&nbsp;phy&nbsp;&nbsp;&nbsp;4:T:attached:[50000d1106d15280:03
+i(SSP+STP+SMP)] 6 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;&nbsp;5:T:attached:[50000d1106d15280:02
+i(SSP+STP+SMP)] 6 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;&nbsp;6:T:attached:[50000d1106d15280:00
+i(SSP+STP+SMP)] 6 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;&nbsp;7:T:attached:[50000d1106d15280:01
+i(SSP+STP+SMP)] 6 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;12:T:attached:[500304800115c44c:00
+t(SATA)] 3 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;13:T:attached:[500304800115c44d:00
+t(SATA)] 3 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;14:T:attached:[500304800115c44e:00
+t(SATA)] 3 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;15:T:attached:[500304800115c44f:00
+t(SATA)] 3 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;16:T:attached:[500304800115c450:00
+t(SATA)] 3 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;17:T:attached:[500304800115c451:00
+t(SATA)] 3 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;18:T:attached:[500304800115c452:00
+t(SATA)] 3 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;19:T:attached:[500304800115c453:00
+t(SATA)] 3 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;20:T:attached:[5000c5001cc6678d:00
+t(SSP)] 6 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;21:T:attached:[500304800115c455:00
+t(SATA)] 3 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;22:T:attached:[5000c50023b12521:00
+t(SSP)] 6 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;23:T:attached:[5000c50023b1a98d:00
+t(SSP)] 6 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;24:T:attached:[5000c50023b11c19:00
+t(SSP)] 6 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;25:T:attached:[5000c5001cdf399d:00
+t(SSP)] 6 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;26:T:attached:[5000c5001cdf5a99:00
+t(SSP)] 6 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;27:T:attached:[5000c5001cde7195:00
+t(SSP)] 6 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;28:T:attached:[500304800115c45c:00
+t(SATA)] 3 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;29:T:attached:[5000c5001cdeacf9:00
+t(SSP)] 6 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;30:T:attached:[5000c5001cdea36d:00
+t(SSP)] 6 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;31:T:attached:[5000c5001cdd3705:00
+t(SSP)] 6 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;32:T:attached:[500304800115c460:00
+t(SATA)] 3 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;33:T:attached:[500304800115c461:00
+t(SATA)] 3 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;34:T:attached:[500304800115c462:00
+t(SATA)] 3 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;35:T:attached:[500304800115c463:00
+t(SATA)] 3 Gbps<br/>
+&nbsp;phy&nbsp;&nbsp;36:D:attached:[500304800115c47d:00
+V i(SSP+SMP) t(SSP)] 6 Gbps<br/>
+</font><br/>
+Like all the utilities
+in the smp_utils package, smp_discover and smp_discover_list have
+usage messages (shown when the &quot;--help&quot; option is given)
+and man pages.</p>
+<h3 class="western"><a name="mozTocId629167"></a>General information</h3>
+<p>It may be useful to find out who manufactured the expander and
+what version it is:<br/>
+<br/>
+<font face="monospace">root@a: #
+smp_rep_manufacturer /dev/bsg/expander-6:0</font><br/>
+<font face="monospace">Report
+manufacturer response:</font><br/>
+&nbsp; <font face="monospace">Expander
+change count: 61</font><br/>
+&nbsp; <font face="monospace">SAS-1.1
+format: 1</font><br/>
+&nbsp; <font face="monospace">vendor
+identification: Intel&nbsp;&nbsp; </font><br/>
+&nbsp; <font face="monospace">product
+identification: RES2SV240&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font><br/>
+&nbsp;
+<font face="monospace">product revision level: 0600</font><br/>
+&nbsp;
+<font face="monospace">component vendor identification: LSI&nbsp;&nbsp;&nbsp;&nbsp;
+</font><br/>
+&nbsp; <font face="monospace">component id: 544</font><br/>
+&nbsp;
+<font face="monospace">component revision level: 5</font><br/>
+<br/>
+In
+this case the board is manufactured by Intel while the (expander)
+component is made by LSI. The REPORT GENERAL SMP function contains
+useful information including how many phys the expander has:<br/>
+<br/>
+<font face="monospace">root@a:
+# smp_rep_general /dev/bsg/expander-6\:0</font><br/>
+<font face="monospace">Report
+general response:</font><br/>
+&nbsp; <font face="monospace">expander
+change count: 65</font><br/>
+&nbsp; <font face="monospace">expander
+route indexes: 0</font><br/>
+&nbsp; <font face="monospace">long
+response: 1</font><br/>
+&nbsp; <font face="monospace">number of phys:
+26</font><br/>
+&nbsp; <font face="monospace">table to table
+supported: 1</font><br/>
+&nbsp; <font face="monospace">zone
+configuring: 0</font><br/>
+&nbsp; <font face="monospace">self
+configuring: 0</font><br/>
+&nbsp; <font face="monospace">STP continue
+AWT: 0</font><br/>
+&nbsp; <font face="monospace">open reject retry
+supported: 1</font><br/>
+&nbsp; <font face="monospace">configures
+others: 1</font><br/>
+&nbsp; <font face="monospace">configuring: 0</font><br/>
+&nbsp;
+<font face="monospace">externally configurable route table: 0</font><br/>
+&nbsp;
+<font face="monospace">enclosure logical identifier (hex):
+5001517e85c3efff</font><br/>
+&nbsp; <font face="monospace">...</font><br/>
+&nbsp;
+<font face="monospace">number of zone groups: 1 (0-&gt;128, 1-&gt;256)</font><br/>
+&nbsp;
+<font face="monospace">...</font><br/>
+<br/>
+This shows the truncated
+response of the SAS-2 expander. Prior to SAS-2 only the information
+up to and including the &quot;table to table supported:&quot; line
+was provided.<br/>
+<br/>
+An example of smp_report_general request on
+aac device driver interface is shown below:<br/>
+<br/>
+<font face="monospace">[root@yuexiu
+~]# smp_rep_general /dev/aac0,0<br/>
+&nbsp;Report general
+response:<br/>
+&nbsp;expander change count: 351<br/>
+&nbsp;expander
+route indexes: 0<br/>
+&nbsp;long response: 1<br/>
+&nbsp;number of
+phys: 38<br/>
+&nbsp;table to table supported: 1<br/>
+&nbsp;zone
+configuring: 0<br/>
+&nbsp;self configuring: 0<br/>
+&nbsp;STP continue
+AWT: 0<br/>
+&nbsp;open reject retry supported: 1<br/>
+&nbsp;configures
+others: 1<br/>
+&nbsp;configuring: 0<br/>
+&nbsp;externally
+configurable route table: 0<br/>
+&nbsp;initiates SSP close:
+0<br/>
+&nbsp;enclosure logical identifier (hex):
+500304800115c47f<br/>
+&nbsp;...<br/>
+&nbsp;number of zone groups: 1
+(0-&gt;128, 1-&gt;256)<br/>
+&nbsp;...<br/>
+</font><br/>
+The above
+example has the PMC controller connected to a LSI expander. <br/>
+<br/>
+SAS-2
+expanders are self-configuring and will configure other expanders
+(e.g. SAS-1.1 expanders) that they are connected two. Things can
+still go wrong, so if some disks have &quot;disappeared&quot; from
+the fabric, it may be useful to check the REPORT SELF-CONFIGURATION
+STATUS function:<br/>
+<br/>
+<font face="monospace">root@a: #
+smp_rep_self_conf_stat --brief /dev/bsg/expander-6\:0</font><br/>
+<font face="monospace">Report
+self-configuration status response:</font><br/>
+&nbsp; <font face="monospace">Expander
+change count: 86</font><br/>
+&nbsp; <font face="monospace">total
+number of self-configuration status descriptors: 0</font><br/>
+&nbsp;
+<font face="monospace">number of self-configuration status
+descriptors: 0</font><br/>
+<br/>
+The fact that there are no
+self-configuration status descriptors indicates that no errors were
+detected since power up.<br/>
+<br/>
+SAS-2.1 adds phy power
+management. However the expander used in these examples predates that
+standard. One simple way to save power is to disable expander phys
+not being used (e.g. not attached to anything). The next example
+disables phy 10:<br/>
+<br/>
+<font face="monospace">root@a: #
+smp_phy_control --phy=10 --op=di /dev/bsg/expander-6:0</font><br/>
+<br/>
+which
+saves about 150 mW of power. To re-enable a phy use link reset (hard
+reset or power cycle the expander):<br/>
+<br/>
+<font face="monospace">root@a:
+# smp_phy_control --phy=10 --op=lr /dev/bsg/expander-6:0</font><br/>
+<br/>
+Not
+much power saved but with enough unused phys disabled, it may amount
+to something.</p>
+<h3 class="western"><a name="mozTocId273220"></a>SATA disk
+affiliations</h3>
+<p>The DISCOVER output from machines a and b (shown in the Discover
+section above) indicates both machines have access to the SATA disk
+as SAS address 0x5001517e85c3efe5 <font face="monospace">.</font> The
+SATA model assumes only one host can access a SATA disk at a time.
+SAS expanders use a technique called &quot;affiliations&quot; to
+enforce this restriction. The REPORT PHY SATA functions shows which
+initiator (host) has the affiliation (i.e. is able to access that
+SATA disk):<br/>
+<br/>
+<font face="monospace">root@a: #
+smp_rep_phy_sata --phy=5 /dev/bsg/expander-6:0</font><br/>
+<font face="monospace">Report
+phy SATA response:</font><br/>
+&nbsp; <font face="monospace">expander
+change count: 161</font><br/>
+&nbsp; <font face="monospace">phy
+identifier: 5</font><br/>
+&nbsp; <font face="monospace">STP I_T nexus
+loss occurred: 0</font><br/>
+&nbsp; <font face="monospace">affiliations
+supported: 1</font><br/>
+&nbsp; <font face="monospace">affiliation
+valid: 1</font><br/>
+&nbsp; <font face="monospace">STP SAS address:
+0x5001517e85c3efe5</font><br/>
+&nbsp; <font face="monospace">register
+device to host FIS:</font><br/>
+&nbsp;&nbsp;&nbsp; <font face="monospace">34
+00 50 01 01 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 </font><br/>
+&nbsp;
+<font face="monospace">affiliated STP initiator SAS address:
+0x500605b001d0d3e0</font><br/>
+&nbsp; <font face="monospace">STP I_T
+nexus loss SAS address: 0x0</font><br/>
+&nbsp; <font face="monospace">affiliation
+context: 0</font><br/>
+&nbsp; <font face="monospace">current
+affiliation contexts: 1</font><br/>
+&nbsp; <font face="monospace">maximum
+affiliation contexts: 1</font><br/>
+<br/>
+This shows that machine b
+(0x500605b001d0d3e0) has the affiliation. Machine b can do a &quot;clear
+affiliation&quot; operation with the PHY CONTROL function:<br/>
+<br/>
+<font face="monospace">root@b:
+# smp_phy_control --phy=5 --op=ca /dev/bsg/expander-6:0</font><br/>
+<br/>
+after
+which the SATA disk is available for machine a to &quot;grab&quot;.
+Machine a could grab that SATA disk by doing an IO operation on that
+disk, or perhaps more safely with an ATA IDENTIFY DEVICE command
+(e.g. with the sg_sat_identify utility from sg3_utils). After that
+smp_rep_phy_sata could be called again:<br/>
+<br/>
+<font face="monospace">root@a:
+# smp_rep_phy_sata --phy=5 /dev/bsg/expander-6:0</font><br/>
+<font face="monospace">Report
+phy SATA response:</font><br/>
+&nbsp; <font face="monospace">expander
+change count: 167</font><br/>
+&nbsp; <font face="monospace">phy
+identifier: 5</font><br/>
+&nbsp; <font face="monospace">...</font><br/>
+&nbsp;
+<font face="monospace">affiliated STP initiator SAS address:
+0x500605b00006f264</font><br/>
+&nbsp; <font face="monospace">...</font><br/>
+<br/>
+So
+now machine a (0x500605b00006f264) has the SATA affiliation.</p>
+<h3 class="western"><a name="mozTocId471134"></a>Zoning</h3>
+<p>An overview of SAS-2 zoning is given in this <a href="https://web.archive.org/web/20160305004536/http://www.serialstoragewire.net/Articles/2009_05/hp.html">article</a>
+. [Note that article makes this false statement: &quot;All devices
+within a zone group can interact with each other by default.&quot;
+That is true only for zone group 1, otherwise, by default, ZP[n,n]=0
+which means they can not interact by default.] While zoning could be
+used with a single initiator (host) to hide one or more disks, it is
+more likely that zoning will be used when there are two or more
+initiators (hosts).&nbsp; The two machine, two disk fabric used in
+these examples, is the basis for two scripts found in the examples
+directory of the smp_utils version 0.96 source tarball. The
+zoning_ex.sh script sets up zoning while the dis_zoning_ex.sh script
+disables zoning. See the README file in the examples directory. Note
+the pconf_2i2t.txt file will most likely need to be changed to match
+the expander phy connections of the system under test.<br/>
+<br/>
+There
+is an Annex in the SAS-2 draft (Annex H in SPL-2 rev 1) titled: &quot;Zone
+permission configuration descriptor examples&quot; which is worth
+reading. In the examples directory the t10annex_zoning_ex.sh script
+follows the SAS-2 annex example.<br/>
+<br/>
+Probably the most
+difficult thing to visualize with zoning is the permission table. The
+Zone permission configuration descriptors don't help in this regard
+because they follow SCSI conventions in being byte oriented and big
+endian. So the smp_rep_zone_perm_tbl has a&nbsp; &quot;-bits=COLS&quot;
+option to show the table as a bit array with its origin (i.e.
+ZP[0,0]) in the top left:<br/>
+<br/>
+<font face="monospace">root@a: #
+smp_rep_zone_perm_tbl --bits=24 /dev/bsg/expander-6\:0</font><br/>
+<font face="monospace">#
+Report zone permission table response:</font><br/>
+<font face="monospace">#&nbsp;
+Expander change count: 105</font><br/>
+<font face="monospace">#&nbsp;
+zone locked: 0</font><br/>
+<font face="monospace">#&nbsp; report
+type: 0 [current]</font><br/>
+<font face="monospace">#&nbsp; number
+of zone groups: 1 (256)</font><br/>
+<font face="monospace">#&nbsp;
+number of zone permission descriptors: 31</font><br/>
+<br/>
+<br/>
+<font face="monospace">Output
+unsuitable for smp_conf_zone_perm_tbl utility</font><br/>
+<br/>
+&nbsp;&nbsp;&nbsp;
+<font face="monospace">012345678901234567890123</font><br/>
+<br/>
+<font face="monospace">0&nbsp;&nbsp;
+010000000000000000000000</font><br/>
+<font face="monospace">1&nbsp;&nbsp;
+111111111111111111111111</font><br/>
+<font face="monospace">2&nbsp;&nbsp;
+010000001000000000000000</font><br/>
+<font face="monospace">3&nbsp;&nbsp;
+010000001100000000000000</font><br/>
+<font face="monospace">4&nbsp;&nbsp;
+010000000000000000000000</font><br/>
+<font face="monospace">5&nbsp;&nbsp;
+010000000000000000000000</font><br/>
+<font face="monospace">6&nbsp;&nbsp;
+010000000000000000000000</font><br/>
+<font face="monospace">7&nbsp;&nbsp;
+010000000000000000000000</font><br/>
+<font face="monospace">8&nbsp;&nbsp;
+011100001000000010000000</font><br/>
+<font face="monospace">9&nbsp;&nbsp;
+010100000100000001000000</font><br/>
+<font face="monospace">10&nbsp;
+010000000010000000100000</font><br/>
+<font face="monospace">11&nbsp;
+010000000001000000010000</font><br/>
+<font face="monospace">12&nbsp;
+010000000000100000001000</font><br/>
+<font face="monospace">13&nbsp;
+010000000000010000000100</font><br/>
+<font face="monospace">14&nbsp;
+010000000000001000000010</font><br/>
+<font face="monospace">15&nbsp;
+010000000000000100000001</font><br/>
+<font face="monospace">16&nbsp;
+010000001000000000000000</font><br/>
+<font face="monospace">17&nbsp;
+010000000100000000000000</font><br/>
+<font face="monospace">18&nbsp;
+010000000010000000000000</font><br/>
+<font face="monospace">19&nbsp;
+010000000001000000000000</font><br/>
+<font face="monospace">20&nbsp;
+010000000000100000000000</font><br/>
+<font face="monospace">21&nbsp;
+010000000000010000000000</font><br/>
+<font face="monospace">22&nbsp;
+010000000000001000000000</font><br/>
+<font face="monospace">23&nbsp;
+010000000000000100000000</font><br/>
+<br/>
+The last digit of the
+column numbers is displayed above the array while the row numbers are
+shown on the left. The source zone groups are the rows while the
+destination zone groups are the columns. The requested number of
+columns (24 in this case) will be displayed. The number of rows may
+be less than that since only one SMP REPORT ZONE TABLE request is
+sent (unless the &quot;--multiple&quot; option is given).</p>
+<h3 class="western"><a name="mozTocId389989"></a>Expanders and
+enclosures</h3>
+<p>SAS expanders are often found in disk enclosures which are often
+monitored by SCSI Enclosure Services (SES) devices. SES devices are
+also known as SES processors or in SCSI terminology SES logical
+units. SES devices are often integrated in the same silicon as SAS-2
+expanders. This is the case with these examples, as can be seen in
+the lsscsi output in the <a href="#mozTocId10755">Finding expanders</a>
+section above. This line output by the lsscsi command:<br/>
+<br/>
+<font face="monospace">[6:0:3:0]&nbsp;&nbsp;&nbsp;
+enclosu Intel&nbsp;&nbsp;&nbsp; RES2SV240&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0600&nbsp; -<br/>
+</font><br/>
+shows an integrated SES device. Its
+SAS address (<font face="monospace">0x5001517e85c3effd</font>) is
+very close to the expander's SAS address (<font face="monospace">0x5001517e85c3efff</font>).
+The &quot;-g&quot; option needs to be added to lsscsi to see if there
+is a generic device name since a SES device is not a Linux block
+device. Here is that output again from &quot;lsscsi -g&quot; (which
+may need the sg module loaded with &quot;modprobe sg&quot;):<br/>
+<br/>
+<font face="monospace">[6:0:3:0]&nbsp;&nbsp;&nbsp;
+enclosu Intel&nbsp;&nbsp;&nbsp; RES2SV240&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0600&nbsp; -&nbsp;&nbsp; /dev/sg3<br/>
+<br/>
+</font>It shows that SES
+device can be accessed via /dev/sg3 on machine b . It can also be
+accessed via the bsg driver with /dev/bsg/6:0:3:0 . The <a href="sg3_utils.html">sg3_utils</a>
+package contains the sg_ses utility. That sg_ses utility has recently
+been updated so try to use one from sg3_utils version 1.32 or
+later.<br/>
+<br/>
+<font face="monospace">root@b: # sg_ses -V<br/>
+version:
+1.64 20111220<br/>
+<br/>
+root@b: # sg_ses /dev/sg3<br/>
+&nbsp;
+Intel&nbsp;&nbsp;&nbsp;&nbsp; RES2SV240&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0600<br/>
+Supported diagnostic pages:<br/>
+&nbsp; Supported
+diagnostic pages [sdp] [0x0]<br/>
+&nbsp; Configuration (SES) [cf]
+[0x1]<br/>
+&nbsp; Enclosure status/control (SES) [ec,es] [0x2]<br/>
+&nbsp;
+String In/Out (SES) [str] [0x4]<br/>
+&nbsp; Threshold In/Out (SES)
+[th] [0x5]<br/>
+&nbsp; Element descriptor (SES) [ed] [0x7]<br/>
+&nbsp;
+Additional element status (SES-2) [aes] [0xa]<br/>
+&nbsp; Supported
+SES diagnostic pages (SES-2) [ssp] [0xd]<br/>
+&nbsp; Download
+microcode (SES-2) [dm] [0xe]<br/>
+&nbsp; Subenclosure nickname
+(SES-2) [snic] [0xf]<br/>
+</font><br/>
+The element descriptor page is
+a good place to start:<br/>
+<br/>
+<font face="monospace">root@b: #
+sg_ses -p ed /dev/sg3<br/>
+&nbsp; Intel&nbsp;&nbsp;&nbsp;&nbsp;
+RES2SV240&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0600<br/>
+&nbsp;
+Primary enclosure logical identifier (hex): 5001517e85c3efff<br/>
+Element
+descriptor In diagnostic page:<br/>
+&nbsp; generation code: 0x0<br/>
+&nbsp;
+element descriptor by type list<br/>
+&nbsp;&nbsp;&nbsp; Element type:
+Array device slot, subenclosure id: 0 [ti=0]<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Overall descriptor: ArrayDevicesInSubEnclsr0<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Element 0 descriptor: ArrayDevice00<br/>
+....<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Element 9 descriptor: ArrayDevice09<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Element 10 descriptor: ArrayDevice0A<br/>
+....<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Element 16 descriptor: ArrayDevice10<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Element 17 descriptor: ArrayDevice11<br/>
+....<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Element 23 descriptor: ArrayDevice17<br/>
+</font><br/>
+The output is
+abridged but shows the naming scheme: the &quot;array device slot&quot;
+subenclosure (there is only one) is named &quot;ArrayDevicesInSubEnclsr0&quot;
+while there are 24 &quot;ArrayDevice&quot;s counted in hex starting
+at 0 (all shown as two hex digits). Due to the close integration
+between the expander and the SES device, phy 7 on the expander
+corresponds to slot 7 on the SES device. And that is the 2 TB SAS
+disk known to Linux as /dev/sdb on machine a and /dev/sdc on machine
+b:<br/>
+<br/>
+<font face="monospace">root@b: # sg_ses -D
+ArrayDevice07 --join /dev/sg3<br/>
+&nbsp; Intel&nbsp;&nbsp;&nbsp;&nbsp;
+RES2SV240&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0600<br/>
+&nbsp;
+Primary enclosure logical identifier (hex):
+5001517e85c3efff<br/>
+ArrayDevice07 [0,7]&nbsp; Element type: Array
+device slot<br/>
+&nbsp; Enclosure status:<br/>
+&nbsp;&nbsp;&nbsp;
+Predicted failure=0, Disabled=0, Swap=0, status: OK<br/>
+&nbsp;&nbsp;&nbsp;
+OK=0, Reserved device=0, Hot spare=0, Cons check=0<br/>
+&nbsp;&nbsp;&nbsp;
+In crit array=0, In failed array=0, Rebuild/remap=0, R/R abort=0<br/>
+&nbsp;&nbsp;&nbsp;
+App client bypass A=0, Do not remove=0, Enc bypass A=0, Enc bypass
+B=0<br/>
+&nbsp;&nbsp;&nbsp; Ready to insert=0, RMV=0, Ident=0,
+Report=0<br/>
+&nbsp;&nbsp;&nbsp; App client bypass B=0, Fault
+sensed=0, Fault reqstd=0, Device off=0<br/>
+&nbsp;&nbsp;&nbsp;
+Bypassed A=0, Bypassed B=0, Dev bypassed A=0, Dev bypassed B=0<br/>
+&nbsp;
+Additional element status:<br/>
+&nbsp;&nbsp;&nbsp; Transport
+protocol: SAS<br/>
+&nbsp;&nbsp;&nbsp; number of phys: 1, not all
+phys: 0, device slot number: 7<br/>
+&nbsp;&nbsp;&nbsp; phy index:
+0<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; device type: end device<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+initiator port for:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; target port
+for: SSP<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; attached SAS address:
+0x5001517e85c3efff<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SAS address:
+0x5000c500215725bd</font><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font face="monospace">phy
+identifier: 0x0<br/>
+</font><br/>
+Now to find that disk in an array
+(which has the SGPIO sideband signals connected, for example via a
+SFF 8087 cable) the following can be done to blink the locate LED
+(also known as &quot;ident&quot;) on the disk carrier:<br/>
+<br/>
+<font face="monospace">root@b:
+# sg_ses -D ArrayDevice07 --set=locate /dev/sg3</font><br/>
+<br/>
+The
+locate LED can be turned off with this command:<br/>
+<br/>
+<font face="monospace">root@b:
+# sg_ses -D ArrayDevice07 --clear=locate /dev/sg3</font><br/>
+<br/>
+Note
+that what is called a &quot;slot&quot; above (actually a 'device slot
+number' (dsn)) was previously called a &quot;bay&quot; [t10 made the
+terminology change]. A slot may contain multiple phys but in this
+case there was only one phy per slot. And at the end of SAS-2 and in
+SAS-3 the dsn has become an important link between SMP DISCOVER and
+SES. smp_discover&nbsp; has a &quot;<tt class="western">--dsn</tt>&quot;
+option (introduced in 0.99) which shows, if available (and not 255),
+&quot;<tt class="western">dsn=&lt;dsn&gt;</tt>&quot; at the end of
+each summary line. The &lt;dsn&gt; value can be used to index
+(search) the enclosure with:<br/>
+<br/>
+<font face="monospace">#
+sg_ses --dev-slot-num=&lt;dsn&gt; /dev/sg3<br/>
+<br/>
+</font>If the
+&lt;dsn&gt; is found then above will output the array element status
+and most likely the corresponding additional element status (with SAS
+information).&nbsp; Alternatively the locate (ident) LED on the
+corresponding enclosure disk holder could be made to flash with the
+addition of &quot;<font face="monospace">--set=locate</font>&quot;.</p>
+<h2 class="western"><a name="mozTocId356346"></a>Download</h2>
+<p align="center" style="margin-bottom: 0cm"><b>Table 2. smp_utils
+tarballs, rpm + deb packages</b></p>
+<table width="100%" cellpadding="2" cellspacing="1">
+	<col width="22*"/>
+
+	<col width="43*"/>
+
+	<col width="51*"/>
+
+	<col width="67*"/>
+
+	<col width="72*"/>
+
+	<tr>
+		<td width="9%" style="border: 1px double #808080; padding: 0.05cm"><p>
+			<b>version</b></p>
+		</td>
+		<td width="17%" valign="top" style="border: 1px double #808080; padding: 0.05cm"><p>
+			&nbsp; <b>tarball</b> 
+			</p>
+		</td>
+		<td width="20%" style="border: 1px double #808080; padding: 0.05cm"><p>
+			<b>source rpm</b></p>
+		</td>
+		<td width="26%" style="border: 1px double #808080; padding: 0.05cm"><p>
+			<b>rpm binary</b></p>
+		</td>
+		<td width="28%" valign="top" style="border: 1px double #808080; padding: 0.05cm"><p>
+			&nbsp;&nbsp; <b>Debian package</b></p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<b>0.90</b><br/>
+20060611</p>
+		</td>
+		<td width="17%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.90.tgz">smp_utils-0.90.tgz</a></p>
+		</td>
+		<td width="20%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.90-1.src.rpm">smp_utils-0.90-1.src.rpm</a></p>
+		</td>
+		<td width="26%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.90-1.i386.rpm">smp_utils-0.90-1.i386.rpm</a></p>
+		</td>
+		<td width="28%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp-utils_0.90-0.1_i386.deb">smp-utils_0.90-0.1_i386.deb</a></p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<b>0.91</b><br/>
+20060822</p>
+		</td>
+		<td width="17%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.91.tgz">smp_utils-0.91.tgz</a></p>
+		</td>
+		<td width="20%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.91-1.src.rpm">smp_utils-0.91-1.src.rpm</a> 
+			</p>
+		</td>
+		<td width="26%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.91-1.i386.rpm">smp_utils-0.91-1.i386.rpm</a>
+						</p>
+		</td>
+		<td width="28%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp-utils_0.91-0.1_i386.deb">smp-utils_0.91-0.1_i386.deb</a>
+						</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<b>0.92</b><br/>
+20061208</p>
+		</td>
+		<td width="17%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.92.tgz">smp_utils-0.92.tgz</a></p>
+		</td>
+		<td width="20%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.92-1.src.rpm">smp_utils-0.92-1.src.rpm</a></p>
+		</td>
+		<td width="26%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.92-1.i386.rpm">smp_utils-0.92-1.i386.rpm</a></p>
+		</td>
+		<td width="28%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp-utils_0.92-0.1_i386.deb">smp-utils_0.92-0.1_i386.deb</a></p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<b>0.93</b><br/>
+20080106</p>
+		</td>
+		<td width="17%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.93.tgz">smp_utils-0.93.tgz</a></p>
+		</td>
+		<td width="20%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.93-1.src.rpm">smp_utils-0.93-1.src.rpm</a> 
+			</p>
+		</td>
+		<td width="26%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.93-1.i386.rpm">smp_utils-0.93-1.i386.rpm</a>
+						</p>
+		</td>
+		<td width="28%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp-utils_0.93-0.1_i386.deb">smp-utils_0.93-0.1_i386.deb</a></p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<b>0.94</b><br/>
+20081229</p>
+		</td>
+		<td width="17%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.94.tgz">smp_utils-0.94.tgz</a></p>
+		</td>
+		<td width="20%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.94-1.src.rpm">smp_utils-0.94-1.src.rpm</a> 
+			</p>
+		</td>
+		<td width="26%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.94-1.i386.rpm">smp_utils-0.94-1.i386.rpm</a>
+						</p>
+		</td>
+		<td width="28%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp-utils_0.94-0.1_i386.deb">smp-utils_0.94-0.1_i386.deb</a>
+						</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<b>0.95</b><br/>
+20101116</p>
+		</td>
+		<td width="17%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.95.tgz">smp_utils-0.95.tgz</a></p>
+		</td>
+		<td width="20%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.95-1.src.rpm">smp_utils-0.95-1.src.rpm</a></p>
+		</td>
+		<td width="26%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.95-1.i386.rpm">smp_utils-0.95-1.i386.rpm</a></p>
+		</td>
+		<td width="28%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp-utils_0.95-0.1_i386.deb">smp-utils_0.95-0.1_i386.deb</a></p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<b>0.96</b><br/>
+20110620</p>
+		</td>
+		<td width="17%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.96.tgz">smp_utils-0.96.tgz</a></p>
+		</td>
+		<td width="20%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.96-1.src.rpm">smp_utils-0.96-1.src.rpm</a><a href="p/smp_utils-0.96-1.src.rpm">
+			</a>
+			</p>
+		</td>
+		<td width="26%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.96-1.i386.rpm">smp_utils-0.96-1.i386.rpm</a>
+						</p>
+		</td>
+		<td width="28%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp-utils_0.96-0.1_i386.deb">smp-utils_0.96-0.1_i386.deb</a><a href="p/smp-utils_0.96-0.1_i386.deb">
+			</a>
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<b>0.97</b><br/>
+20120120</p>
+		</td>
+		<td width="17%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.97.tgz">smp_utils-0.97.tgz</a></p>
+		</td>
+		<td width="20%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.97-1.src.rpm">smp_utils-0.97-1.src.rpm</a> 
+			</p>
+		</td>
+		<td width="26%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.97-1.i386.rpm">smp_utils-0.97-1.i386.rpm</a><br/>
+<a href="p/smp_utils-libs-0.97-1.i386.rpm">smp_utils-libs-0.97-1.i386.rpm</a></p>
+		</td>
+		<td width="28%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp-utils_0.97-0.1_i386.deb">smp-utils_0.97-0.1_i386.deb</a><br/>
+<a href="p/libsmputils1-1_0.97-0.1_i386.deb">libsmputils1-1_0.97-0.1_i386.deb</a></p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<b>0.98</b><br/>
+20140526</p>
+		</td>
+		<td width="17%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.98.tgz">smp_utils-0.98.tgz</a><br/>
+<a href="p/smp_utils-0.98.tar.xz">smp_utils-0.98.tar.xz</a>
+						</p>
+		</td>
+		<td width="20%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.98-1.src.rpm">smp_utils-0.98-1.src.rpm</a> 
+			</p>
+		</td>
+		<td width="26%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.98-1.i386.rpm">smp_utils-0.98-1.i386.rpm</a><br/>
+<a href="p/smp_utils-libs-0.98-1.i386.rpm">smp_utils-libs-0.98-1.i386.rpm</a><br/>
+64
+			bit:<br/>
+<a href="p/smp_utils-0.98-1.x86_64.rpm">smp_utils-0.98-1.x86_64.rpm</a><br/>
+<a href="p/smp_utils-libs-0.98-1.x86_64.rpm">smp_utils-libs-0.98-1.x86_64.rpm</a></p>
+		</td>
+		<td width="28%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp-utils_0.98-0.1_i386.deb">smp-utils_0.98-0.1_i386.deb</a><br/>
+<a href="p/libsmputils1-1_0.98-0.1_i386.deb">libsmputils1-1_0.98-0.1_i386.deb</a><br/>
+64
+			bit:<br/>
+<a href="p/smp-utils_0.98-0.1_amd64.deb">smp-utils_0.98-0.1_amd64.deb</a><br/>
+<a href="p/libsmputils1-1_0.98-0.1_amd64.deb">libsmputils1-1_0.98-0.1_amd64.deb</a></p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="9%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<b>0.99</b><br/>
+20200305</p>
+		</td>
+		<td width="17%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.99.tgz">smp_utils-0.99.tgz</a><br/>
+<a href="p/smp_utils-0.99.tar.xz">smp_utils-0.99.tar.xz</a>
+						</p>
+		</td>
+		<td width="20%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.99-1.src.rpm">smp_utils-0.99-1.src.rpm</a> 
+			</p>
+		</td>
+		<td width="26%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp_utils-0.99-1.x86_64.rpm">smp_utils-0.99-1.x86_64.rpm</a><br/>
+<a href="p/smp_utils-libs-0.99-1.x86_64.rpm">smp_utils-libs-0.99-1.x86_64.rpm</a></p>
+		</td>
+		<td width="28%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			<a href="p/smp-utils_0.99-0.1_amd64.deb">smp-utils_0.99-0.1_amd64.deb</a><br/>
+<a href="p/libsmputils1-1_0.99-0.1_amd64.deb">libsmputils1-1_0.99-0.1_amd64.deb</a></p>
+		</td>
+	</tr>
+</table>
+<p><br/>
+The tarball contains an &quot;rpm&quot; spec file which is
+used to build source rpm and the i386 binary rpm. There is a Debian
+sub-directory with files to build a &quot;deb&quot; package. Here is
+the <a href="p/smp_utils.ChangeLog">ChangeLog</a> . A <a href="p/smp_utils.COVERAGE">COVERAGE</a>
+file shows a mapping from each SMP function name to the corresponding
+smp_utils utility name. There are also &quot;.tar.gz&quot;,
+&quot;.tar.bz2&quot;&nbsp; and &quot;.tar.xz&quot; versions of the
+tarball at the same location.</p>
+<p>There is a github mirror at <a href="https://github.com/doug-gilbert/smp_utils">smp_utils</a>
+maintained by the author. The author (showing his age) still prefers
+to use a subversion repository on his own equipment (a Raspberry Pi)
+for development. <br/>
+<br/>
+Notice that a library package has been
+introduced in version 0.97 .<br/>
+<br/>
+<br/>
+
+</p>
+<p>Return to <a href="index.html">main</a> page. 
+</p>
+<p align="center">Last updated: 12th September 2021</p>
+</body>
+</html>
