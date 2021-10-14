@@ -1,0 +1,542 @@
+        Partial Electrification for North American railways   20211008
+        ---------------------------------------------------
+
+
+Introduction
+============
+This article makes a case for retrofitting partial electrification (PE) via
+overhead wiring to existing North American freight railways. It would require
+battery powered electric locomotives (bELs) added to the existing stock of
+locomotives. A mainline bEL would typically have a 3.5 MWh battery made up
+of LFP cells. Initially only the oldest, least efficient diesel electric
+locomotives (DELs) on branch lines would be retired.
+
+The North American freight rail system can be subdivided into two groups:
+"Class 1" railways and "short lines". After 40 years of consolidation over
+100 Class 1 railways have been reduced to only 6 or 7, each spanning around
+half or more of the North American continent. With a few exceptions most of
+the remaining independently operated railways own relatively short railways,
+typically interconnecting at one end of their branch line to a Class 1
+railway.
+
+This article proposes adding overhead electrification to around a quarter of
+the Class 1 railway main lines with a greater proportion electrified in
+steeply graded sections and at a lesser proportion in very flat areas (e.g.
+the Prairies in Canada). For the short lines, little traditional overhead
+electrification may be needed, perhaps mainly in steeply graded sections.
+Instead short line locomotives could be equipped with similar ground level
+charge ports as used by long distance electric trucks. Where a short line
+joins its "parent" Class 1 railway, there may already be overhead
+electrification.  If not, an electrified siding could be provided where a
+short line bEL could recharge (or a main line bEL could recharge in an
+emergency).
+
+
+Modern Electric Railway Infrastructure
+======================================
+Most recently electrified railway lines use a fixed 25 kVac, permanently
+energized overhead contact wire at a height of approximately 6.5 metres above
+the rail height. The line frequency of the alternating current (AC) in nearly
+all cases would be the power grid's distribution frequency of the country in
+question; typically either 50 Hertz, or 60 Hertz as in North America.
+
+The overhead contact wire, plus the associated catenary wire needs a
+clearance of at least 0.25 meters at 25 kVac and twice that at 50 kVac. This
+can be a major problem when adding overhead electrification after a line has
+been built. These problems arise where a railway has restricted vertical
+clearance such as in a tunnel or under a road overpass. When Norwegian
+authorities investigated the cost of retrofitting overhead electrification
+on an existing 725 km line between Trondheim and Bødo they found one of the
+largest (unexpected) cost items was lowering the existing line in tunnels
+and snow sheds (because this line crosses the Arctic circle) to allow for
+the required overhead clearances. They chose PE over full electrification
+and other options. See reference [1].
+
+
+Modern Electric Locomotives
+===========================
+Like modern, high power diesel electric locomotives, modern electric
+locomotives use AC traction motors that are either induction or synchronous
+motors. Those motors are typically driven by a variable voltage, variable
+frequency (VVVF) 3 phase supply. Modern power electronics allows the efficient
+generation of that VVVF 3 phase supply, typically starting with a DC voltage
+in the range of 2 to 5 kV. Note that modern electric rail infrastructure
+supplies power at a fixed frequency a and fixed voltage with overhead
+voltage typically being higher than the traction motors can efficiently use.
+So the overhead voltage must be reduced.
+
+Diesel electric locomotives have a single diesel engine that drives a 3 phase
+AC alternator that is rectified to obtain the DC voltage in the required
+range. Electric locomotives have a pantograph to pick up power from the
+contact wire. Typically on the roof of an EL there are safety breakers to
+protect it from over-voltage (e.g. lightning strikes) and other mishaps. The
+high voltage at the pantograph is typically fed down to an isolation or
+traction single phase transformer. The secondary side of that transformer is
+rectified to obtain the DC voltage in the required range.
+
+Modern DELs and ELs are quite similar: they both do AC->DC->AC conversions.
+The initial AC is a bit different: 3 phase for the DEL, single phase for the
+EL. From the point where the DC voltage is available, they are essentially
+the same. That means, for example, that a pair of locomotives, one a new EL,
+the other a modified DEL, could haul a heavy train up a grade with all the
+power coming from the EL's overhead and its traction transformer, with the
+shared 2 to 5 kV DC being fed to the DEL via cables between the locomotives.
+Assuming mainline North American locomotives of 4400 horsepower (hp)
+(approximately 3.3 MW), the diesel engine in the DEL could be idling while
+6.6 MW of power would be available for traction, half being driven via the EL
+bogies (aka 'trucks'), the other half being driven via the DEL bogies.
+
+On bELs the battery pack could be an alternate source of the DC in the
+AC->DC->AC conversions noted above. Supercapacitors could also be used as a
+short term store, for example when the pantograph is lowered or locked
+temporarily when the locomotive passes through a "dead" section.  Such "dead"
+sections would be "at grade" road crossings and pedestrian over-bridges that
+children use. Platforms at busy commuter stations rail might also be unwired.
+
+Battery electric locomotives, without any provision to accept power from
+overhead wiring, have already begun to appear on North American railways.
+See reference [2].
+
+
+Multiple overhead voltages
+==========================
+Rather than a fixed overhead voltage being "permanently" supplied to the
+overhead contact wire by a traction substation, a range of voltages
+could be provided.
+
+These voltages could grouped as follows:
+  - 0 Volts: don't waste energy when there is nothing "under the wires"
+  - 85 Vac, line frequency: testing for shorts, indicates about to
+    change to high voltage. Also could be used to flag a potential change
+    from one high voltage level to another
+  - high voltage: 15-35 kVac, line frequency: for traction power and
+    battery recharging
+
+The roof mounted high voltage equipment on a bEL could detect the group
+and in the high voltage case, what that high voltage is. If that voltage
+is acceptable it is fed to the traction or isolation transformer. That
+transformer is an expensive item and could be made somewhat more expensive
+by having multiple taps on the primary. This will allow the transformer
+to provide a small voltage range on the transformer secondary, irrespective
+of the primary voltage (i.e. 15 to 35 kV). Alternatively the decision could
+be made that short line bELs could not operate at such a high traction
+voltage and the roof mounted equipment would disallow a connection of say
+35 kVac overhead to its traction transformer. Another approach is that a
+main line traction substation that would normally supply >= 25 kVac could
+reduce its output to 15 kVac if a short line bEL was detected "under its
+wires".
+
+The lower traction voltage of 15 kVac would target short line or shunting
+operations. Overhead wire traction systems typically have a limit on the
+amount of current that can be drawn when the locomotive is stationary,
+typically in the range from 100 to 150 Amps. Above this value there is a
+risk of welding the pantograph to the contact wire. When a locomotive is
+moving it can typically "pull" as much as ten times its stationary current
+limit. For the sake of argument we will take the stationary pantograph
+current limit of 100 Amps which gives a maximum power of 1.5 MW when
+stationary. So that is "1C" charging rate for a short line bEL. It is
+assumed that little of the short lines will have any overhead line
+electrification meaning that charging will typically take place when the
+bEL is stationary; hence the importance of the stationary current limit.
+
+Another reason to allow a range of voltages, especially for short lines,
+is to allow local electricity utilities to potentially supply 1 phase
+directly from its "medium" voltage distribution network. Many urban
+distribution networks now use 27,600 Volts (e.g. here in Toronto). That
+is a phase-to-phase voltage and the corresponding phase-to-ground voltage
+is 16 kV which is within the proposed bEL high voltage range. The utility
+company could place a pole-mounted, remotely controlled phase selector and
+then feed the chosen phase to short line bEL on a nearby siding. The
+network
+utility could control which phase was chosen and how much power could be
+drawn by the bEL. Some rural utilities use a distribution of 35 kV
+(phase-to-phase) which is a little over 20 kV (phase-to-ground). That
+would also be suitable to feed directly to a short line bEL .
+
+The choice of an upper high voltage limit at 35 kV, 10 kV over the world
+"standard" for railway overhead of 25 kV, is proposed for various reasons:
+  - North American freight trains tend to be both heavier and longer than
+    their European counterparts
+  - there is the added load of recharging batteries during heavy traction
+    load, for example on a grade. The recharging load is estimated to be
+    up to 3.5 MW per bEL
+  - the losses (in heat) in the overhead wiring are related to the square
+    of the current passing through that wiring. Since the delivered power
+    is the product of the voltage and the current, energy loss in the
+    overhead is reduced when the highest practical overhead voltage is
+    chosen. See formula (4) and its explanation below.
+
+
+Contact wire height
+===================
+The highest "plate" height (found by the author) is 6.5 metres. That may well
+be for double stacked containers and "autostack" wagons that carry passenger
+cars at 3 levels. Allowing a 0.35 metre clearance for 35 kV (the highest
+traction voltage) takes the contact wire height (above the rails) to close to
+7 metres. A document found online propose a height of 7.4 metres for 25 kV
+overhead and 8 metres for 50 kV overhead. That would suggest that 7.6 metres
+may be appropriate for 35 kV overhead.
+
+There is obviously an extra cost to such high catenary: longer poles and
+larger foundations for each pole.
+
+Many short lines (perhaps the majority) were never built for wagons that are
+6.5 metres high and would require significant work to allow that and there
+is no economic basis for doing so. Such short lines (and Class 1 main lines
+that have the same height restrictions), should be allowed to install PE, as
+required, at a lower contact wire height. This could be around 6.5 metres
+nominal over rail height. As discussed in the next section, any section that
+is height constrained (e.g. a tunnel) should not be wired. A feature of PE
+is that it shouldn't further constrain any vertical clearances.
+
+
+Placement of overhead wiring
+============================
+The placement of the overhead wiring would be an interesting Operations
+Research problem. For the sake of argument let us assume two types of
+bELs:
+  - main line: 3.5 MWh batteries, if discharged at "1C' that would be
+    3.5 MW for one hour. 3.5 MW is a little higher than the power main
+    line DELs use today: 4400 hp or 3.3 MW. Assume the batteries can
+    charge and discharge at "1C". Same weight as 4400 hp DELs: just
+    under 200 tonnes
+  - short line: 1.5 MWh batteries for about 2500 hp. Around 120 tonnes
+    perhaps allow a battery "tender" for extended range if the short
+    line passes through isolated areas
+
+To allow greater flexibility substations and their associated overhead
+should be allowed to be "dead", but not two adjacent substations. This
+implies that each bEL, starting with fully charged batteries should be
+able to pass through an unwired section, then a wired section where the
+overhead is "dead" and then through another unwired section. We assume it
+batteries are now depleted and need recharging. The next paragraph puts
+some numbers to this scenario.
+
+Assume the average power used for traction over a relatively flat section
+of track is 33% of rated power. The main line bEL should be able to run for
+three hours. It is assumed a bEL can recharge its batteries in any downhill
+section once it has reached its desired speed. Further assume that a
+traction substation has 15 km of wired track either side of it. So if the
+PE is covering a quarter of the track, the next wired section will be 90 km
+away. Further assume that substation is out-of-service (and 30 km long) then
+the train must continue for another 120 km before it enters an electrified
+wired section. So in this case the bEL needs to travel 90+120=210 km under
+its own power. If it can maintain an average speed of 70 km/h then it will
+just make it. The train may well make it if it runs slower as it requires
+less kinetic energy (m*v^2)/2 and wind resistance will be a little less,
+but it will take longer than three hours.
+
+When all substations are operational with the above example, then a "1C"
+charge rate should be sufficient to replenish the battery to the level
+that it started the journey, so the train can continue indefinitely. In the
+one substation out-of-service case the train would either need to charge
+at the next working substation at a rate higher than "1C" or slow down in
+that wired section to take on more energy.
+
+Obviously steeply grade sections (e.g. approaching a mountain range) will
+require a greater proportion of the track to be wired. Since the traction
+transformer in a bEL needs to be rated to handle both the rated traction
+load and "1C" recharging of its batteries, then if the batteries are already
+full (or close to full and thus need less power) then more power could be
+made available for traction. Hence it might be useful to size a main line
+bEL's traction motors to provide more than 3.3 MW (4400 hp), perhaps 1 MW
+more. This would allow a bEL to run up a steeply graded section more
+quickly than the equivalent DEL, but only while "under the wires" and after
+the battery no longer needed "1C" charge power (a maximum of 3.5 MW).
+
+On single track main lines there must be passing loops (i.e. two track
+sections). Since trains must wait in these loops for opposing movements to
+pass, each wired section should include at least one passing loop.
+
+Some railway sections should not be wired. Apart from "at grade" crossings
+complex rail junctions (e.g. leading to a major station) and intermodal
+yards should be wire free. Anywhere where vertical clearance is an issue
+(e.g. tunnels) or safety may be a concern can be left unwired. Automatic
+systems could be installed trackside to instruct a passing bEL to lower
+its pantograph and later raise it again.
+
+Wired sections need additional work done to them such as bonding the
+rails to make sure they are an effective ground path for the high voltage
+present in the overhead. Also rail electrification tends to interfere with
+existing signalling equipment. Rather than replace existing signalling in
+wired sections, in-cabin signalling should be investigated as that seems
+to be the direction that all new railway signalling is heading.
+
+Transition period
+=================
+Electrifying main lines that are in operation is a relatively slow process.
+Even electrifying a quarter of North American main lines still implies
+electrifying thousands of kilometres of track. While this could be started
+relatively quickly, concentrating on electrifying short lines may be a
+better approach.
+
+The Precision Scheduled Railroading (PSR) methodology has improved the market
+value of the class 1 railways in North America, but delivered worse service
+to transport users; or "less for more" as one shipper put it. Under PSR the
+class 1 railways run less trains, but they are heavier and longer. Also short
+lines are required to do more switching and building up blocks of wagons at
+their class 1 railway interconnect. For transport users, service levels have
+declined, for example, where previously there was a 5 day service (i.e. 1
+train per business day) under PSR there may only be a 3 day service (e.g.
+Monday, Wednesday and Friday). So a traffic accident in Chicago may delay an
+interchange between two class 1 freights, so that a customer expecting a
+container on Wednesday, receives it on Friday instead. The short line
+operator delivering the container to the customer has no way of appeasing
+the disgruntled customer who may well switch to road freight in the future.
+
+Even before PSR took hold, the class_1/short_line model did not compete when
+the distance to traverse was less than 600 to 1000 miles (i.e. up to 1,600
+km) because the class 1 railway involved saw an insufficient profit margin.
+Block trains (e.g. a train where all wagons are coal or wheat moving to the
+same destination) are about the only exception, leaving a huge segment of the
+transport effort to other modes (i.e. mainly trucks on highways). An upside
+of PSR is that class 1 main lines have more track capacity, capacity that
+their short line partners might use, as suggested below.
+
+Short lines tend to have the industry's oldest, dirtiest and least efficient
+locomotives which are often "hand-me-downs" from the class I railways.
+Creative financing and even grants of bELs to short line by governments and
+corporates could result in many benefits. As a large proportion of freight
+moves involve a short line at one end of the move, these new short line bELs
+could be brightly coloured and could carry logos of sponsors together with
+the short line's livery. This would both be a travelling billboard and help
+with visibility for safety as the bEL would be quieter than the DEL it
+replaced. The absence of petroleum products would also mean the bright new
+livery would remain fresh for longer. Each bEL could be equipped with a
+colourful drone to hover over each at grade road crossing about to be
+crossed by the bEL's train. Video from the drone could be fed back to the
+bEL driver showing if a vehicle was blocking the line.
+
+In return for the benefit of one or more new bELs and cheaper "fuel" (i.e.
+electricity), each short line could lower its rates, say by 5%, for say 5
+years, under a contract with the government.
+
+Short lines face an asymmetric power relationship with the class 1 railway
+that they interchange with (assuming there is only one). The government
+could allow short lines with single class 1 interconnect, trackage rights
+on the mainline, proportional to the size (e.g. route miles) of the short
+line, up to some limit, say 100 miles (160 km), either side of the
+interconnection point. The fees and conditions for those trackage rights
+could be determined by an independent third party, perhaps a class 1 railway
+from another part of North America. The benefit to the original short line
+operator, and its customers, is more competition.
+
+These trackage rights for short lines allow several short lines to chain
+across their parent's main line, allowing for moves of a few hundred miles
+that the associated short lines see as profitable but their parent class
+1 main line does not.
+
+
+DC Electrical Energy and Power
+==============================
+The energy and power equations governing direct current (DC) are relatively
+straightforward. In the formulae below '*' is used for multiplication and '^'
+is used to denote raising the value on the left to the power on the right.
+We start with a general physics equation linking energy and power:
+    E = P * t      (1)
+
+In SI units, 'E' is energy in joules, 'P' is power in Watts and 't' is time
+in seconds. The electrical power industry tends to use larger units for
+energy: kilowatt-hours (kWh), megawatt-hours (MWh), terawatt-hours (TWh),
+etc. Common units for power are: kilowatt (kW), megawatt (MW), terawatt (TW),
+etc. A kilowatt-hour is three million, six hundred thousand (1000x60x60)
+joules.  Electrical power in a load is the product volts (V) across that
+load and current (I in amps) through the load:
+    P = V * I      (2)
+
+Then Ohm's law establishes are relationship between voltage and current
+through a load or conductor:
+    V = I * R      (3)
+where 'R' is the resistance of a load expressed in Ohms. All conductors
+have non-zero resistance apart from superconductors which are not relevant
+here. Combining formulae (2) and (3) by substituting 'V' gives:
+    P = I^2 * R    (4)
+
+The last formula, amongst other things, gives the power loss across the
+catenary which is greatest at the "far end" of the catenary from the
+traction substation. Catenary resistance is proportional to distance, and
+if, for example, it approaches 1 Ohm and if a heavy train with multiple
+(b)ELs pulls 1000 Amps that will be 1 Megawatt (of heat in the catenary)
+which is a significant loss. This formula indicates that for a required
+power at a load (e.g. a bEL) it is best to maximize the voltage subject to
+other constraints.
+
+
+AC Electrical Energy and Power
+==============================
+For alternating current (AC) systems the above formulae still hold but, and
+it's a big but, for instantaneous voltage and current. In AC systems, the
+source is providing/enforcing the voltage which is typically a sine wave
+with a period of 20 millisecond (50 Hertz) or 16.666 milliseconds (60 Hertz).
+The load (e.g. a bEL) dictates the current that is drawn, and it is also
+ideally a sine wave. In practice representing the source AC voltage as a
+sine wave is a good approximation, however the current waveform can be
+described as a "mess". And as the power electronics in (b)ELs gets more
+efficient (and sophisticated) the current waveform can get even messier.
+
+Multiplying time varying voltage and current together in formula (2) is not
+very enlightening. At least both waveforms tend to have the same period so
+we tend to look at the average power across a period and assume it will be
+essentially the same from one period to the next. For this purpose we look
+at the "root mean squared" (rms) values of AC voltage and current. All AC
+voltages and currents used in this article are rms values (e.g. 25 kVac).
+The average power formula for AC plus an important variant for accountants
+and electric utilities follow:
+    P = Vrms * Irms * pf    (2.1)
+    VA = Vrms * Irms        (2.2)
+
+The average power formula (2.1) has a new term: the power factor (pf) which
+is a value between 0 and 1. A power factor near 1 is considered "good" and
+we never want to see a power factor of 0. The "voltamp" (VA) formula (2.2)
+is simply the product of Vrms and Irms and while the units of both sides
+are Watts, the left hand side is called VA to indicate something is
+different. That something is the power factor. Industrial users (including
+power utilities themselves) typically get billed in multiples of VA by their
+upstream provider. This means wherever the upstream power provider places
+their VA meters for billing purposes, the user wants their power factor to
+be a close to 1 as practical. And cost is not the only reason to want a
+power factor near 1: the Irms (i.e. the amperage) can be high enough to
+damage equipment (and blow fuses) even though the average power is very
+small because of a power factor approaching 0.
+
+The ability to use a single phase from a power utility's 27.6 kV or 35 kV
+medium voltage lines to recharge short line bELs could save a lot of money
+that would otherwise be needed to build small traction substations. Two
+important factors would be that:
+  - the phase chosen (of the 3 available) would not imbalance the 3 phase
+    circuit too much
+  - the power factor is acceptable (i.e. close to 1)
+
+The first factor would be a matter of the power utility picking its least
+loaded phase and putting an upper limit on the amperage that the bEL could
+draw. This second factor could be addressed by the bEL being built with
+some "power factor correction" (pfc) equipment.
+
+
+Three phase AC and overhead voltage
+===================================
+Three phase power is the most common way large scale AC is generated and
+distributed long distances. Each phase has the same rms voltage (as high
+as 735 kV in Quebec) and the same frequency but differs in phase by 120
+degrees (or one third of a revolution) from the other two wires (i.e.
+phases). It is not practical to deliver three phase power to a EL (although
+it has been tried) so a single phase is used instead. Power utilities like
+to have a similar load on all phases so rail traction supply systems can
+cause issues.
+
+Older rail electrification systems used 1.5 and 3 kV DC overhead because
+traction motors of that time were DC machines. Power electronics
+developments over the last 40 years have made AC machines the modern
+traction motors of choice. The power electronics has also made switching
+between AC and DC (and vice versa) a lot easier and more efficient.
+
+So why does modern rail electrification use AC in the overhead wiring,
+rather than DC? Here are a few reasons:
+  - less arcing with AC. Since AC is alternating around 0 Volts, arcs tend
+    to be broken at the time of zero crossing. So for the same power a DC
+    circuit breaker tends to be much larger than a AC breaker. Plus the
+    arcing between the contact wire and the pantograph is less with AC.
+  - galvanic issues (e.g. rust). This is still an issue with AC but to a
+    lesser degree than with DC
+  - the upstream power provider (a power utility normally) typically has
+    power available in three phase AC which a transformer can alter
+    as required for the overhead. DC overhead needs an extra step to
+    convert AC to DC: rectification
+
+
+Battery charge and discharge rates
+==================================
+All batteries generate (discharge) or receive (charge) DC. They have a
+nominal voltage and an energy storage figure, given in watt-hours or
+kilowatt-hours. An informal "<n>C" maximum (dis-)charge rate figure has
+emerged in the industry, where <n> is a small integer. For example: a 1000
+Volt, 1 megawatt-hour battery rated at "1C" for discharge and charge, can
+generate (discharge) a maximum of 1 megawatt for 1 hour if it was full at
+the start of the hour. Similarly the same battery when empty can accept
+a total of 1 MW for 1 hour to charge it to full.
+
+The "<n>C" figure is an engineering "rule of thumb" as for a bEL the train
+weight and track profile will dictate how much power is required. On the
+battery charge side, the battery chemistry and its current "state of
+charge" will dictate how much power should be provided. The "<n>C" figure
+puts a loose upper limit on these figures. Often a battery has different
+"<n>C" figure on charge and discharge cycles. In the short term these
+charge/discharge rates can be exceeded; on the discharge side this often
+leads to a build up of heat in the battery and its associated electronics.
+On the charge side, exceeding the recommended charge rate can lessen the
+number of charge/discharge cycles in the battery's lifetime.
+
+In this article's rough calculations above, a charge/discharge figure of
+"1C" has been assumed.
+
+Batteries are made up of cells, where each cell's nominal voltage is fixed
+by the cell chemistry (e.g. 3.2 Volts for LFP cells). Battery DC voltage is
+increased by putting cells in series. Battery DC amperage (current) is
+increased by putting cells in parallel.
+
+
+Conclusion
+==========
+Partial electrification may be a case of where "less is more". So called
+"full electrification" will still need diesel locomotives for rarely used
+sidings and yards with overhead gantry cranes (e.g. near sea ports). Also
+in emergency situations like a catenary break or a traction substation
+fire or upgrade, DELs would be needed. Even If DELs were outlawed then
+something like the battery electric locomotive would be needed.
+
+With the PE being proposed, only around a quarter of the main lines would
+need to be electrified and little of the branch lines serviced mainly by
+the short line railways. By avoiding electrifying areas with low vertical
+clearances (e.g. tunnels) many costs and outages (e.g. while the rail line
+is lowered) could be avoided. Perhaps half as many traction substations
+would be needed, but each would need to supply about twice as much power
+(and energy) as substations needed for full electrification. Short line
+bELs could also share ground level charging infrastructure with electric
+long haul trucks. Half or more of the equipment in modern AC DELs could
+be re-utilized, by either replacing the diesel engine with batteries or
+running DC power cables from a coupled bEL.
+
+Full electrification systems tend to have the same overhead voltage (and
+frequency if AC) throughout the system. The PE system proposed would allow
+a range of AC voltages (and two catenary heights above the rails) to
+better suit local conditions.
+
+Douglas Gilbert
+Toronto, Canada
+
+
+References
+----------
+[1]  https://www.jernbanedirektoratet.no/contentassets/1f455e006cc84457b67e6c081c1becac/final-report-nullfib.pdf
+[2]  https://electrek.co/2021/09/16/wabtec-unveils-its-battery-electric-train-following-the-first-official-purchase/
+
+
+Glossary
+--------
+1C           charging and/or discharging rate of a battery (for one hour)
+AC           alternating current (and voltage). AC voltage plotted against
+             time typically is a sine wave with equal parts above and
+             below 0 volts.
+bEL          battery electric locomotive
+bogie        rectangular structure pivoted under a locomotive or rail wagon
+             that holds two or three axles. Each axle has a rail wheel on
+             either end. Also know as a 'truck' in the US.
+DC           direct current (and voltage). Form of electricity used by
+             batteries and electronics
+DEL          diesel electric locomotive
+EL           electric locomotive
+hp           horsepower (1 horsepower is around 736 Watts)
+intermodal   the swapping containers between different transport modes
+             for example: ship to train, train to delivery truck
+kV           kilo-volt (1000 Volts)
+kVac         kilo-volt (1000 Volts) of alternating current (AC)
+LFP          LiFePO4 (lithium iron phosphate) battery. ~ 160 Wh/kg,
+             ~ 220 Wh/L, lifetime >= 3000 cycles. Probably the safest
+             and cheapest existing battery technology for locomotives.
+             A 1.5 MWh battery contains around 10 tonnes of LFP cells
+PE           partial electrification: only wire part of the track and
+             assume a bEL can use its own power in unwired sections
+pf           power factor (a value between 0 (bad) and 1 (good)
+pfc          equipment to improve the power factor of an AC load
+rms          root mean squared (applied in reverse order)
+VVVF         variable voltage variable frequency (used by modern AC motors)
