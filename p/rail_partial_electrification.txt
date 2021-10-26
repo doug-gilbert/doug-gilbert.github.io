@@ -1,4 +1,4 @@
-        Partial Electrification for North American railways   20211008
+        Partial Electrification for North American railways   20211019
         ---------------------------------------------------
 
 
@@ -27,7 +27,7 @@ electrification may be needed, perhaps mainly in steeply graded sections.
 Instead short line locomotives could be equipped with similar ground level
 charge ports as used by long distance electric trucks. Where a short line
 joins its "parent" Class 1 railway, there may already be overhead
-electrification.  If not, an electrified siding could be provided where a
+electrification. If not, an electrified siding could be provided where a
 short line bEL could recharge (or a main line bEL could recharge in an
 emergency).
 
@@ -41,7 +41,7 @@ all cases would be the power grid's distribution frequency of the country in
 question; typically either 50 Hertz, or 60 Hertz as in North America.
 
 The overhead contact wire, plus the associated catenary wire needs a
-clearance of at least 0.25 meters at 25 kVac and twice that at 50 kVac. This
+clearance of at least 0.25 metres at 25 kVac and twice that at 50 kVac. This
 can be a major problem when adding overhead electrification after a line has
 been built. These problems arise where a railway has restricted vertical
 clearance such as in a tunnel or under a road overpass. When Norwegian
@@ -64,6 +64,9 @@ in the range of 2 to 5 kV. Note that modern electric rail infrastructure
 supplies power at a fixed frequency a and fixed voltage with overhead
 voltage typically being higher than the traction motors can efficiently use.
 So the overhead voltage must be reduced.
+
+A useful diagram and explanation of the major parts of an electric locomotive
+(EL) can be found in this reference: [2].
 
 Diesel electric locomotives have a single diesel engine that drives a 3 phase
 AC alternator that is rectified to obtain the DC voltage in the required
@@ -95,7 +98,7 @@ children use. Platforms at busy commuter stations rail might also be unwired.
 
 Battery electric locomotives, without any provision to accept power from
 overhead wiring, have already begun to appear on North American railways.
-See reference [2].
+See reference [3].
 
 
 Multiple overhead voltages
@@ -508,7 +511,8 @@ Toronto, Canada
 References
 ----------
 [1]  https://www.jernbanedirektoratet.no/contentassets/1f455e006cc84457b67e6c081c1becac/final-report-nullfib.pdf
-[2]  https://electrek.co/2021/09/16/wabtec-unveils-its-battery-electric-train-following-the-first-official-purchase/
+[2]  http://www.railway-technical.com/trains/rolling-stock-index-l/electric-locomotives/
+[3]  https://electrek.co/2021/09/16/wabtec-unveils-its-battery-electric-train-following-the-first-official-purchase/
 
 
 Glossary
@@ -528,6 +532,8 @@ EL           electric locomotive
 hp           horsepower (1 horsepower is around 736 Watts)
 intermodal   the swapping containers between different transport modes
              for example: ship to train, train to delivery truck
+inverter     device that converts DC to AC; the main inverter in a EL
+             (and a EV) converts DC to 3 phase VVVF
 kV           kilo-volt (1000 Volts)
 kVac         kilo-volt (1000 Volts) of alternating current (AC)
 LFP          LiFePO4 (lithium iron phosphate) battery. ~ 160 Wh/kg,
@@ -538,5 +544,6 @@ PE           partial electrification: only wire part of the track and
              assume a bEL can use its own power in unwired sections
 pf           power factor (a value between 0 (bad) and 1 (good)
 pfc          equipment to improve the power factor of an AC load
+rectifier    device that converts AC to DC
 rms          root mean squared (applied in reverse order)
 VVVF         variable voltage variable frequency (used by modern AC motors)
