@@ -5,8 +5,9 @@
 	<title>The sg3_utils package</title>
 	<meta name="generator" content="LibreOffice 6.4.7.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2021-05-04T12:09:44.725608022"/>
+	<meta name="changed" content="2021-11-11T01:02:17.473501035"/>
 	<meta name="keywords" content="sg3_utils, SCSI utilities, Linux"/>
+	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -116,7 +117,7 @@ kernel 2.4, 2.6, 3, 4 and 5 series and is still being enhanced. An
 earlier package called sg_utils targeted the Linux kernel 2.2 series
 with some support for the 2.0 series. See an earlier version of this
 web <a href="uu_index.html">page</a> for further information about
-sg_utils.&nbsp; This document describes <b>version 1.46</b> of
+sg_utils.&nbsp; This document describes <b>version 1.4</b><b>7</b> of
 <b>sg3_utils</b> .&nbsp; The majority of these utilities have been
 ported to the FreeBSD, Solaris, Tru64 and the Windows operating
 systems (Windows 2000 and later supported).<br/>
@@ -834,8 +835,10 @@ READ BUFFER(16)</p>
 		<td width="131" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			sg_rep_zones</p>
 		</td>
-		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-			REPORT ZONES</p>
+		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.1cm">
+			REPORT REALMS</p>
+			<p style="margin-bottom: 0.1cm">REPORT ZONE DOMAINS</p>
+			<p>REPORT ZONES</p>
 		</td>
 		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
@@ -844,7 +847,8 @@ READ BUFFER(16)</p>
 			f,s,t,w</p>
 		</td>
 		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-			sends this command to a ZBC (SMR) device and decodes the result. A
+			sends <font color="#000000">one of these </font>commands (default
+			is REPORT ZONES) to a ZBC (SMR) device and decodes the result. A
 			SAT layer may translate SCSI ZBC commands to ATA ZAC commands that
 			a disk understands</p>
 		</td>
@@ -3617,16 +3621,13 @@ tarballs and packages</b></p>
 		</td>
 	</tr>
 	<tr valign="top">
-		<td width="8%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.1cm; font-weight: normal">
-			1.47 <b>beta</b></p>
-			<p style="margin-bottom: 0.1cm; font-weight: normal"><br/>
-<br/>
-
-			</p>
-			<p style="margin-bottom: 0.1cm; font-weight: normal">[svn: r900]</p>
+		<td width="8%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.1cm">
+			<b>1.47</b></p>
+			<p style="margin-bottom: 0.1cm">20211110</p>
 		</td>
 		<td width="20%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
-			<a href="p/sg3_utils-1.47r900.tgz">sg3_utils-1.47r900.tgz</a></p>
+			<a href="p/sg3_utils-1.47.tgz">sg3_utils-1.47.tgz</a></p>
+			<p style="margin-bottom: 0.5cm"><a href="p/sg3_utils-1.47.tar.xz">sg3_utils-1.47.tar.xz</a></p>
 		</td>
 		<td width="19%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
 			<br/>
@@ -3641,10 +3642,8 @@ tarballs and packages</b></p>
 			</p>
 		</td>
 		<td width="27%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
-			<br/>
-<br/>
-
-			</p>
+			<a href="p/sg3-utils_1.47-0.1_amd64.deb">sg3-utils_1.47-0.1_amd64.deb</a></p>
+			<p style="margin-bottom: 0.5cm"><a href="p/libsgutils2-2_1.47-0.1_amd64.deb">libsgutils2-2_1.47-0.1_amd64.deb</a></p>
 		</td>
 	</tr>
 </table>
@@ -3782,16 +3781,16 @@ file is a tarball of man pages converted to html by man2html.</p>
 	</tr>
 	<tr valign="top">
 		<td width="120" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p style="margin-bottom: 0.1cm">
-			<span style="font-weight: normal">1.47 </span><b>beta</b></p>
-			<p style="font-weight: normal">svn: [r900]</p>
+			<b>1.47</b></p>
+			<p style="font-weight: normal">20211110</p>
 		</td>
 		<td width="233" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+			tbd</p>
+		</td>
+		<td width="246" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
 			<br/>
 
 			</p>
-		</td>
-		<td width="246" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
-			<a href="p/sg3_utils-1.47r900cyg_exe.zip">sg3_utils-1.47r900cyg_exe</a></p>
 		</td>
 		<td width="236" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
 			<br/>
@@ -3896,7 +3895,7 @@ Reinecke has set up this git mirror on github:</p>
 <ul>
 	<li><p style="margin-bottom: 0cm"><a href="https://github.com/hreinecke/sg3_utils">https://github.com/hreinecke/sg3_utils</a>
 		</p>
-	<li><p style="margin-bottom: 0cm">temporary mirror:
+	<li><p style="margin-bottom: 0cm">maintainer's mirror:
 	<a href="https://github.com/doug-gilbert/sg3_utils">https://github.com/doug-gilbert/sg3_utils</a></p>
 </ul>
 <p><br/>
@@ -3907,9 +3906,11 @@ Reinecke has set up this git mirror on github:</p>
 3 months. Betas (identified by their subversion revision number) are
 placed relatively often on the main page, typically more often than
 updates appearing on github. Please report any problems to me or
-report them as an &quot;Issues&quot; on the github reflector.</p>
+report them as an &quot;Issues&quot; or supply a patch via a pull
+request on the github reflector.</p>
 <p>Return to <a href="index.html">main</a> page. 
 </p>
-<p align="center">Last updated: 4th May<font color="#000000"> </font>2021</p>
+<p align="center">Last updated: 10th November<font color="#000000">
+</font>2021</p>
 </body>
 </html>
