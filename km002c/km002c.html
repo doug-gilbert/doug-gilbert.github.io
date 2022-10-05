@@ -5,10 +5,11 @@
 	<title>KM002C</title>
 	<meta name="generator" content="LibreOffice 7.3.6.2 (Linux)"/>
 	<meta name="created" content="2022-10-01T12:11:12.823671084"/>
-	<meta name="changed" content="2022-10-02T17:29:25.012141430"/>
+	<meta name="changed" content="2022-10-05T10:25:11.931173242"/>
 	<meta name="classification" content="ChargerLab KM002C USB PD 3.1 tester from Windows app perspective"/>
 	<meta name="keywords" content="KM002C USB-C PD3.1 TESTER"/>
 	<meta name="Department" content="POWER-Z"/>
+	<meta name="Info" content="USB PD EPR SPR"/>
 	<meta name="Language" content="English"/>
 	<meta name="Owner" content="ChargerLab"/>
 	<meta name="Project" content="KM002C"/>
@@ -16,12 +17,12 @@
 	<meta name="Reference" content="USB-C PD 3.1"/>
 	<style type="text/css">
 		@page { size: 21.59cm 27.94cm; margin-left: 2cm; margin-right: 1cm; margin-top: 1cm; margin-bottom: 1cm }
-		p { line-height: 115%; margin-bottom: 0.25cm; background: transparent }
-		h1 { margin-bottom: 0.21cm; background: transparent; page-break-after: avoid }
+		p { line-height: 115%; margin-bottom: 0.25cm; background: transparent; background: transparent }
+		h1 { margin-bottom: 0.21cm; background: transparent; background: transparent; page-break-after: avoid }
 		h1.western { font-family: "Liberation Serif", serif; font-size: 24pt; font-weight: bold }
 		h1.cjk { font-family: "Noto Sans CJK SC"; font-size: 24pt; font-weight: bold }
 		h1.ctl { font-family: "Droid Sans Devanagari"; font-size: 24pt; font-weight: bold }
-		h2 { margin-top: 0.35cm; margin-bottom: 0.21cm; background: transparent; page-break-after: avoid }
+		h2 { margin-top: 0.35cm; margin-bottom: 0.21cm; background: transparent; background: transparent; page-break-after: avoid }
 		h2.western { font-family: "Liberation Sans", sans-serif; font-size: 16pt; font-weight: bold }
 		h2.cjk { font-family: "Noto Sans CJK SC"; font-size: 16pt; font-weight: bold }
 		h2.ctl { font-family: "Droid Sans Devanagari"; font-size: 16pt; font-weight: bold }
@@ -36,10 +37,11 @@ POWER-Z KM002C by ChargerLab</h1>
 <a href="https://www.chargerlab.com/">ChargerLab</a> . Obviously
 ChargerLab are based in China (or maybe Hong Kong) and the primary
 documentation is written in (simplified) Chinese. There is
-documentation in English about the KM002C dongle itself (see that
-above link under the Power-Z tab) but to date there seems to be no
-English documentation of the accompanying Windows (7+) application
-(hereafter call the “app”).</p>
+documentation in English about the KM002C <i>tester</i> itself
+(follow the ChargerLab link above then click the Power-Z tab) but to
+date there seems to be little English documentation of the
+accompanying Windows (7+) <i>PC Software</i> (hereafter called the
+<i>app</i>).</p>
 <p>The purpose of this page is to collect information about the
 KM002C from the perspective of the app. Without feedback and
 additional information, this page will become stale and probably be
@@ -48,7 +50,8 @@ adding Issues and/or Pull request to this <a href="https://github.com/doug-gilbe
 Those without an account can use email to the address at the bottom
 of this document.</p>
 <h2 class="western">Dongle</h2>
-<p>Here is a screenshot from ChargerLab’s documentation:</p>
+<p>Here is a screenshot of the <i>tester</i> (hereafter called the
+<i>dongle</i>) from ChargerLab’s documentation:</p>
 <p><img src="km002c_html_79be36e1bc18bd5c.png" name="Image2" align="left" width="684" height="731">
   <br clear="left"/>
 </img>
@@ -56,11 +59,172 @@ of this document.</p>
 <br/>
 
 </p>
-<p>bbbbbb</p>
+<p>Given that ChargerLab define the USB-C Male (Plug) as “in”
+then the positive sense of current is moving from “in” to “out”.
+So USB-C sources such as the Apple 140 Watt USB-C Power Supply (PS)
+with a USB-C receptacle mounted on the body of the PS will show
+positive current while power supplies with a captive cable with a
+male USB-C plug at the end of that cable will show negative currents.</p>
+<p>When using the KM002C <i>dongle</i> in stand-alone mode then the
+HID connector can be connected to any USB source, as long as it can
+supply 100 milliAmps or more. The HID capability is only needed when
+controlling or monitoring the dongle with Windows 7+ app. When not
+using the app, a small USB-C power bank (i.e. battery) should be
+sufficient to power the dongle for long enough to do plenty of
+measurements with the dongle.</p>
+<p style="margin-left: 2.5cm"><a name="docs-internal-guid-e9fec8aa-7fff-abe5-5e90-e04695bd72b3"></a>
+<span style="font-variant: normal"><font color="#000000"><span style="text-decoration: none"><font face="Microsoft Yahei"><font size="3" style="font-size: 13pt"><span style="font-style: normal"><b><span style="background: transparent">4
+Back</span></b></span></font></font></span></font></span><span style="display: inline-block; border: none; padding: 0cm"><font color="#000000"><span style="text-decoration: none"><span style="background: transparent"><span style="font-variant: normal"><img src="km002c_html_ecc08d050a4a0cab.png" name="Image1" alt="图片" align="bottom" width="22" height="22" border="0"/>
+
+</span></span></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="text-decoration: none"><span style="background: transparent">&nbsp;</span></span></font></span></p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 179%; margin-left: 2.5cm; margin-bottom: 0cm; text-decoration: none">
+<font color="#000000"><font face="Roboto, sans-serif"><font size="3" style="font-size: 13pt"><span style="background: transparent">1.
+Rotate the display direction in the main menu</span></font></font></font></p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 179%; margin-left: 2.5cm; margin-bottom: 0cm; text-decoration: none">
+<font color="#000000"><font face="Roboto, sans-serif"><font size="3" style="font-size: 13pt"><span style="background: transparent">2.
+Back&nbsp;</span></font></font></font></p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 179%; margin-left: 2.5cm; margin-bottom: 0cm; text-decoration: none">
+<font color="#000000"><font face="Roboto, sans-serif"><font size="3" style="font-size: 13pt"><span style="background: transparent">3.
+Press and hold it when power off, you can enter the DFU mode</span></font></font></font></p>
+<p style="line-height: 179%; margin-left: 2.5cm; margin-bottom: 0cm"><span style="font-variant: normal"><font color="#000000"><span style="text-decoration: none"><font face="Microsoft Yahei"><font size="3" style="font-size: 13pt"><span style="font-style: normal"><b><span style="background: transparent">5
+Confirm</span></b></span></font></font></span></font></span><span style="display: inline-block; border: none; padding: 0cm"><font color="#000000"><span style="text-decoration: none"><span style="background: transparent"><span style="font-variant: normal"><img src="km002c_html_12ccbbda65eeddfb.png" name="Image3" alt="图片" align="bottom" width="22" height="22" border="0"/>
+
+</span></span></span></font></span>
+</p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 179%; margin-left: 2.5cm; margin-bottom: 0cm; text-decoration: none">
+<font color="#000000"><font face="Roboto, sans-serif"><font size="3" style="font-size: 13pt"><span style="background: transparent">1.
+Long press: Enter Settings</span></font></font></font></p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 179%; margin-left: 2.5cm; margin-bottom: 0cm; text-decoration: none">
+<font color="#000000"><font face="Roboto, sans-serif"><font size="3" style="font-size: 13pt"><span style="background: transparent">2.
+Short press: Confirm</span></font></font></font></p>
+<p style="line-height: 179%; margin-left: 2.5cm; margin-bottom: 0cm"><span style="font-variant: normal"><font color="#000000"><span style="text-decoration: none"><font face="Microsoft Yahei"><font size="3" style="font-size: 13pt"><span style="font-style: normal"><b><span style="background: transparent">6
+Left</span></b></span></font></font></span></font></span><span style="display: inline-block; border: none; padding: 0cm"><font color="#000000"><span style="text-decoration: none"><span style="background: transparent"><span style="font-variant: normal"><img src="km002c_html_637949829407fd66.png" name="Image4" alt="图片" align="bottom" width="22" height="24" border="0"/>
+
+</span></span></span></font></span>
+</p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 179%; margin-left: 2.5cm; margin-bottom: 0cm; text-decoration: none">
+<font color="#000000"><font face="Roboto, sans-serif"><font size="3" style="font-size: 13pt"><span style="background: transparent">1.
+Switch four different interfaces in the main menu</span></font></font></font></p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 179%; margin-left: 2.5cm; margin-bottom: 0cm; text-decoration: none">
+<font color="#000000"><font face="Roboto, sans-serif"><font size="3" style="font-size: 13pt"><span style="background: transparent">2.
+Modify parameter values in the setting</span></font></font></font></p>
+<p style="line-height: 179%; margin-left: 2.5cm; margin-bottom: 0cm"><span style="font-variant: normal"><font color="#000000"><span style="text-decoration: none"><font face="Microsoft Yahei"><font size="3" style="font-size: 13pt"><span style="font-style: normal"><b><span style="background: transparent">7
+Right</span></b></span></font></font></span></font></span><span style="display: inline-block; border: none; padding: 0cm"><font color="#000000"><span style="text-decoration: none"><span style="background: transparent"><span style="font-variant: normal"><img src="km002c_html_7aa7927ca8802bd9.png" name="Image5" alt="图片" align="bottom" width="22" height="24" border="0"/>
+
+</span></span></span></font></span>
+</p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 179%; margin-left: 2.5cm; margin-bottom: 0cm; text-decoration: none">
+<font color="#000000"><font face="Roboto, sans-serif"><font size="3" style="font-size: 13pt"><span style="background: transparent">1.
+Switch four different interfaces in the main menu</span></font></font></font></p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 179%; margin-left: 2.5cm; margin-bottom: 0cm; text-decoration: none">
+<font color="#000000"><font face="Roboto, sans-serif"><font size="3" style="font-size: 13pt"><span style="background: transparent">2.
+Modify parameter values in the setting</span></font></font></font></p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 179%; margin-left: 2.5cm; margin-bottom: 0cm; text-decoration: none">
+<font color="#000000"><font face="Roboto, sans-serif"><font size="3" style="font-size: 13pt"><span style="background: transparent">3.
+Long press &quot;Right&quot; on startup when HID is disconnected to
+power (Flip the USB-C connector if it doesn't work)</span></font></font></font></p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 179%; margin-left: 2.5cm; margin-bottom: 0cm; text-decoration: none">
+<font color="#000000"><font face="Roboto, sans-serif"><font size="3" style="font-size: 13pt"><span style="background: transparent">Release
+CC pull-down resistor, it'll shut down after 5 seconds</span></font></font></font></p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 179%; margin-left: 2.5cm; margin-bottom: 0cm; text-decoration: none">
+<font color="#000000"><font face="Roboto, sans-serif"><font size="3" style="font-size: 13pt"><span style="background: transparent">Keep
+CC pull-down resistor, enter the charging protocol</span></font></font></font></p>
+<p style="line-height: 179%; margin-left: 2.5cm; margin-bottom: 0cm"><span style="font-variant: normal"><font color="#000000"><span style="text-decoration: none"><font face="Roboto, sans-serif"><font size="3" style="font-size: 13pt"><span style="font-style: normal"><b><span style="background: transparent">Attention:</span></b></span></font></font></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="text-decoration: none"><span style="background: transparent">
+</span></span></font></span><span style="font-variant: normal"><font color="#000000"><span style="text-decoration: none"><font face="Roboto, sans-serif"><font size="3" style="font-size: 13pt"><span style="font-style: normal"><span style="font-weight: normal"><span style="background: transparent">Please
+use this function under the guidance of professionals, otherwise the
+short circuit caused by the CC1 and VBUS of the cable may damage the
+tester.</span></span></span></font></font></span></font></span></p>
+<p><br/>
+<br/>
+
+</p>
+<p>The above button description for the dongle is cut and paste from
+ChargerLab’s documentation. Noteworthy is the long press on the
+right button (7) when power initially flows between USB-C IN (1) and
+USB-C OUT (2). In that case the dongle will power itself from Vbus
+flowing between connector (1) and (2) . It is fun documenting this
+device since I’m pretty sure my KM002C <u>did</u><span style="text-decoration: none">
+what was just described. Retesting the dongle with 1.5.0 firmware,
+the long press on the right button (7) does nothing at power-up. Now
+it seems that if there is no HID power, the dongle will automatically
+take power from Vbus passing between connector (1) and (2), if it is
+available.</span></p>
+<p>Powering the dongle from the PD connection being monitored is not
+ideal. The reason is whenever the PD protocol passes through a state
+that drives Vbus to Vsafe0 then the dongle itself will reset. That
+can be very frustrating, so powering via the HUB connector (and _not_
+doing a long press on the right button (7) during power-up) is
+recommended. Also recommended is fitting a right-angle USB-C adapter
+(male to female) to the HID connector (3) so, as shown in some
+ChargerLab videos, the dongle can be held in one hand with the HID
+connector at the bottom with your thumb on the right angle USB-C
+adapter, that will leave your fingers (relatively) free to press the
+4 control buttons which should now be facing upwards. [The white
+glove, as used by ChargeLab, is optional :-)]</p>
+<p>Another issue with taking power from Vbus is that if Vbus is at or
+near 48 Volts a “low dropout (linear) regulator” (LD0) generating
+3.3 Volts (say) for the dongle’s logic is going to generate a fair
+amount of heat. A better solution would be to use a switcher but not
+many USB-C testers do that.</p>
+<p>The “Attention” warning is a bit of a worry. The CC and Vbus
+contacts in the USB-C plug (and receptacle) are adjacent one another
+so that during insertion and removal it is possible that a CC line
+touches Vbus momentarily passing up to 48 Volts down the CC line to
+the source and sink. In the Product specification for the KM002C
+ChargerLab state that the “Withstand Voltage of the CC1/2 Pins”
+is 50 Volts. Also one would hope that any well designed USB-C PS
+(i.e. a USB PD source) would have a withstand Voltage on its CC pins
+of at least its maximum advertised Vbus voltage. That leaves the USB
+PD sink device (assuming the dongle is in “monitor” mode) that
+may or may not have sufficient withstand Voltage on its CC pins. So
+that “Attention” might be about taking care with any USB-C device
+(most likely PD sinks) that do <u>not</u><span style="text-decoration: none">
+make any statement about the CC withstand Voltage capability.</span></p>
+<p style="text-decoration: none">A more serious warning in
+ChargerLab’s documentation is that the dongle does not have reverse
+voltage protection. So a (malicious) cable, or USB-C connector
+breakout board, that swaps Vbus and ground could destroy the KM002C.
+A large diode that can withstand a reverse bias of 55 Volts,
+connected externally, should protect the KM002C if there is a risk of
+polarity reversal.</p>
+<h2 class="western" style="text-decoration: none">App</h2>
+<p>Below is a rendering of the app when it detects the dongle is
+connected to a USB-A or USB-C port of the computer hosting the app.
+If it appears with Chinese script then left click on the down
+triangle button (circled roughly in orange, near the top right) and
+pick the third item, then select English. While discussing that
+pull-down menu the second item (which appears on my system in
+Chinese, even after English has been selected) can be used to update
+the app’s software (i.e. the app not the dongle’s firmware).
+Another simple change is the name of the “real-time timing chart”
+which is the default name that I have changed to “chart” and has
+a light brown circle around it. The reason is that Chinese has a much
+larger alphabet than English and can render that longer name <u>without</u><span style="text-decoration: none">
+overwriting the adjacent tabs (“temp” and “Charge” in this
+case). Left clicking on that field (i.e. the one that now has “chart”
+in it) will cause a box to pop-up into which the new field name can
+be placed.</span></p>
+<p>Yyyyyyy</p>
+<p>zzzzzzz</p>
+<p style="margin-bottom: 0cm"><img src="km002c_html_6327cd5d8d0c67ff.png" name="Image6" align="left" width="1117" height="644">
+  <br clear="left"/>
+</img>
+<br/>
+
+</p>
 <p>xxxxx</p>
+<p>yyyyyy</p>
+<p><br/>
+<br/>
+
+</p>
+<p><br/>
+<br/>
+
+</p>
 <h2 class="western">Conclusion</h2>
 <p>There is more to follow.</p>
 <p align="center">Email address: dgilbert at interlog dot com</p>
-<p align="center">Last update: 2 October 2022,  12:45 +2</p>
+<p align="center">Last update: 5 October 2022, 09:45 +2</p>
 </body>
 </html>
