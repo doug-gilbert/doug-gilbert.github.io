@@ -3,10 +3,14 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title>Scsi_debug adapter driver for Linux</title>
-	<meta name="generator" content="LibreOffice 7.3.2.2 (Linux)"/>
+	<meta name="generator" content="LibreOffice 7.5.2.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2022-05-15T21:04:29.729295384"/>
+	<meta name="changed" content="2023-05-02T19:22:19.536425216"/>
 	<meta name="keywords" content="Linux driver, SCSI, ramdisk"/>
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -72,6 +76,10 @@
 		h1.western { font-family: "Liberation Serif", serif; font-size: 24pt; font-weight: bold }
 		h1.cjk { font-family: "Noto Serif CJK SC"; font-size: 24pt; font-weight: bold }
 		h1.ctl { font-family: "Lohit Devanagari"; font-size: 24pt; font-weight: bold }
+		h4 { margin-top: 0.21cm; margin-bottom: 0.21cm; background: transparent; background: transparent; page-break-after: avoid }
+		h4.western { font-family: "Liberation Sans", sans-serif; font-size: 13pt; font-style: italic; font-weight: bold }
+		h4.cjk { font-family: "Noto Sans CJK SC"; font-size: 13pt; font-style: italic; font-weight: bold }
+		h4.ctl { font-family: "Lohit Devanagari"; font-size: 13pt; font-style: italic; font-weight: bold }
 		td p { orphans: 0; widows: 0; background: transparent; background: transparent }
 		th p { font-weight: bold; text-align: center; orphans: 0; widows: 0; background: transparent; background: transparent }
 		tt.western { font-family: "Liberation Mono", monospace }
@@ -89,57 +97,78 @@ Scsi_debug adapter driver for Linux</h1>
 <p align="right" style="margin-bottom: 0cm"><br/>
 
 </p>
-<div id="Table of Contents1" dir="ltr"><p style="line-height: 100%; margin-bottom: 0cm; background: transparent">
-	<a href="#__RefHeading___Toc117_3679520260">Scsi_debug adapter
-	driver for Linux</a></p>
+<div id="Table of Contents1" dir="ltr"><p><br/>
+<br/>
+
+	</p>
+	<div id="Table of Contents1_Head" dir="ltr"><p style="line-height: 100%; margin-top: 0.42cm; margin-bottom: 0.21cm; background: transparent; page-break-after: avoid">
+		<font face="Liberation Sans, sans-serif"><font size="4" style="font-size: 16pt"><b>Table
+		of Contents</b></font></font></p>
+	</div>
+	<p style="line-height: 100%; margin-bottom: 0cm; background: transparent">
+	<a href="#__RefHeading___Toc226_304902766">Scsi_debug adapter driver
+	for Linux</a></p>
 	<p style="line-height: 100%; margin-left: 0.5cm; margin-bottom: 0cm; background: transparent">
-	<a href="#__RefHeading___Toc119_3679520260">Introduction</a></p>
+	<a href="#__RefHeading___Toc228_304902766">Introduction</a></p>
 	<p style="line-height: 100%; margin-left: 0.5cm; margin-bottom: 0cm; background: transparent">
-	<a href="#__RefHeading___Toc121_3679520260">Parameters</a></p>
+	<a href="#__RefHeading___Toc230_304902766">Parameters</a></p>
 	<p style="line-height: 100%; margin-left: 0.5cm; margin-bottom: 0cm; background: transparent">
-	<a href="#__RefHeading___Toc123_3679520260">Supported SCSI commands</a></p>
+	<a href="#__RefHeading___Toc232_304902766">Supported SCSI commands</a></p>
 	<p style="line-height: 100%; margin-left: 0.5cm; margin-bottom: 0cm; background: transparent">
-	<a href="#__RefHeading___Toc125_3679520260">Logical and physical
+	<a href="#__RefHeading___Toc234_304902766">Logical and physical
 	block size</a></p>
 	<p style="line-height: 100%; margin-left: 0.5cm; margin-bottom: 0cm; background: transparent">
-	<a href="#__RefHeading___Toc127_3679520260">Logical block
+	<a href="#__RefHeading___Toc236_304902766">Logical block
 	provisioning</a></p>
 	<p style="line-height: 100%; margin-left: 0.5cm; margin-bottom: 0cm; background: transparent">
-	<a href="#__RefHeading___Toc129_3679520260">Unit attentions</a></p>
+	<a href="#__RefHeading___Toc238_304902766">Unit attentions</a></p>
 	<p style="line-height: 100%; margin-left: 0.5cm; margin-bottom: 0cm; background: transparent">
-	<a href="#__RefHeading___Toc131_3679520260">Zoned Block Devices</a></p>
+	<a href="#__RefHeading___Toc240_304902766">Zoned Block Devices</a></p>
 	<p style="line-height: 100%; margin-left: 0.5cm; margin-bottom: 0cm; background: transparent">
-	<a href="#__RefHeading___Toc133_3679520260">iopoll/blk_poll</a></p>
+	<a href="#__RefHeading___Toc242_304902766">iopoll/blk_poll</a></p>
 	<p style="line-height: 100%; margin-left: 0.5cm; margin-bottom: 0cm; background: transparent">
-	<a href="#__RefHeading___Toc135_3679520260">Examples</a></p>
-	<p style="line-height: 100%; margin-left: 1cm; margin-bottom: 0cm; background: transparent">
-	<a href="#__RefHeading___Toc137_3679520260">Basic</a></p>
-	<p style="line-height: 100%; margin-left: 1cm; margin-bottom: 0cm; background: transparent">
-	<a href="#__RefHeading___Toc139_3679520260">Adding and removing
-	hosts and devices</a></p>
-	<p style="line-height: 100%; margin-left: 1cm; margin-bottom: 0cm; background: transparent">
-	<a href="#__RefHeading___Toc141_3679520260">Mode pages</a></p>
-	<p style="line-height: 100%; margin-left: 1cm; margin-bottom: 0cm; background: transparent">
-	<a href="#__RefHeading___Toc143_3679520260">per_host_store</a></p>
-	<p style="line-height: 100%; margin-left: 1cm; margin-bottom: 0cm; background: transparent">
-	<a href="#__RefHeading___Toc145_3679520260">VERIFY</a></p>
-	<p style="line-height: 100%; margin-left: 1cm; margin-bottom: 0cm; background: transparent">
-	<a href="#__RefHeading___Toc147_3679520260">ZBC test scripts</a></p>
-	<p style="line-height: 100%; margin-left: 1cm; margin-bottom: 0cm; background: transparent">
-	<a href="#__RefHeading___Toc149_3679520260">REPORT LUNS Well Known
-	LU</a></p>
-	<p style="line-height: 100%; margin-left: 1cm; margin-bottom: 0cm; background: transparent">
-	<a href="#__RefHeading___Toc151_3679520260">SAS personality</a></p>
+	<a href="#__RefHeading___Toc369_304902766">Per device error
+	injection</a></p>
+	<p style="line-height: 100%; margin-left: 1.5cm; margin-bottom: 0cm; background: transparent">
+	<a href="#__RefHeading___Toc244_304902766">General rule format:</a></p>
+	<p style="line-height: 100%; margin-left: 1.5cm; margin-bottom: 0cm; background: transparent">
+	<a href="#__RefHeading___Toc246_304902766">Timeout SCSI command
+	format:</a></p>
+	<p style="line-height: 100%; margin-left: 1.5cm; margin-bottom: 0cm; background: transparent">
+	<a href="#__RefHeading___Toc248_304902766">Make queuecommand return
+	format:</a></p>
+	<p style="line-height: 100%; margin-left: 1.5cm; margin-bottom: 0cm; background: transparent">
+	<a href="#__RefHeading___Toc250_304902766">Set SCSI command's status
+	and sense data format:</a></p>
 	<p style="line-height: 100%; margin-left: 0.5cm; margin-bottom: 0cm; background: transparent">
-	<a href="#__RefHeading___Toc153_3679520260">Downloads</a></p>
+	<a href="#__RefHeading___Toc252_304902766">Examples</a></p>
+	<p style="line-height: 100%; margin-left: 1cm; margin-bottom: 0cm; background: transparent">
+	<a href="#__RefHeading___Toc254_304902766">Basic</a></p>
+	<p style="line-height: 100%; margin-left: 1cm; margin-bottom: 0cm; background: transparent">
+	<a href="#__RefHeading___Toc256_304902766">Adding and removing hosts
+	and devices</a></p>
+	<p style="line-height: 100%; margin-left: 1cm; margin-bottom: 0cm; background: transparent">
+	<a href="#__RefHeading___Toc258_304902766">Mode pages</a></p>
+	<p style="line-height: 100%; margin-left: 1cm; margin-bottom: 0cm; background: transparent">
+	<a href="#__RefHeading___Toc260_304902766">per_host_store</a></p>
+	<p style="line-height: 100%; margin-left: 1cm; margin-bottom: 0cm; background: transparent">
+	<a href="#__RefHeading___Toc262_304902766">VERIFY</a></p>
+	<p style="line-height: 100%; margin-left: 1cm; margin-bottom: 0cm; background: transparent">
+	<a href="#__RefHeading___Toc264_304902766">ZBC test scripts</a></p>
+	<p style="line-height: 100%; margin-left: 1cm; margin-bottom: 0cm; background: transparent">
+	<a href="#__RefHeading___Toc266_304902766">REPORT LUNS Well Known LU</a></p>
+	<p style="line-height: 100%; margin-left: 1cm; margin-bottom: 0cm; background: transparent">
+	<a href="#__RefHeading___Toc268_304902766">SAS personality</a></p>
 	<p style="line-height: 100%; margin-left: 0.5cm; margin-bottom: 0cm; background: transparent">
-	<a href="#__RefHeading___Toc155_3679520260">Conclusion</a></p>
+	<a href="#__RefHeading___Toc270_304902766">Downloads</a></p>
+	<p style="line-height: 100%; margin-left: 0.5cm; margin-bottom: 0cm; background: transparent">
+	<a href="#__RefHeading___Toc272_304902766">Conclusion</a></p>
 </div>
 <p><br/>
 <br/>
 
 </p>
-<h2 class="western"><a name="__RefHeading___Toc117_1100238797"></a><a name="__RefHeading___Toc119_3679520260"></a><a name="__RefHeading___Toc145_2530062151"></a><a name="mozTocId713269"></a><a name="__RefHeading___Toc293_941978325"></a><a name="__RefHeading___Toc235_974356461"></a><a name="__RefHeading___Toc469_3114999558"></a>
+<h2 class="western"><a name="__RefHeading___Toc228_304902766"></a><a name="__RefHeading___Toc117_1100238797"></a><a name="__RefHeading___Toc119_3679520260"></a><a name="__RefHeading___Toc145_2530062151"></a><a name="mozTocId713269"></a><a name="__RefHeading___Toc293_941978325"></a><a name="__RefHeading___Toc235_974356461"></a><a name="__RefHeading___Toc469_3114999558"></a>
 <b>Introduction</b></h2>
 <p>The scsi_debug adapter driver simulates a variable number of SCSI
 disks, each typically (but not always) sharing a common amount of RAM
@@ -166,12 +195,12 @@ break something then read on. At the time of writing, the most recent
 version of this driver is 1.90 which adds the <font color="#006c3b">tur_ms_to_ready</font>
 parameter and supports iopoll/blk_poll()/hipri requests.</p>
 <p>This page describes the driver as found in the Linux kernel
-version 5.11.0 and/or possibly 5.12.0 . Earlier versions of this
-driver worked with the Linux kernel 2.6 series. For information about
-the scsi_debug driver found in the lk 2.4 production series see this
-page. A not so ancient, earlier version is <a href="sdebug26.html"><font color="#21409a">here</font></a>
+version 5.18.0 . Earlier versions of this driver worked with the
+Linux kernel 2.6 series. For information about the scsi_debug driver
+found in the lk 2.4 production series see this page. A not so
+ancient, earlier version is <a href="sdebug26.html"><font color="#21409a">here</font></a>
 .</p>
-<h2 class="western"><a name="__RefHeading___Toc121_3679520260"></a><a name="__RefHeading___Toc119_1100238797"></a><a name="__RefHeading___Toc471_3114999558"></a><a name="__RefHeading___Toc295_941978325"></a><a name="__RefHeading___Toc237_974356461"></a><a name="__RefHeading___Toc147_2530062151"></a><a name="mozTocId613134"></a>
+<h2 class="western"><a name="__RefHeading___Toc230_304902766"></a><a name="__RefHeading___Toc121_3679520260"></a><a name="__RefHeading___Toc119_1100238797"></a><a name="__RefHeading___Toc471_3114999558"></a><a name="__RefHeading___Toc295_941978325"></a><a name="__RefHeading___Toc237_974356461"></a><a name="__RefHeading___Toc147_2530062151"></a><a name="mozTocId613134"></a>
 Parameters</h2>
 <p>The parameter name given in the table below is the module
 parameter name and the sysfs file name. The boot time parameter (if
@@ -1016,7 +1045,7 @@ directory.</p>
 			</p>
 		</td>
 		<td width="68" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-			1.90</p>
+			1.91</p>
 		</td>
 		<td width="747" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			by default each store has a read-write lock so that reads to that
@@ -2428,8 +2457,8 @@ devices). The kernel will still report &quot;<font color="#006c3b"><b>add_host</
 * <font color="#006c3b"><b>num_tgts</b></font> * <font color="#006c3b"><b>max_luns</b></font>&quot;
 devices but higher level multipath aware software may see the
 difference</p>
-<h2 class="western"><a name="__RefHeading___Toc123_3679520260"></a>Supported
-SCSI commands</h2>
+<h2 class="western"><a name="__RefHeading___Toc232_304902766"></a><a name="__RefHeading___Toc123_3679520260"></a>
+Supported SCSI commands</h2>
 <p>Below is a list of supported commands. Some do nothing (e.g.
 SYNCHRONIZE CACHE). Those that have interesting functionality have
 notes in brackets. If the feature was introduced in a recent version
@@ -2533,8 +2562,8 @@ least a 1 second delay and if <font color="#006c3b">delay</font> &gt;
 1 then its delay is that many seconds. And for SC its longer delay is
 1/20 that of SSU (e.g. if <font color="#006c3b">delay</font>=2 then
 SSU's delay is 2 seconds and SC's delay is 100 milliseconds).</p>
-<h2 class="western"><a name="__RefHeading___Toc125_3679520260"></a>Logical
-and physical block size</h2>
+<h2 class="western"><a name="__RefHeading___Toc234_304902766"></a><a name="__RefHeading___Toc125_3679520260"></a>
+Logical and physical block size</h2>
 <p>scsi-debug supports emulating devices with logical block sizes
 bigger than 512 bytes. This can be specified using the <font color="#006c3b"><b>sector_size</b></font>
 option.<br/>
@@ -2554,8 +2583,8 @@ boundary. These devices can be emulated using scsi_debug's
 <font color="#006c3b">lowest_aligned</font> option. The parameter
 indicates the lowest LBA that is aligned to a physical block
 boundary.</p>
-<h2 class="western"><a name="__RefHeading___Toc127_3679520260"></a>Logical
-block provisioning</h2>
+<h2 class="western"><a name="__RefHeading___Toc236_304902766"></a><a name="__RefHeading___Toc127_3679520260"></a>
+Logical block provisioning</h2>
 <p>SBC-3 introduced Logical block provisioning. That term covers both
 &quot;thin provisioning&quot; (the earlier term for this facility)
 and&nbsp; &quot;over provisioning&quot; as used in modern SSDs.<br/>
@@ -2604,7 +2633,8 @@ provisioned storage arrays.<br/>
 The current block allocation
 bitmap can be viewed from user space via:</p>
 <pre class="western" style="margin-bottom: 0.5cm"> <font face="monospace">cat /sys/bus/pseudo/drivers/scsi_debug/map</font></pre><h2 class="western">
-<a name="__RefHeading___Toc129_3679520260"></a>Unit attentions</h2>
+<a name="__RefHeading___Toc238_304902766"></a><a name="__RefHeading___Toc129_3679520260"></a>
+Unit attentions</h2>
 <p>An important feature of the SCSI command sets is the concept of a
 Unit Attention (UA). This is a mechanism for the &quot;device server&quot;
 within a logical unit (e.g. a disk) to report to the originator (e.g.
@@ -2651,8 +2681,8 @@ Attentions:</p>
 </ul>
 <p>If there is more than one UA, then they are reported in the
 ascending order of that list.</p>
-<h2 class="western"><a name="__RefHeading___Toc131_3679520260"></a>Zoned
-Block Devices</h2>
+<h2 class="western"><a name="__RefHeading___Toc240_304902766"></a><a name="__RefHeading___Toc131_3679520260"></a>
+Zoned Block Devices</h2>
 <p>Version 1.89 of this driver added support for <i>host-managed</i>
 and <i>host-aware</i> Zone Block devices (i.e. disks). Host <i>managed</i>
 devices must have one or more zones that comply with the <i>sequential
@@ -2841,7 +2871,7 @@ and this leads to a device size 128 MiB with 13 <i>sequential write
 </i><i><u>required</u></i> zones in addition to the 3 conventional
 zones requested, for a total of 16 zones, each 8 MiB long. The
 maximum number of open zones is 8.</p>
-<h2 class="western">iopoll/blk_poll</h2>
+<h2 class="western"><a name="__RefHeading___Toc242_304902766"></a>iopoll/blk_poll</h2>
 <p>This driver supports iopoll/blk_poll() in version 1.90 and later.
 It does this by defining the mq_poll() callback. This driver notices
 the REQ_HIPRI setting on an incoming request which is the block
@@ -2857,7 +2887,8 @@ and this driver sees them as invocations of its mq_poll() entry
 point. And mq_poll() manually checks if <font color="#006c3b"><b>delay</b></font>
 (or <font color="#006c3b"><b>ndelay</b></font>) has expired, and if
 so carries out command/request completion.</p>
-<p>Note that <i><u>if</u></i> the upper layers do not call blk_poll()
+<p style="line-height: 115%; background: transparent; page-break-before: auto; page-break-after: auto">
+Note that <i><u>if</u></i> the upper layers do not call blk_poll()
 after setting REQ_HIPRI on a request then the SCSI mid-level will
 time-out that request (typically after 60 seconds). Timed out
 commands are logged and appear like this:</p>
@@ -2891,8 +2922,152 @@ driver's </span><b>ioctl</b><span style="font-weight: normal">(SG_GET_NUM_WAITIN
 will call blk_poll() if appropriate as will several other user space
 calls (e.g.</span> <span style="font-weight: normal">the blocking
 </span><b>ioctl</b><span style="font-weight: normal">(SG_IO) ).</span></p>
-<h2 class="western">Examples</h2>
-<h3 class="western">Basic</h3>
+<h2 class="western"><a name="__RefHeading___Toc369_304902766"></a>Per
+device error injection</h2>
+<p>This new facility uses the debugfs pseudo file system which is
+typically mounted under the /sys/kernel/debug directory and requires
+root permissions to access. The interface file is found at
+/sys/kernel/debug/scsi_debug/&lt;h:c:t:l&gt;/error where &lt;h:c:t:l&gt;
+identifies the device (logical unit (LU)) to inject errors on.</p>
+<p>For the following description the ${error} environment variable is
+assumed to be set to/sys/kernel/debug/scsi_debug/1:0:0:0/error where
+1:0:0:0 is a pseudo device (LU) owned by the scsi_debug driver. Rules
+are written to ${error} in the normal sysfs fashion (e.g. ‘echo “0
+-2 0x12” &gt; ${error}’) . More than one rule can be active on a
+device at a time and inactive rules (i.e. those whose Error count is
+0) remain in the rule listing. The existing rules can be read with
+‘cat ${error}’ with one line output for each rule.</p>
+<p>The interface format is line-by-line, each line is an error
+injection rule. Each rule contains integers separated by spaces, the
+first three columns correspond to &quot;Error code&quot;, &quot;Error
+count&quot; and &quot;SCSI command&quot;, other columns depend on
+Error code.</p>
+<h4 class="western"><a name="__RefHeading___Toc244_304902766"></a>General
+rule format:</h4>
+<pre class="western">  +--------+------+-------------------------------------------------------+
+  | Column | Type | Description                                           |
+  +--------+------+-------------------------------------------------------+
+  |   1    |  u8  | Error code                                            |
+  |        |      |  0: timeout SCSI command                              |
+  |        |      |  1: fail queuecommand, make queuecommand return       |
+  |        |      |     given value                                       |
+  |        |      |  2: fail command, finish command with SCSI status,    |
+  |        |      |     sense key and ASC/ASCQ values                     |
+  +--------+------+-------------------------------------------------------+
+  |   2    |  s32 | Error count                                           |
+  |        |      |  0: this rule will be ignored                         |
+  |        |      |  positive: the rule will always take effect           |
+  |        |      |  negative: the rule takes effect n times where -n is  |
+  |        |      |            the value given. Ignored after n times     |
+  +--------+------+-------------------------------------------------------+
+  |   3    |  x8  | SCSI command opcode, 0xff for all commands            |
+  +--------+------+-------------------------------------------------------+
+  |  ...   |  xxx | Error type specific fields                            |
+  +--------+------+-------------------------------------------------------+</pre><p>
+Notes:</p>
+<ul>
+	<li><p>when multiple error inject rules are added for the same SCSI
+	command, the one with smaller error code will take effect (and the
+	others will be ignored).</p>
+	<li><p>if an same error (i.e. same Error code and SCSI command) is
+	added, the older one will be overwritten.</p>
+	<li><p>Currently, the basic types are
+	(u8/u16/u32/u64/s8/s16/s32/s64) and the hexadecimal types
+	(x8/x16/x32/x64)</p>
+	<li><p>where a hexadecimal value is expected (e.g. Column 3: SCSI
+	command opcode) the “0x” prefix is optional on the value (e.g.
+	the INQUIRY opcode can be given as ‘0x12’ or ‘12’)</p>
+	<li><p>when the Error count is negative, reading ${error} will show
+	that value incrementing, stopping when it gets to 0</p>
+</ul>
+<p><br/>
+<br/>
+
+</p>
+<h4 class="western"><a name="__RefHeading___Toc246_304902766"></a>Timeout
+SCSI command format:</h4>
+<pre class="western" style="text-align: left">  +--------+------+-------------------------------------------------------+
+  | Column | Type | Description                                           |
+  +--------+------+-------------------------------------------------------+
+  |   1    |  u8  | Error type, fixed to 0x0                              |
+  +--------+------+-------------------------------------------------------+
+  |   2    |  s32 | Error count                                           |
+  |        |      |  0: this rule will be ignored                         |
+  |        |      |  positive: the rule will always take effect           |
+  |        |      |  negative: the rule takes effect n times where -n is  |
+  |        |      |            the value given. Ignored after n times     |
+  +--------+------+-------------------------------------------------------+
+  |   3    |  x8  | SCSI command opcode, 0xff for all commands            |
+  +--------+------+-------------------------------------------------------+</pre><p>
+Examples:</p>
+<pre class="western" style="margin-bottom: 0.5cm">    echo &quot;0 -10 0x12&quot; &gt; ${error}</pre><p>
+will make the device's inquiry command timeout 10 times.</p>
+<pre class="western" style="margin-bottom: 0.5cm">    echo &quot;0 1 0x12&quot; &gt; ${error}</pre><p>
+will make the device's inquiry timeout each time it is invoked on
+this device.</p>
+<p><br/>
+<br/>
+
+</p>
+<h4 class="western"><a name="__RefHeading___Toc248_304902766"></a>Make
+queuecommand return format:</h4>
+<pre class="western">  +--------+------+-------------------------------------------------------+
+  | Column | Type | Description                                           |
+  +--------+------+-------------------------------------------------------+
+  |   1    |  u8  | Error type, fixed to 0x1                              |
+  +--------+------+-------------------------------------------------------+
+  |   2    |  s32 | Error count                                           |
+  |        |      |  0: this rule will be ignored                         |
+  |        |      |  positive: the rule will always take effect           |
+  |        |      |  negative: the rule takes effect n times where -n is  |
+  |        |      |            the value given. Ignored after n times     |
+  +--------+------+-------------------------------------------------------+
+  |   3    |  x8  | SCSI command opcode, 0xff for all commands            |
+  +--------+------+-------------------------------------------------------+
+  |   4    |  x32 | The queuecommand() return value we want               |
+  +--------+------+-------------------------------------------------------+</pre><p>
+Examples:</p>
+<pre class="western">    
+    echo &quot;1 1 0x12 0x1055&quot; &gt; ${error}</pre><p>
+will make each INQUIRY command sent to that device return 0x1055
+(SCSI_MLQUEUE_HOST_BUSY) . In practice that may cause a loop as the
+SCSI mid-level will continue to resubmit that command. To stop it
+(using another console) send:</p>
+<pre class="western" style="margin-bottom: 0.5cm">    echo &quot;1 0 0x12 0x1055&quot; &gt; ${error}</pre><h4 class="western">
+<a name="__RefHeading___Toc250_304902766"></a>Set SCSI command's
+status and sense data format:</h4>
+<pre class="western">  +--------+------+-------------------------------------------------------+
+  | Column | Type | Description                                           |
+  +--------+------+-------------------------------------------------------+
+  |   1    |  u8  | Error type, fixed to 0x2                              |
+  +--------+------+-------------------------------------------------------+
+  |   2    |  s32 | Error Count                                           |
+  |        |      |  0: the rule will be ignored                          |
+  |        |      |  positive: the rule will always take effect           |
+  |        |      |  negative: the rule takes effect n times where -n is  |
+  |        |      |            the value given. Ignored after n times     |
+  +--------+------+-------------------------------------------------------+
+  |   3    |  x8  | SCSI command opcode, 0xff for all commands            |
+  +--------+------+-------------------------------------------------------+
+  |   4    |  x8  | Host byte in scsi_cmd::status                         |
+  |        |      | [scsi_cmd::status has 32 bits holding these 3 bytes]  |
+  +--------+------+-------------------------------------------------------+
+  |   5    |  x8  | Driver byte in scsi_cmd::status                       |
+  +--------+------+-------------------------------------------------------+
+  |   6    |  x8  | SCSI Status byte in scsi_cmd::status                  |
+  +--------+------+-------------------------------------------------------+
+  |   7    |  x8  | SCSI Sense Key in scsi_cmnd                           |
+  +--------+------+-------------------------------------------------------+
+  |   8    |  x8  | SCSI ASC in scsi_cmnd                                 |
+  +--------+------+-------------------------------------------------------+
+  |   9    |  x8  | SCSI ASCQ in scsi_cmnd                                |
+  +--------+------+-------------------------------------------------------+</pre><p>
+Examples:</p>
+<pre class="western" style="margin-bottom: 0.5cm">    echo &quot;2 -10 0x88 0 0 0x2 0x3 0x11 0x0&quot; &gt;${error}</pre><p>
+will make device's read command return with media error with
+additional sense of “Unrecovered read error” (UNC):</p>
+<h2 class="western"><a name="__RefHeading___Toc252_304902766"></a>Examples</h2>
+<h3 class="western"><a name="__RefHeading___Toc254_304902766"></a>Basic</h3>
 <p>Since scsi_debug is for testing it seems more useful to build it
 as a module rather than build it into the kernel. Some parameters
 cannot be changed once the scsi_debug driver is running. So if it is
@@ -2986,7 +3161,8 @@ directory that has the form<tt class="western">
 device listed by <b>lsscsi</b>.<tt class="western"> </tt>This sysfs
 directory contains many important SCSI device parameters some of
 which can be modified.</p>
-<h3 class="western">Adding and removing hosts and devices</h3>
+<h3 class="western"><a name="__RefHeading___Toc256_304902766"></a>Adding
+and removing hosts and devices</h3>
 <p>Individual devices can be removed via sysfs and the mid-level by
 writing any value into the &quot;delete&quot; member in the sysfs
 directory corresponding to the scsi device. Given these devices:</p>
@@ -3062,7 +3238,8 @@ loaded. Two strategies can be used:</p>
 <p>Even though the scsi_debug can create ten thousand or more
 devices, it doesn't mean that the scsi mid-level, sd, sg, the block
 layer and various other kernel components will handle it gracefully.</p>
-<h3 class="western">Mode pages</h3>
+<h3 class="western"><a name="__RefHeading___Toc258_304902766"></a>Mode
+pages</h3>
 <p>The supported mode pages are listed following the MODE SENSE entry
 in the supported commands sections above. Prior to version 1.80, when
 a mode page is read no block descriptor is included in the response.
@@ -3081,7 +3258,7 @@ pages can be modified:</p>
 <p>The saved pages are not supported, reflecting that the scsi_debug
 driver has only volatile storage. All fields can be changed, only
 those fields indicated above have side effects.</p>
-<h3 class="western">per_host_store</h3>
+<h3 class="western"><a name="__RefHeading___Toc260_304902766"></a>per_host_store</h3>
 <p>Various users have asked for <i>each</i> scsi_debug device (i.e.
 &quot;Logical Unit&quot; (LU) in SCSI parlance) to have its own ram
 or backing store rather than all devices sharing the same ram. The
@@ -3127,7 +3304,7 @@ parameter is toggled (i.e. first written to 1 then written to 0) then
 the number of stores is shrunk to one, and all hosts (i.e. the same
 number of hosts present before the toggle) will share the one
 remaining store.</p>
-<h3 class="western">VERIFY</h3>
+<h3 class="western"><a name="__RefHeading___Toc262_304902766"></a>VERIFY</h3>
 <p>Having more than one store, allows more thorough testing of copy
 operations. If the source and destination of a copy are on different
 stores owned by this driver, then just like a &quot;real&quot; copy,
@@ -3256,7 +3433,8 @@ This also demonstrates that request sharing works (since sgh_dd uses
 request sharing by default) when both file descriptors (i.e. the one
 associated with if=/dev/sg0 and the other associated with
 of=/dev/sg0) are opened on the <i>same</i> sg device.</p>
-<h3 class="western">ZBC test scripts</h3>
+<h3 class="western"><a name="__RefHeading___Toc264_304902766"></a>ZBC
+test scripts</h3>
 <p>The following test script is found in the libzbc package that may
 need to be built before running it. The latest source can be found
 at:</p>
@@ -3329,7 +3507,8 @@ between 0 and 1 milliseconds. For asynchronously run commands,
 &quot;random=1&quot; will lead to out-of-order completions. For
 example if A, B, C commands are submitted in that order, they may
 well complete in the A, C, B order.</p>
-<h3 class="western">REPORT LUNS Well Known LU</h3>
+<h3 class="western"><a name="__RefHeading___Toc266_304902766"></a>REPORT
+LUNS Well Known LU</h3>
 <p>There are two techniques for discovering the luns that a SCSI
 target supports. The first (and oldest) is based sending commands
 like INQUIRY and REPORT LUNS to lun 0 (i.e. the LUN whose value is
@@ -3371,7 +3550,8 @@ specific. In the case of the scsi_debug driver it has a magic
 transport (bus) called &quot;pseudo&quot; which does the right thing.
 Apart from target discovery, the scsi_debug driver tries to simulate
 SAS devices, see the next section.</p>
-<h3 class="western">SAS personality</h3>
+<h3 class="western"><a name="__RefHeading___Toc268_304902766"></a>SAS
+personality</h3>
 <p>The scsi_debug driver has a Serial Attached SCSI (SAS)
 personality. For any application that cares, it looks like a dual
 ported SAS disk accessed via the primary port (relative target port
@@ -3501,10 +3681,10 @@ Other supported mode pages can be accessed in a similar way by the
 <a href="sdparm.html">sdparm</a> utility. Note that transport
 specific mode pages need the transport identified: hence the '-t sas'
 option above.</p>
-<h2 class="western">Downloads</h2>
+<h2 class="western"><a name="__RefHeading___Toc270_304902766"></a>Downloads</h2>
 <p>There is nothing to download, see
 &lt;linux_kernel_source&gt;/drivers/scsi/scsi_debug.c .</p>
-<h2 class="western">Conclusion</h2>
+<h2 class="western"><a name="__RefHeading___Toc272_304902766"></a>Conclusion</h2>
 <p>Hopefully the design of the scsi_debug driver lends itself to many
 extensions. If you think that you have a useful extension that others
 may be interested in, please contact the linux-scsi list or the
@@ -3520,7 +3700,6 @@ with
 additions from<br/>
 Martin K. Petersen &lt;martin dot petersen at
 oracle dot com&gt;</p>
-<p style="margin-left: 8.75cm">Last updated: 15th May 2022 12:00
--0500</p>
+<p style="margin-left: 8.75cm">Last updated: 2nd May 2023 19:00 -0400</p>
 </body>
 </html>
