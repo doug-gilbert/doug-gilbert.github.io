@@ -2,6 +2,173 @@ Each utility has its own version number, date of last change and
 some description at the top of its ".c" file. All utilities in the main
 directory have their own "man" pages. There is also a sg3_utils man page.
 
+Changelog for released sg3_utils-1.48 [20230801] [svn: r1042]
+  - decoding utilities: add --json[=JO] and --js-file=JFN
+    options, short form changed to -j[=JO]
+  - sg_sat_datetime: new utility for setting or accessing
+    the data and time on a ATA device using a SAT layer.
+  - sg_z_act_query: new utility for sending either a
+    Zone activate or Zone query command
+  - sg_rep_density: new utility for decoding the response of
+    Report density support command [ssc (tape)]
+  - sg_rem_rest_elem: new utility for removing or restoring
+    elements
+  - sg_write_attr: new utility, Write Attribute is a SPC
+    command that is used mainly by tape drives (ssc)
+  - --hex option cleanup, especially in sg_inq and sg_vpd
+    - swap meaning of '-H' and '-HH' in sg_ses
+  - sg_rtpg: https://github.com/hreinecke/sg3_utils/pull/79
+    applied
+  - netbsd: experimental port, scsi only
+  - rescan-scsi-bus.sh: with '-r' it crashed due to change in
+    rev 867 in sg_inq.c from Device_type= to PDT= .
+    Change script to use either
+    - undo regression in rev 815 that added newline after
+      each LUN in the default (no option) output
+    - rev 815 changed the order of listing hosts from
+      numeric to alphabetical, change it back to numeric
+    - https://github.com/doug-gilbert/sg3_utils/pull/17
+      applied with tweaks: add timeout parameter
+    - clean $norm handling
+    - fix handling of '-I <secs>' option
+    - sgdevice26: do not traverse sg class if scsi_device
+      is not added
+    - add -no-lip-scan option
+    - https://github.com/doug-gilbert/sg3_utils/pull/21
+    - speed testonline() when peripheral_qualifier != 0
+      see https://github.com/doug-gilbert/sg3_utils/issues/24
+    - improve handling of USB SD card readers (with no cards
+      present)
+    - speed multipath scans with many LUNs, cache multipath
+      LUN info in temporary file, see
+      https://github.com/doug-gilbert/sg3_utils/issues/22
+  - udev rules: restrict use of ambiguous device IDs patchset
+    (3 part) from Martin Wilck applied
+  - sg_rep_zones: add Report zone starting LBA granularity
+    field in REPORT ZONES response [zbc2r12]
+    - add --brief option, show part of header and last
+      descriptor fetched
+    - add --find ZT option to find the first occurrence of
+      ZT; if ZT prefixed by - or ! find first not equal to ZT
+    - add --statistics option
+  - sg_get_elem_status: change '--maxlen=' option default to
+    1056 (header plus 32 physical element status descriptors)
+    - add current (maximum) number of depopulated elements
+      fields
+  - sg_get_lba_status: decode new LBA accessibility field
+  - sg_decode_sense: add --nodecode option
+  - sg_logs: tweak the meaning of --list option to more closely
+    reflect the contents of log pages 0x0 and 0x0,0xff
+    - make '-lll' set union of log pages 0x0 and 0x0,0xff
+    - add --exclude option to exclude vendor specific pages
+      and parameters
+    - add --undefined option for hex format of undefined/
+      unrecognized fields
+    - for short binary fields, remove address (index) from
+      the left hand side of each line of hex
+    - improve 'last_n' log pages; supply VPD and mode pages
+      with their name (if T10 defined)
+    - update names for TapeAlert lpage
+    - allow --page selection with --inhex=FN
+  - sg_modes: improve handling of zbc disks with pdt=0x14
+    - add --multiple option for all available page controls
+  - sg_inq, sg_vpd: merge VPD page processing for T10
+    defined pages, VS pages still differ
+    - add Capacity/Product identification mapping VPD page
+    - Device Identication VPD page, change
+      "IEEE Company_id" to "AOI" as per spc6r06.pdf
+    - add support for Hitachi/HP open-v ldev names
+  - sg_inq: add (many) version descriptors as per spc6r08
+    - add --quiet option, like the one sg_vpd has
+  - sg_vpd: apply github pull 18 (missing LF)
+    - add --sinq_inraw=RFN option
+  - sg_opcodes: cleanup error reporting
+    - add --inhex=FN to process earlier -HHH
+  - sg_format: allow disk formats on ZBC (zoned) disks
+  - sg_read_buffer: add --eh_code= and --no_output options
+  - sg_ses: add exp_sas_addr acronym for getting expander's
+    SAS address
+    - add json support
+    - extend --all so after join output, the remaining dpages,
+      not already shown in the join output, are output
+    - add --js-file= option to send json output to a file
+    - add --no-config option for debugging
+    - an index range now uses ':' as a separator; so 0:2
+      matches element indexes 0, 1, and 2 if present.
+      '-' is still accepted as a range separator.
+    - fix issue at end of additional element status dpage
+    - fix issue with indexing overall element for --get
+    - add logic to call Report timestamp on the enclosure
+      and report what is found. If this is problematic the
+      new --no-time option will turn off this feature
+  - sg_turs: change nanosleep() to Sleep() in MinGW
+    - see sg_lib below for two new exit status values
+    - add --ascq= option and exit status 36 if match
+    - add --timeout= option for command timeout
+  - sg_requests: add --timeout= option for command timeout
+  - sg_stream_ctl: fix --get indexing
+  - sg_map26: fix for disks beyond /dev/sdiv
+    - add mapping for bsg devices; recognize nvme devices
+  - sg_sat_read_gplog: add --address= option which is the
+    same as the --log= option. Both take an individual log
+    address, a range of them, or a list (of ranges)
+    - add --smart option to invoke ATA SMART READ LOG instead
+      of reading the General purpose log pages.
+    - add --ppt= option to limit the number of pages per
+       transfer
+    - add support for the SCSI ATA PASS-THROUGH(32) command
+  - sg_read_block_limits: fix granularity value
+     - add --mloi option
+  - inhex/logs_last_n.hex: new, tests for the 4 "Last n ..."
+    log (sub)pages
+  - sg_lib: add sg_pdt_s_eq() to cope with ZBC disks which may
+    be either PDT_ZBC (if host managed) or PDT_DISK 
+    - add hex2fp(), similar to hex2str() but outputs to FILE
+    - add sg_has_control_char(), true when < 0x20 or DEL
+    - add sg_first_non_printable() based on 7 bit ASCII
+    - add sg_get_scsi_ansi_version_str()
+    - cleanup masks for PDT [0x1f] and group_number [0x3f]
+    - new sg_json_builder.[hc] files local to lib folder
+    - document internal json interface in include/sg_json.h
+    - add SG_C_CPP_ZERO_INIT to better handle aggregate stack
+      instance zeroing (C23 adding 'struct T t {};' will help)
+    - correct fixed format sense data command-specific field
+      for ata-passthrough (lba field), see:
+      https://github.com/doug-gilbert/sg3_utils/pull/25
+    - add sg_ll_read_block_limits_v2() for MLOI bit
+    - https://github.com/doug-gilbert/sg3_utils/pull/32 added
+      with tweaks; adds SG_LIB_CAT_STANDBY and
+      SG_LIB_CAT_UNAVAILABLE which refine the 'not ready'
+      exit status. Useful for sg_turs
+    - add SG_LIB_CAT_INVALID_PARAM exit status
+  - initialize all sense buffers to 0
+  - sg_pr2serr in sg_lib: add sg_scn3pr() similar to sg_scnpr()
+  - linux: replace references to /proc/scsi/sg with
+    /sys/module/sg/parameters/
+  - sg_pt_linux: support nvme generic device nodes: ng<c>n<n>
+  - rework main README file
+  - rev 921+922 are bugfix revs on release 1.47 [r919,920]
+  - configure.ac: map msys to mingw
+    - repeat tweak to accept uclinux as linux
+  - sgp_dd and sgm_dd: add --progress option
+  - sg_dd: change uint type to uint32_t
+    - remove unused out2_off in main()
+    - add support for accessing NVMe devices via pass-through
+  - sg_pt_dummy.c: remove problematic include
+  - linux musl libc: changes so musl libc will build
+  - sg3_utils.spec: change tarball extension from .tgz to
+    .tar.gz ; fix build issue with Fedora 36
+  - build cleanups for 'make distcheck', see
+    https://github.com/doug-gilbert/sg3_utils/pull/26, 27 and
+    28; need svn:ignore property or maybe global-ignores
+  - round of coverity identified issue fixes (and non-issues)
+  - remove the imtermediate files generated by ./autogen.sh
+    - this reduces size of svn and git repositories but still
+      plan to have these intermediate files in release tarballs
+  - add bootstrap script that just calls ./autogen.sh
+  - remove archive directory (and its contents)
+  - codespell fixes
+
 Changelog for released sg3_utils-1.47 [20211110] [svn: r919]
   - sg_rep_zones: add support for REPORT ZONE DOMAINS and
     REPORT REALMS in this utility
@@ -159,7 +326,9 @@ Changelog for released sg3_utils-1.45 [20200229] [svn: r843]
   - sg_verify: correct so issues VERIFY(16)
     - add --0 and --ff options and implement bytchk=3 properly
   - sg_write_same: add --ff for 0xff fill
-  - sg_luns: report new "target commands" w-lun (19-117)
+  - sg_luns: report new "target commands" w-lun (spc6r02)
+    - add --inhex=, --inner-hex and --sinq_inraw= options
+  - sg_readcap: add --inhex= and --10 options
   - sg_dd: add --verify support
   - sgp_dd: support memory-mapped IO via mmap flag
   - inhex directory: new, contains ASCII hex files that can be used with
@@ -1099,7 +1268,7 @@ Changelog for sg3_utils-1.25 [20071016] [svn: r115]
       Makefiles
 
 Changelog for sg3_utils-1.24 [20070507] [svn: r77]
-  - sg_raw: new utility to send arbirary SCSI commands
+  - sg_raw: new utility to send arbitrary SCSI commands
   - sg_luns: increase number of luns that can be fetched
     - fix length of raw and hex output
     - add '--quiet' option to output only ASCII hex
@@ -1746,7 +1915,7 @@ Changelog for sg3_utils-0.96 [20011221]
 Changelog for sg3_utils-0.95 [20010915]
 ----------------------------
   - make sg_dd, sgp_dd and archive/sgq_dd warn if dio selected but
-    /proc/scsi/sg/allow_dio is '0'
+    /sys/module/sg/parameters/allow_dio is '0'
   - sg_map can now do any INQUIRY (when '-i' argument given)
   - expand example in scsi_inquiry
 

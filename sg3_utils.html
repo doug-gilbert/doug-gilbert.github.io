@@ -1,12 +1,19 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!DOCTYPE html>
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title>The sg3_utils package</title>
-	<meta name="generator" content="LibreOffice 6.4.7.2 (Linux)"/>
+	<meta name="generator" content="LibreOffice 7.5.3.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2021-11-11T13:55:19.388623071"/>
+	<meta name="changed" content="2023-08-02T01:37:55.663501856"/>
 	<meta name="keywords" content="sg3_utils, SCSI utilities, Linux"/>
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -44,20 +51,20 @@
 	<meta name="created" content="00:00:00">
 	<style type="text/css">
 		@page { size: 21.59cm 27.94cm; margin-left: 2cm; margin-right: 1cm; margin-top: 1cm; margin-bottom: 1cm }
-		p { margin-bottom: 0.25cm; background: transparent; color: #000000; line-height: 115%; background: transparent }
-		h2 { margin-top: 0.35cm; margin-bottom: 0.21cm; background: transparent; color: #000000; background: transparent; page-break-after: avoid }
+		p { color: #000000; line-height: 115%; margin-bottom: 0.25cm; background: transparent; background: transparent }
+		h2 { color: #000000; margin-top: 0.35cm; margin-bottom: 0.21cm; background: transparent; background: transparent; page-break-after: avoid }
 		h2.western { font-family: "Liberation Serif", serif; font-size: 18pt; font-weight: bold }
 		h2.cjk { font-family: "Noto Sans CJK SC Regular"; font-size: 18pt; font-weight: bold }
 		h2.ctl { font-family: "Lohit Devanagari"; font-size: 18pt; font-weight: bold }
-		h3 { margin-top: 0.25cm; margin-bottom: 0.21cm; background: transparent; color: #000000; background: transparent; page-break-after: avoid }
+		h3 { color: #000000; margin-top: 0.25cm; margin-bottom: 0.21cm; background: transparent; background: transparent; page-break-after: avoid }
 		h3.western { font-family: "Liberation Serif", serif; font-size: 14pt; font-weight: bold }
 		h3.cjk { font-family: "Noto Sans CJK SC Regular"; font-size: 14pt; font-weight: bold }
 		h3.ctl { font-family: "Lohit Devanagari"; font-size: 14pt; font-weight: bold }
-		pre { background: transparent; color: #000000; background: transparent }
+		pre { color: #000000; background: transparent; background: transparent }
 		pre.western { font-family: "Liberation Mono", monospace; font-size: 10pt }
 		pre.cjk { font-family: "Courier New", monospace; font-size: 10pt }
 		pre.ctl { font-family: "Liberation Mono", monospace; font-size: 10pt }
-		td p { background: transparent; color: #000000; background: transparent }
+		td p { color: #000000; orphans: 0; widows: 0; background: transparent; background: transparent }
 		tt.western { font-family: "Liberation Mono", monospace }
 		tt.cjk { font-family: "Courier New", monospace }
 		tt.ctl { font-family: "Liberation Mono", monospace }
@@ -113,11 +120,11 @@ includes this helpful diagrammatic overview: <a href="https://www.t10.org/scsi-3
 .<br/>
 <br/>
 The <b>sg3_utils</b> package was developed for the Linux
-kernel 2.4, 2.6, 3, 4 and 5 series and is still being enhanced. An
+kernel 2.4, 2.6, 3, 4, 5 and 6 series and is still being enhanced. An
 earlier package called sg_utils targeted the Linux kernel 2.2 series
 with some support for the 2.0 series. See an earlier version of this
 web <a href="uu_index.html">page</a> for further information about
-sg_utils.&nbsp; This document describes <b>version 1.4</b><b>7</b> of
+sg_utils.&nbsp; This document describes <b>version 1.48</b> of
 <b>sg3_utils</b> .&nbsp; The majority of these utilities have been
 ported to the FreeBSD, Solaris, Tru64 and the Windows operating
 systems (Windows 2000 and later supported).<br/>
@@ -149,11 +156,11 @@ utilities in sg3_utils</b></p>
 
 	<col width="215"/>
 
-	<col width="47"/>
+	<col width="70"/>
 
-	<col width="49"/>
+	<col width="57"/>
 
-	<col width="1551"/>
+	<col width="1520"/>
 
 	<tr>
 		<td width="131" style="border: 1px double #808080; padding: 0.05cm"><p>
@@ -163,13 +170,13 @@ utilities in sg3_utils</b></p>
 			<b>Main SCSI commands<br/>
 invoked</b></p>
 		</td>
-		<td width="47" style="border: 1px double #808080; padding: 0.05cm"><p>
+		<td width="70" style="border: 1px double #808080; padding: 0.05cm"><p>
 			<b>CLI</b></p>
 		</td>
-		<td width="49" style="border: 1px double #808080; padding: 0.05cm"><p>
+		<td width="57" style="border: 1px double #808080; padding: 0.05cm"><p>
 			<b>Ported</b></p>
 		</td>
-		<td width="1551" style="border: 1px double #808080; padding: 0.05cm"><p>
+		<td width="1520" style="border: 1px double #808080; padding: 0.05cm"><p>
 			<b>Notes</b></p>
 		</td>
 	</tr>
@@ -182,15 +189,15 @@ invoked</b></p>
 			MODE SENSE/SELECT, READ DEFECT<br/>
 [6, 10] [RD: 10, 12]</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			adhoc</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			symbolic decoding (optional changing) of mode pages. Can also
 			output (disk) defect lists. Port of older <b>scsiinfo</b> utility.</p>
 		</td>
@@ -203,15 +210,15 @@ invoked</b></p>
 			READ, WRITE<br/>
 [6, 10, 12, 16]</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			dd</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			sg_dd variant that uses memory mapped IO (only on Linux sg
 			devices)</p>
 		</td>
@@ -224,15 +231,15 @@ invoked</b></p>
 			READ, WRITE<br/>
 [6, 10, 12, 16]</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			dd</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			sg_dd variant that uses POSIX threads</p>
 		</td>
 	</tr>
@@ -243,13 +250,13 @@ invoked</b></p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			BACKGROUND CONTROL</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			start/stop advance background control operations on disk</p>
 		</td>
 	</tr>
@@ -260,13 +267,13 @@ invoked</b></p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			COMPARE AND WRITE</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			if compare successful then write</p>
 		</td>
 	</tr>
@@ -277,15 +284,15 @@ invoked</b></p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			RECEIVE COPY RESULTS</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			used to get the results from the previous sg_xcopy (EXTENDED
 			COPY(LID1))</p>
 		</td>
@@ -298,15 +305,15 @@ invoked</b></p>
 			READ, WRITE<br/>
 [6, 10, 12, 16]</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			dd</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			Unix <b>dd</b> command variant, uses SG_IO ioctl to send SCSI
 			commands to copy data. See the <a href="sg_dd.html">sg_dd</a>
 			page. Newer <a href="ddpt.html">ddpt</a> utility adds features and
@@ -322,13 +329,13 @@ invoked</b></p>
 
 			</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-			getopt</p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			getopt, <font color="#00a933">J</font></p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			decodes sense data given as a string of hexadecimal bytes or in
 			binary. Also may decode command opcodes and sg3_utils exit status
 			values.</p>
@@ -341,15 +348,15 @@ invoked</b></p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			MODE SELECT</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			adhoc</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			utility specialized for EMC Clariion series</p>
 		</td>
 	</tr>
@@ -362,13 +369,13 @@ invoked</b></p>
 FORMAT MEDIUM (SSC) and</p>
 			<p>FORMAT WITH PRESET</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			format or resize a SCSI disk (with FORMAT UNIT). Alternatively
 			sg_format can format a tape (with FORMAT MEDIUM). Support for
 			FORMAT WITH PRESET was added in version 1.45</p>
@@ -381,14 +388,14 @@ FORMAT MEDIUM (SSC) and</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			GET CONFIGURATION</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			fetch features and profiles of a cd/dvd drive and/or its current
 			media</p>
 		</td>
@@ -400,13 +407,13 @@ FORMAT MEDIUM (SSC) and</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			GET PHYSICAL ELEMENT STATUS</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-			fetopt</p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			fetopt, <font color="#00a933">J</font></p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			New in version 1.45, see SBC-4</p>
 		</td>
 	</tr>
@@ -417,13 +424,13 @@ FORMAT MEDIUM (SSC) and</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			GET LBA STATUS</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-			getopt</p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			getopt, <font color="#00a933">J</font></p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			logical block provisioning support</p>
 		</td>
 	</tr>
@@ -434,14 +441,14 @@ FORMAT MEDIUM (SSC) and</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			REPORT/SET IDENTIFYING INFORMATION</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			default is to report (fetch) the device identifier. With the
 			'<font face="monospace">--set</font>' option a new identifier is
 			sent to the device.</p>
@@ -454,14 +461,14 @@ FORMAT MEDIUM (SSC) and</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			INQUIRY</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-			getopt+</p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			getopt+, <font color="#00a933">J</font></p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			fetch standard response, VPD pages or version descriptors. Also
 			can perform IDENTIFY (PACKET) DEVICE ATA command in Linux. If
 			given an NVMe device and no VPD page is requested or implied by
@@ -476,14 +483,14 @@ FORMAT MEDIUM (SSC) and</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			LOG SENSE</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-			getopt+</p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			getopt+, <font color="#00a933">J</font></p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			fetch log sense pages, decode standard and some vendor pages</p>
 		</td>
 	</tr>
@@ -494,14 +501,14 @@ FORMAT MEDIUM (SSC) and</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			REPORT LUNS</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-			getopt</p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			getopt, <font color="#00a933">J</font></p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			fetch luns reported by a device (lun 0 or &quot;well known lu&quot;)</p>
 		</td>
 	</tr>
@@ -512,15 +519,15 @@ FORMAT MEDIUM (SSC) and</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			INQUIRY</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			adhoc</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			shows mapping between sg devices and primary device node (if any).
 			Instead of using sg_map, in lk 2.6 and later the <a href="../scsi/lsscsi.html">lsscsi</a>
 			utility is recommended.</p>
@@ -535,15 +542,15 @@ FORMAT MEDIUM (SSC) and</p>
 
 			</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			maps between single Linux sg device and primary device node (and
 			vice versa). Also does mapping in to, and out of, sysfs. For the
 			Linux 2.6 series and later. Instead of using sg_map26, the <a href="../scsi/lsscsi.html">lsscsi</a>
@@ -559,14 +566,14 @@ FORMAT MEDIUM (SSC) and</p>
 			MODE SENSE<br/>
 [6, 10]</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt+</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			fetch mode pages (output mainly in hex, to decode output use
 			<a href="sdparm.html">sdparm</a>)</p>
 		</td>
@@ -578,13 +585,13 @@ FORMAT MEDIUM (SSC) and</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			REPORT SUPPORTED OPERATION CODES</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-			getopt+</p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			getopt+, <font color="#00a933">J</font></p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			fetch supported SCSI commands or supported task management
 			functions</p>
 		</td>
@@ -596,14 +603,14 @@ FORMAT MEDIUM (SSC) and</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			PERSISTENT RESERVE IN/OUT</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			control persistent reservations and report reservation status</p>
 		</td>
 	</tr>
@@ -614,14 +621,14 @@ FORMAT MEDIUM (SSC) and</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			PREVENT ALLOW MEDIUM REMOVAL</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			control media removal, mainly for those SCSI devices which have
 			removable media (e.g. CD/DVD and tape drives)</p>
 		</td>
@@ -633,13 +640,13 @@ FORMAT MEDIUM (SSC) and</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			&lt;user specified&gt;</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			send user supplied cdb</p>
 		</td>
 	</tr>
@@ -650,15 +657,15 @@ FORMAT MEDIUM (SSC) and</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			READ BUFFER</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt+</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			read from SCSI device cache. Typically for testing the SCSI
 			transport (for throughput or errors)</p>
 		</td>
@@ -671,13 +678,13 @@ FORMAT MEDIUM (SSC) and</p>
 			MODE SENSE/SELECT<br/>
 [6, 10]</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			adhoc</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			display or modify RDAC redundant controller mode page</p>
 		</td>
 	</tr>
@@ -689,15 +696,15 @@ FORMAT MEDIUM (SSC) and</p>
 			READ<br/>
 [6, 10, 12, 16]</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			dd</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			read continually from same offset. Syntax similar to sg_dd
 			(without write side). Can test SCSI device cache and transport
 			performance.</p>
@@ -710,13 +717,13 @@ FORMAT MEDIUM (SSC) and</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			READ ATTRIBUTE</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt+</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			fetch and decode attributes. Modern tape systems implement this
 			SCSI command.</p>
 		</td>
@@ -729,14 +736,14 @@ FORMAT MEDIUM (SSC) and</p>
 			READ CAPACITY<br/>
 [10, 16]</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-			getopt+</p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			getopt+, <font color="#00a933">J</font></p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			fetch the number of blocks and the individual block size for disks
 			and CD/DVD media</p>
 		</td>
@@ -749,13 +756,13 @@ FORMAT MEDIUM (SSC) and</p>
 			READ BUFFER(10) and<br/>
 READ BUFFER(16)</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			retrieve descriptors, error history or data from device.</p>
 		</td>
 	</tr>
@@ -766,14 +773,14 @@ READ BUFFER(16)</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			READ LONG</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			read data from given LBA which includes the block and ECC data.</p>
 		</td>
 	</tr>
@@ -784,14 +791,14 @@ READ BUFFER(16)</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			REASSIGN BLOCKS</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			reassign a LBA from one sector on a disk (typically damaged) to a
 			new (spare) sector. User data copied if it is recoverable.</p>
 		</td>
@@ -803,14 +810,54 @@ READ BUFFER(16)</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			REPORT REFERRALS</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			report data segment accessibility from target port groups</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="131" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			sg_rem_rest_elem</p>
+		</td>
+		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			REMOVE ELEMENT AND TRUNCATE or RESTORE ELEMENTS AND REBUILD</p>
+		</td>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			getopt</p>
+		</td>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			f,s,t,w</p>
+		</td>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			On hard disks and element is often one side of a (spinning)
+			platter while on a SSD it could be part or all of a flash (memory)
+			chip. These SCSI commands are potentially destructive for any use
+			data on a storage device and should be executed with care, like
+			the SCSI FORMAT UNIT command. The sg_get_elem_status utility can
+			be used to find element status information.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="131" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			sg_rep_density</p>
+		</td>
+		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			REPORT DENSITY SUPPORT</p>
+		</td>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			getopt</p>
+		</td>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			f,s,t,w</p>
+		</td>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			Reports information regarding the supported densities or medium
+			type, typically for a tape unit.</p>
 		</td>
 	</tr>
 	<tr>
@@ -820,13 +867,13 @@ READ BUFFER(16)</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			REPORT PROVISIONING INITIALIZATION PATTERN</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			calls the SCSI command of that name that was added in sbc4r07.pdf
 			. Format the output for human consumption.</p>
 		</td>
@@ -840,13 +887,13 @@ READ BUFFER(16)</p>
 			<p style="margin-bottom: 0.1cm">REPORT ZONE DOMAINS</p>
 			<p>REPORT ZONES</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-			getopt</p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			getopt, <font color="#00a933">J</font></p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			sends <font color="#000000">one of these </font>commands (default
 			is REPORT ZONES) to a ZBC (SMR) device and decodes the result. A
 			SAT layer may translate SCSI ZBC commands to ATA ZAC commands that
@@ -860,14 +907,14 @@ READ BUFFER(16)</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			REQUEST SENSE</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			fetch sense data from the given device. Modern uses include
 			getting a progress indication (e.g. during a format) or finding
 			the power condition state.</p>
@@ -880,15 +927,15 @@ READ BUFFER(16)</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			-</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			adhoc</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			Issue a driver, (SCSI) bus or device (target or lun?) reset.</p>
 		</td>
 	</tr>
@@ -899,13 +946,13 @@ READ BUFFER(16)</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			RESET WRITE POINTER</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			sends this command to a ZBC (aka shared magnetic recording [SMR])
 			device. The corresponding ATA standard is known as ZAC.</p>
 		</td>
@@ -917,14 +964,14 @@ READ BUFFER(16)</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			READ MEDIA SERIAL NUMBER</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			Relatively new command added to SPC-3. Format of response is
 			vendor specific so this utility outputs it in hex (default) or
 			binary.</p>
@@ -937,14 +984,14 @@ READ BUFFER(16)</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			REPORT TARGET PORT GROUPS</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			Specialized for multi-ported SCSI devices where one port (or a
 			group of them) is preferred for IO over another (or others).</p>
 		</td>
@@ -956,13 +1003,13 @@ READ BUFFER(16)</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			READ BUFFER</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			fetch information from a SAF-TE processor</p>
 		</td>
 	</tr>
@@ -973,14 +1020,33 @@ READ BUFFER(16)</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			SANITIZE</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			Send SCSI SANITIZE command</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="131" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			sg_sat_datetime</p>
+		</td>
+		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			ATA PASS-THROUGH<br/>
+[12, 16]</p>
+		</td>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			getopt</p>
+		</td>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			f,s,t,w</p>
+		</td>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			Send ATA SET DATE &amp; TIME EXT or READ LOG [DMA] EXT command.
+			The latter is used to fetch the current date and time.</p>
 		</td>
 	</tr>
 	<tr>
@@ -991,13 +1057,13 @@ READ BUFFER(16)</p>
 			ATA PASS-THROUGH<br/>
 [12, 16]</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			Send ATA IDENTIFY DEVICE or IDENTIFY PACKET DEVICE&nbsp; commands
 			via the SAT ATA PASS-THROUGH SCSI command.</p>
 		</td>
@@ -1010,13 +1076,13 @@ READ BUFFER(16)</p>
 			ATA PASS-THROUGH<br/>
 [12, 16]</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			Sends an ATA READ LOG EXT command via a SAT to fetch log page 11h
 			which contains SATA phy event counters.</p>
 		</td>
@@ -1029,13 +1095,13 @@ READ BUFFER(16)</p>
 			ATA PASS-THROUGH<br/>
 [12, 16]</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			Sends an ATA READ LOG (DMA) EXT command via a SAT to fetch a log
 			page</p>
 		</td>
@@ -1048,14 +1114,14 @@ READ BUFFER(16)</p>
 			ATA PASS_THROUGH<br/>
 [12, 16]</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			Sends ATA SET FEATURES command via SAT 
 			</p>
 		</td>
@@ -1068,14 +1134,14 @@ READ BUFFER(16)</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			[INQUIRY]</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			adhoc</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			Linux<br/>
 only</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			maps each sg device name to the corresponding numeric &lt;host,
 			channel, target, lun&gt; tuple. In lk 2.6 series (and later) the
 			&quot;<a href="scsi/lsscsi.html">lsscsi</a> -g&quot; command is
@@ -1090,14 +1156,14 @@ only</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			[INQUIRY]</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			win32<br/>
 only</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			shows one device per line, with the device's various names and
 			INQUIRY response string on that line.</p>
 		</td>
@@ -1109,13 +1175,13 @@ only</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			SEEK, PRE-FETCH[10, 16]</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			These commands move no data, they suggest to the device what may
 			be useful to add to the device's cache. Useful for random (i.e.
 			non-sequential as read-ahead is now useless) reads, when the LBA
@@ -1129,14 +1195,14 @@ only</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			SEND DIAGNOSTIC</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt+</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			Issues either a default self test or a short/extended
 			foreground/background self test. With no arguments it uses RECEIVE
 			DIAGNOSTIC RESULTS to list all supported diagnostic pages.</p>
@@ -1149,14 +1215,14 @@ only</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			SEND/RECEIVE DIAGNOSTIC</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-			getopt</p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			getopt, <font color="#00a933">J</font></p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			Fetches status diagnostic pages from, and sends some control pages
 			to, a SCSI Enclosure Services (SES) device. See the <a href="sg_ses.html">sg_ses</a>
 			page. Can pass-through to NVMe enclosure if present.</p>
@@ -1169,13 +1235,13 @@ only</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			SEND/RECEIVE DIAGNOSTIC</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			This microcode (firmware) download (to device) is SES specific. A
 			more general way, typically used with disks, is with
 			sg_write_buffer.</p>
@@ -1188,14 +1254,14 @@ only</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			START STOP UNIT</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt+</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			Controls the power condition state of a SCSI device. Primary use
 			is to spin up and down SCSI disks. Can also load and eject
 			removable media.</p>
@@ -1208,13 +1274,13 @@ only</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			SET TARGET PORT GROUPS</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			Specialized for multi-ported SCSI devices where one port (or a
 			group of them) is preferred for IO over another (or others).</p>
 		</td>
@@ -1226,13 +1292,13 @@ only</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			STREAM CONTROL, GET STREAM STATUS</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			these commands together with WRITE STREAM command (in the
 			sg_write_x utility) support streams in SCSI. Streams associate
 			data of similar expected lifetime together. The Block limits VPD
@@ -1248,14 +1314,14 @@ only</p>
 			SYNCHRONIZE CACHE<br/>
 [10, 16]</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			Causes disk caches to be flushed to media</p>
 		</td>
 	</tr>
@@ -1266,15 +1332,15 @@ only</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			READ/WRITE BUFFER</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			Random pattern written to SCSI device buffer then read back and
 			checked. Used in testing for data corruption.</p>
 		</td>
@@ -1286,13 +1352,13 @@ only</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			REPORT/SET TIMESTAMP</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getop</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			Report or set timestamp which is a 48 bit unsigned integer
 			containing the number of milliseconds since 1970-01-01 00:00:00
 			UTC</p>
@@ -1305,14 +1371,14 @@ only</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			TEST UNIT READY</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt+</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			Issue one or more Test Unit Ready commands. Can be used to time
 			SCSI command overhead.</p>
 		</td>
@@ -1324,13 +1390,13 @@ only</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			UNMAP</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			logical block provisioning support (&quot;Trim&quot; in the ATA
 			world)</p>
 		</td>
@@ -1343,14 +1409,14 @@ only</p>
 			VERIFY<br/>
 [10, 16]</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			reads indicated blocks on a SCSI disks, stops on the first error
 			found. Does not yield any data. Useful for media scans.</p>
 		</td>
@@ -1362,14 +1428,33 @@ only</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			INQUIRY</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			Decodes standard and some vendor Vital Product Data (VPD) pages.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="131" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			sg_write_attr</p>
+		</td>
+		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			WRITE ATTRIBUTE</p>
+		</td>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			getopt, <font color="#00a933">J</font></p>
+		</td>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			f,s,t,w</p>
+		</td>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			Even though this command is defined in the SPC standards for all
+			SCSI devices, it is typically used by tape units. It is a
+			companion to the sg_read_attr utility.</p>
 		</td>
 	</tr>
 	<tr>
@@ -1379,13 +1464,13 @@ only</p>
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			WRITE BUFFER</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			write data; can be used to download firmware</p>
 		</td>
 	</tr>
@@ -1397,14 +1482,14 @@ only</p>
 			WRITE LONG<br/>
 [10, 16]</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			writes to a LBA, data which includes the block and ECC data.
 			Suitable data typically fetched by prior sg_read_long utility.</p>
 		</td>
@@ -1417,13 +1502,13 @@ only</p>
 			WRITE SAME<br/>
 [10, 16, 32]</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			writes a single block to one or more (consecutive) LBAs. Also
 			supports some logical block provisioning options.</p>
 		</td>
@@ -1436,13 +1521,13 @@ only</p>
 			WRITE AND VERIFY<br/>
 [10, 16]</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			send one or more commands to consecutive LBAs, reading data from a
 			given file or stdin.</p>
 		</td>
@@ -1461,13 +1546,13 @@ WRITE SCATTERED [16,32]<br/>
 WRITE STREAM [16,
 			32]</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			command line options will pick 1 of the 6 variants with 1 of the 2
 			cdb lengths. Almost all will require the --in=IF option which
 			identifies the file (IF) holding the data (in binary) to be
@@ -1486,14 +1571,14 @@ WRITE STREAM [16,
 			MODE SELECT<br/>
 [6, 10]</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			writes mode pages supplied in ASCII hex (e.g. from &quot;<font face="monospace">sg_modes
 			-r</font>&quot;) to the&nbsp; SCSI device. See <a href="sdparm.html">sdparm</a>
 			for another method of setting mode page parameters.</p>
@@ -1506,15 +1591,15 @@ WRITE STREAM [16,
 		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			EXTENDED COPY(LID1)</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			dd</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			Uses the EXTENDED COPY(LID1) command to copy between disks. Note:
 			the <a href="ddpt.html">ddpt</a> utility contains this
 			functionality and adds ODX (a subset of XCOPY(LID4)) capability.
@@ -1531,15 +1616,34 @@ WRITE STREAM [16,
 			CLOSE ZONE, FINISH<br/>
 ZONE, OPEN ZONE, SEQUENTIALIZE ZONE</p>
 		</td>
-		<td width="47" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			getopt</p>
 		</td>
-		<td width="49" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			f,s,t,w</p>
 		</td>
-		<td width="1551" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			Sends one of these commands to the given ZBC device. See related
 			sg_rep_zones and sg_reset_wp.</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="131" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			sg_z_act_query</p>
+		</td>
+		<td width="215" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			ZONE ACTIVATE or ZONE QUERY</p>
+		</td>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			getopt</p>
+		</td>
+		<td width="57" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			f,s,t,w</p>
+		</td>
+		<td width="1520" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			Sends either a ZONE ACTIVATE or ZONE QUERY command to a (ZBC)
+			device and decodes the response. These commands were added in
+			ZBC-2 .</p>
 		</td>
 	</tr>
 </table>
@@ -1586,15 +1690,17 @@ is &quot;getopt&quot; but by using &quot;<font face="monospace">--old</font>&quo
 or &quot;-O&quot; as the first option the older ad hoc options can be
 used. This group will default to the older ad hoc interface if the
 environment variable SG3_UTILS_OLD_OPTS is defined. Utilities with
-this type of CLI are marked with &quot;getopt+&quot;.<br/>
+this type of CLI are marked with &quot;getopt+&quot;. The green <font color="#00a933">J</font>
+blue indicates the utility supports JSON output; plain text output
+remains the default.<br/>
 <br/>
-If
-the <b>Ported</b> column is empty then the utility is only found in
-Linux. Support for other ports is indicated by &quot;f&quot; for
-FreeBSD, &quot;s&quot; for Solaris, &quot;t&quot; for Tru64 (OSF),
-and &quot;w&quot; for Windows. See the README, README.freebsd,
-README.solaris, README.tru64, README.win32, and the INSTALL files for
-more information. Linux now has a sub-architecture of Android.<br/>
+If the <b>Ported</b> column is empty
+then the utility is only found in Linux. Support for other ports is
+indicated by &quot;f&quot; for FreeBSD and NetBSD, &quot;s&quot; for
+Solaris, &quot;t&quot; for Tru64 (OSF), and &quot;w&quot; for
+Windows. See the README, README.freebsd, README.solaris,
+README.tru64, README.win32, and the INSTALL files for more
+information. Linux now has a sub-architecture of Android.<br/>
 <br/>
 Below
 is a table of executable scripts (based on the bash shell, other Unix
@@ -2052,8 +2158,7 @@ to interfere with a device while it is &quot;active&quot;. For
 example invoking a &quot;<font face="monospace">sg_format -F</font>&quot;
 utility on a disk with one or more of its partitions in use (e.g. a
 mounted file system) is obviously unwise.</p>
-<h3 class="western"><a name="__RefHeading___Toc250_3724309425"></a><a name="mozTocId678804"></a>
-Sub directories</h3>
+<h3 class="western">Sub directories</h3>
 <p>The sg3_utils package has several sub-directories that are
 outlined in the following paragraphs. Prior to sg3_utils version 1.25
 the Makefile in the main directory only build code from the main
@@ -2148,8 +2253,113 @@ file in that directory for more information.</p>
 mainly designed for testing the Linux scsi generic (sg) driver.
 tst_sg_lib.c does test some functions of this package's library found
 in the <b>lib</b> sub-directory.</p>
-<h2 class="western"><a name="__RefHeading___Toc252_3724309425"></a><a name="mozTocId736867"></a>
-Exit status</h2>
+<h2 class="western">JSON</h2>
+<p>The utilities in this package still follow the UNIX tradition of
+doing one thing, sending normal output in plain text to the console
+(referred to as stdout in Unix shells) and error output (if any) to
+stderr. Once the task is completed, these utilities exit.. In many
+cases these utilities decode information provided by a SCSI device.
+This information is sometimes called metadata (or data about data) to
+distinguish it from user data, the storage of which is the primary
+job of storage devices. Over the years the amount of metadata has
+increased, in parallel with the increases in the amount of data a
+storage device can hold. It has become desirable to impose more
+structure in the plain text output of the metadata, especially if
+other programs with GUI interfaces are trying to format the metadata
+decoded by the utilities in this package. Enter the JavaScript Object
+Notation, more commonly known by its abbreviation: JSON .</p>
+<p>The information provided by many of these utilities can be
+categorized into three levels. Starting with the lowest level first:</p>
+<ol>
+	<li><p><b>hex output</b>: in this case the response from the SCSI
+	device is simply turned into ASCII hexadecimal and printed out (to
+	stdout) in lines that contain up to 16 bytes each. Depending on the
+	number of –hex options given (more easily expressed in the short
+	form, for example ‘-HHH’) that hex output may have a leading
+	(index) count at the start of each line, and/or a rendering in
+	normal ASCII to the right of each line. This form has proved very
+	useful in error reporting as it can be used for “playback”. For
+	example, a user finds a suspected bug, and sends the hex output file
+	attached to an email reporting the problem. The author can then use
+	the –inhex=FN option (where FN is the name of the file containing
+	the hex) with the faulty utility and thus “replay” the error
+	scenario. The ‘-HHH, -HHHH, -HHHHH” options have been designed
+	specifically to simplify this process. Why do we need hex? Perhaps
+	the author or the SCSI device firmware programmer misread the T10
+	standards (or drafts). T10 themselves have been known to “screw
+	up” saying one thing at one point in a document and then something
+	else at another point, both referring to the same thing. And then
+	there are vendor-specific commands. A sub-level of hex output is
+	binary output which should be sent to a file rather than to stdout
+	of the console (where it will look like random characters).</p>
+	<li><p><b>Plain text output</b>: this takes the response from the
+	device (say a SCSI INQUIRY command to fetch a VPD page), decodes it
+	and presents it as ASCII “art”. Maybe it is presented in a way
+	that it is pleasing to the author’s eye. Nesting is often shown by
+	levels of indentation. Put simply, this form is meant to be parsable
+	by humans, not necessarily by other programs. This is the oldest
+	form of output and is the default in all utilities (that decoded
+	something). One problem with this approach is the ever increasing
+	amount of metadata being held by storage devices. The human can
+	become “overloaded” by the amount of decoded metadata returned
+	by some commands (e.g. sg_ses ) and may need tools to filter out
+	what is important.</p>
+	<li><p>JSON: this representation has become the structured form of
+	choice and is appearing in other command line tools that decode
+	system information. This package picks up on work done by Christian
+	Franke in the smartmontools project and applies it to this package.
+	Only utilities that decode a significant amount of metadata have
+	been chosen for JSON support. That support comes in the form of two
+	new options: --json[=JO] and –js-file=JFN where JO is a sequence
+	of single letter controls (if given) and JFN is the name of a file
+	the JSON output will be written to.</p>
+</ol>
+<p>These three levels are meant to complement one another. It is
+probably best to start with the middle level: <b>plain text</b> which
+is the default. If there is something unexpected in the plain text
+output, the user may wish to drop down to the hex level then start
+looking at T10 and vendor documents. If all is well and some part of
+the metadata decoded in plain text is required by another program or
+script, then the third level: <b>JSON</b> may be useful. Programs
+like jq (a “command-line JSON processor”) may be helpful. Notice
+that <b>JSON</b> is only <i>output</i>, so no utility takes JSON as
+<i>input</i> currently.</p>
+<p>SCSI devices primarily return metadata in page form, there are
+VPD, log, mode and diagnostic pages. Decoding those pages into JSON
+is supported in this package for the listed page types, apart from
+<i>mode</i> pages. The sg_modes utility in this package only supplies
+hex output, thus it doesn’t supply plain text nor JSON output. To
+get SCSI mode pages decoded in JSON (or plain text) use the <b>sdparm</b>
+utility in a package of the same name. The sg_modes utility (in this
+package) and <b>sdparm</b> have been designed to interwork, so
+sg_modes hex output (e.g. with ‘-HHHH’) can produce a file that
+can then be read with sdparm’s ‘--inhex=FN’ option.</p>
+<p>Help with this package’s JSON usage can be found in ‘man
+sg3_utils_json’ or the more generally in ‘man sg3_utils’. Each
+utility has its own manpage.</p>
+<p>This <b>JSON</b> support can be viewed as EXPERIMENTAL for the
+time being. The author is in the strange position of having produced
+(output) a lot more JSON that he has parsed. A bit like an author who
+has written more books than she has read. So there may be changes to
+the JSON output, if a strong case is made. Also questions have been
+asked about JSON schemas and that is probably some way in the future.
+In the meantime the –enumerate option (which dumps internal tables
+used for decoding pages) might be enhanced so that it can be coupled
+with the –json option to dump internal tables in JSON. This has
+already be done with sdparm (e.g. ‘sdparm -ea -j’).</p>
+<p>Finally the default naming of attributes in JSON seems to be
+“camel” case in which spaces are suppressed and the first letter
+of each word is capitalized. On the other hand, T10 field names use
+“screaming” case which includes spaces and all words are
+CAPITALIZED. Rather than choose either of those conventions, JSON
+attribute names in this package use “<b>snake” case</b> in which
+all words are in lower case and all spaces and other punctuation are
+replaced by underscore. Snake case is also used in smartmontools’
+JSON output, plus Unix/Linux pseudo file systems mostly use this
+convention. [There are exceptions: there are some field (attribute)
+names in Linux’s sysfs (typically mounted under /sys) that include
+spaces.]</p>
+<h2 class="western">Exit status</h2>
 <p>These command line utilities run as processes and finish with an
 exit status of 0 when successful. Prior to version 1.21 all errors
 yielded an exit status of 1. Having finer grain error reporting via
@@ -2320,6 +2530,17 @@ status</b></p>
 	</tr>
 	<tr>
 		<td width="7%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			19</p>
+		</td>
+		<td width="93%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			the DEVICE reports an illegal request with an additional sense
+			code of &quot;invalid field in parameter list&quot;. The parameter
+			list is extra data sent to the DEVICE for some commands (e.g.
+			FORMAT UNIT)</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="7%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			20</p>
 		</td>
 		<td width="93%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
@@ -2450,6 +2671,16 @@ status</b></p>
 	</tr>
 	<tr>
 		<td width="7%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			35</p>
+		</td>
+		<td width="93%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			a transport error has occurred. This is either in the HBA
+			(initiator) or in the interconnect between the initiator and the
+			target (e.g. a disk drive).</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="7%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			36</p>
 		</td>
 		<td width="93%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
@@ -2477,6 +2708,14 @@ status</b></p>
 		<td width="93%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
 			similar to error code 40 plus a flag indicating the Info field is
 			valid.</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="7%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			47</p>
+		</td>
+		<td width="93%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+			flock (Unix system call) error.</p>
 		</td>
 	</tr>
 	<tr valign="top">
@@ -2602,8 +2841,7 @@ plus 126 and above are conventions for all Unix executables and
 scripts (i.e. they are not sg3_utils specific). For examples of bash
 scripts that use these exit values see the script files in the
 <font face="monospace">scripts</font> sub-directory.</p>
-<h2 class="western"><a name="mozTocId143590"></a><a name="__RefHeading___Toc254_3724309425"></a>
-Changing mode page settings</h2>
+<h2 class="western">Changing mode page settings</h2>
 <p>SCSI devices store settings (meta-data) that may possibly be
 changed by the user program (called the &quot;application client&quot;
 in SCSI jargon) in mode pages. It is a common requirement to find
@@ -2670,8 +2908,7 @@ pages can be accessed via the SCSI INQUIRY command. The sg_vpd
 utility in this package and <a href="sdparm.html">sdparm</a> utility
 list the contents of various VPD pages. 
 </p>
-<h2 class="western"><a name="__RefHeading___Toc256_3724309425"></a><a name="mozTocId301018"></a>
-Examples</h2>
+<h2 class="western">Examples</h2>
 <p style="margin-bottom: 0cm">Most of these examples use Linux device
 names. See the <a href="device_name.html">device naming</a> page for
 appropriate device names in other supported operating systems. Apart
@@ -2898,8 +3135,7 @@ This time sg_vpd needed a bit of help with the -p sinq (or
 --page=sinq) option as the standard INQUIRY response is not formatted
 in the fashion of the other VPD responses. This invocation 'sg_inq -r
 -I inquiry' will output the same thing.</p>
-<h2 class="western"><a name="__RefHeading___Toc258_3724309425"></a><a name="mozTocId479511"></a>
-libsgutils</h2>
+<h2 class="western">libsgutils</h2>
 <p>The various utilities in this package were found to have a lot of
 common code (e.g. use of the SCSI INQUIRY command and SCSI error
 processing). So a library called <i>libsgutils</i> has been created.
@@ -2920,8 +3156,7 @@ static libraries are built by default. To build these utilities so
 they don't depend on this shared library use '<font face="monospace">./configure
 --disable-shared</font>'. 
 </p>
-<h2 class="western"><a name="__RefHeading___Toc260_3724309425"></a>NVME
-Support</h2>
+<h2 class="western">NVME Support</h2>
 <p>On one hand NVM Express (usually written as &quot;NVMe&quot;)
 doesn't have much in common with SCSI. They have different command
 sets and don't share many transports. The SOP/PQI project which uses
@@ -2968,8 +3203,7 @@ liberty of defining its own &quot;vendor specific&quot; VPD page:
 0xde . When fetched (with sg_inq, sg_vpd or sdparm) on a NVMe device
 it will yield the Identify controller response which is 4096 bytes
 long.</p>
-<h2 class="western"><a name="__RefHeading___Toc611_3724309425"></a><a name="mozTocId4795111"></a>
-Download and build</h2>
+<h2 class="western">Download and build</h2>
 <p>Several recent versions of the sg3_utils package are listed below.
 The tarballs contain README, CHANGELOG (renamed &quot;ChangeLog&quot;
 in version 1.25), INSTALL, COVERAGE and CREDITS files plus man pages
@@ -3555,7 +3789,7 @@ tarballs and packages</b></p>
 	<tr valign="top">
 		<td width="8%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
 			<b>1.44</b></p>
-			<p style="margin-bottom: 0.5cm; font-weight: normal">20180912</p>
+			<p style="font-weight: normal; margin-bottom: 0.5cm">20180912</p>
 		</td>
 		<td width="20%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
 			<a href="p/sg3_utils-1.44.tgz">sg3_utils-1.44.tgz</a></p>
@@ -3579,8 +3813,8 @@ tarballs and packages</b></p>
 	<tr valign="top">
 		<td width="8%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.1cm">
 			<b>1.45</b></p>
-			<p style="margin-bottom: 0.1cm; font-weight: normal">20200302</p>
-			<p style="margin-bottom: 0.1cm; font-weight: normal">[svn: r843]</p>
+			<p style="font-weight: normal; margin-bottom: 0.1cm">20200302</p>
+			<p style="font-weight: normal; margin-bottom: 0.1cm">[svn: r843]</p>
 		</td>
 		<td width="20%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
 			<a href="p/sg3_utils-1.45.tgz">sg3_utils-1.45.tgz</a></p>
@@ -3601,8 +3835,8 @@ tarballs and packages</b></p>
 	<tr valign="top">
 		<td width="8%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.1cm">
 			<b>1.46</b></p>
-			<p style="margin-bottom: 0.1cm; font-weight: normal">20210329</p>
-			<p style="margin-bottom: 0.1cm; font-weight: normal">[svn: r891]</p>
+			<p style="font-weight: normal; margin-bottom: 0.1cm">20210329</p>
+			<p style="font-weight: normal; margin-bottom: 0.1cm">[svn: r891]</p>
 		</td>
 		<td width="20%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
 			<a href="p/sg3_utils-1.46.tgz">sg3_utils-1.46.tgz</a></p>
@@ -3640,9 +3874,30 @@ tarballs and packages</b></p>
 			<a href="p/sg3-utils_1.47-0.1_amd64.deb">sg3-utils_1.47-0.1_amd64.deb</a></p>
 			<p style="margin-bottom: 0.1cm"><a href="p/libsgutils2-2_1.47-0.1_amd64.deb">libsgutils2-2_1.47-0.1_amd64.deb</a></p>
 			<p style="margin-bottom: 0.1cm"><a href="p/sg3-utils_1.47-0.1_armhf.deb">sg3-utils_1.47-0.1_armhf.deb</a>
-			    [RPi 32 bit]</p>
+			[RPi 32 bit]</p>
 			<p style="margin-bottom: 0.1cm"><a href="p/libsgutils2-2_1.47-0.1_armhf.deb">libsgutils2-2_1.47-0.1_armhf.deb</a>
-			   [RPi 32 bit]</p>
+			[RPi 32 bit]</p>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td width="8%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.1cm">
+			<b>1.48</b></p>
+			<p style="font-weight: normal; margin-bottom: 0.1cm">20230801</p>
+		</td>
+		<td width="20%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
+			<a href="p/sg3_utils-1.48.tgz">sg3_utils-1.48.tgz</a></p>
+			<p style="margin-bottom: 0.5cm"><a href="p/sg3_utils-1.48.tar.xz">sg3_utils-1.48.tar.xz</a></p>
+		</td>
+		<td width="19%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
+			<a href="p/sg3_utils-1.48-1.src.rpm">sg3_utils-1.48-1.src.rpm</a></p>
+		</td>
+		<td width="26%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.5cm">
+			<a href="p/sg3_utils-1.48-1.x86_64.rpm">sg3_utils-1.48-1.x86_64.rpm</a></p>
+			<p style="margin-bottom: 0.5cm"><a href="p/sg3_utils-libs-1.48-1.x86_64.rpm">sg3_utils-libs-1.48-1.x86_64.rpm</a></p>
+		</td>
+		<td width="27%" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p style="margin-bottom: 0.1cm">
+			<a href="p/sg3-utils_1.48-0.1_amd64.deb">sg3-utils_1.48-0.1_amd64.deb</a></p>
+			<p style="margin-bottom: 0.1cm"><a href="p/libsgutils2-2_1.48-0.1_amd64.deb">libsgutils2-2_1.48-0.1_amd64.deb</a></p>
 		</td>
 	</tr>
 </table>
@@ -3793,24 +4048,47 @@ file is a tarball of man pages converted to html by man2html.</p>
 			<a href="p/sg3_utils147_man_html.zip">sg3_utils147_man_html</a></p>
 		</td>
 	</tr>
+	<tr valign="top">
+		<td width="120" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p style="margin-bottom: 0.1cm">
+			<b>1.48</b></p>
+			<p style="font-weight: normal">20230801</p>
+		</td>
+		<td width="233" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+			<br/>
+
+			</p>
+		</td>
+		<td width="246" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: none; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0cm"><p>
+			<a href="p/sg3_utils148mingw64.zip">sg3_utils148mingw64</a></p>
+		</td>
+		<td width="236" style="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm"><p>
+			<a href="p/sg3_utils148_man_html.zip">sg3_utils148_man_html</a></p>
+		</td>
+	</tr>
 </table>
 <p style="margin-bottom: 0cm"><br/>
 <br/>
 Version 1.25 of sg3_utils
-adds an autotools based <font face="monospace">'./configure ; make ;
-make install</font>' build system. This replaced the previously
-hand-crafted <font face="monospace">Makefile</font>s that were
-getting a bit hard to maintain, especially in ported (i.e. non-Linux)
-environments. The <font face="monospace">configure.ac</font> and
-several <font face="monospace">Makefile.am</font> files guide the
+first added autotools, an improvement on hand-crafted Makefiles. Now
+a build from source requires this sequence: <font face="monospace">'./autogen.sh
+; ./configure ; make ; make install</font>' executed in the top level
+directory of the source package. The requirement to call
+‘<font face="Liberation Mono, monospace">./autogen.sh</font>’
+first (or ‘<font face="Liberation Mono, monospace">./bootstrap</font>’
+which is a synonym) was added in <b>version 1.48</b> of <b>sg3_utils</b>
+. The reduces the size of the source package as script files like
+‘<font face="Liberation Mono, monospace">./configure</font>’ are
+large and complex. The downside is that more automake/autoconf
+packages may be needed on the build system. The <font face="monospace">configure.ac</font>
+and several <font face="monospace">Makefile.am</font> files guide the
 autotools build. If these files are changed then the '<font face="monospace">./autogen.sh</font>'
-script should be run. The autotools based logic builds the code found
-in the <font face="monospace">src</font>, <font face="monospace">lib,
+script should be re-run. The autotools based logic builds the code
+found in the <font face="monospace">src</font>, <font face="monospace">lib,
 include</font> and <font face="monospace">doc</font> sub-directories.
-The <font face="monospace">utils</font> and <font face="monospace">examples</font>
+The <font face="monospace">utils, testing</font> and <font face="monospace">examples</font>
 sub-directories still have hand-crafted <font face="monospace">Makefile</font>s.
-If the <font face="monospace">./configure</font> or&nbsp; <font face="monospace">make
-</font>steps fail then it may be worth trying to run the
+If the <font face="monospace">./configure</font> <font face="Liberation Serif, serif">or&nbsp;
+make</font> steps fail then it may be worth trying to run the
 '<font face="monospace">./autogen.sh</font>' script as there are many
 versions of autotools and the mysterious libtool to be found. Many
 options can be given to <font face="monospace">./configure</font>&nbsp;
@@ -3822,30 +4100,41 @@ install under the <font face="monospace">/usr/local</font> directory
 directory). To place executables in the more usual (at least for
 Linux) <font face="monospace">/usr/bin</font> directory then use
 '<font face="monospace">./configure --prefix=/usr ; make ; make
-install</font>'.<br/>
+install</font>'.</p>
+<p style="margin-bottom: 0cm"><br/>
+
+</p>
+<p style="margin-bottom: 0cm">Starting in version 1.48 of sg3_utils,
+if the code is fetched from a git or subversion repository, then
+./autogen.sh (or ./bootstrap ) needs to be run. However the 1.48
+tarballs provided already have ./autogen.sh executed on them so the
+canonical build sequence once again becomes ./configure ; make ; make
+install . This may make builds a bit easier to perform on embedded
+(or stripped down) systems.<br/>
 <br/>
-<b>*</b> tarball also available with a
-&quot;.tar.gz&quot; extension and bzipped with a &quot;.tar.bz2&quot;
-extension. From version 1.31 the tarball is available with a &quot;.xz&quot;
-extension as well.<br/>
+<b>*</b> tarball also
+available with a &quot;.tar.gz&quot; extension and bzipped with a
+&quot;.tar.bz2&quot; extension. From version 1.31 the tarball is
+available with a &quot;.xz&quot; extension as well.<br/>
 <br/>
-<b>**</b> Around the time of Fedora 11,
-RedHat changed their package checksums from MD5 to SHA256. The above
-rpm packages are typically built with the most recent Fedora at time
-of release. It has been reported that adding &quot;--nomd5&quot; to
-the rpm command line may help with unpacking problems. See bug 490613
-at RedHat's bugzilla.<br/>
+<b>**</b>
+Around the time of Fedora 11, RedHat changed their package checksums
+from MD5 to SHA256. The above rpm packages are typically built with
+the most recent Fedora at time of release. It has been reported that
+adding &quot;--nomd5&quot; to the rpm command line may help with
+unpacking problems. See bug 490613 at RedHat's bugzilla.<br/>
 <br/>
-<b>***</b> Some browsers (e.g.
-firefox) may interpret a file with an extension of &quot;rpm&quot; as
-an audio file. In which case press the right button over the link and
-select &quot;Save link as ...&quot; to download the file.<br/>
+<b>***</b>
+Some browsers (e.g. firefox) may interpret a file with an extension
+of &quot;rpm&quot; as an audio file. In which case press the right
+button over the link and select &quot;Save link as ...&quot; to
+download the file.<br/>
 <br/>
 <br/>
-Below
-is the most recent version of the sg_utils package which targets the
-Linux kernel 2.2 series with some support for the lk 2.0 series. No
-further work is being done on this package.</p>
+Below is the most recent version
+of the sg_utils package which targets the Linux kernel 2.2 series
+with some support for the lk 2.0 series. No further work is being
+done on this package.</p>
 <p align="center" style="margin-bottom: 0cm"><b>Table 7.&nbsp;
 sg_utils tarballs and packages</b></p>
 <table width="100%" cellpadding="2" cellspacing="2">
@@ -3905,7 +4194,6 @@ report them as an &quot;Issues&quot; or supply a patch via a pull
 request on the github reflector.</p>
 <p>Return to <a href="index.html">main</a> page. 
 </p>
-<p align="center">Last updated: 11th November<font color="#000000">
-</font>2021</p>
+<p align="center">Last updated: 1st August<font color="#000000"> </font>2023</p>
 </body>
 </html>
