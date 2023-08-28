@@ -1,0 +1,40 @@
+Format: 1.8
+Date: Tue, 01 Aug 2023 11:00:00 -0400
+Source: sg3-utils
+Binary: libsgutils2-2 libsgutils2-dev sg3-utils
+Built-For-Profiles: noudeb
+Architecture: amd64
+Version: 1.48-0.1
+Distribution: unstable
+Urgency: low
+Maintainer: Eric Schwartz (Skif) <emschwar@debian.org>
+Changed-By: Douglas Gilbert <dgilbert@interlog.com>
+Description:
+ libsgutils2-2 - utilities for devices using the SCSI command set (shared librarie
+ libsgutils2-dev - utilities for devices using the SCSI command set (developer files
+ sg3-utils  - utilities for devices using the SCSI command set.
+Changes:
+ sg3-utils (1.48-0.1) unstable; urgency=low
+ .
+   * New upstream version
+Checksums-Sha1:
+ 025bf3d4e4cecc53ab02d4cdb130a0fc3c701fa0 10482 libsgutils2-2-dbgsym_1.48-0.1_amd64.ddeb
+ 4c7704a146efddc06a5b67278618d1fda051c39c 143046 libsgutils2-2_1.48-0.1_amd64.deb
+ 68cd46b1cd64b16646349a9c045aa824cbc3c465 182968 libsgutils2-dev_1.48-0.1_amd64.deb
+ 805c056796811b711f39d3d2f551c85da68ac1b0 69208 sg3-utils-dbgsym_1.48-0.1_amd64.ddeb
+ 47a3f9153750884d1b806be40edd8e5d2e9d73ec 7738 sg3-utils_1.48-0.1_amd64.buildinfo
+ e8a609c3741292c292a0953784d7e2617761c03d 994950 sg3-utils_1.48-0.1_amd64.deb
+Checksums-Sha256:
+ fea0139bcdc93950b016b0a7bc2307eb5c205cc2a74073f5d4ebcc69616b77fd 10482 libsgutils2-2-dbgsym_1.48-0.1_amd64.ddeb
+ 752e0966075ba3a6ead7a23291f5f520b5a445675bf6830d1414f197387c3e3e 143046 libsgutils2-2_1.48-0.1_amd64.deb
+ b3fdd1219386535b3396c901441c83b59eafc13194ffc983d58913804e5899f7 182968 libsgutils2-dev_1.48-0.1_amd64.deb
+ 916859dfd957efb83bee3b3712f43071f7fbb11f9f4875ac540089d05eaa580b 69208 sg3-utils-dbgsym_1.48-0.1_amd64.ddeb
+ 2b64e14036bad8891ae61ea694e5baab25d15f8a4d4fa9d356cbe78915d17574 7738 sg3-utils_1.48-0.1_amd64.buildinfo
+ 8d97d3abd6873b9babfb161683d10738f4fd2187fcce3a30174296d5e3aac4cc 994950 sg3-utils_1.48-0.1_amd64.deb
+Files:
+ b3065c3dcab2564c6cc7695375048305 10482 debug optional libsgutils2-2-dbgsym_1.48-0.1_amd64.ddeb
+ c469f1949665d21688ffca7a1918d351 143046 libs optional libsgutils2-2_1.48-0.1_amd64.deb
+ 957205fb196ea47e70b3f48c34c9f639 182968 libdevel optional libsgutils2-dev_1.48-0.1_amd64.deb
+ c3706f55fd52ff8632287dc6fe4bd885 69208 debug optional sg3-utils-dbgsym_1.48-0.1_amd64.ddeb
+ 53c7349c069cdc7f52552cc28f84d8be 7738 admin optional sg3-utils_1.48-0.1_amd64.buildinfo
+ 8b6d3461b3cca77156e6715a2b20fd57 994950 admin optional sg3-utils_1.48-0.1_amd64.deb
