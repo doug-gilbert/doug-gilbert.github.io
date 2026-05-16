@@ -1,0 +1,1080 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>xcopy and ODX features of ddpt utility</title>
+    <meta http-equiv="Content-Type" content="text/html;
+      charset=windows-1252">
+    <meta name="keywords" content="ddpt, dd variant, pass-through,
+      xcopy, odx">
+    <meta name="GENERATOR" content="Mozilla/4.79 [en] (X11; U; Linux
+      2.5.31 i686) [Netscape]">
+  </head>
+  <body text="#000000" link="#0000ff" vlink="#000080" bgcolor="#ffffff"
+    alink="#ff0000" background="paper.jpg">
+    <center>
+      <h1><a class="mozTocH1" name="mozTocId228087"></a> XCOPY and ODX
+        in ddpt utility<br>
+      </h1>
+    </center>
+    <a href="#Conclusion"></a>
+    <ol id="mozToc">
+      <!--mozToc h1 1 h2 2 h3 3 h4 4 h5 5 h6 6-->
+      <li><a href="#mozTocId228087"> XCOPY and ODX in ddpt utility </a>
+        <ol>
+          <li><a href="#mozTocId818817">Introduction</a></li>
+          <li><a href="#mozTocId654478">Terminology</a></li>
+          <li><a href="#mozTocId835008">ODX in ddpt </a></li>
+          <li><a href="#mozTocId942041">ddptctl </a></li>
+          <li><a href="#mozTocId942041">xcopy in ddpt </a></li>
+          <li><a href="#mozTocId107918">Examples</a></li>
+          <li><a href="#mozTocId416191">References</a></li>
+        </ol>
+      </li>
+    </ol>
+    <h2><a class="mozTocH2" name="mozTocId818817"></a><a
+        class="mozTocH2" name="intro"></a>Introduction</h2>
+    This page describes two offloaded copy mechanisms that may be used
+    to copy data with the <span style="font-weight: bold;">ddpt</span>
+    utility. The "offload" refers to the machine requesting the copy <i>not</i>
+    needing to read all the data into its memory then write it out again
+    to the destination. The copy operation is offloaded to some
+    intermediate device such as a storage array. The terminology used
+    here is based on that used by the T10 committee (see <a
+      href="http://www.t10.org">www.t10.org</a>) plus some terms the
+    market has defined such as ODX which stands for Offloaded Data Xfer
+    (i.e. transfer).<br>
+    <br>
+    The T10 committee are the current maintainers of SCSI related
+    standards and drafts. An overview of their standards' structure can
+    be found in this <a href="http://www.t10.org/scsi-3.htm">diagram</a>.
+    The first SCSI standard (ANSI X3.131-1986) had a COPY command as did
+    SCSI-2 (ANSI X3.131-1994) After SCSI-2 the committee split their
+    work into multiple documents. The relevant series of documents here
+    are SAM (architecture model), SPC (primary commands) and SBC (block
+    commands: specialized for disks and SSDs). The first&nbsp; SPC
+    standard (ANSI INCITS 301-1997) also contained the COPY command.
+    Then in SPC-2 (ANSI INCITS 351-2001)&nbsp; EXTENDED COPY displaced
+    COPY which was made obsolete. EXTENDED COPY is often abbreviated to
+    XCOPY or xcopy and sometimes refers to the whole offloaded copy
+    mechanism, including some associated commands, rather than just the
+    EXTENDED COPY command itself. Possibly the most common type of copy
+    is disk to disk; however sequential devices such as tapes might be
+    involved. There may also be inline and embedded data. This
+    flexibility is why the EXTENDED COPY command and its helpers are
+    found in the SPC series of standards and drafts and not in the SBC
+    series.<br>
+    <br>
+    EXTENDED COPY stayed in place for SPC-3 ( ANSI INCITS 408-2005) with
+    only small enhancements. Parts of EXTENDED COPY became popular
+    commercially and today many storage array vendors support it. Since
+    2005, SPC-4 drafts have been moving along glacially and it may be
+    standardized in 2014. In SPC-4 revision 34 (February 2012) a new,
+    expanded a somewhat incompatible version of xcopy was introduced. A
+    small part of the changes was to increase the List IDentifier field
+    (LID) length from 1 byte to 4 bytes. It is the LID size change that
+    T10 uses to distinguish the two variants. So XCOPY(LID1) is
+    compatible with the XCOPY introduced in SPC-2 and still popular
+    today. The new variant is know as XCOPY(LID4) [i.e. its List
+    identifier field length is 4 bytes (32 bits) long].<br>
+    <br>
+    ODX can be viewed as a subset of XCOPY(LID4) which is primarily
+    aimed at disk to disk copies. Another vendor term for ODX is "xcopy
+    version 2, lite" which is more descriptive but not a TLA (three
+    letter acronym). Since ODX supports disk to disk copies and has two
+    special commands, those commands have been placed in SBC-3. SBC-3 is
+    also close to standardization.<br>
+    <br>
+    The <span style="font-weight: bold;">ddpt</span> utility is a more
+    generic version of the Linux specific <a href="sg_dd.html">sg_dd</a>
+    and sg_xcopy utilities found in the <a href="sg3_utils.html">sg3_utils</a>
+    package. <br>
+    <br>
+    This page outlines the features of xcopy and ODX offloaded copies
+    found in the <span style="font-weight: bold;">ddpt</span> utility
+    version <span style="font-weight: bold;">0.95</span> . The <span
+      style="font-weight: bold;">ddpt</span> utility is found in the
+    package of the same name.<br>
+    <h2><a class="mozTocH2" name="mozTocId654478"></a><a name="features"></a>Terminology</h2>
+    In T10 terminology an <u><i>application client</i></u> in a host
+    issues SCSI commands through a SCSI <u><i>initiator</i></u> across
+    a transport to a SCSI <u><i>target</i></u> which contains one or
+    more <i><u>logical unit</u>s</i>. Associated with each logical unit
+    is a software component called a <u><i>device server</i></u> which
+    decodes and implements most SCSI commands sent by the application
+    client. A device server needs to be aware of its sibling logical
+    units and the target it is contained within in order to respond to
+    SCSI commands like REPORT LUNS and to properly build the device
+    identification VPD page. Storage arrays and Operating System target
+    sub-systems often appear as SCSI targets with user configurable
+    logical units. If those targets support any generation of XCOPY then
+    each contained logical unit's standard INQUIRY response must set the
+    3PC bit. XCOPY capable logical units have a companion software
+    component to the device server called a <u><i>copy manager</i></u>.
+    One possible copy manager implementation receives XCOPY commands and
+    performs the copy by issuing SCSI READ and WRITE commands to the
+    source and destination logical units. The following figure is
+    borrowed&nbsp; from SPC-4's section titled copy manager model
+    (section 5.16.2 in spc4r36r.pdf):<br>
+    <br>
+    <br>
+    <img alt="copy manager examples diagram" src="copy_manager.png"
+      height="634" width="669"><br>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>&nbsp;<big><font face="Arial">Examples of copy
+                manager configurations</font></big><br>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+    <br>
+    Note that only the "Standalone Copy Manager" example is a true <i><u>third</u>
+    </i>party copy, however the term <u><i>third party copy</i></u>
+    (and abbreviations like 3PC and TPC) has become synonymous with all
+    forms of xcopy.<br>
+    <br>
+    &lt;Description here of xcopy(LID1) terms that are relevant to
+    ddpt's xcopy(LID1) implementation.&gt;<br>
+    <br>
+    <i>ODX</i> is a subset of XCOPY(LID4) that does a ROD based, disk to
+    disk copy. <b>ROD</b> stands for <b>R</b>epresentation <b>O</b>f
+    <b>D</b>ata and in its most general form is a scatter gather list
+    held by the device (Logical Unit or LU) whose data the scatter
+    gather list refers to. T10 uses the term <u><i>populate</i></u> to
+    refer to the creation of such a ROD. After such a ROD is populated
+    it can be used as copy source or copy destination. <u><i>Access
+        upon reference</i></u> is the type associated such RODs.<br>
+    <br>
+    ODX uses another type of ROD called <u><i>point in time copy</i></u>
+    ROD. When a point in time copy ROD is populated by a gather list,
+    the data it refers to is read into the ROD. No data (normally)
+    changes in a logical unit's storage without being permitted by its
+    device server. This tight coupling between a logical unit's device
+    server and copy manager makes it possible for part or all of the
+    read associated with populating a point in time copy ROD to be
+    deferred. A point in time ROD can only be used subsequently as a
+    copy source.<br>
+    <br>
+    For an application client to use a ROD to do (or complete) a copy
+    operation, it needs a way of identifying a ROD. In ODX, after a
+    POPULATE TOKEN command creates a ROD, the copy manager that owns
+    that ROD generates a unique, 512 byte handle called a <u><i>ROD
+        Token</i></u>. The application client should follow up a
+    POPULATE TOKEN command with a RECEIVE ROD TOKEN INFORMATION command
+    which reports about the ROD creation process (e.g. its transfer
+    count which is the number of blocks read) and if the process was
+    successful the report also includes the ROD Token itself.<br>
+    <br>
+    The header part of a 512 byte ROD Token contains some fields that
+    can be decoded. These include its ROD type and the creator's logical
+    unit designator which is also found in the device identification VPD
+    page. The other major (originating) SCSI command in ODX is WRITE
+    USING TOKEN. As its name suggests it takes a ROD Token in its
+    parameter list. It also takes a scatter list and must be sent to the
+    logical unit that is the destination of the copy operation. That
+    logical unit might be the same as the source (i.e. where the
+    POPULATE TOKEN was sent) or a different logical unit in the same
+    target. At the option of the ODX implementation, the ROD Token in a
+    POPULATE TOKEN can be sent to a logical unit in another target. In
+    the latter case SPC-4 says the copy mangers in the source and
+    destination can exchange data by whatever methods they want (i.e.
+    not necessarily using SCSI READs and WRITEs).<br>
+    <br>
+    Another interesting technique is to use the network to send a ROD
+    Token from one machine (host) to another. Then the receiving machine
+    can use that ROD Token to do a WRITE USING TOKEN. This is
+    essentially a network copy in which a large amount of data might be
+    sent with minimal impact on the network as it only needs to pass a
+    512 byte ROD Token. To simplify the following diagram, the source LU
+    (src) and the destination LU (dst) are virtual disks on a common
+    storage array.<br>
+    <br>
+    <img alt="ODX network copy diagram" src="odx_net_cp.png"
+      height="437" width="1001"><br>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <blockquote>
+                <blockquote><big><font face="Arial">Network copy with
+                      ODX, a three step process</font></big><br>
+                </blockquote>
+              </blockquote>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+    <br>
+    A point in time copy ROD can be viewed as an array of bytes held by
+    the copy manager associated with the logical unit that processed the
+    POPULATE TOKEN command. The associated ROD Token belongs to the same
+    copy manager which decides when both a ROD and its ROD Token become
+    invalid. For this purpose ODX specifies an <u><i>inactivity timeout</i></u>
+    but is rather lax in defining exactly how it works. Viewing a ROD as
+    an array of bytes helps when considering an ODX copy between logical
+    units with different block sizes (e.g. source block size is 512
+    bytes while the destination block size is 4096 bytes).<br>
+    <h2><a class="mozTocH2" name="mozTocId835008"></a><a
+        class="mozTocH2" name="basics"></a>ODX in ddpt<br>
+    </h2>
+    ddpt supports 4 ODX variants. They are listed below with simple
+    examples:<br>
+    <ol>
+      <li><b>full copy</b>: <tt>ddpt if=/dev/sg3 bs=512 of=/dev/sg4
+          --odx</tt><br>
+      </li>
+      <li><b>zero output blocks</b>: <tt>ddpt if=/dev/null bs=512
+          of=/dev/sg5 rtype=zero</tt><br>
+      </li>
+      <li><b>read to tokens</b>: <tt>ddpt if=/dev/sg6 bs=512
+          skip=@a_gather.lst rtf=a_rt.bin</tt><br>
+      </li>
+      <li><b>write from tokens</b>: <tt>ddpt rtf=a_rt.bin of=/dev/sg7
+          bs=512 seek=@a_scatter.lst</tt><br>
+      </li>
+    </ol>
+    A <i>full copy</i> will copy any amount of data between two disks
+    (logical units) or could be used to move data from one part to
+    another part of the same disk. It does this by calling the largest
+    permitted POPULATE TOKEN command (PT)&nbsp; which creates a ROD on
+    the source logical unit and yields a ROD Token. This is followed by
+    one or more WRITE USING TOKEN commands (WUT) using the ROD Token and
+    is sent to the destination logical unit. More than one WUT command
+    may be required because the destination may be more constrained than
+    the source. These ODX constraints are found in the Third Party Copy
+    VPD page (in the&nbsp; Block Device ROD Token Limits descriptor) and
+    limit the total number of blocks and the number of scatter-gather
+    list elements in each PT and WUT command. The copy continues working
+    its way through the requested number of blocks with a PT command
+    followed by one or more WUT commands until the copy is complete or
+    an error occurs. The full copy example above shows a disk (logical
+    unit) being copied to another. For large disks this could take a
+    long time with many SCSI commands being issued by ddpt, the "win"
+    here is the lack of data moving into and out of the host machine. At
+    the other extreme the odx full copy variant could be used to move
+    one block (e.g. with count=1); Microsoft documentation states that
+    it uses a traditional copy (i.e. moving all the data to and fro) for
+    a copy involving a small number of blocks.<br>
+    <br>
+    The <i>zero output blocks</i> will copy zero blocks to the
+    destination disk. It is a special case of the full copy in which no
+    POPULATE TOKEN commands are sent. Instead a special ROD Token whose
+    ROD type is indicated by either <tt>rtype=zero</tt> or <tt>rtype=0xffff0001</tt>
+    is given to each WRITE USING TOKEN command until the operation is
+    complete.<br>
+    <br>
+    The <i>read to tokens </i>variant sends multiple POPULATE TOKEN
+    commands to the source (input) logical unit. It reads data into the
+    RODs based on the SKIP and COUNT options, or the gather list given
+    to the <i>skip=GL</i> option.The resulting ROD Tokens are appended
+    to the ROD Token file as they are generated. If <i>conv=rtf_len</i>
+    or <i>iflag=rtf_len</i> is given then the byte length that the ROD
+    represents is placed after each ROD Token as an 8 byte, big endian
+    integer.<br>
+    <br>
+    The <i>write from tokens </i>variant is designed to take as input
+    a ROD Token file that has been generated by the read to tokens
+    variant. Multiple WRITE USING TOKEN commands to write the data to
+    the destination (output) logical unit. It writes data from the RODs
+    based on the SEEK and COUNT options, or the scatter list given to
+    the <i>seek=SL</i> option.&nbsp; The writing continues until either
+    the number of blocks given on the command line (i.e. COUNT or the
+    sum of blocks in the scatter list) is reached, or the ROD Tokens in
+    the RTF file are exhausted.<br>
+    <br>
+    All four variants can take the <i>immed</i> flag (or both <i>iflag=immed</i>
+    and <i>oflag=immed</i> in the case of the full copy variant). This
+    will change the internal processing used by ddpt but should not
+    alter the overall result. The PT and WUT commands have an IMMED
+    field which is set when this flag is given. For very big ROD sizes
+    (and current implementations do not have particularly large maximum
+    ROD sizes (e.g. 256 MB)) without the IMMED field set, the PT and WUT
+    commands could take a long time. Long enough to potentially trigger
+    command timeouts which are best avoided. The solution is to use the
+    <i>immed</i> flag or use the <i>to=TO</i> option which is less
+    desirable. PT and WUT complete quickly when the IMMED field is set
+    but that is typically before the data transfer to or from the ROD is
+    complete. ddpt uses RECEIVE ROD TOKEN INFORMATION commands to poll
+    the logical unit when the <i>immed</i> flag is given. This will
+    continue (with the period of the poll chosen by the RRTI command)
+    until the data transfer is complete, or an error has occurred.<br>
+    <br>
+    Notice the difference between a <i>full copy</i> variant and the
+    combination of a <i>read to tokens</i> variant followed by a <i>write
+
+
+
+
+
+
+
+
+      from tokens</i> variant. Both copy data but the order that the ROD
+    Tokens are created and used is different. The <i>full copy</i> does
+    this command sequence: PT, WUT, [WUT, ...], PT, WUT ... while the <i>read
+
+
+
+
+
+
+
+
+      to tokens</i> variant does all the required PT commands and then
+    the <i>write to tokens</i> variant does all the required WUT
+    commands. This latter ordering facilitates a network copy using the
+    <i>read to tokens</i> variant on the read/input/source machine,
+    something like scp to send the RTF file to the destination machine.
+    Then using that RTF file do a <i>write to tokens</i> variant on the
+    write/output/destination machine.<br>
+    <br>
+    <br>
+    Below is a table of ddpt options that are specific to ODX:<br>
+    <br>
+    <table style="width: 100%; text-align: left;" border="1"
+      cellpadding="2" cellspacing="2">
+      <caption align="bottom"><span style="font-weight: bold;">ODX
+          specific ddpt options</span><br>
+      </caption> <tbody>
+        <tr>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">ODX ddpt option</span><br>
+          </td>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">ddpt default</span><br>
+          </td>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">Brief description</span><br>
+          </td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">ito</span>=<span style="font-style: italic;">ITO</span>
+          </td>
+          <td style="vertical-align: top;"><span style="font-style:
+              italic;"></span>from TPC VPD page </td>
+          <td style="vertical-align: top;">Inactivity timeout specifies
+            the lifetime of a ROD Token (units: seconds)<br>
+          </td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">list_id</span>=<span style="font-style: italic;">LID</span></td>
+          <td style="vertical-align: top;">257 or 258<br>
+          </td>
+          <td style="vertical-align: top;">The list identifier is used
+            to associate a POPULATE TOKEN with the following RRTI
+            command used to fetch the ROD Token. Another list identifier
+            associates a WRITE USING TOKEN with its following RRTI
+            command<br>
+          </td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">oir</span>=<span style="font-style: italic;">OIR</span></td>
+          <td style="vertical-align: top;">0<br>
+          </td>
+          <td style="vertical-align: top;">Offset In Rod: used by WRITE
+            USING TOKEN command to start reading at a block offset
+            (units: OBS) in the ROD <br>
+          </td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">rtf</span>=<span style="font-style: italic;">RTF</span></td>
+          <td style="vertical-align: top; font-family: monospace;"><br>
+          </td>
+          <td style="vertical-align: top;">RTF is a filename to read or
+            write ROD Token(s) to or from.<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><span style="font-weight: bold;">rtype</span>=<span
+              style="font-style: italic;">RTYPE</span></td>
+          <td valign="top">0<br>
+          </td>
+          <td valign="top">ROD type field in POPULATE TOKEN command.
+            Default of 0 lets copy manager decide.Apart from numerical
+            values these abbreviations are accepted: <tt>pit-any</tt>,
+            <tt>pit-def</tt>, <tt>pit-pers</tt>, and <tt>zero</tt> .<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><b>seek</b>=SL<br>
+          </td>
+          <td valign="top">0<br>
+          </td>
+          <td valign="top">apart from the normal dd usage where the
+            argument is a (starting) LBA for the destination (output),
+            in ODX the argument can be a scatter list. This has the form
+            A1,N1[,A2,N2...] and can be given inline, in a file or via
+            stdin. The file syntax is <tt>seek=@&lt;filename&gt;</tt>
+            and the stdin syntax is either <tt>seek=-</tt> or <tt>seek=@-</tt>
+            .<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><b>skip</b>=GL<br>
+          </td>
+          <td valign="top">0<br>
+          </td>
+          <td valign="top">apart from the normal dd usage where the
+            argument is a (starting) LBA for the source (input), in ODX
+            the argument can be a gather list. See the <tt>seek=</tt>
+            description for the list format.<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><span style="font-weight: bold;">to</span>=<span
+              style="font-style: italic;">TO</span></td>
+          <td valign="top">600<br>
+          </td>
+          <td valign="top">timeout associated with all XCOPY commands
+            (units: seconds)<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><span style="font-weight: bold;">--odx</span><span
+              style="font-style: italic;"></span></td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top">indicates an ODX full or partial copy is
+            requested. Other options only used by ODX (e.g.
+            rtype=pit-any) may make using this option superfluous; but
+            it doesn't hurt.<br>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    Below is a table of ddpt options shared with ODX. These options have
+    the same or perhaps a slightly different meaning when used in a
+    non-ODX copy by ddpt:<br>
+    <br>
+    <table style="width: 100%; text-align: left;" border="1"
+      cellpadding="2" cellspacing="2">
+      <caption align="bottom"><b>ddpt options shared with ODX</b><br>
+      </caption> <tbody>
+        <tr>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">ddpt option</span><br>
+          </td>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">ddpt default</span><br>
+          </td>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">Brief description of meaning with ODX</span><br>
+          </td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">bpt</span>=<span style="font-style: italic;">BPT[,BPC]</span>
+          </td>
+          <td style="vertical-align: top;"><span style="font-style:
+              italic;"></span>from TPC VPD page </td>
+          <td style="vertical-align: top;">If BPT is less than the PT
+            command maximum block size then BPT replace it. BPT=0 is
+            ignored or taken as the default. If BPC is less than the WUT
+            command maximum block size then BPC replaces it. This option
+            should only be used in ODX for testing purposes. </td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">delay</span>=<span style="font-style: italic;">MS[,W_MS]</span></td>
+          <td style="vertical-align: top;">0,0<br>
+          </td>
+          <td style="vertical-align: top;">MS is a delay in milliseconds
+            prior to each PT command, apart from the first one. W_MS is
+            a delay in milliseconds prior to each WUT command. May be
+            helpful if there are resource problems.<br>
+          </td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">intio</span>=<span style="font-style: italic;">0|1</span></td>
+          <td style="vertical-align: top;">0<br>
+          </td>
+          <td style="vertical-align: top;">Interrupt IO. If set to 1
+            then the Unix system calls used by the pass-through to issue
+            SCSI commands can be interrupted by usual signals. This is
+            not always a good idea hence the default is 0. This causes
+            common signals to be masked out during IO operations. A
+            check for pending interrupts is done in a window prior to
+            each PT and WUT command. Note that a progress report is
+            generated if the SIGUSR1 (or equivalent) is sent to the ddpt
+            process; the copy continues after the progress report.<br>
+          </td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">retries</span>=<span style="font-style: italic;">RETR</span></td>
+          <td style="vertical-align: top; font-family: monospace;"><br>
+          </td>
+          <td style="vertical-align: top;">not implemented yet. ODX
+            copies will exit on its first error and provide an error
+            report.<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><span style="font-weight: bold;">verbose</span>=<span
+              style="font-style: italic;">VERB</span></td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top">the amount of debug output increases as VERB
+            increases. With 1 or 2 mainly debug from the setup and
+            completion is output. With 3, 4, or 5 output is generated
+            for repetitive operations, so large copies may generate a
+            lot of output. All verbose output goes to stderr which may
+            be redirected to a file.<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><span style="font-weight: bold;">--verbose</span><span
+              style="font-style: italic;"></span></td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top">when used once is equivalent to <tt>verbose=1</tt>
+            . Probably more useful in the short form. For example <tt>-vvv</tt>
+            is equivalent to <tt>verbose=3</tt> .<br>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <br>
+    Below is a table of flags that are specific to ODX. They can either
+    be arguments to <tt>iflag=</tt>, <tt>oflag=</tt> or both as
+    indicated in the second column.<br>
+    <br>
+    <br>
+    <table style="width: 705px; text-align: left; height: 200px;"
+      border="1" cellpadding="2" cellspacing="2">
+      <caption align="bottom"><span style="font-weight: bold;">ODX
+          specific ddpt flags</span><br>
+      </caption> <tbody>
+        <tr>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">ODX ddpt<br>
+              FLAG<br>
+            </span> </td>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;"></span><span style="font-weight: bold;">iflag </span>or<span
+              style="font-weight: bold;"> oflag</span> </td>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">comments</span><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><b>append</b><br>
+          </td>
+          <td valign="top">oflag<br>
+          </td>
+          <td valign="top">append new ROD Tokens to an existing RTF
+            file. Default action is to truncate an existing RTF file
+            before new ROD tokens are written.<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><b>force</b><br>
+          </td>
+          <td valign="top">both<br>
+          </td>
+          <td valign="top">override certain discrepancies that would
+            otherwise cause ddpt to exit before attempting a copy.<br>
+          </td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">immed</span><br>
+          </td>
+          <td style="vertical-align: top;">both<br>
+          </td>
+          <td style="vertical-align: top;">sets the IMMED bit on all PT
+            and/or WUT commands. For the single PT and WUT variants,
+            ddpt exits soon after and the user should use ddptctl to
+            check for completion. For the full copy and zero output
+            blocks variants, polls within ddpt with the RRTI command.
+            Useful if copy manager supports large RODs.<br>
+          </td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">no_del_tkn</span><br>
+          </td>
+          <td style="vertical-align: top;">oflag<br>
+          </td>
+          <td style="vertical-align: top;">do not set DEL_TKN on the
+            last WUT on each ROD Token during a full copy. Probably has
+            little impact because copy manager deletes each ROD Token
+            after all its data has been copied. </td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">odx</span><br>
+          </td>
+          <td style="vertical-align: top;">both<br>
+          </td>
+          <td style="vertical-align: top;">requests on of the four ODX
+            variants<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><b>rtf_len</b><br>
+          </td>
+          <td valign="top">both<br>
+          </td>
+          <td valign="top">the <i>full copy</i> and <i>read to tokens</i>
+            variants append the <i>number of bytes represented</i>
+            value after each ROD Token in the RTF file. the <i>write
+              from tokens</i> variants expects to read this value after
+            each ROD Token in the RTF file. That field should be
+            reported inside the ROD Token but not all vendors comply.<br>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <br>
+    The conversion <i>conv=rtf_len</i> is permitted and has the same
+    meaning as <i>iflag=rtf_len</i> or <i>oflag=rtf_len</i>. For ODX
+    implementations that don't set the the <i>number of bytes
+      represented</i> field properly inside the ROD Token; specifying <i>conv=rtf_len</i>
+    can be a nuisance. Setting the environment variable ODX_RTF_LEN will
+    cause ddpt to act as if either the rtf_len flag or conversion has
+    been defined.<br>
+    <br>
+    <h2><a class="mozTocH2" name="mozTocId942041"></a><a
+        class="mozTocH2" name="mozTocId481177"></a>ddptctl<br>
+    </h2>
+    ddptctl is a helper/companion utility for ddpt. ddptctl has more
+    conventional Unix command line options and takes a single device
+    name or no device name (e.g. when decoding an RTF Token file).
+    ddptctl has options to do the following:<br>
+    <ul>
+      <li>issue a single POPULATE TOKEN command</li>
+      <li>issue a single WRITE USING TOKEN command</li>
+      <li>issue a one or more RECEIVE ROD TOKEN INFORMATION commands.
+        Multiple commands are issued when the --poll option is used</li>
+      <li>issue a COPY OPERATION ABORT command</li>
+      <li>issue a REPORT ALL ROD TOKENS command</li>
+      <li>decode T10 defined fields in a ROD Token</li>
+      <li>output block device size information, either using SCSI
+        commands or block layer commands</li>
+      <li>decode the Third Party Copy VPD page<br>
+      </li>
+    </ul>
+    The ddptctl command line options are very similar to those in ddpt,
+    allowing for the different format of their command lines. For
+    example in ddpt a list identifier can be given with by <i>list_id=255</i>
+    and in ddptctl it is <i>--list_id=255</i> .<br>
+    <br>
+    <h2><a class="mozTocH2" name="mozTocId942041"></a><a
+        class="mozTocH2" name="mozTocId481177"></a>xcopy in ddpt<br>
+    </h2>
+    The section covers the older XCOPY(LID1) functionality for disk to
+    disk copies in ddpt. This was ported from the sg_xcopy utility found
+    in the sg3_utils package.<br>
+    <br>
+    Individual SCSI and ATA disks do not typically support xcopy; disk
+    arrays and iSCSI servers do. There is a 3PC field in a standard SCSI
+    INQUIRY response that when set indicates a "logical unit" (an
+    abstraction of a disk) supports at least some xcopy
+    functionality.&nbsp; Prior to the copy, the source (i.e. <i>IFILE</i>)
+    and destination (i.e. <i>OFILE</i>) are checked (via the pt
+    interface) to find their xcopy capabilities. Usually the EXTENDED
+    COPY(LID1) command is usually sent to destination device. ddpt sends
+    the EXTENDED COPY(LID1) command to the destination device if the
+    '--xcopy' or 'oflag=xcopy' options are given; and it sends that
+    command to the source device if the 'iflag=xcopy' option is given.
+    ddpt cannot currently send the EXTENDED COPY(LID1) command to a copy
+    manager that is other than the source and destination devices; that
+    is the standalone case shown in the "examples of copy manager
+    configurations" diagram above.<br>
+    <br>
+    The xcopy functionality in ddpt is ported from the sg_xcopy utility
+    in the sg3_utils package. See the man page for sg_xcopy and also the
+    man page for the related sg_copy_results utility for more
+    information.<br>
+    <br>
+    Below is a table of ddpt options that are specific to xcopy:<br>
+    <br>
+    <table style="width: 100%; text-align: left;" border="1"
+      cellpadding="2" cellspacing="2">
+      <caption align="bottom"><span style="font-weight: bold;">xcopy
+          specific ddpt options</span><br>
+      </caption> <tbody>
+        <tr>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">xcopy ddpt option</span><br>
+          </td>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">ddpt default</span><br>
+          </td>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">Brief description</span><br>
+          </td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">id_usage</span>=<span style="font-style: italic;">LIU</span>
+          </td>
+          <td style="vertical-align: top;"><span style="font-style:
+              italic;"></span>0 or 2 </td>
+          <td style="vertical-align: top;">LIST ID USAGE field. Can be 0
+            to 3 or the string <tt>hold</tt> (for 0), <tt>discard</tt>
+            (for 2) or <tt>disable</tt> (for 3).<br>
+          </td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">list_id</span>=<span style="font-style: italic;">LID</span></td>
+          <td style="vertical-align: top;">0 or 1<br>
+          </td>
+          <td style="vertical-align: top;">The list identifier is used
+            to associate a EXTENDED COPY(LID1) with the following
+            RECEIVE COPY STATUS command. This is a single byte so the
+            maximum value is 255.<br>
+          </td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">prio</span>=<span style="font-style: italic;">PRIO</span></td>
+          <td style="vertical-align: top;">1<br>
+          </td>
+          <td style="vertical-align: top;">value for PRIORITY field in
+            the EXTENDED COPY(LID1) command.<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><span style="font-weight: bold;">to</span>=<span
+              style="font-style: italic;">TO</span></td>
+          <td valign="top">600<br>
+          </td>
+          <td valign="top">timeout associated with all XCOPY commands
+            (units: seconds)<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><span style="font-weight: bold;">--xcopy</span><span
+              style="font-style: italic;"></span></td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top">indicates an XCOPY(LID1) disk to disk copy is
+            requested. In the absence of iflag=xcopy<br>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    Below is a table of ddpt options shared with xcopy. These options
+    have the same or perhaps a slightly different meaning when used in a
+    non-ODX copy by ddpt:<br>
+    <br>
+    <table style="width: 100%; text-align: left;" border="1"
+      cellpadding="2" cellspacing="2">
+      <caption align="bottom"><b>ddpt options shared with xcopy</b><br>
+      </caption> <tbody>
+        <tr>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">ddpt option</span><br>
+          </td>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">ddpt default</span><br>
+          </td>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">Brief description of meaning with xcopy</span><br>
+          </td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">delay</span>=<span style="font-style: italic;">MS[,W_MS]</span></td>
+          <td style="vertical-align: top;">0,0<br>
+          </td>
+          <td style="vertical-align: top;">not implemented yet for xcopy
+            but may be in the future.<br>
+          </td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">retries</span>=<span style="font-style: italic;">RETR</span></td>
+          <td style="vertical-align: top; font-family: monospace;"><br>
+          </td>
+          <td style="vertical-align: top;">not implemented yet. xcopy
+            will exit on its first error and provide an error report.<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><span style="font-weight: bold;">verbose</span>=<span
+              style="font-style: italic;">VERB</span></td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top">the amount of debug output increases as VERB
+            increases. With 1 or 2 mainly debug from the setup and
+            completion is output. With 3, 4, or 5 output is generated
+            for repetitive operations, so large copies may generate a
+            lot of output. All verbose output goes to stderr which may
+            be redirected to a file.<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><span style="font-weight: bold;">--verbose</span><span
+              style="font-style: italic;"></span></td>
+          <td valign="top"><br>
+          </td>
+          <td valign="top">when used once is equivalent to verbose=1 .
+            Probably more useful in the short form. For example -vvv is
+            equivalent to verbose=3<br>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <br>
+    Below is a table of flags that are specific to xcopy. They can
+    either be arguments to <tt>iflag=</tt>, <tt>oflag=</tt> or both as
+    indicated in the second column.<br>
+    <br>
+    <br>
+    <table style="width: 705px; text-align: left; height: 200px;"
+      border="1" cellpadding="2" cellspacing="2">
+      <caption align="bottom"><span style="font-weight: bold;">xcopy
+          specific ddpt flags</span><br>
+      </caption> <tbody>
+        <tr>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">xcopy ddpt<br>
+              FLAG<br>
+            </span> </td>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;"></span><span style="font-weight: bold;">iflag </span>or<span
+              style="font-weight: bold;"> oflag</span> </td>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">comments</span><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><b>cat</b><br>
+          </td>
+          <td valign="top">both<br>
+          </td>
+          <td valign="top">sets the CAT bit in XCOPY(LID1) parameter
+            list segment descriptor header. Associated with residual
+            data handling. </td>
+        </tr>
+        <tr>
+          <td valign="top"><b>dc</b><br>
+          </td>
+          <td valign="top">both<br>
+          </td>
+          <td valign="top">sets the DC (destination counter) bit in
+            XCOPY(LID1)&nbsp; parameter&nbsp; list&nbsp; segment&nbsp;
+            descriptor header.<br>
+          </td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;"><span style="font-weight:
+              bold;">pad</span><br>
+          </td>
+          <td style="vertical-align: top;">both<br>
+          </td>
+          <td style="vertical-align: top;">sets the PAD bit in the CSCD
+            descriptor of the associated IFILE or OFILE.&nbsp; Is&nbsp;
+            associated&nbsp; with residual data handling and works
+            together with the cat flag.<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><b>xcopy</b><br>
+          </td>
+          <td valign="top">both<br>
+          </td>
+          <td valign="top">indicates both that a XCOPY(LID1) is
+            requested and whether it should be sent to IFILE (i.e.
+            source) or OFILE (i.e. the destination). If xcopy is
+            selected and the location to send the command is not
+            unambiguously shown, then it is ent to the OFILE.<br>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <br>
+    Note that between ddpt versions 0.93 and 0.94 the default LU to send
+    the XCOPY(LID1) command to changed from IFILE to OFILE. In the
+    absence of any command line guidance (e.g. iflag=xcopy causes the
+    XCOPY(LID1) command to be sent to IFILE), then a check is made for
+    these environment variables: XCOPY_TO_SRC and XCOPY_TO_DST, if
+    either is present then it will guide where the XCOPY(LID1) command
+    is sent.
+    <h2><a class="mozTocH2" name="mozTocId107918"></a><a
+        class="mozTocH2" name="examples"></a>Examples</h2>
+    Most of these examples use Linux device names. See the <a
+      href="device_name.html">device naming</a> page for appropriate
+    device names in other supported operating systems.<br>
+    <br>
+    With some arrays, using a pass-through or an offloaded copy may
+    trick an Operating System's buffer cache. In Linux these commands
+    where found to be useful to turn off the buffer cache:<br>
+    <br>
+    <tt># sync; echo 3 &gt; /proc/sys/vm/drop_caches </tt><br>
+    <br>
+    To check if something like the above is needed, use a command like <tt>md5sum</tt>
+    or <tt>sha1sum</tt> to determine whether both the source and
+    destination sides of a copy are the same after the copy has taken
+    place. Obviously copying into a storage area that contains a mounted
+    file system is dangerous.<br>
+    <br>
+    To start with, do a disk to disk copy with ODX. The full copy
+    variant is appropriate for this task. The first example uses device
+    nodes which are pass-throughs. The second uses normal block devices
+    which accept pass-through commands. These "disks" are relatively
+    small (10 GB each) and are in the same target within a storage array
+    that supports ODX:<br>
+    <br>
+    <tt># ddpt --odx if=/dev/sg3 of=/dev/sg4 bs=512</tt><tt><br>
+    </tt><tt>20971520+0 records in</tt><tt><br>
+    </tt><tt>20971520+0 records out</tt><tt><br>
+    </tt><tt>time to transfer data: 38.994866 secs at 275.35 MB/sec</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt># ddpt --odx if=/dev/sdb of=/dev/sdc bs=512</tt><tt><br>
+    </tt><tt>20971520+0 records in</tt><tt><br>
+    </tt><tt>20971520+0 records out</tt><tt><br>
+    </tt><tt>time to transfer data: 38.592403 secs at 278.23 MB/sec</tt><br>
+    <br>
+    The examples after this will use pass-through devices. To zero out
+    all blocks on a device, the zero output blocks variant is most
+    efficient:<br>
+    <br>
+    <tt># ddpt </tt><tt><tt>rtype=zero </tt>if=/dev/null of=/dev/sg4
+      bs=512 </tt><tt><br>
+    </tt><tt> 20971520+0 records out</tt><tt><br>
+    </tt><tt> time to transfer data: 25.348843 secs at 423.59 MB/sec</tt><br>
+    <br>
+    The <tt>rtype=zero</tt> refers to a special ROD Type whose format
+    is defined by T10 and thus does not need the usual populate step
+    performed by the POPULATE TOKEN command. Note since the <tt>rtype=</tt>
+    option implies ODX then the <tt>--odx</tt> option is not needed.<br>
+    <br>
+    Next we look at the block device ROD Token limits descriptors for
+    our source and destination devices. These LUs belong to the same
+    target and have the same limits. The interesting case is when the
+    destination is more constrained that the source. This is more likely
+    to happen when ODX copies between targets are supported, especially
+    if those targets come from different vendors. A smaller size maximum
+    token transfer size can be simulated, for example: <tt>bpt=0,200000</tt>
+    which will leave the source's maximum per ROD size at 524288 blocks
+    and reduce the destination's to 200000 .<br>
+    <br>
+    <tt># ddptctl -i /dev/sg3</tt><tt><br>
+    </tt><tt>&nbsp; /dev/sg3 [pt]: num_blocks=20971520 [0x1400000],
+      block_size=512, 10.73 GB</tt><tt><br>
+    </tt><tt>3PC (third party copy) bit set in standard INQUIRY response</tt><tt><br>
+    </tt><tt>&nbsp; Print Third Party Copy VPD page:</tt><tt><br>
+    </tt><tt>&nbsp;Block Device ROD Token Limits:</tt><tt><br>
+    </tt><tt>&nbsp; Maximum Range Descriptors: 8</tt><tt><br>
+    </tt><tt>&nbsp; Maximum Inactivity Timeout: 60 seconds</tt><tt><br>
+    </tt><tt>&nbsp; Default Inactivity Timeout: 30 seconds</tt><tt><br>
+    </tt><tt>&nbsp; Maximum Token Transfer Size: 524288</tt><tt><br>
+    </tt><tt>&nbsp; Optimal Transfer Count: 524288</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt># ddptctl -i /dev/sg</tt><tt>4<br>
+    </tt><tt>&nbsp; /dev/sg4 [pt]: num_blocks=20971520 [0x1400000],
+      block_size=512, 10.73 GB</tt><tt><br>
+    </tt><tt>3PC (third party copy) bit set in standard INQUIRY response</tt><tt><br>
+    </tt><tt>&nbsp; Print Third Party Copy VPD page:</tt><tt><br>
+    </tt><tt>&nbsp;Block Device ROD Token Limits:</tt><tt><br>
+    </tt><tt>&nbsp; Maximum Range Descriptors: 8</tt><tt><br>
+    </tt><tt>&nbsp; Maximum Inactivity Timeout: 60 seconds</tt><tt><br>
+    </tt><tt>&nbsp; Default Inactivity Timeout: 30 seconds</tt><tt><br>
+    </tt><tt>&nbsp; Maximum Token Transfer Size: 524288</tt><tt><br>
+    </tt><tt>&nbsp; Optimal Transfer Count: 524288</tt><br>
+    <br>
+    Since ROD Tokens are freestanding (e.g. they are not tied to a
+    particular I_T nexus) they can be used by any machine that can "see"
+    the source LU. In the example below two machines called mach_a and
+    mach_b have access to the same storage array. One of the array's
+    targets has two LUs: <tt>/dev/sg3</tt> and <tt>/dev/sg4</tt> . The
+    example shows a network copy in which mach_a reads from <tt>/dev/sg3</tt>
+    and receives several ROD Tokens. A file containing those ROD tokens
+    is then sent to mach_b via the network. Thereafter mach_b can use
+    those ROD Tokens to write the data held in the ROD to <tt>/dev/sg4</tt>
+    . In this case the read on <tt>/dev/sg3</tt> starts at LBA 0x1234
+    and goes for 1m (2**20) blocks; the data written to <tt>/dev/sg4</tt>
+    starts at LBA 0 (because <tt>seek=</tt> is not given so it defaults
+    to 0) for 1m blocks.<br>
+    <br>
+    <tt>mach_a # ddpt if=/dev/sg3 bs=512 skip=0x1234,1m rtf=my.tk</tt><tt><br>
+    </tt><tt>1048576+0 records in</tt><tt><br>
+    </tt><tt>time to transfer data: 0.002217 secs at 242160.99 MB/sec</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>mach_a # scp -p my.tk user@mach_b:/tmp</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>mach_b # </tt><tt>ddpt rtf=/tmp/my.tk bs=512 of=/dev/sg4
+      count=1m</tt><tt><br>
+    </tt><tt>1048576+0 records out</tt><tt><br>
+    </tt><tt>time to transfer data: 0.747828 secs at 717.91 MB/sec</tt><br>
+    <br>
+    To implement the write side (second half) of this copy the logic is
+    much simpler if the "<i>number of bytes represented</i>" by each ROD
+    is known. T10 does not mandate that implementations supply this
+    field within the ROD Token. To bypass this difficulty there is the
+    rtf_len flag (and conversion option) that instructs that value (as
+    an 8 byte big endian integer) to be appended to each ROD Token
+    written to the ROD Token file. Depending on the implementation the
+    rtf_len flag will need to be specified all or none of the time. To
+    ease the pain of the case when it must be specified all the time
+    (like the implementation used these examples) the presence
+    ODX_RTF_LEN environment variable will default the rtf_len flag on.
+    In above example, the extra "<i>number of bytes represented</i>"
+    integer was needed. Before the above commands were executed this was
+    done:<br>
+    <br>
+    <tt>mach_a # export&nbsp;</tt><tt> ODX_RTF_LEN=1</tt><br>
+    <tt>mach_b # export&nbsp;</tt><tt> ODX_RTF_LEN=1</tt><br>
+    <br>
+    Looking at the length of the my.tk file is instructive:<br>
+    <br>
+    <tt># ls -l my.tk</tt><tt><br>
+    </tt><tt>-rw-r--r-- 1 users users 1040 Mar 30 11:07 my.tk</tt><br>
+    <br>
+    So it contains 2 ROD Tokens (512 bytes each), each of which is
+    followed by an 8 byte "<i>number of bytes represented</i>" field for
+    a total of 1040 bytes. If the ODX_RTF_LEN environment variable had
+    not been given (or any other rtf_len indication) then the length of
+    that file would have been 1024 bytes.<br>
+    <br>
+    There are also some examples in the ddpt man page and the <big><a
+        href="p/ddpt_examples.txt"><span style="font-family: monospace;">doc/ddpt_examples.txt</span></a></big>
+    file in the distribution tarball.<br>
+    <br>
+    <h2><a class="mozTocH2" name="mozTocId416191"></a><a
+        class="mozTocH2" name="ref"></a>References</h2>
+    XCOPY(LID4) and the ODX subset were introduced in SPC-4 and SBC-3
+    drafts found at <a href="http://www.t10.org/">www.t10.org</a> .
+    Both are approaching standardization. Expect enhancements to ODX in
+    SPC-5 and SBC-4 (the latter already has drafts at T10). XCOPY which
+    is now known as XCOPY(LID1) has been in place since the SPC-2
+    standard. Standards can be purchased from ANSI (as pdf files); a
+    cheaper approach is to get the last draft prior to the standard from
+    T10 (or the first one in the next series (e.g. draft sbc4r00.pdf
+    will be very close to the SBC-3 standard)).<br>
+    <br>
+    MSDN has several high and medium level documents about ODX. For low
+    level information search for "MSDN POPULATE_TOKEN_HEADER" and follow
+    its sibling links. Some storage array vendors support ODX and more
+    plan to in the future (so they say), so searching for ODX and a
+    vendor name should find their higher level (i.e. marketing)
+    documentation. Storage arrays that already support XCOPY(LID1)
+    typically require a firmware upgrade to support ODX.<br>
+    <br>
+    <p>Return to <a href="ddpt.html">ddpt</a> page. </p>
+    <center>
+      <p>Last updated: 27th December 2014<br>
+        <br>
+      </p>
+    </center>
+  </body>
+</html>
