@@ -1,6 +1,112 @@
 Each utility has its own version number, date of last change and
-some description at the top of its ".c" file. All utilities in the main
+some description at the top of its ".c" file. All utilities in the src
 directory have their own "man" pages. There is also a sg3_utils man page.
+References to github are to https://github.com/doug-gilbert/sg3_utils
+
+ChangeLog for release sg3_utils-1.49 [20260718] [svn: r1133]
+  Utility specific changes:
+  - rescan-scsi-bus.sh: fix multipath resize without update
+    https://github.com/doug-gilbert/sg3_utils/pull/43.diff
+    and 44.diff
+    - fix for github.com/doug-gilbert/sg3_utils/issues/46
+    - github PR numbers: 68, 69, 71 and 74 by Paul Evans
+    - github pull req: #72 fix udevadm invocation M. Wilck
+    - github issue: #76 fix shellcheck warnings Xose Vazquez Perez
+  - scsi_logging_level: add MIT license Xose Vazquez Perez
+  - scsi-rescan.8 manpage added, links to rescan-scsi-bus.8
+  - sg_copy_results: part of github PR #74
+  - sg_dd: add grpnum=GN operand and --nocopy option
+  - sg_get_elem_status: fractional elements, sbc6r02
+    - correct several error messages
+  - sg_get_lba_status: additional LBA accessibility values
+  - sginfo: part of github PR #74
+  - sg_inq: update version descriptors to T10 table 20230814
+    - re-introduce the --ata option, hidden since rel 1.43
+  - sg_inq+sg_vpd: show depopulation time in hours and
+    minutes as well as its raw form: seconds
+    - add RSCS field to Block limits extension vpd page [sbc5r5]
+    - translation of NVMe FR field uses sg_last_n_non_blank()
+    - add NVMe Information VPD page
+    - clean up ATA Information VPD page
+    - rework designation descriptor handling
+    - sg_inq --export conformance for SCSI name string
+      by Paul Evans github PR #83
+  - sg_lib: add sg_last_n_non_blank() for SNT FR field
+    - sg_lib.[hc] add sg_strscpy() to replace strncpy()
+    - sg_json.c fixes from lsscsi project pull #15
+    - sg_json.[hc] add sgj_haj_vs_hex_bytes_nex() for
+      outputting IDs as ASCII hex strings
+    - sg_json.[hc] add sgj_haj_vs_len()
+    - sg_json.[hc] add sgj_haj_vs_nex()
+    - sg_json_sg_lib.[hc] sgj_js_designation_descriptor()
+      changed to sgj_haj_designation_descriptor()
+  - sg_logs: correct tape Device statistics lpage [0x14]
+    serial number parameters [0x40 and 0x41] per
+    https://github.com/doug-gilbert/sg3_utils/issues/45
+  - sg_map: handle LUNs > 255
+  - sg_opcodes: fix rwcdl/cdlp fields handling D. Le Moal
+  - sg_rem_rest_elem: add support for REMOVE ELEMENT AND
+  - MODIFY ZONES command, Damien Le Moal
+  - sg_requests: improve buffer truncation
+  - sg_sat_read_gplog: list names of supported GP log addresses
+  - sg_ses: restore some help text, github PR #79 Paul Evans
+  - sg_stream_ctl: add --hex, --inhex=, --json= and --raw
+    options; additions in sbc5r05 (perm and relative_lifetime
+    fields).
+  - sg_turs: fix missing CDB on several codepaths
+  - sg_vpd: inform about SPC-6 (sg_inq knew already)
+    https://github.com/doug-gilbert/sg3_utils/issues/40
+    - add --descriptors option, for version descriptors
+    - part of github PR #74
+    - some sg_vpd fixes shown under sg_inq+sg_vpd entry above
+  - sg_wr_mode: fix --contents and --cfile= handling
+    - add --mfile=MF option for decoding mask in the MF file
+    - fix introduced Makefile.am bug, plus only for Linux
+  - sg_xcopy: part of github PR #74
+  - utils/hxascdmp: sprint -> snprintf [github PR #78]
+
+  General changes:
+  - fix 'make distcheck' (again)
+  - add cmake build system (alongside autotools) with cpack
+    for deb and rpm packages; ctest not wired yet
+    - github PR #80 by Alan Somers which is associated
+      with cpack FreeBSD settings
+    - github PR #82 by Paul Evans to get cmake output to be
+      equivalent (in parity) with what Autotools produces
+    - wire option(DISABLE_LIBSGUTILS (def: OFF)) so when
+      ON sgutils2 library is static but other libraries
+      are shared objects (e.g. libc.so)
+    - github PR #84 by Paul Evans to fix cpack generated
+      Debian dev library path, needed by sdparm and ddpt
+  - retire all uses of lseek64() as _FILE_OFFSET_BITS=64
+    compile define should take care of older 32 bit cases
+  - fixes so musl-gcc builds clean
+  - start complying with T10 23-047r1 "Broadcom SNT Reference"
+    document assuming T10 SNT drafts are coming
+  - rearrange SNT and NVMe headers and associated source
+  - new error code: SG_LIB_PROGRESS_NOT_READY for long
+    duration 'in progress' additional sense codes
+  - lib/sg_pt_solaris.c : fix compilation issue per
+    https://github.com/doug-gilbert/sg3_utils/pull/41
+  - lib/sgj_haj_*() functions: tweak hex_haj argument meaning
+  - scripts/00-scsi-sg3_config.rules : apply
+    https://github.com/doug-gilbert/sg3_utils/pull/42
+  - rename build_debian.sh script to debian_build.sh
+  - rename testing directory to ttesting to avoid clash with
+    cmake's CTEST that creates a Testing directory
+  - ttesting/sg_chk_inq_vd.c: test internal table against T10
+    version descriptor file
+  - check/clean against gcc-16 -fanalyzer; clang-22 --analyze
+  - debian build: modernize with dh sequencer [github PR# 73]
+  - AIX partial support: needs getopt.h header which
+    surprisingly is non-standard. Keep hidden version in
+    lib directory and copy to include dir as needed
+     - still no real pass-through, using sg_dummy instead
+  - getopt_long directory contents -> lib directory
+  - JSON: make output more consistent so most command
+    responses have a *_parameter_data or similar sub-object
+  - apply https://github.com/doug-gilbert/sg3_utils/pull/39
+    and its revision [20230807] mainly for Android
 
 Changelog for released sg3_utils-1.48 [20230801] [svn: r1042]
   - decoding utilities: add --json[=JO] and --js-file=JFN
@@ -101,6 +207,8 @@ Changelog for released sg3_utils-1.48 [20230801] [svn: r1042]
     - add logic to call Report timestamp on the enclosure
       and report what is found. If this is problematic the
       new --no-time option will turn off this feature
+  - sg_ses_microcode: increase max transfer length from 128
+    to 256 MiB [github pull req #70]
   - sg_turs: change nanosleep() to Sleep() in MinGW
     - see sg_lib below for two new exit status values
     - add --ascq= option and exit status 36 if match
@@ -122,7 +230,7 @@ Changelog for released sg3_utils-1.48 [20230801] [svn: r1042]
   - inhex/logs_last_n.hex: new, tests for the 4 "Last n ..."
     log (sub)pages
   - sg_lib: add sg_pdt_s_eq() to cope with ZBC disks which may
-    be either PDT_ZBC (if host managed) or PDT_DISK 
+    be either PDT_ZBC (if host managed) or PDT_DISK
     - add hex2fp(), similar to hex2str() but outputs to FILE
     - add sg_has_control_char(), true when < 0x20 or DEL
     - add sg_first_non_printable() based on 7 bit ASCII
@@ -458,7 +566,7 @@ Changelog for sg3_utils-1.43 [20180911] [svn: r789]
       command responses
   - sg_inq+sg_vpd: update Extended inquiry data vpd
     page (spc5r09 and 17-142r5)
-    - block limits and block limit extension VPD pages:
+    - block limits and block limits extension VPD pages:
       add extra info about corner cases
     - add maximum inquiry|mode_page change logs fields
       to extended inquiry vpd page (spc5r17)
