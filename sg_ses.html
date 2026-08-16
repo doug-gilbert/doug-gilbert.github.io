@@ -1,71 +1,75 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!DOCTYPE html>
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title>The sg_ses utility</title>
-	<meta name="generator" content="LibreOffice 6.4.6.2 (Linux)"/>
+	<meta name="generator" content="LibreOffice 26.2.4.2 (Linux)"/>
 	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2021-04-08T14:52:47.735389945"/>
+	<meta name="changed" content="2026-08-03T11:47:01.971470019"/>
 	<meta name="keywords" content="sg_ses, SES, SCSI"/>
 	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
 	<style type="text/css">
-		p { margin-bottom: 0.25cm; background: transparent; color: #000000 }
-		h1 { margin-bottom: 0.21cm; background: transparent; color: #000000 }
-		h1.western { font-family: "Liberation Serif", serif }
-		h1.cjk { font-family: "Noto Serif CJK SC" }
-		h1.ctl { font-family: "Lohit Devanagari" }
-		h2 { margin-top: 0.35cm; margin-bottom: 0.21cm; background: transparent; color: #000000 }
-		h2.western { font-family: "Liberation Serif", serif }
-		h2.cjk { font-family: "Noto Serif CJK SC" }
-		h2.ctl { font-family: "Lohit Devanagari" }
-		pre { background: transparent; color: #000000 }
-		pre.western { font-family: "Liberation Mono", monospace }
-		pre.cjk { font-family: "Noto Sans Mono CJK SC", monospace }
-		pre.ctl { font-family: "Liberation Mono", monospace }
-		td p { background: transparent; color: #000000 }
+		@page { size: 8.5in 11in; margin-left: 0.79in; margin-right: 0.39in; margin-top: 0.39in; margin-bottom: 0.39in }
+		p { background: transparent; margin-bottom: 0.1in; line-height: 115%; color: #000000; background: transparent }
+		h1 { color: #000000; margin-bottom: 0.08in; background: transparent; background: transparent; page-break-after: avoid }
+		h1.western { font-weight: bold; font-size: 24pt; font-family: "Liberation Serif", serif }
+		h1.cjk { font-weight: bold; font-size: 24pt; font-family: "Noto Serif CJK SC" }
+		h1.ctl { font-weight: bold; font-family: "Lohit Devanagari"; font-size: 24pt }
+		h2 { color: #000000; margin-top: 0.14in; margin-bottom: 0.08in; background: transparent; background: transparent; page-break-after: avoid }
+		h2.western { font-weight: bold; font-size: 18pt; font-family: "Liberation Serif", serif }
+		h2.cjk { font-weight: bold; font-size: 18pt; font-family: "Noto Serif CJK SC" }
+		h2.ctl { font-weight: bold; font-family: "Lohit Devanagari"; font-size: 18pt }
+		pre { background: transparent; color: #000000; background: transparent }
+		pre.western { font-family: "Liberation Mono", monospace; font-size: 10pt }
+		pre.cjk { font-family: "Noto Sans Mono CJK SC", monospace; font-size: 10pt }
+		pre.ctl { font-family: "Liberation Mono", monospace; font-size: 10pt }
+		td p { background: transparent; orphans: 0; widows: 0; color: #000000; background: transparent }
 		code.western { font-family: "Liberation Mono", monospace }
 		code.cjk { font-family: "Noto Sans Mono CJK SC", monospace }
 		code.ctl { font-family: "Liberation Mono", monospace }
 		tt.western { font-family: "Liberation Mono", monospace }
 		tt.cjk { font-family: "Noto Sans Mono CJK SC", monospace }
 		tt.ctl { font-family: "Liberation Mono", monospace }
-		a:link { color: #0000ff }
-		a:visited { color: #000080 }
+		a:link { so-language: zxx; color: #0000ff; text-decoration: underline }
+		a:visited { so-language: zxx; color: #000080; text-decoration: underline }
 	</style>
 </head>
 <body lang="en-CA" text="#000000" link="#0000ff" vlink="#000080" background="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/wgALCADYANgBAREA/8QAGAABAQEBAQAAAAAAAAAAAAAAAQIAAwb/2gAIAQEAAAAB9z1ybbnhz03OVvQIiULolVueZTsSzTtsIai86M7VEjkoqSsZszzmq0pDquWd0eZTl5Z2mgNVXA5NUnWJi8bVA69UFXIbUxO6EzWikvMnWDN7QRVGKJy6rmWgUink5BZek041QUkumVwtTWmzThaIbl5O6xqmVUYcNkVUTLXQZl2agcGuKamdrqYzUNMbGmrm9iHW8XoSNEYrNzfMLKnpopmJVNqU2nVRtjM1zK2qOkyz0mysbDtow1pL56imtsPPUm5jumh0ubQ1aJti+cOV0hVW40dCKxXOGWnYd0zjSXBeTntNO01VbO257ax0CCFnTZHaZ1u2iUwi27bbadW2xGxts1W222xppxy2zrYpcOCue2uaiUd0edTYx0iemiXpJgmtd85Tr//EAB0QAAEFAQEBAQAAAAAAAAAAAAEQESAwQABQMWD/2gAIAQEAAQUC2PF5CB1nE1ryEmmFOk7mQ2AUlRzwEGudDE5jFkE3sPGtrQpwmDoFPFRaYAI29qjd9QDK/inUZHwBYYNe1bROo/ixMbQEMf/EABQQAQAAAAAAAAAAAAAAAAAAAJD/2gAIAQEABj8CNn//xAAhEAEBAQADAQEBAQEBAQEAAAABABEQITFBUWEgcTChgf/aAAgBAQABPyF76s67vbbN4ZmMvu22NnVky7MYHHRbZ33LABLvnAd8NhAl/I64JPAbfb+o7eGUCxHduR33NtuFusR3LkEvH9bZeru8twg+7H5bhbO8CDgD1t5e48thvZflis4E3bak+EmWQME9Wd9y8at3ZnrPBno429dwOwBZ3JGwmwmTNu9g+y/27dwO8mCb5PtssnURF/ywyZ7uvljL8Js67vf+Swa8J+XhHbt3bM8ZhrL3PdnVnyDq3u7C2YOuFC3uZ8sYMJbuVXg6X3OAdx3LLBLArbhZB+zdl8v3jOoLNui2Xyz9lhgT8F5PGOEODgG9wd8JwDBOFn7brbez2wgz/vDLbfyz7wD7ElkFlkeRMm/bo64X4Wfre8fZ76LMnq/jjD7xi36b2Em2XyT+3/I6OSf287tXgPsdX/ZjqyBeJcj9jtvk2SYYT+F9u7X1gwh35B3N39g820j+29QS5bfqe52TyOXt5EvdkGd3zYs/Ytydg6l5LvPi3vhmS9dQ6vBZBDhchYFb+S3bxvJ37I8svk/y/SXqFeHG3se6z5B/8jhGCDOFMt40t22d4zSfyDqCO+FtXu3XLx3ZJ1LHltmsHDLgstyyyMju63IttlvVmuQHD3PG3bbE7s8Z3GWbZnVtjZhbkdd38R23yzWM+QTZPkEt7wZLL+ey8rBeS50WKz5L3wH7B3Zhef5CZdQwS4Xf/wCz0f23uXW295Le+TPbb/5BwuS29xwrt7gzgFe5Qlb+XkdcH5b8ISHttu4FgvvGy8HsSyxLHd5PU6vCwchC2Log1sw/wlkvyB4W7TZbnDB94yCLe49sgwyIGf62e56sctQZBw4cAmZb5MQdQdwXbZx9/wAPAWf4ZT3w+22bJ1wRB/4M7B/pQ9t2wly3eH+WcH/npbKvkcrhOxdwKz1H9gvLNeA595WHZ8v+x+tsLoLdbcn9ZdvIfWI9g4XW8ti2XCFXhWBuiZbVg17t+E/k+WsrKzt8lXyw94XfG9XcdF//2gAIAQEAAAAQgPzz/wCfn/f/APPt/wD7X4/P3/N/bf3u/ft/vW/vmZv/AEDH/wBY+a//AN82x+/++dn9jmd/X0j/AIOAX16AF5vgMfP5DK/2CSp/A2HfwHh/4Awf+AAD/gAQ/IAevyizvu9//8QAGxAAAgIDAQAAAAAAAAAAAAAAARFQYBAhMXD/2gAIAQEAAT8QylS7AIIRpAyMMMHHCVLZIArEcgF5BmYCAoJU2EUFBoOAs6HBAEAKDjYGFQpCKQwMUoANg+gIF0oJEAQT4WFggSw0B0WBmKTmIBDI1xKggpMDCBCAhxFAhp2leECmEDDULihRABEIYRCZCAmEFMyA6gwYkVCqdgEIj1IAJDyC4oGEmkABSIQxQA4SEEaYREyADwAWZJSEMCkgwlJAAEKAA5RDAaFkICZAcEGTGAgmAgBE1T//2Q==" dir="ltr"><h1 class="western" align="center">
 The sg_ses utility</h1>
 <ol>
-	<li><p style="margin-bottom: 0cm"><a name="mozToc"></a><a href="#mozTocId228087">The
+	<li><p style="margin-bottom: 0in"><a name="mozToc"></a><a href="#mozTocId228087">The
 	sg_ses utility </a>
 	</p>
 	<ol>
-		<li><p style="margin-bottom: 0cm"><a href="#mozTocId370866">Introduction</a>
-				</p>
-		<li><p style="margin-bottom: 0cm"><a href="#mozTocId283192">Overview</a>
-				</p>
-		<li><p style="margin-bottom: 0cm"><a href="#mozTocId352668">Command
+		<li><p style="margin-bottom: 0in"><a href="#mozTocId370866">Introduction</a>
+				</p></li>
+		<li><p style="margin-bottom: 0in"><a href="#mozTocId283192">Overview</a>
+				</p></li>
+		<li><p style="margin-bottom: 0in"><a href="#mozTocId352668">Command
 		line options</a> 
-		</p>
-		<li><p style="margin-bottom: 0cm"><a href="#mozTocId352668">Indexing</a>
-				</p>
-		<li><p style="margin-bottom: 0cm"><a href="#mozTocId807507">Descriptor
+		</p></li>
+		<li><p style="margin-bottom: 0in"><a href="#mozTocId352668">Indexing</a>
+				</p></li>
+		<li><p style="margin-bottom: 0in"><a href="#mozTocId807507">Descriptor
 		Names, Device Slot Numbers and SAS Addresses </a>
-		</p>
-		<li><p style="margin-bottom: 0cm"><a href="#mozTocId57479">clear,
+		</p></li>
+		<li><p style="margin-bottom: 0in"><a href="#mozTocId57479">clear,
 		get and set</a> 
-		</p>
-		<li><p style="margin-bottom: 0cm"><a href="#mozTocId774345">Record
+		</p></li>
+		<li><p style="margin-bottom: 0in"><a href="#mozTocId774345">Record
 		once, analyse often</a> 
-		</p>
-		<li><p style="margin-bottom: 0cm"><a href="#mozTocId395029">Raw
+		</p></li>
+		<li><p style="margin-bottom: 0in"><a href="#mozTocId395029">Raw
 		page writes</a> 
-		</p>
-		<li><p style="margin-bottom: 0cm"><a href="#mozTocId478955">sg_ses
+		</p></li>
+		<li><p style="margin-bottom: 0in"><a href="#mozTocId478955">sg_ses
 		and NVMe</a> 
-		</p>
+		</p></li>
 		<li><p><a href="#mozTocId157981">Conclusion</a> 
-		</p>
+		</p></li>
 	</ol>
 </ol>
 <h2 class="western"><a name="mozTocId370866"></a>Introduction</h2>
@@ -82,14 +86,14 @@ The
 <b>sg_ses</b> utility is found in the <a href="sg3_utils.html">sg3_utils</a>
 package. The utility was originally written for Linux (including
 Android) and has ports to FreeBSD, Solaris and Windows. This page
-outlines the features of the sg_ses utility version 2.48 found in the
-<a href="sg3_utils.html">sg3_utils</a> version 1.46 package.<br/>
+outlines the features of the sg_ses utility version 2.89 found in the
+<a href="sg3_utils.html">sg3_utils</a> version <u>1.4</u><u>9</u>
+package.<br/>
 <br/>
-The
-<b>sg_ses_microcode</b> utility was added in the <a href="sg3_utils.html">sg3_utils</a>
-<font color="#000000">release</font> 1.40 . It is designed to
-download microcode (firmware) to an enclosure and report any errors
-returned by the enclosure. 
+The <b>sg_ses_microcode</b> utility was added in
+the <a href="sg3_utils.html">sg3_utils</a> <font color="#000000">release</font>
+1.40 . It is designed to download microcode (firmware) to an
+enclosure and report any errors returned by the enclosure. 
 </p>
 <h2 class="western"><a name="mozTocId283192"></a>Overview</h2>
 <p>Typically the first problem to solve is finding an Operating
@@ -222,20 +226,20 @@ its role. To fetch and then decode (or output in hex or binary) all
 pages, a single page or a field within a page:<br/>
 <br/>
 &nbsp;&nbsp;
-<tt class="western">sg_ses [--all] [--descriptor=DES]
+<tt class="western">sg_ses [--all] [--ALL] [--descriptor=DES]
 [--dev-slot-num=SN] [--eiioe=A_F] [--filter] [--get=STR] [--hex]
-[--index=IIA | =TIA,II] [--inner-hex] [--join] [--maxlen=LEN]
-[--page=PG] [quiet] [--raw] [--readonly] [--sas-addr=SA] [--status]
-[--verbose] [--warn] DEVICE</tt><br/>
+[--index=IIA | =TIA,II] [--inner-hex] [--join] [--json[=JO]]
+[--js-file=JFN] [--maxlen=LEN] [--no-config] [--page=PG] [quiet]
+[--raw] [--readonly] [--sas-addr=SA] [--status] [--verbose] [--warn]
+DEVICE</tt><br/>
 <br/>
-To modify an SES page or
-a field within it:<br/>
+To modify an SES page or a field within it:<br/>
 <br/>
-&nbsp; <tt class="western">sg_ses
-[--byte1=B1] [--clear=STR] [--control] [--data=H,H...]
-[--descriptor=DES] [--dev-slot-num=SN] [--index=IIA | =TIA,II]
-[--mask] [--maxlen=LEN] [--nickname=SEN] [--nickid=SEID] [--page=PG]
-[--sas-addr=SA] [--set=STR] [--verbose] DEVICE</tt><code class="western"><br/>
+&nbsp;
+<tt class="western">sg_ses [--byte1=B1] [--clear=STR] [--control]
+[--data=H,H...] [--descriptor=DES] [--dev-slot-num=SN] [--index=IIA |
+=TIA,II] [--mask] [--maxlen=LEN] [--nickname=SEN] [--nickid=SEID]
+[--page=PG] [--sas-addr=SA] [--set=STR] [--verbose] DEVICE</tt><code class="western"><br/>
 </code><br/>
 If
 neither <tt class="western">--clear</tt> nor <tt class="western">--set</tt>
@@ -248,114 +252,125 @@ than a DEVICE:<br/>
 <br/>
 &nbsp; <tt class="western">sg_ses
 --data=@FN --status [--raw --raw] &lt;all options from the first form
-above&gt;</tt><br/>
+above&gt;</tt></p>
+<p><tt class="western">sg_ses --inhex=FN --status [--raw --raw] &lt;all
+options from the first form above&gt;</tt><br/>
 <br/>
-And that leaves some housekeeping variants
-of which the most interesting is <tt class="western">--enumerate</tt>
-which dumps tables held by this utility. These housekeeping variants
-are:<br/>
+And that leaves
+some housekeeping variants of which the most interesting is
+<tt class="western">--enumerate</tt> which dumps tables held by this
+utility. These housekeeping variants are:<br/>
 <br/>
-&nbsp;&nbsp; <tt class="western">sg_ses [--enumerate]
-[--help] [--list] [--version]</tt><br/>
+&nbsp;&nbsp;
+<tt class="western">sg_ses [--enumerate] [--help] [--list]
+[--version]</tt><br/>
 <br/>
-Below is a table of
-sg_ses options sorted alphabetically by their long option name:</p>
-<table width="1503" cellpadding="2" cellspacing="1">
-	<col width="69"/>
-
-	<col width="185"/>
-
-	<col width="1231"/>
-
+Below is a table of sg_ses options sorted
+alphabetically by their <span style="font-style: normal"><u>long</u></span>
+option name:</p>
+<table width="1503" cellpadding="2" cellspacing="0">
+	<col width="70"/>
+	<col width="186"/>
+	<col width="1233"/>
 	<tr>
-		<td width="69" style="border: 1px double #808080; padding: 0.05cm"><p>
+		<td width="70" style="border: 1px double #808080; padding: 0.02in"><p>
 			<b>short option</b></p>
 		</td>
-		<td width="185" style="border: 1px double #808080; padding: 0.05cm"><p>
+		<td width="186" style="border: 1px double #808080; padding: 0.02in"><p>
 			<b>long option</b></p>
 		</td>
-		<td width="1231" style="border: 1px double #808080; padding: 0.05cm"><p>
+		<td width="1233" style="border: 1px double #808080; padding: 0.02in"><p>
 			<b>Brief description</b></p>
 		</td>
 	</tr>
 	<tr>
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><pre class="western"><font size="3" style="font-size: 12pt">-a</font></pre>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><pre class="western"><font size="3" style="font-size: 12pt">-a</font></pre>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><pre class="western"><font size="3" style="font-size: 12pt">--all</font></pre>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><pre class="western"><font size="3" style="font-size: 12pt">--all</font></pre>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-			synonym for <font size="3" style="font-size: 12pt">--join</font>
-			which is the closest option to output all information available.
-			Maybe too much</p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
+			Performs a –join operation followed by outputting those dpages
+			that haven’t already be included in the –join output.</p>
 		</td>
 	</tr>
 	<tr>
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><pre class="western"><font size="3" style="font-size: 12pt">-A</font></pre>
+		</td>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><pre class="western"><font size="3" style="font-size: 12pt">--ALL</font></pre>
+		</td>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
+			Performs a –join –join operation followed by outputting those
+			dpages that haven’t already be included in the –join –join
+			output.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-b B1</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--byte1=B1</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			byte 1 (2nd byte) of control page set to B1. Only active with
 			<tt class="western">--control</tt></p>
 		</td>
 	</tr>
 	<tr>
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-C STR</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--clear=STR</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			clear value of field described by <tt class="western">STR</tt>.
 			Requires an indexing option to choose an element.</p>
 		</td>
 	</tr>
 	<tr>
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-c</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--control</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			send control information. That information is provided by <tt class="western">--data=</tt>
 			option</p>
 		</td>
 	</tr>
 	<tr>
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-d H,H...</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--data=H,H...</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			H,H... is a string of ASCII hex bytes for control pages</p>
 		</td>
 	</tr>
 	<tr>
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-d -</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--data=-</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			fetch that string of ASCII hex bytes from stdin (or binary if
 			'<tt class="western">-rr</tt>' is also given)</p>
 		</td>
 	</tr>
 	<tr valign="top">
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-d @FN</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--data=@FN</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			FN is a file name containing ASCII hex bytes (or binary if '<tt class="western">--raw
 			--raw</tt>' is given). When given any DEVICE supplied on the
 			command line will be ignored and the hex bytes (or raw binary)
@@ -363,26 +378,26 @@ sg_ses options sorted alphabetically by their long option name:</p>
 		</td>
 	</tr>
 	<tr>
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-D DES</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--descriptor=DES</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			for indexing: find element whose Element Descriptor page's name
 			entry matches <tt class="western">DES</tt>. Implies <tt class="western">--join</tt></p>
 		</td>
 	</tr>
 	<tr valign="top">
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-x SN</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--dev-slot-num=SN</tt><br/>
 <tt class="western">--dsn=SN</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			for indexing: find element whose Additional Element status page's
 			device slot number entry matches <tt class="western">SN</tt>.
 			Implies <tt class="western">--join</tt>. Found in sg_ses version
@@ -391,13 +406,13 @@ sg_ses options sorted alphabetically by their long option name:</p>
 		</td>
 	</tr>
 	<tr valign="top">
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-E=A_F</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--eiioe=A_F</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">A_F</tt> is either '<tt class="western">auto</tt>'
 			or '<tt class="western">force</tt>'. Prior to the EIIOE bit's
 			introduction in ses3r06 several arrays acted as if this bit was
@@ -410,13 +425,13 @@ sg_ses options sorted alphabetically by their long option name:</p>
 		</td>
 	</tr>
 	<tr>
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-e</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--enumerate</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			list recognized diagnostic page codes and Element Type names. When
 			used twice lists acronyms for the <tt class="western">--clear</tt>,
 			<tt class="western">--get</tt> and <tt class="western">--set</tt>
@@ -424,49 +439,49 @@ sg_ses options sorted alphabetically by their long option name:</p>
 		</td>
 	</tr>
 	<tr>
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-f</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--filter</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			reduce the amount of output when displaying pages (e.g. Enclosure
 			Status and the Additional Element Status). Use twice to further
 			reduce output</p>
 		</td>
 	</tr>
 	<tr>
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-G STR</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--get=STR</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			get value of field described by <tt class="western">STR</tt>.
 			Requires an indexing option to choose an element.</p>
 		</td>
 	</tr>
 	<tr>
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-h</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--help</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			print usage message then exit</p>
 		</td>
 	</tr>
 	<tr>
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-H</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--hex</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			print the read diagnostic page in hexadecimal. Action varies
 			depending on other options. For example with the <tt class="western">--get=STR</tt>
 			option prints the output value in hex. Use '<tt class="western">-HHH</tt>'
@@ -475,84 +490,115 @@ sg_ses options sorted alphabetically by their long option name:</p>
 		</td>
 	</tr>
 	<tr>
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-I IIA</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--index=IIA</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			individual index ('-1' for overall) or Element Type abbreviation
-			(e.g. 'arr'). Range of indexes can also be given (e.g. <tt class="western">--index=3-5</tt>
+			(e.g. 'arr'). Range of indexes can also be given (e.g. <tt class="western">--index=3:5</tt>
 			matches array index 3, 4 and 5)</p>
 		</td>
 	</tr>
 	<tr>
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-I TIA,II</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--index=TIA,II</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">TIA</tt> is Type Header index or Element Type
 			abbreviation; <tt class="western">II</tt> is individual index
 			('-1' for overall)</p>
 		</td>
 	</tr>
 	<tr>
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><pre class="western"><font size="3" style="font-size: 12pt">-X FN</font></pre>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><pre class="western"><font size="3" style="font-size: 12pt">-X FN</font></pre>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><pre class="western"><font size="3" style="font-size: 12pt">--inhex=FN</font></pre>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><pre class="western"><font size="3" style="font-size: 12pt">--inhex=FN</font></pre>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			FN is a file name containing ASCII hex bytes (or binary if '<tt class="western">--raw
 			--raw</tt>' is given). Same as <tt class="western">--data=@FN</tt></p>
 		</td>
 	</tr>
 	<tr valign="top">
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-i</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--inner-hex</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			decode page and print element(s) in hex</p>
 		</td>
 	</tr>
 	<tr>
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-j</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--join</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			group (or &quot;join&quot;) Enclosure Status, Element Descriptor
 			and Additional Element Status pages. Use twice to add Threshold In
 			page</p>
 		</td>
 	</tr>
 	<tr>
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
+			<font face="Liberation Mono, monospace">-J[JO]</font></p>
+		</td>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
+			<font face="Liberation Mono, monospace">--json[=JO]</font></p>
+		</td>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
+			Format the output as JSON rather than human readable form.
+			Optionally takes a sequence of single characters that modify the
+			JSON output. To see a summary of their actions use ‘--json=xxx’
+			. JSON output is sent to stdout unless ‘--js-file=JFN’ is
+			given.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
+			<font face="Liberation Mono, monospace">-Q JFN</font></p>
+		</td>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
+			<font face="Liberation Mono, monospace">--js-file=JFN</font></p>
+		</td>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
+			Where JFN is the name of a file that the JSON output (if any) will
+			be written to. The file JFN will be created if necessary, or if it
+			already exists it is truncated before being written to. If JFN is
+			‘-’ then the output is sent to stdout . When the option is
+			given and the ‘--json’ option is not given, then the --json’
+			option is assumed.</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-l</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--list</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			same action as <tt class="western">--enumerate</tt></p>
 		</td>
 	</tr>
 	<tr valign="top">
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-M</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--mask</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--clear</tt> and <tt class="western">--set</tt>
 			do a read (status element), mask, modify, write cycle attempting
 			to preserve other settings in the element. The mask step zeros
@@ -563,48 +609,65 @@ sg_ses options sorted alphabetically by their long option name:</p>
 		</td>
 	</tr>
 	<tr valign="top">
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-m LEN</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--maxlen=LEN</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
-			maximum response length in bytes. Default is 65532 which may be
-			too large for old systems</p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
+			maximum response length in bytes, when fetching diagnostic pages.
+			Default is 65532 which may be too large for old systems</p>
 		</td>
 	</tr>
 	<tr valign="top">
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-N SEID</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--nickid=SEID</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">SEID</tt> is subenclosure identifier (default:
 			0 (which is primary enclosure))</p>
 		</td>
 	</tr>
 	<tr valign="top">
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-n SEN</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--nickname=SEN</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">SEN</tt> is the new subenclosure nickname</p>
 		</td>
 	</tr>
+	<tr valign="top">
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
+			<font face="Liberation Mono, monospace">-F</font></p>
+		</td>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
+			<font face="Liberation Mono, monospace">--no-config</font></p>
+		</td>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
+			The Element Status, Element Descriptor, Threshold (In) and
+			Additional Element Status diagnostic pages depend on the
+			Configuration diagnostic page to be fully decoded. When this
+			option is given, those four diagnostic pages are partially decoded
+			without using the Configuration diagnostic page. This may be
+			useful if the Configuration diagnostic page is missing or damaged
+			(misconfigured).</p>
+		</td>
+	</tr>
 	<tr>
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-p PG</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--page=PG</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			SES diagnostic page code <tt class="western">PG</tt> is an
 			abbreviation or a number in decimal (prefix with '<tt class="western">0x</tt>'
 			(or '<tt class="western">h</tt>' suffix) for hex). Use
@@ -614,47 +677,47 @@ sg_ses options sorted alphabetically by their long option name:</p>
 		</td>
 	</tr>
 	<tr valign="top">
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-q</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--quiet</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			suppress some output messages</p>
 		</td>
 	</tr>
 	<tr>
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-r</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--raw</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			print status page in ASCII hex suitable for <tt class="western">--data=-</tt>
 			; when used twice outputs page in binary to stdout</p>
 		</td>
 	</tr>
 	<tr valign="top">
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-R</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--readonly</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			open DEVICE read-only (default: open it read-write)</p>
 		</td>
 	</tr>
 	<tr valign="top">
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-A SA</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--sas-addr=SA</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			for indexing: find element whose Additional Element status page's
 			SAS address entry matches <tt class="western">SA</tt>. Will only
 			match device slot and array device slot elements. Implies <tt class="western">--join</tt>
@@ -663,67 +726,67 @@ sg_ses options sorted alphabetically by their long option name:</p>
 		</td>
 	</tr>
 	<tr>
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-S STR</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--set=STR</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			set value of field described by <tt class="western">STR</tt>.
 			Requires an indexing option to choose an element.</p>
 		</td>
 	</tr>
 	<tr>
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-s</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--status</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			fetch status information. The default action when no options given
 			is to display the Supported Diagnostic Pages page. If this is the
 			only option, the action is the same.</p>
 		</td>
 	</tr>
 	<tr>
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-v</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--verbose</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			increase verbosity of output. Use multiple times for more debug
 			information</p>
 		</td>
 	</tr>
 	<tr>
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-V</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--version</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			print version number and its date then exit</p>
 		</td>
 	</tr>
 	<tr valign="top">
-		<td width="69" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="70" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">-w</tt></p>
 		</td>
-		<td width="185" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="186" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<tt class="western">--warn</tt></p>
 		</td>
-		<td width="1231" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td width="1233" style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			warn about join problems and some other issues. Output is sent to
 			stderr</p>
 		</td>
 	</tr>
 </table>
-<p align="center" style="margin-bottom: 0cm"><b>Table 1&nbsp; sg_ses
+<p align="center" style="margin-bottom: 0in"><b>Table 1&nbsp; sg_ses
 command line options</b></p>
 <p><br/>
 DEVICE should be a SCSI device (logical unit) whose INQUIRY
@@ -744,22 +807,22 @@ utility uses indexing to pinpoint a single element. Actually the
 single element may be several closely related elements that can be
 viewed as one. Currently one of four indexing methods can be used:</p>
 <ol>
-	<li><p style="margin-bottom: 0cm"><tt class="western">--index=</tt>
+	<li><p style="margin-bottom: 0in"><tt class="western">--index=</tt>
 	option, based on the structure outlined in the Configuration page 
-	</p>
-	<li><p style="margin-bottom: 0cm"><tt class="western">--descriptor=DES</tt>
+	</p></li>
+	<li><p style="margin-bottom: 0in"><tt class="western">--descriptor=DES</tt>
 	where DES matches the Descriptor entry in the Element Descriptor
 	page 
-	</p>
-	<li><p style="margin-bottom: 0cm"><tt class="western">--dev-slot-num=SN</tt>
+	</p></li>
+	<li><p style="margin-bottom: 0in"><tt class="western">--dev-slot-num=SN</tt>
 	(or <tt class="western">--dsn=SN</tt>) where SN matches the device
 	slot number entry in the Additional Element Status page 
-	</p>
+	</p></li>
 	<li><p><tt class="western">--sas-addr=SA</tt> where SA matches an
 	SAS address entry in the Additional Element Status page 
-	</p>
+	</p></li>
 </ol>
-<p style="margin-bottom: 0cm">The first method is low level indexing
+<p style="margin-bottom: 0in">The first method is low level indexing
 and is described in this section. It can be used to index any element
 provided by the SES device. The final three methods are medium level
 indexing and are described in the next section. The final three
@@ -798,7 +861,7 @@ of these in the Configuration page.<br/>
 <img src="sg_ses_fg1.png" name="Image1" align="bottom" width="713" height="165" border="0"/>
 
 </p>
-<p align="justify" style="margin-left: 3.18cm; margin-bottom: 0cm">&nbsp;<b>Figure
+<p align="justify" style="margin-bottom: 0in; margin-left: 1.25in">&nbsp;<b>Figure
 1&nbsp; Taken from ses3r03.pdf at t10.org</b></p>
 <p><br/>
 It looks tempting to use the Element Type (an 8-bit number)
@@ -818,14 +881,14 @@ As an example, let us assume a Configuration page
 has the following four Type Descriptor Headers (each number is placed
 in a byte):</p>
 <ul>
-	<li><p style="margin-bottom: 0cm"><font face="monospace">23,3,0,0</font>
-		</p>
-	<li><p style="margin-bottom: 0cm"><font face="monospace">2,2,0,0</font>
-		</p>
-	<li><p style="margin-bottom: 0cm"><font face="monospace">2,1,0,0</font>
-		</p>
+	<li><p style="margin-bottom: 0in"><font face="monospace">23,3,0,0</font>
+		</p></li>
+	<li><p style="margin-bottom: 0in"><font face="monospace">2,2,0,0</font>
+		</p></li>
+	<li><p style="margin-bottom: 0in"><font face="monospace">2,1,0,0</font>
+		</p></li>
 	<li><p><font face="monospace">134,0,0,0</font> 
-	</p>
+	</p></li>
 </ul>
 <p>The Type Header indexes are 0, 1, 2, 3 respectively; the Element
 Types are Array Device Slot, Power Supply, Power Supply and Vendor
@@ -839,310 +902,310 @@ that sg_ses can index these instances are shown in columns A, B, C,
 D, E and F:</p>
 <table cellpadding="2" cellspacing="2">
 	<tr>
-		<td style="border: 1px double #808080; padding: 0.05cm"><p><b>Element
+		<td style="border: 1px double #808080; padding: 0.02in"><p><b>Element
 			instances</b></p>
 		</td>
-		<td style="border: 1px double #808080; padding: 0.05cm"><p><b>A</b><br/>
+		<td style="border: 1px double #808080; padding: 0.02in"><p><b>A</b><br/>
 --index=</p>
 		</td>
-		<td style="border: 1px double #808080; padding: 0.05cm"><p><b>B</b><br/>
+		<td style="border: 1px double #808080; padding: 0.02in"><p><b>B</b><br/>
 --index=</p>
 		</td>
-		<td style="border: 1px double #808080; padding: 0.05cm"><p><b>C</b><br/>
+		<td style="border: 1px double #808080; padding: 0.02in"><p><b>C</b><br/>
 --index=</p>
 		</td>
-		<td style="border: 1px double #808080; padding: 0.05cm"><p><b>D</b><br/>
+		<td style="border: 1px double #808080; padding: 0.02in"><p><b>D</b><br/>
 --index=</p>
 		</td>
-		<td style="border: 1px double #808080; padding: 0.05cm"><p><b>E</b><br/>
+		<td style="border: 1px double #808080; padding: 0.02in"><p><b>E</b><br/>
 --index=</p>
 		</td>
-		<td style="border: 1px double #808080; padding: 0.05cm"><p><b>F</b><br/>
+		<td style="border: 1px double #808080; padding: 0.02in"><p><b>F</b><br/>
 --index=</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			Array Device Slot<br/>
 overall element</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			0,-1</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			-1</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			arr,-1</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			arr</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			_23,-1</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			_23</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			Array Device Slot<br/>
 individual element 0</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			0,0</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			0</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			arr,0</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			_23,0</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<br/>
 
 			</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			Array Device Slot<br/>
 individual element 1</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			0,1</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			1</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			arr,1</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			_23,1</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<br/>
 
 			</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			Array Device Slot<br/>
 individual element 2</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			0,2</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			2</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			arr,2</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			_23,2</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<br/>
 
 			</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			Power Supply (5v)<br/>
 overall element</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			1,-1</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			ps,-1</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			ps</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			_2,-1</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			_2</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			Power Supply (5v)<br/>
 individual element 0</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			1,0</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			ps,0</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			_2,0</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<br/>
 
 			</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			Power Supply (5v)<br/>
 individual element 1</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			1,1</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			ps,1</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			_2,1</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<br/>
 
 			</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			Power Supply (12v)<br/>
 overall element</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			2,-1</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			ps1,-1</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			ps1</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			_2_1,-1</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			_2_1</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			Power Supply (12v)<br/>
 individual element 0</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			2,0</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			ps1,0</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			_2_1,0</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<br/>
 
 			</p>
 		</td>
 	</tr>
 	<tr>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			Vendor Specific LED display<br/>
 overall element</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			3,-1</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			<br/>
 
 			</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			_134,-1</p>
 		</td>
-		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0cm; padding-bottom: 0.05cm; padding-left: 0.05cm; padding-right: 0.05cm"><p>
+		<td style="border-top: none; border-bottom: 1px double #808080; border-left: 1px double #808080; border-right: 1px double #808080; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in"><p>
 			_134</p>
 		</td>
 	</tr>
 </table>
-<p align="center" style="margin-bottom: 0cm"><b>Table 2&nbsp;
+<p align="center" style="margin-bottom: 0in"><b>Table 2&nbsp;
 Indexing elements in the Enclosure Status page</b></p>
 <p><br/>
 Note that only two columns can index the full ten instances:
@@ -1295,7 +1358,7 @@ output of the smp_discover utility in the <a href="smp_utils.html">smp_utils</a>
 package. 
 </p>
 <h2 class="western">clear, get and set</h2>
-<p style="margin-bottom: 0cm">These three command line options allow
+<p style="margin-bottom: 0in">These three command line options allow
 a named field within an element to be fetched or changed. These
 options can only be used on the Enclosure Status, Element Descriptor,
 Threshold In (or Out) and the Additional Element Status pages. Since
@@ -1322,9 +1385,9 @@ long in the Array Device Slot status element:<br/>
 <img src="sg_ses_fg2.png" name="Image2" align="bottom" width="728" height="258" border="0"/>
 
 </p>
-<p style="margin-left: 3.18cm; margin-bottom: 0cm"><b>Figure 2&nbsp;
+<p style="margin-bottom: 0in; margin-left: 1.25in"><b>Figure 2&nbsp;
 Taken from ses3r03.pdf at t10.org</b></p>
-<p style="margin-bottom: 0cm"><br/>
+<p style="margin-bottom: 0in"><br/>
 Notice in the corresponding
 &quot;Control&quot; element that field is called &quot;Rqst Ident&quot;.
 Not a major problem, but the naming discrepancy can be larger for
@@ -1342,7 +1405,7 @@ option.<br/>
 <img src="sg_ses_fg3.png" name="Image3" align="bottom" width="728" height="240" border="0"/>
 
 </p>
-<p style="margin-left: 3.18cm; margin-bottom: 0cm"><b>Figure 3&nbsp;
+<p style="margin-bottom: 0in; margin-left: 1.25in"><b>Figure 3&nbsp;
 Taken from ses3r03.pdf at t10.org</b></p>
 <p><br/>
 When using the <tt class="western">--clear</tt>, <tt class="western">--get</tt>
@@ -1429,10 +1492,16 @@ numeric part of the <tt class="western">--index=</tt> argument was
 expanded to accept a range. For example:<br/>
 <code class="western"><br/>
 $
-sg_ses --index=3-5 --set=ident /dev/sg3</code><br/>
+sg_ses --index=3:5 --set=ident /dev/sg3</code><br/>
 <br/>
 will set
-the IDENT bit on the (array) indexes 3, 4 and 5.</p>
+the IDENT bit on the (array) indexes 3, 4 and 5. The maximum
+allowable range is -1:255 where -1 is the overall element, 0 is the
+first individual element and 255 is the last possible individual
+element. Using the maximum allowable range is not an error, only
+indexes matching elements on the SES device are selected. The number
+of elements actually selected could be zero (at a minimum) and the
+maximum number is 257.</p>
 <h2 class="western">Record once, analyse often</h2>
 <p>One or more diagnostic pages can be &quot;captured&quot; on a
 machine controlling or near an enclosure and stored in a file as
@@ -1565,7 +1634,7 @@ to reports and suggestions from users. Please continue to provide
 that feedback.</p>
 <p>Return to <a href="index.html">main</a> page. 
 </p>
-<p align="center">Last updated: 8th <font color="#000000">April</font>
-2021</p>
+<p align="center">Last updated: 2nd <font color="#000000">August</font>
+2026</p>
 </body>
 </html>
